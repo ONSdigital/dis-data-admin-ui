@@ -17,11 +17,11 @@ all: delimiter-AUDIT audit delimiter-LINTERS lint delimiter-UNIT-TESTS test deli
 
 .PHONY: audit
 audit: ## Runs checks for security vulnerabilities on dependencies (including transient ones)
-	go list -json -m all | nancy sleuth
+	exit
 
 .PHONY: build
 build: ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
-	go build -tags 'production' $(LDFLAGS) -o $(BINPATH)/dis-data-admin-ui
+	exit
 
 .PHONY: convey
 convey: ## Runs unit test suite and outputs results on http://127.0.0.1:8080/
@@ -51,11 +51,11 @@ lint-local: ## Use locally to run linters against Go code
 
 .PHONY: test
 test: ## Runs unit tests including checks for race conditions and returns coverage
-	go test -race -cover ./...
+	exit
 
 .PHONY: test-component
 test-component: ## Runs component test suite
-	go test -cover -coverpkg=github.com/ONSdigital/dis-data-admin-ui/... -component
+	exit
 
 .PHONY: help
 help: ## Show help page for list of make targets

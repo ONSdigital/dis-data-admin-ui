@@ -11,8 +11,5 @@ image_resource:
 inputs:
   - name: dis-data-admin-ui
 
-caches:
-  - path: go/
-
 run:
   path: dis-data-admin-ui/ci/scripts/unit.sh
