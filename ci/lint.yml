@@ -13,3 +13,4 @@ inputs:
 
 run:
   path: dis-data-admin-ui/ci/scripts/lint.sh
+  
