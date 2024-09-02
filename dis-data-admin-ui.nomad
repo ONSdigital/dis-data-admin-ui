@@ -11,70 +11,6 @@ job "dis-data-admin-ui" {
     auto_revert      = true
   }
 
-  group "web" {
-    count = "{{WEB_TASK_COUNT}}"
-
-    constraint {
-      attribute = "${node.class}"
-      value     = "web"
-    }
-
-    restart {
-      attempts = 3
-      delay    = "15s"
-      interval = "1m"
-      mode     = "delay"
-    }
-
-    task "dis-data-admin-ui-web" {
-      driver = "docker"
-
-      artifact {
-        source = "s3::https://s3-eu-west-2.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dis-data-admin-ui/{{PROFILE}}/{{RELEASE}}.tar.gz"
-      }
-
-      config {
-        command = "${NOMAD_TASK_DIR}/start-task"
-
-        args = ["./dis-data-admin-ui"]
-
-        image = "{{ECR_URL}}:concourse-{{REVISION}}"
-
-      }
-
-      service {
-        name = "dis-data-admin-ui"
-        port = "http"
-        tags = ["web"]
-
-        check {
-          type     = "http"
-          path     = "/health"
-          interval = "10s"
-          timeout  = "2s"
-        }
-      }
-
-      resources {
-        cpu    = "{{WEB_RESOURCE_CPU}}"
-        memory = "{{WEB_RESOURCE_MEM}}"
-
-        network {
-          port "http" {}
-        }
-      }
-
-      template {
-        source      = "${NOMAD_TASK_DIR}/vars-template"
-        destination = "${NOMAD_TASK_DIR}/vars"
-      }
-
-      vault {
-        policies = ["dis-data-admin-ui-web"]
-      }
-    }
-  }
-
   group "publishing" {
     count = "{{PUBLISHING_TASK_COUNT}}"
 
@@ -90,7 +26,7 @@ job "dis-data-admin-ui" {
       mode     = "delay"
     }
 
-    task "dis-data-admin-ui-publishing" {
+    task "dis-data-admin-ui" {
       driver = "docker"
 
       artifact {
@@ -133,7 +69,7 @@ job "dis-data-admin-ui" {
       }
 
       vault {
-        policies = ["dis-data-admin-ui-publishing"]
+        policies = ["dis-data-admin-ui"]
       }
     }
   }
