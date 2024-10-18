@@ -1,7 +1,9 @@
-FROM onsdigital/dp-concourse-tools-ubuntu-20:ubuntu20.4-rc.1
+FROM node:20.3.1 AS base
 
 WORKDIR /app/
 
-COPY dis-data-admin-ui .
+ADD dis-data-admin-ui .
 
-CMD ./dis-data-admin-ui
+RUN corepack enable	&& yarn set version stable && yarn install 
+
+CMD NODE_ENV=production yarn node server.js

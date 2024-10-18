@@ -17,37 +17,26 @@ all: delimiter-AUDIT audit delimiter-LINTERS lint delimiter-UNIT-TESTS test deli
 
 .PHONY: audit
 audit: ## Runs checks for security vulnerabilities on dependencies (including transient ones)
-	exit
+	yarn npm audit
 
 .PHONY: build
 build: ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
-	exit
-
-.PHONY: convey
-convey: ## Runs unit test suite and outputs results on http://127.0.0.1:8080/
-	goconvey ./...
+	corepack enable	
+	yarn set version stable	
+	yarn	
+	yarn build
 
 .PHONY: debug
 debug: ## Used to run code locally in debug mode
-	go build -tags 'debug' $(LDFLAGS) -o $(BINPATH)/dis-data-admin-ui
-	HUMAN_LOG=1 DEBUG=1 $(BINPATH)/dis-data-admin-ui
+	yarn dev
 
 .PHONY: delimiter-%
 delimiter-%:
 	@echo '===================${GREEN} $* ${RESET}==================='
 
-.PHONY: fmt
-fmt: ## Run Go formatting on code
-	go fmt ./...
-
 .PHONY: lint
 lint:
-	exit
-
-.PHONY: lint-local
-lint-local: ## Use locally to run linters against Go code
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.2
-	golangci-lint run ./...
+	yarn lint
 
 .PHONY: test
 test: ## Runs unit tests including checks for race conditions and returns coverage

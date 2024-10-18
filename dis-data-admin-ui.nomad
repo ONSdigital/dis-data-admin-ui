@@ -34,10 +34,6 @@ job "dis-data-admin-ui" {
       }
 
       config {
-        command = "${NOMAD_TASK_DIR}/start-task"
-
-        args = ["./dis-data-admin-ui"]
-
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
       }
 
@@ -56,7 +52,7 @@ job "dis-data-admin-ui" {
 
       resources {
         cpu    = "{{PUBLISHING_RESOURCE_CPU}}"
-        memory = "{{PUBLISHING_RESOURCE_MEM}}"
+        memory = 256
 
         network {
           port "http" {}
