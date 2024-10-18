@@ -20,14 +20,14 @@ audit: ## Runs checks for security vulnerabilities on dependencies (including tr
 	yarn npm audit
 
 .PHONY: build
-build: ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
+build: ## Sets up and installs latest version of yarn. Runs yarn build which runs vite build. Vite build creates a dist folder and produces an application bundle that is suitable to be served over a static hosting service.
 	corepack enable	
 	yarn set version stable	
 	yarn	
 	yarn build
 
-.PHONY: debug
-debug: ## Used to run code locally in debug mode
+.PHONY: dev
+debug: ## Used to run code locally using "node server.js",
 	yarn dev
 
 .PHONY: delimiter-%
@@ -40,7 +40,7 @@ lint:
 
 .PHONY: test
 test: ## Runs unit tests including checks for race conditions and returns coverage
-	exit
+	yarn test
 
 .PHONY: test-component
 test-component: ## Runs component test suite

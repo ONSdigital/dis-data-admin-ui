@@ -4,12 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node server.js",
+    "test": "jest",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node server.js",
-    "start-prod": "vite build && NODE_ENV=production node server.js"
+    "build": "vite build"
   },
   "dependencies": {
     "author-design-system-react": "^1.0.63",
