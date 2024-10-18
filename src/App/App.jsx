@@ -1,12 +1,9 @@
-import {Link } from "react-router-dom";
-import {MainLayout} from "author-design-system-react"
+import {Link} from "react-router-dom";
 
-export const App = () => {
+export const App = () => {  
   return (
     <>
-      <MainLayout text="Dataset Catalogue">
-        <Link to={`/data-admin/login`}>Login</Link>
-      </MainLayout>
+      <Link to={`/data-admin/login`}>Login</Link>
     </>
   )
 }
