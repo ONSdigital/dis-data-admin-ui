@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "lint": "next lint",
+    "dev": "next dev -p 29400",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 29400"
   },
   "dependencies": {
     "author-design-system-react": "^1.0.65",

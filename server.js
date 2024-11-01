@@ -31,7 +31,7 @@ app.prepare().then(() => {
         });
     });
 
-    const bindAddr = process.env.BIND_ADDR || 3000;
+    const bindAddr = process.env.BIND_ADDR || 14000;
     server.listen(bindAddr, (err) => {
         if (err) throw err;
         console.log(`> Ready on http://localhost:${bindAddr} || http://127.0.0.1:${bindAddr}`);
