@@ -1,0 +1,14 @@
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers'
+
+const publicRoutes = ['/florence/login']
+
+export async function authenticationMiddleware(req) {
+    const path = req.nextUrl.pathname
+    const isPublicRoute = publicRoutes.includes(path)
+    const cookie = (await cookies()).get('session')?.value
+    if ((!cookie || cookie === "false") && !isPublicRoute) {
+        return NextResponse.redirect(new URL('/florence/login', req.nextUrl))
+    }
+    return NextResponse.next();
+}
