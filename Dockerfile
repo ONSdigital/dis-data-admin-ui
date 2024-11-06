@@ -2,16 +2,11 @@ FROM node:20.3.1 AS base
 
 WORKDIR /app
 
-COPY .next/standalone ./
-COPY .next/static ./.next/static
+COPY package*.json ./
+RUN npm install
 
-ENV NODE_ENV=production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-ENV NEXT_TELEMETRY_DISABLED=1
+COPY . .
 
-EXPOSE 14000
+EXPOSE 29400
 
-ENV PORT=14000
-
-ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+CMD ["npm", "run", "dev"]
