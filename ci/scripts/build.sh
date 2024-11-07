@@ -8,7 +8,3 @@ pushd dis-data-admin-ui
     cp -r .next/static ../build
     cp Dockerfile.concourse ../build
 popd
-
-ls -a
-cd build
-ls -a
