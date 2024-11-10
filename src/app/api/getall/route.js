@@ -13,7 +13,5 @@ export async function GET(req){
     const versionResp = await fetch(`https://api.beta.ons.gov.uk/v1/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`)
     const version = await versionResp.json()
 
-    console.log("RETURN", {dataset, edition, version})
-
     return Response.json({dataset, edition, version})
 }
