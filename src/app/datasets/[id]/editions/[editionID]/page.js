@@ -1,15 +1,14 @@
+import request from "@/utils/request/request"
+
 import List from "../../../../../components/list/List"
 import { mapListItems } from "./mapper"
 
 
 export default async function Dataset({ params }) {
     const { id, editionID } = await params
-    let datasetsResp = await fetch(`https://api.beta.ons.gov.uk/v1/datasets/${id}`)
-    let editionResp = await fetch(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}`)
-    let versionsResp = await fetch(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}/versions`)
-    let dataset = await datasetsResp.json()
-    let edition = await editionResp.json()
-    let versions = await versionsResp.json()
+    let dataset = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}`)
+    let edition = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}`)
+    let versions = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}/versions`)
 
     const listItems = mapListItems(versions.items, id, editionID)
     return (
