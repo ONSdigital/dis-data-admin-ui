@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { logEvent } from '@/utils/log/log';
+import { logInfo } from '@/utils/log/log';
 
 
 export async function routeLoggingMiddleware(req) {
-    logEvent(`Route changed: ${req.url}`)
+    logInfo("route change", {url: req.url}, null)
     return NextResponse.next();
 }
