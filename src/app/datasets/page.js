@@ -12,7 +12,7 @@ export default function Datasets() {
     const [items, setItems] = useState([]);
 
     const handleSubmit = async() => {
-        const datasets = await request(`/api/datasets?q=${search}`)
+        const datasets = await request(`/data-admin/api/datasets?q=${search}`)
         setItems(datasets)
     }
 

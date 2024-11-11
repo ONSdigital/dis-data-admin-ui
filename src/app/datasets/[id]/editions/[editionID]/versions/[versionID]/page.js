@@ -18,7 +18,7 @@ export default function Dataset() {
 
     const fetchData = async() => {
         if (!response) {
-            const resp = await request(`/api/getall?datasetID=${id}&editionID=${editionID}&versionID=${versionID}`)
+            const resp = await request(`/data-admin/api/getall?datasetID=${id}&editionID=${editionID}&versionID=${versionID}`)
             setResponse(resp);
         }
     }
