@@ -10,15 +10,15 @@ const mainLayoutProps = {
         navigationLinks: [
             {
                 text: 'Home',
-                url: '/'
+                url: '/data-admin'
             },
             {
                 text: 'Dashboard',
-                url: '/dashboard'
+                url: '/data-admin/dashboard'
             },
             {
                 text: 'Datasets',
-                url: '/datasets'
+                url: '/data-admin/datasets'
             },
         ]
     }
