@@ -48,7 +48,7 @@ job "dis-data-admin-ui" {
 
         check {
           type     = "http"
-          path     = "/api/health"
+          path     = "data-admin/api/health"
           interval = "10s"
           timeout  = "2s"
         }
