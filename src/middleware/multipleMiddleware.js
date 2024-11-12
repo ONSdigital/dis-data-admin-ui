@@ -1,4 +1,4 @@
-// function for handling mutltiple middleware since nect only supports one
+// function for handling mutltiple middleware since next only supports one
 // taken from https://medium.com/@aididalam/approach-to-multiple-middleware-and-auth-guard-in-next-js-app-routing-bbb641401477
 // see also https://stackoverflow.com/a/78980557
 
