@@ -102,7 +102,6 @@ const createLog = (severity, event, data = null, http = null, error = null) => {
 
 /**
  * Used for messages that confirm that the application is behaving as it should
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -113,7 +112,6 @@ const logInfo = (event, data, http) => {
 
 /**
  * Used to indicates something that may cause a problem
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -125,7 +123,6 @@ const logWarn = (event, data, http, error) => {
 
 /**
  * Used to indicate that a required task failed
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -137,7 +134,6 @@ const logError = (event, data, http, error) => {
 
 /**
  * Used to indicate a serious problem that can stop the application from running
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
