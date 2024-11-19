@@ -28,7 +28,7 @@ export default function Layout({ children }) {
     return (
           <>
               <MainLayout {...mainLayoutProps}>
-                  <main>{children}</main>
+                  {children}
               </MainLayout>
           </>
     )
