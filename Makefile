@@ -47,18 +47,18 @@ test: ## Runs unit tests including checks for race conditions and returns covera
 test-component: ## Runs component test suite
 	$(MAKE) test-server &
 	sleep 5
-	ps -eo pid,args | grep '[0-9] node server.mjs'
+	ps -eo pid,args | grep '[0-9] node server.js'
 	npm run test:component
 	$(MAKE) kill-test-server
 
 .PHONY: kill-test-server
 kill-test-server: ## Kills test server
-	pid=$$(ps -eo pid,args | grep '[0-9] node server.mjs' | cut -f1 -w);\
+	pid=$$(ps -eo pid,args | grep '[0-9] node server.js' | cut -f1 -w);\
 	[[ -n "$$pid" ]] && kill $$pid
 
 .PHONY: test-server
 test-server: ## Runs test server
-	cd tests/fakeapi && node server.mjs
+	cd tests/fakeapi && npm install && npm run start
 
 
 .PHONY: help

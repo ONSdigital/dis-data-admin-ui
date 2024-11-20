@@ -1,4 +1,4 @@
-const datasetList = {
+export const datasetList = {
     "items": [
         {
             "title": "Test dataset",
@@ -17,5 +17,3 @@ const datasetList = {
         }
     ]
 }
-
-export { datasetList }
