@@ -45,7 +45,21 @@ test: ## Runs unit tests including checks for race conditions and returns covera
 
 .PHONY: test-component
 test-component: ## Runs component test suite
-	exit
+	$(MAKE) test-server &
+	sleep 5
+	ps -eo pid,args | grep '[0-9] node server.mjs'
+	npm run test:component
+	$(MAKE) kill-test-server
+
+.PHONY: kill-test-server
+kill-test-server: ## Kills test server
+	pid=$$(ps -eo pid,args | grep '[0-9] node server.mjs' | cut -f1 -w);\
+	[[ -n "$$pid" ]] && kill $$pid
+
+.PHONY: test-server
+test-server: ## Runs test server
+	cd tests/fakeapi && node server.mjs
+
 
 .PHONY: help
 help: ## Show help page for list of make targets
