@@ -48,7 +48,7 @@ test-component: ## Runs component test suite
 	$(MAKE) test-server &
 	sleep 5
 	ps -eo pid,args | grep '[0-9] node server.js'
-	npm run test:component
+	npm install && npm run test:component
 	$(MAKE) kill-test-server
 
 .PHONY: kill-test-server
