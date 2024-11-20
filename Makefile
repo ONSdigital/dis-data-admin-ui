@@ -53,7 +53,7 @@ test-component: ## Runs component test suite
 
 .PHONY: kill-test-server
 kill-test-server: ## Kills test server
-	pid=$$(ps -eo pid,args | grep '[0-9] node server.js' | cut -f1 -w);\
+	pid=$$(ps -eo pid,args | grep '[0-9] node server.js' | awk '{print $$1}');\
 	[[ -n "$$pid" ]] && kill $$pid
 
 .PHONY: test-server
