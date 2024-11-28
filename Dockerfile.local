@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 29400
 
-CMD ["npm", "run", "dev"]
+CMD ["make", "debug"]
