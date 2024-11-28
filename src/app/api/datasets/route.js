@@ -18,8 +18,6 @@ export async function GET(req){
     })
     const data = await res.json()
 
-    console.log("DATA IS:", data)
-
     const filtered = data.items.filter(item => {
         if (item.id.includes(param) || item.title.includes(param)) {
             return item
