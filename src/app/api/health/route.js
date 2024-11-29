@@ -2,19 +2,6 @@ import { logInfo } from '@/utils/log/log';
 import { version } from 'react';
 
 export async function GET() {
-
-    // TODO Add check for dependencies and depending on result potentially change the below check.
-
-    const check = {
-        "name": "dis-data-admin-ui-check",
-        "status": "OK",
-        "status_code": "200",
-        "message": "OK",
-        "last_checked": new Date().toISOString(),
-        "last success": new Date().toISOString(),
-        "last failure": null
-    }
-
     const healthcheck = {
         "status": "OK",
         "version": {
@@ -29,7 +16,16 @@ export async function GET() {
         "checks": []
     }
 
-    healthcheck.checks.push(check)
+    let apiRouterHealthResponse = await fetch(process.env.APIROUTERURL)
+    let apiRouterHealthCheck = await apiRouterHealthResponse.json()
+    
+    if (apiRouterHealthCheck.status == 'WARNING') {
+        healthcheck.status = 'WARNING'
+    } else if (apiRouterHealthCheck.status == 'CRITICAL') {
+        healthcheck.status = 'CRITICAL'
+    }
+
+    healthcheck.checks.push(apiRouterHealthCheck)
 
     logInfo("Health Check Requested", {healthcheck, version}, null)
 
