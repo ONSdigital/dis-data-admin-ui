@@ -1,5 +1,7 @@
-import { logInfo } from '@/utils/log/log';
 import { version } from 'react';
+
+import  { logInfo } from '@/utils/log/log';
+import  request from "@/utils/request/request"
 
 export async function GET() {
     const healthcheck = {
@@ -16,16 +18,15 @@ export async function GET() {
         "checks": []
     }
 
-    let apiRouterHealthResponse = await fetch(process.env.APIROUTERURL)
-    let apiRouterHealthCheck = await apiRouterHealthResponse.json()
-    
-    if (apiRouterHealthCheck.status == 'WARNING') {
+    const apiRouterHealthResponse = await request(process.env.API_ROUTER_URL + '/health')
+
+    if (apiRouterHealthResponse.status == 'WARNING') {
         healthcheck.status = 'WARNING'
-    } else if (apiRouterHealthCheck.status == 'CRITICAL') {
+    } else if (apiRouterHealthResponse.status == 'CRITICAL') {
         healthcheck.status = 'CRITICAL'
     }
 
-    healthcheck.checks.push(apiRouterHealthCheck)
+    healthcheck.checks.push(apiRouterHealthResponse)
 
     logInfo("Health Check Requested", {healthcheck, version}, null)
 
