@@ -1,4 +1,6 @@
-// we let Florence end point handle logout functionality so route user there
+/**
+ * Redirect to logout endpoint in Florence
+ */
 const logout = () => {
     window.location = "/florence/logout";
 }
