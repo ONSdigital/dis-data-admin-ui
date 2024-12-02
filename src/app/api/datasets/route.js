@@ -2,7 +2,16 @@ export async function GET(req){
     const {searchParams} = new URL(req.url);
     const param = searchParams.get("q");
 
-    const res = await fetch("https://api.beta.ons.gov.uk/v1/datasets?limit=100", {
+    // temporary logic until we work on env vars properly
+    const apiRouterURL = process.env.API_ROUTER_URL;
+    let fetchURL
+    if (apiRouterURL) {
+        fetchURL = apiRouterURL + "/datasets?limit=100";
+    } else {
+        fetchURL = "https://api.beta.ons.gov.uk/v1/datasets?limit=100"
+    }
+
+    const res = await fetch(fetchURL, {
         headers: {
             'Content-Type': 'application/json',
         },

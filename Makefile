@@ -24,7 +24,21 @@ test: ## Runs unit tests including checks for race conditions and returns covera
 
 .PHONY: test-component
 test-component: ## Runs component test suite
-	exit
+	$(MAKE) test-server &
+	sleep 5
+	ps -eo pid,args | grep '[0-9] node server.js'
+	npm install && npx playwright install && npx playwright install-deps && npm run test:component
+	$(MAKE) kill-test-server
+
+.PHONY: kill-test-server
+kill-test-server: ## Kills test server
+	pid=$$(ps -eo pid,args | grep '[0-9] node server.js' | awk '{print $$1}');\
+	[ -n "$$pid" ] && kill $$pid
+
+.PHONY: test-server
+test-server: ## Runs test server
+	cd tests/fakeapi && npm install && npm run start
+
 
 .PHONY: env-setup
 env-setup: ## Setup env variables for healthcheck
