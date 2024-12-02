@@ -7,18 +7,18 @@ export async function GET() {
     const healthcheck = {
         "status": "OK",
         "version": {
-            "version": process.env.VERSION ? process.env.VERSION : "",
-            "git_commit": process.env.GIT_COMMIT ? process.env.GIT_COMMIT : "",
-            "build_time": process.env.BUILD_TIME ? process.env.BUILD_TIME : "",
+            "version": process.env.Version ? process.env.Version : "",
+            "git_commit": process.env.GitCommit ? process.env.GitCommit : "",
+            "build_time": process.env.BuildTime ? process.env.BuildTime : "",
             "language": "",
             "language_version": ""
         },
-        "uptime": (Date.now() - Date.parse(process.env.BUILD_TIME)),
-        "start_time": process.env.BUILD_TIME ? process.env.BUILD_TIME : "",
+        "uptime": (Date.now() - Date.parse(process.env.BuildTime)),
+        "start_time": process.env.BuildTime ? process.env.BuildTime : "",
         "checks": []
     }
 
-    const apiRouterHealthResponse = await request(process.env.API_ROUTER_URL + '/health')
+    const apiRouterHealthResponse = await request(process.env.apiRouterURL + '/health')
 
     if (apiRouterHealthResponse.status == 'WARNING') {
         healthcheck.status = 'WARNING'
