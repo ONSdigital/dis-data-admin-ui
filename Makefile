@@ -12,7 +12,7 @@ build: env-setup ## Builds binary of application code and stores in bin director
 
 .PHONY: debug
 debug: env-setup ## Used to run code locally in debug mode
-	$(shell sed -i~ '/^ApiRouterURL=/s/=.*/="http:\/\/localhost:23200"/' .env)
+	$(shell sed -i~ '/^API_ROUTER_URL=/s/=.*/="http:\/\/localhost:23200"/' .env)
 	npm run dev
 
 .PHONY: lint
@@ -43,6 +43,6 @@ test-server: ## Runs test server
 
 .PHONY: env-setup
 env-setup: ## Setup env variables for healthcheck
-	$(shell sed -i~ '/^BuildTime=/s/=.*/="$(BUILD_TIME)"/' .env)
-	$(shell sed -i~ '/^GitCommit=/s/=.*/="$(GIT_COMMIT)"/' .env)
-	$(shell sed -i~ '/^Version=/s/=.*/="$(VERSION)"/' .env)
+	$(shell sed -i~ '/^BUILD_TIME=/s/=.*/="$(BUILD_TIME)"/' .env)
+	$(shell sed -i~ '/^GIT_COMMIT=/s/=.*/="$(GIT_COMMIT)"/' .env)
+	$(shell sed -i~ '/^VERSION=/s/=.*/="$(VERSION)"/' .env)
