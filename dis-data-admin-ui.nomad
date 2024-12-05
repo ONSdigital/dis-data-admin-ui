@@ -34,10 +34,12 @@ job "dis-data-admin-ui" {
       }
 
       config {
+        command = "${NOMAD_TASK_DIR}/start-task"
+
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = 14000
+          http = "${NOMAD_PORT_http}"
         }
       }
 
