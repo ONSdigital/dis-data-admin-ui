@@ -36,6 +36,8 @@ job "dis-data-admin-ui" {
       config {
         command = "${NOMAD_TASK_DIR}/start-task"
 
+        args = [""node /app/server.js"]
+
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
