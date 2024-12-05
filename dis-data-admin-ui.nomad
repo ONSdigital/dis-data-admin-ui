@@ -41,7 +41,7 @@ job "dis-data-admin-ui" {
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = "${NOMAD_PORT_http}"
+          http = 14000
         }
       }
 
