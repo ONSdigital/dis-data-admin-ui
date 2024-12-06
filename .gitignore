@@ -45,3 +45,6 @@ dist-ssr
 # Testing
 test-results
 playwright-report
+
+.env
+.env~
