@@ -5,28 +5,59 @@ import  request from "@/utils/request/request"
 
 export async function GET() {
     const healthcheck = {
-        "status": "OK",
+        "status": "",
         "version": {
-            "version": process.env.VERSION ? process.env.VERSION : "",
-            "git_commit": process.env.GIT_COMMIT ? process.env.GIT_COMMIT : "",
             "build_time": process.env.BUILD_TIME ? process.env.BUILD_TIME : "",
-            "language": "",
-            "language_version": ""
+            "git_commit": process.env.GIT_COMMIT ? process.env.GIT_COMMIT : "",
+            "language": "JavaScript",
+            "language_version": "ECMAScript 2023",
+            "version": process.env.VERSION ? process.env.VERSION : ""
         },
         "uptime": (Date.now() - Date.parse(process.env.BUILD_TIME)),
         "start_time": process.env.BUILD_TIME ? process.env.BUILD_TIME : "",
         "checks": []
     }
 
-    const apiRouterHealthResponse = await request(process.env.API_ROUTER_URL + '/health')
-
-    if (apiRouterHealthResponse.status == 'WARNING') {
-        healthcheck.status = 'WARNING'
-    } else if (apiRouterHealthResponse.status == 'CRITICAL') {
-        healthcheck.status = 'CRITICAL'
+    const apiRouterHealthCheck = {
+        "name" : "API Router",
+        "status": "",
+        "status_code": "",
+        "message": "",
+        "last_checked": null,
+        "last_success": null,
+        "last_failure": null
     }
 
-    healthcheck.checks.push(apiRouterHealthResponse)
+    let apiRouterHealthResponse
+
+    try {
+         apiRouterHealthResponse = await request(process.env.API_ROUTER_URL + '/health')
+         apiRouterHealthCheck.status = apiRouterHealthResponse.status
+    }
+    catch(err) {
+        apiRouterHealthCheck.status = 'CRITICAL'
+        apiRouterHealthCheck.message = err
+    }
+
+    if (apiRouterHealthCheck.status == 'OK') {
+       apiRouterHealthCheck.status_code = '200'
+       apiRouterHealthCheck.message = 'dp-api-router is ok'
+       apiRouterHealthCheck.last_checked = new Date().toISOString()
+       apiRouterHealthCheck.last_success = new Date().toISOString()
+   } else if (apiRouterHealthCheck.status == 'WARNING') {
+       apiRouterHealthCheck.status_code = '429'
+       apiRouterHealthCheck.message = 'dp-api-router is not ok'
+       apiRouterHealthCheck.last_checked = new Date().toISOString()
+   } else {
+       apiRouterHealthCheck.status_code = '500'
+       apiRouterHealthCheck.message ? apiRouterHealthCheck.message  : 'dp-api-router is having a really bad time'
+       apiRouterHealthCheck.last_checked = new Date().toISOString()
+       apiRouterHealthCheck.last_failure = new Date().toISOString()
+   }
+
+    healthcheck.status = apiRouterHealthCheck.status_code
+
+    healthcheck.checks.push(apiRouterHealthCheck)
 
     logInfo("Health Check Requested", {healthcheck, version}, null)
 

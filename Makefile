@@ -12,7 +12,6 @@ build: env-setup ## Builds binary of application code and stores in bin director
 
 .PHONY: debug
 debug: env-setup ## Used to run code locally in debug mode
-	$(shell sed -i~ '/^API_ROUTER_URL=/s/=.*/="http:\/\/localhost:23200"/' .env)
 	npm run dev
 
 .PHONY: lint
