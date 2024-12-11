@@ -6,7 +6,7 @@ const loginURL = "/florence/login"
  * Redirect to logout endpoint in Florence
  */
 const logout = () => {
-    window.location = logoutURL;
+    return window.location = logoutURL;
 }
 
 /**
@@ -14,9 +14,10 @@ const logout = () => {
  * @param {string} redirectPath - path to for redirect param
  */
 const getLoginURLWithRedirect = (redirectPath) => {
-    const basePath = "/data-admin/"
-    const redirectTo = encodeURIComponent(basePath + redirectPath)
-    return `${loginURL}?redirect=${redirectTo}`
+    const basePath = "/data-admin/";
+    const redirect = redirectPath ? redirectPath : "";
+    const redirectTo = encodeURIComponent(basePath + redirect);
+    return `${loginURL}?redirect=${redirectTo}`;
 }
 
 export { logout, getLoginURLWithRedirect };
