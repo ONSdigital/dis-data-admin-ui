@@ -13,7 +13,6 @@ export async function authenticationMiddleware(req) {
     if ((!cookie || cookie === "false") && !isPublicRoute) {
         logInfo("no auth cookies found, or invalid. redirecting to login", null, null);
         const logoutPath = getLoginURLWithRedirect(path)
-        console.log(logoutPath)
         return NextResponse.redirect(new URL(logoutPath, req.nextUrl))
     }
     return NextResponse.next();
