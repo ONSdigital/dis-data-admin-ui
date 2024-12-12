@@ -8,7 +8,7 @@ audit: ## Runs checks for security vulnerabilities on dependencies (including tr
 
 .PHONY: build
 build: env-setup  ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
-	node-modules && npm run build
+	$(MAKE) node-modules && npm run build
 
 .PHONY: debug
 debug: env-setup ## Used to run code locally in debug mode
@@ -17,7 +17,7 @@ debug: env-setup ## Used to run code locally in debug mode
 
 .PHONY: lint
 lint: 
-	node-modules && npm run lint
+	$(MAKE) node-modules && npm run lint
 
 .PHONY: node-modules
 node-modules:
