@@ -24,8 +24,8 @@ node-modules:
 	npm install --legacy-peer-deps
 
 .PHONY: test
-test: ## Runs unit tests including checks for race conditions and returns coverage
-	exit
+test: node-modules## Runs unit tests including checks for race conditions and returns coverage
+	npm run test
 
 .PHONY: test-component
 test-component: ## Runs component test suite
