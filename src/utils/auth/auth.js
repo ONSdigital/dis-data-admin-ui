@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 
 const logoutURL = "/florence/logout"
 const loginURL = "/florence/login"
@@ -11,7 +12,8 @@ const logout = () => {
 
 /**
  * Returns login URL with redirect param set
- * @param {string} redirectPath - path to for redirect param
+ * @param  {string} redirectPath - path for redirect param
+ * @return {string} - encoded login string with redirect param
  */
 const getLoginURLWithRedirect = (redirectPath) => {
     const basePath = "/data-admin/";
@@ -20,4 +22,20 @@ const getLoginURLWithRedirect = (redirectPath) => {
     return `${loginURL}?redirect=${redirectTo}`;
 }
 
-export { logout, getLoginURLWithRedirect };
+/**
+ * Decodes JWT and validates
+ * @param  {Cookie} cookie - cookie value
+ * @return {boolean}
+ */
+const validateCookie = (cookie) => {
+    try {
+        jwtDecode(cookie);
+        return true;
+    } catch (err) {
+        console.log("WE'RE IN HERE!!")
+        return false;
+    }
+}
+
+
+export { logout, getLoginURLWithRedirect, validateCookie };
