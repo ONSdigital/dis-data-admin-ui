@@ -53,14 +53,13 @@ export async function GET() {
        apiRouterHealthCheck.message ? apiRouterHealthCheck.message  : 'api-router functionality is unavailable or non-functioning'
        apiRouterHealthCheck.last_failure = dateNow
    }
-
+   
    apiRouterHealthCheck.last_checked = dateNow
-
-    healthcheck.status = apiRouterHealthCheck.status
-
-    healthcheck.checks.push(apiRouterHealthCheck)
-
-    logInfo("Health Check Requested", {healthcheck, version}, null)
-
-    return Response.json(healthcheck)
+   
+   healthcheck.status = apiRouterHealthCheck.status
+   healthcheck.checks.push(apiRouterHealthCheck)
+   
+   logInfo("Health Check Requested", {healthcheck, version}, null)
+   
+   return Response.json(healthcheck)
 }
