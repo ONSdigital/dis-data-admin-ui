@@ -7,27 +7,31 @@ audit: ## Runs checks for security vulnerabilities on dependencies (including tr
 	npm audit
 
 .PHONY: build
-build: env-setup ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
-	npm run build
+build: env-setup  ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
+	$(MAKE) node-modules && npm run build
 
 .PHONY: debug
 debug: env-setup ## Used to run code locally in debug mode
 	npm run dev
 
 .PHONY: lint
-lint:
-	npm run lint
+lint: 
+	$(MAKE) node-modules && npm run lint
+
+.PHONY: node-modules
+node-modules:
+	npm install --legacy-peer-deps
 
 .PHONY: test
-test: ## Runs unit tests including checks for race conditions and returns coverage
-	exit
+test: node-modules## Runs unit tests including checks for race conditions and returns coverage
+	npm run test
 
 .PHONY: test-component
 test-component: ## Runs component test suite
 	$(MAKE) test-server &
 	sleep 5
 	ps -eo pid,args | grep '[0-9] node server.js'
-	npm install && npx playwright install && npx playwright install-deps && npm run test:component
+	$(MAKE) node-modules && npx playwright install && npx playwright install-deps && npm run test:component
 	$(MAKE) kill-test-server
 
 .PHONY: kill-test-server
