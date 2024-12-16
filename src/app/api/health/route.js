@@ -39,7 +39,7 @@ export async function GET() {
         apiRouterHealthCheck.message = "Get " + process.env.API_ROUTER_URL + '/health' + ": dial tcp [::1]:23200: connect: connection refused"
     }
 
-    const dateNow = Date.now().toISOString()
+    const dateNow = new Date.now().toISOString()
 
     if (apiRouterHealthCheck.status == 'OK') {
        apiRouterHealthCheck.status_code = '200'
