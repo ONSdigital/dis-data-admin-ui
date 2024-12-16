@@ -39,22 +39,23 @@ export async function GET() {
         apiRouterHealthCheck.message = "Get " + process.env.API_ROUTER_URL + '/health' + ": dial tcp [::1]:23200: connect: connection refused"
     }
 
-    const dateNow = new Date
+    let dateNow = new Date
+    dateNow = dateNow.toISOString()
 
     if (apiRouterHealthCheck.status == 'OK') {
        apiRouterHealthCheck.status_code = '200'
        apiRouterHealthCheck.message = 'dp-api-router is ok'
-       apiRouterHealthCheck.last_success = dateNow.toISOString()
+       apiRouterHealthCheck.last_success = dateNow
    } else if (apiRouterHealthCheck.status == 'WARNING') {
        apiRouterHealthCheck.status_code = '429'
        apiRouterHealthCheck.message = 'api-router is degraded, but at least partially functioning'
    } else {
        apiRouterHealthCheck.status_code = '500'
        apiRouterHealthCheck.message ? apiRouterHealthCheck.message  : 'api-router functionality is unavailable or non-functioning'
-       apiRouterHealthCheck.last_failure = dateNow.toISOString()
+       apiRouterHealthCheck.last_failure = dateNow
    }
    
-   apiRouterHealthCheck.last_checked = dateNow.toISOString()
+   apiRouterHealthCheck.last_checked = dateNow
    
    healthcheck.status = apiRouterHealthCheck.status
    healthcheck.checks.push(apiRouterHealthCheck)
