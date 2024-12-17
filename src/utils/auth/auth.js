@@ -32,7 +32,6 @@ const validateCookie = (cookie) => {
         jwtDecode(cookie);
         return true;
     } catch (err) {
-        console.log("WE'RE IN HERE!!")
         return false;
     }
 }
