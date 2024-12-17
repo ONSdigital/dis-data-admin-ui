@@ -6,9 +6,9 @@ export async function GET(req){
     const apiRouterURL = process.env.API_ROUTER_URL;
     let fetchURL
     if (apiRouterURL) {
-        fetchURL = apiRouterURL + "/datasets?limit=100";
+        fetchURL = apiRouterURL + "/datasets";
     } else {
-        fetchURL = "https://api.beta.ons.gov.uk/v1/datasets?limit=100"
+        fetchURL = "https://api.beta.ons.gov.uk/v1/datasets"
     }
 
     const res = await fetch(fetchURL, {

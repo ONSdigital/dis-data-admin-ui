@@ -8,10 +8,18 @@ test.describe('datasets', () => {
         ]);
 
         await page.goto('./datasets')
-        await expect(page.getByRole('heading', { level: 1 })).toContainText('Find a dataset');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Datasets');
+        await expect(page.getByText('Weekly deaths')).toBeVisible();
+    });
 
-        await page.getByRole('textbox').fill('deaths');
-        await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('heading', { level: 2 })).toContainText('Weekly deaths');
+    test("Route from Datasets page to Create Dataset page", async ({ page, context }) => {
+        // add fake auth cookie
+        await context.addCookies([
+            { name: 'session', value: 'true', path: '/',  domain: '127.0.0.1'}
+        ]);
+
+        await page.goto('./datasets')
+        await page.getByRole('link', { name: /Create/i }).click();
+        await expect(page.getByText('Create Dataset Page')).toBeVisible();
     });
 });
