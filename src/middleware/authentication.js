@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
-import request from "@/utils/request/request";
 import { logInfo } from '@/utils/log/log';
 import { getLoginURLWithRedirect, validateCookie } from '@/utils/auth/auth';
 
