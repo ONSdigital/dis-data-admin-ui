@@ -3,6 +3,9 @@ import { jwtDecode } from "jwt-decode";
 const logoutURL = "/florence/logout"
 const loginURL = "/florence/login"
 
+// convert unix timestamp to milliseconds rather than seconds
+const millisecondsMultiplier = 1000;
+
 /**
  * Redirect to logout endpoint in Florence
  */
@@ -24,14 +27,17 @@ const getLoginURLWithRedirect = (redirectPath) => {
 
 /**
  * Decodes JWT and validates
- * @param  {Cookie} cookie - cookie value
+ * @param  {JWT} jwt - JWT cookie value
  * @return {boolean}
  */
-const validateCookie = (cookie) => {
+const validateCookie = (token) => {
     try {
-        jwtDecode(cookie);
+        const cookie = jwtDecode(token);
+        if (cookie?.exp * millisecondsMultiplier < Date.now()) {
+            return false
+        }
         return true;
-    } catch (err) {
+    } catch (error) {
         return false;
     }
 }
