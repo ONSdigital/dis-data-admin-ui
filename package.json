@@ -9,11 +9,12 @@
     "start": "next start -p 29400",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:component": "playwright test"
+    "test:component": "playwright test --debug"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.10.1",
     "author-design-system-react": "^1.0.65",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "next": "15.0.1",
     "react": "19.0.0-rc-69d4b800-20241021",
