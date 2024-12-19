@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+import { createValidJWTCookieValue } from "../utils/utils";
+
 test.describe('datasets', () => {
     test("works as it should", async ({ page, context }) => {
-        // add fake auth cookie
+        // add auth cookie
         await context.addCookies([
-            { name: 'session', value: 'true', path: '/',  domain: '127.0.0.1'}
+            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
         ]);
 
         await page.goto('./datasets')
@@ -14,4 +16,4 @@ test.describe('datasets', () => {
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('heading', { level: 2 })).toContainText('Weekly deaths');
     });
-});
+}); 
