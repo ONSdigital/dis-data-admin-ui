@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import { logout, getLoginURLWithRedirect, validateCookie } from "./auth";
 import { createValidJWTCookieValue, createExpiredJWTCookieValue } from "../../../tests/utils/utils";
 
