@@ -26,5 +26,4 @@ describe("validateCookie", () => {
         const cookieValue = createValidJWTCookieValue();
         expect(validateCookie(cookieValue)).toBe(true);
     });
-
-})
+});

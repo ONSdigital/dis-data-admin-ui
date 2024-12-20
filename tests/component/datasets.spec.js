@@ -16,4 +16,4 @@ test.describe('datasets', () => {
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('heading', { level: 2 })).toContainText('Weekly deaths');
     });
-}); 
+});

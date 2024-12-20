@@ -42,5 +42,4 @@ const validateCookie = (token) => {
     }
 }
 
-
 export { logout, getLoginURLWithRedirect, validateCookie };

@@ -26,4 +26,4 @@ export async function authenticationMiddleware(req) {
 
     logInfo("authentication middleware: cookie found and validated", logData, null);
     return NextResponse.next();
-}
+};

@@ -26,4 +26,4 @@ test.describe('auth middleware', () => {
         await expect(page).toHaveURL(/.*\/data-admin\/datasets/);
         await expect(page.getByRole('heading', { level: 1 })).toContainText('Find a dataset');
     });
-}); 
+});
