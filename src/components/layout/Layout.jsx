@@ -1,11 +1,14 @@
 "use client"
 import { MainLayout } from "author-design-system-react"
 
+import { logout } from "@/utils/auth/auth";
+
 const mainLayoutProps = {
     text: "Dataset Catalogue",
     me: {
         displayName: 'User 01',
     },
+    signOut: () => { logout() },
     headerConfig: {
         navigationLinks: [
             {
@@ -28,7 +31,7 @@ export default function Layout({ children }) {
     return (
           <>
               <MainLayout {...mainLayoutProps}>
-                  <main>{children}</main>
+                  {children}
               </MainLayout>
           </>
     )

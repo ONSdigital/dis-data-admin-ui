@@ -3,8 +3,8 @@ import { authenticationMiddleware } from './middleware/authentication';
 import { routeLoggingMiddleware } from './middleware/routeLogging';
 
 export const middleware = multipleMiddlewares([
-    authenticationMiddleware,
     routeLoggingMiddleware,
+    authenticationMiddleware
 ]);
 
 // applies this middleware only to files in the app directory
