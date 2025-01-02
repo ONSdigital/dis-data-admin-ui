@@ -1,4 +1,4 @@
-const NAMESPACE = "dis-data-admin-ui-next"; 
+const NAMESPACE = "dis-data-admin-ui"; 
 
 const severity = {
     fatal: 0,
