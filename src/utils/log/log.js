@@ -15,6 +15,7 @@ const severity = {
  * @param {number} statusCode - request HTTP status code 
  * @param {Date} startedAt - start time of request 
  * @param {Date} endedAt - end time of request 
+ * @return {httpEvent} - object that matches our http logging standards
  */
 const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt}) => {
     // we use "https://www.ons.gov.uk" as a base URL as Javascript's URL API 
@@ -45,6 +46,7 @@ const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt})
 /**
  * Map error values to log specification
  * @param {Error} error 
+ * @return {string, array} - object containing error message and stack trace in an array
  */
 const mapErrorEvent = (error) => {
     let stackTrace = undefined;
