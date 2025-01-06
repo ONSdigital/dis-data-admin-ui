@@ -11,7 +11,7 @@ export default async function Datasets() {
     
     return (
         <>
-            <h1 className="ons-u-fs-xxxl">Datasets</h1>
+            <h1 className="ons-u-fs-xxxl">Find a dataset</h1>
             <Link href="datasets/create">Create</Link>
             <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems}/>

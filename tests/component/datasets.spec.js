@@ -10,14 +10,14 @@ test.describe('datasets', () => {
         ]);
 
         await page.goto('./datasets')
-        await expect(page.getByRole('heading', { level: 1 })).toContainText('Datasets');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Find a dataset');
         await expect(page.getByText('Weekly deaths')).toBeVisible();
     });
 
     test("Route from Datasets page to Create Dataset page", async ({ page, context }) => {
-        // add fake auth cookie
+        // add auth cookie
         await context.addCookies([
-            { name: 'session', value: 'true', path: '/',  domain: '127.0.0.1'}
+            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
         ]);
 
         await page.goto('./datasets')
