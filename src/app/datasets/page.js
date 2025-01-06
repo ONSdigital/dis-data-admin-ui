@@ -5,6 +5,8 @@ import { mapListItems } from './mapper';
 
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Datasets() {
     const data = await request(process.env.API_ROUTER_URL + "/datasets")
     const listItems = mapListItems(data.items)
