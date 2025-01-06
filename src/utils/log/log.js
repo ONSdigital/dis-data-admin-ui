@@ -1,4 +1,4 @@
-const NAMESPACE = "dis-data-admin-ui-next"; 
+const NAMESPACE = "dis-data-admin-ui"; 
 
 const severity = {
     fatal: 0,
@@ -15,6 +15,7 @@ const severity = {
  * @param {number} statusCode - request HTTP status code 
  * @param {Date} startedAt - start time of request 
  * @param {Date} endedAt - end time of request 
+ * @return {httpEvent} - object that matches our http logging standards
  */
 const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt}) => {
     // we use "https://www.ons.gov.uk" as a base URL as Javascript's URL API 
@@ -45,6 +46,7 @@ const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt})
 /**
  * Map error values to log specification
  * @param {Error} error 
+ * @return {string, array} - object containing error message and stack trace in an array
  */
 const mapErrorEvent = (error) => {
     let stackTrace = undefined;
@@ -102,7 +104,6 @@ const createLog = (severity, event, data = null, http = null, error = null) => {
 
 /**
  * Used for messages that confirm that the application is behaving as it should
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -113,7 +114,6 @@ const logInfo = (event, data, http) => {
 
 /**
  * Used to indicates something that may cause a problem
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -125,7 +125,6 @@ const logWarn = (event, data, http, error) => {
 
 /**
  * Used to indicate that a required task failed
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
@@ -137,7 +136,6 @@ const logError = (event, data, http, error) => {
 
 /**
  * Used to indicate a serious problem that can stop the application from running
- * @param {number} severity - severity of event
  * @param {string} event - the event being logged
  * @param {object} data - optional - to add additional context to log 
  * @param {object} http - optional - to add HTTP values to log
