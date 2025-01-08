@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers'
+
 import request from "@/utils/request/request"
 
 import List from "../../components/list/List"
@@ -8,7 +10,12 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 
 export default async function Datasets() {
-    const data = await request(process.env.API_ROUTER_URL + "/datasets")
+    const baseURL = process.env.API_ROUTER_URL
+    const cookieStore = await cookies()
+    const authToken =  cookieStore.get("access_token")
+    const reqCfg = {baseURL: baseURL, authToken: authToken.value}
+    console.log(reqCfg)
+    const data = await request(reqCfg, "/datasets")
     const listItems = mapListItems(data.items)
     
     return (
