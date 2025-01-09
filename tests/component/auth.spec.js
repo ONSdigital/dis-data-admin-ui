@@ -20,7 +20,8 @@ test.describe('auth middleware', () => {
 
     test("when a valid cookie is set allows access to a page", async ({ page, context }) => {
         await context.addCookies([
-            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
+            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'},
+            { name: 'access_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
         ]);
         await page.goto('./datasets')
         await expect(page).toHaveURL(/.*\/data-admin\/datasets/);
