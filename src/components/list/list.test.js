@@ -29,4 +29,5 @@ test("List renders props correctly", () => {
 
     const list = screen.getAllByRole("heading")
     expect(list.length).toBe(3)
+
 })
