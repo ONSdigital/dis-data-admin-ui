@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 import request from "@/utils/request/request"
 
 import List from "../../../../../components/list/List"
@@ -5,10 +7,15 @@ import { mapListItems } from "./mapper"
 
 
 export default async function Dataset({ params }) {
+    const baseURL = process.env.API_ROUTER_URL;
+    const cookieStore = await cookies();
+    const authToken =  cookieStore.get("access_token");
+    const reqCfg = {baseURL: baseURL, authToken: authToken.value};
+
     const { id, editionID } = await params
-    let dataset = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}`)
-    let edition = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}`)
-    let versions = await request(`https://api.beta.ons.gov.uk/v1/datasets/${id}/editions/${editionID}/versions`)
+    let dataset = await request(reqCfg, `/datasets/${id}`)
+    let edition = await request(reqCfg, `/datasets/${id}/editions/${editionID}`)
+    let versions = await request(reqCfg, `/datasets/${id}/editions/${editionID}/versions`)
 
     const listItems = mapListItems(versions.items, id, editionID)
     return (

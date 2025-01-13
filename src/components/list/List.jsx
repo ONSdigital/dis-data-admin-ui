@@ -7,7 +7,7 @@ export default function List({ items }) {
                 <li key={item.id} className="ons-document-list__item">
                     <div className="ons-document-list__item-content">
                         <div className="ons-document-list__item-header">
-                            <h2><Link href={`/${item.url}`}>{item.title}</Link></h2>
+                            <h2><Link href={`${item.url}`}>{item.title}</Link></h2>
                             <ul className="ons-document-list__item-metadata ons-u-mb-1xs">
                                 <li className="ons-document-list__item-attribute">
                                     <span className="ons-u-fw-b">ID: </span>{item.id}
