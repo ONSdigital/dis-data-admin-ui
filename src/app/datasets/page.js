@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 
-import { request, SSRequestConfig } from "@/utils/request/request";
+import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import List from "../../components/list/List";
 import { mapListItems } from "./mapper";
 
 export default async function Datasets() {
     const reqCfg = await SSRequestConfig(cookies);
-    const data = await request(reqCfg, "/datasets");
+    const data = await httpGet(reqCfg, "/datasets");
     const listItems = mapListItems(data.items);
     
     return (
