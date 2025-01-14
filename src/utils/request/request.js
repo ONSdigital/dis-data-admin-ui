@@ -4,7 +4,7 @@ const xFlorenceHeaderKey = "X-Florence-Token";
 const authHeaderKey = "Authorization";
 
 // work in progress/place holder request func
-export default async function request(cfg, url) {
+const request = async (cfg, url) => {
     const startedAt = new Date(Date.now()).toISOString();
     logInfo("http request started", null, {requestID: "", method: "GET", path: url, statusCode: 0, startedAt: startedAt, endedAt: null});
 
@@ -27,3 +27,12 @@ const setHeaders = (authToken) => {
     headers.set(authHeaderKey, authToken);
     return headers;
 }
+
+const SSRequestConfig = async (cookies) => {
+    const baseURL = process.env.API_ROUTER_URL;
+    const cookieStore = await cookies();
+    const authToken =  cookieStore.get("access_token");
+    return {baseURL: baseURL, authToken: authToken.value};
+}
+
+export { request, SSRequestConfig }

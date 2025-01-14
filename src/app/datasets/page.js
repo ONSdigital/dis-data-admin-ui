@@ -1,15 +1,12 @@
 import { cookies } from "next/headers";
 
-import request from "@/utils/request/request";
+import { request, SSRequestConfig } from "@/utils/request/request";
 
 import List from "../../components/list/List";
 import { mapListItems } from "./mapper";
 
 export default async function Datasets() {
-    const baseURL = process.env.API_ROUTER_URL;
-    const cookieStore = await cookies();
-    const authToken =  cookieStore.get("access_token");
-    const reqCfg = {baseURL: baseURL, authToken: authToken.value};
+    const reqCfg = await SSRequestConfig(cookies);
     const data = await request(reqCfg, "/datasets");
     const listItems = mapListItems(data.items);
     
