@@ -4,6 +4,9 @@ const xFlorenceHeaderKey = "X-Florence-Token";
 const authHeaderKey = "Authorization";
 
 const setHeaders = (authToken) => {
+    if (!authToken) {
+        return [];
+    }
     const headers = new Headers();
     headers.set(xFlorenceHeaderKey, authToken);
     headers.set(authHeaderKey, authToken);
