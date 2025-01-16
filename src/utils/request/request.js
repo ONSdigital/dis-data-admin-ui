@@ -13,6 +13,7 @@ export default async function request(cfg, url) {
     
     if (response.status >= 400 ) {
         logError("http request failed", null, null, {requestID: "", method: "GET", path: url, statusCode: 0, startedAt, endedAt: null});
+        return response
     }
     const json = await response.json();
 
