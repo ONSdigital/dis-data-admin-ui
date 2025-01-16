@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import request from "@/utils/request/request";
 
-import ErrorPanel from "@/components/panel/ErrorPanel";
+import Panel from "@/components/panel/Panel";
 import List from "../../components/list/List";
 import { mapListItems } from "./mapper";
 
@@ -29,7 +29,11 @@ export default async function Datasets() {
     return (
         <>
             <h1 className="ons-u-fs-xxxl">Find a dataset</h1>
-            { error ? <ErrorPanel/> : ''}
+            { error ? <Panel title="Error" variant="error">
+                    <p>
+                        There was an issue retrieving the list of datasets
+                    </p>
+                </Panel> : ''}
             <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems}/>
             </div>
