@@ -23,7 +23,7 @@ test.describe('datasets', () => {
         ]);
 
         await page.goto('./datasets')
-        await page.getByText('Create Dataset').click();
+        await page.getByRole('link', { name: 'Create' }).click();
         await expect(page.getByText('Create Dataset Page')).toBeVisible();
     });
 
