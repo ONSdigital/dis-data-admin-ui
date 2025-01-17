@@ -48,7 +48,7 @@ const request = async (cfg, url, method, body) => {
 
 /**
  * @param {function} cookies - NextJS cookies getter function
- * @return {object} response confug object contain base url and authorisation values
+ * @return {object} response config object contain base url and authorisation values
  */
 const SSRequestConfig = async (cookies) => {
     const baseURL = process.env.API_ROUTER_URL;
@@ -58,7 +58,7 @@ const SSRequestConfig = async (cookies) => {
 }
 
 /**
- * @return {object} response confug object contain base url and authorisation values
+ * @return {object} response config object contain base url and authorisation values
  */
 const CSRequestConfig = () => {
     const cookies = document.cookie.split(";");
