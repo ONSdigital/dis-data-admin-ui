@@ -37,6 +37,7 @@ const request = async (cfg, url, method, body) => {
     
     if (response.status >= 400 ) {
         logError("http request failed", null, null, {requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null});
+        return response;
     }
     const json = await response.json();
 
