@@ -1,7 +1,7 @@
 import { version } from 'react';
 
 import  { logInfo } from '@/utils/log/log';
-import  { httpGet, SSRequestConfig } from "@/utils/request/request"
+import  { httpGet } from "@/utils/request/request"
 
 export async function GET() {
     const healthcheck = {
