@@ -54,7 +54,7 @@ const SSRequestConfig = async (cookies) => {
     const baseURL = process.env.API_ROUTER_URL;
     const cookieStore = await cookies();
     const authToken =  cookieStore.get("access_token");
-    const cleanAuthToken = authToken.value.replace("\"", "")
+    const cleanAuthToken = authToken.value.replace(/"/g, "")
     return { baseURL: baseURL, authToken: cleanAuthToken };
 }
 
