@@ -29,6 +29,7 @@ const request = async (cfg, url, method, body) => {
         headers
     }
 
+    logInfo("http request configuration", {config: fetchConfig}, null) // remove after debugging
     if (method === "POST" || method === "PUT") {
         fetchConfig.body = JSON.stringify(body || {});
     }
@@ -36,7 +37,7 @@ const request = async (cfg, url, method, body) => {
     const response = await fetch(cfg.baseURL + url, fetchConfig);
     
     if (response.status >= 400 ) {
-        logError("http request failed", null, null, {requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null});
+        logError("http request failed", {error: response}, {requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null});
         return response;
     }
     const json = await response.json();
