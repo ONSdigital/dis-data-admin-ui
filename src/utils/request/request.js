@@ -29,7 +29,6 @@ const request = async (cfg, url, method, body) => {
         headers
     }
 
-    logInfo("http request configuration", {config: fetchConfig}, null) // remove after debugging
     if (method === "POST" || method === "PUT") {
         fetchConfig.body = JSON.stringify(body || {});
     }
