@@ -36,7 +36,7 @@ const request = async (cfg, url, method, body) => {
     const response = await fetch(cfg.baseURL + url, fetchConfig);
     
     if (response.status >= 400 ) {
-        logError("http request failed", {error: response}, {requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null});
+        logError("http request failed", {error: response}, {requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null});
         return response;
     }
     const json = await response.json();
