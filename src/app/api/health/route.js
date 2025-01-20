@@ -1,7 +1,7 @@
 import { version } from 'react';
 
 import  { logInfo } from '@/utils/log/log';
-import  request from "@/utils/request/request"
+import  { httpGet } from "@/utils/request/request"
 
 export async function GET() {
     const healthcheck = {
@@ -30,8 +30,9 @@ export async function GET() {
 
     let apiRouterHealthResponse
 
+    const reqCfg = { baseURL: process.env.API_ROUTER_URL}
     try {
-         apiRouterHealthResponse = await request(process.env.API_ROUTER_URL + '/health')
+         apiRouterHealthResponse = await httpGet(reqCfg, '/health')
          apiRouterHealthCheck.status = apiRouterHealthResponse.status
     }
     catch(err) {

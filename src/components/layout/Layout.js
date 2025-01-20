@@ -1,4 +1,5 @@
 "use client"
+
 import { MainLayout } from "author-design-system-react"
 
 import { logout } from "@/utils/auth/auth";
@@ -23,7 +24,7 @@ const mainLayoutProps = {
                 text: 'Datasets',
                 url: '/data-admin/datasets'
             },
-        ]
+        ],
     }
 };
 

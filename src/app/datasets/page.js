@@ -1,32 +1,35 @@
-"use client"
-import { useState } from 'react';
+import { cookies } from "next/headers";
 
-import request from "@/utils/request/request"
+import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import List from "../../components/list/List"
-import { TextInput, Button } from "author-design-system-react"
-import { mapListItems } from './mapper';
+import Panel from "@/components/panel/Panel";
+import List from "../../components/list/List";
+import { mapListItems } from "./mapper";
 
-export default function Datasets() {
-    const [search, setSearch] = useState("");
-    const [items, setItems] = useState([]);
+export default async function Datasets() {
+    const reqCfg = await SSRequestConfig(cookies);
+    const listItems = [{
+        id: "Create New Dataset",
+        title: "Create",
+        url: "/datasets/create"
+    }]
 
-    const handleSubmit = async() => {
-        const datasets = await request(`/data-admin/api/datasets?q=${search}`)
-        setItems(datasets)
+    const data = await httpGet(reqCfg, "/datasets");
+    let error = false
+    if (data.ok != null && !data.ok) {
+        error = true
+    } else {
+        listItems.push(...mapListItems(data.items));
     }
 
-    const listItems = mapListItems(items)
     return (
         <>
             <h1 className="ons-u-fs-xxxl">Find a dataset</h1>
-            <div className="ons-u-mb-m">
-            <TextInput inputMode="text" onChange={e => setSearch(e.target.value)} value={search} width="350"
-                label={{description: 'Search by title or ID e.g. "Consumer prices" or "CPIH01"',text: 'Search datasets'}} 
-                name="dataset-search"
-            />
-            </div>
-            <Button onClick={handleSubmit} text="Submit" />
+            { error ? <Panel title="Error" variant="error">
+                    <p>
+                        There was an issue retrieving the list of datasets
+                    </p>
+                </Panel> : ''}
             <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems}/>
             </div>

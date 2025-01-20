@@ -147,7 +147,7 @@ const logFatal = (event, data, http, error) => {
 
 // extract the "doing" logic here - could add log to websocket or stdout in future
 const doLog = (log) => {
-    console.log(log);
+    console.log(JSON.stringify(log));
 }
 
 export { logInfo, logWarn, logError, logFatal }
