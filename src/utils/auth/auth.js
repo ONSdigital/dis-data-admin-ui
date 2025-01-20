@@ -1,5 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 
+import { logError } from "../log/log";
+
 const logoutURL = "/florence/logout"
 const loginURL = "/florence/login"
 
@@ -38,6 +40,7 @@ const validateCookie = (token) => {
         }
         return true;
     } catch (error) {
+        logError("error validating auth cookie", null, null, error)
         return false;
     }
 }
