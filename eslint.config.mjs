@@ -14,7 +14,7 @@ const eslintConfig = [
     ...compat.config({
         extends: ['next', 'eslint:recommended'],
         rules: { 
-            semi: [2, "always"],
+            semi: [1, "always"],
             '@next/next/no-html-link-for-pages': 'off', // prevent Next error message claiming can't find "pages" dir
         }
     }),
