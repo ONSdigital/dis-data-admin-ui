@@ -4,6 +4,6 @@ export  function mapListItems(items) {
             id: item.id,
             url: "/datasets/" + item.id,
             title: item.title
-        }
-    })
-}
+        };
+    });
+};

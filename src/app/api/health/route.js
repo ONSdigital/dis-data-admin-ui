@@ -41,7 +41,7 @@ export async function GET() {
         apiRouterHealthCheck.status = "CRITICAL";
         apiRouterHealthCheck.message = "Get " + process.env.API_ROUTER_URL + "/health" + ": dial tcp [::1]:23200: connect: connection refused";
 
-        logError("error getting API router health status", null, null, err)
+        logError("error getting API router health status", null, null, err);
     }
 
     let dateNow = new Date;
