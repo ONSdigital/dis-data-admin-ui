@@ -3,7 +3,7 @@ export  function mapListItems(items) {
         return {
             id: item.id,
             url: "/datasets/" + item.id,
-            title: item.title
+            title: item.current.title
         }
     })
 }
