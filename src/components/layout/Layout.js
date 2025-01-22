@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { MainLayout } from "author-design-system-react"
+import { MainLayout } from "author-design-system-react";
 
 import { logout } from "@/utils/auth/auth";
 
@@ -9,7 +9,7 @@ const mainLayoutProps = {
     me: {
         displayName: 'User 01',
     },
-    signOut: () => { logout() },
+    signOut: () => { logout(); },
     headerConfig: {
         navigationLinks: [
             {
@@ -35,5 +35,5 @@ export default function Layout({ children }) {
                   {children}
               </MainLayout>
           </>
-    )
-}
+    );
+};

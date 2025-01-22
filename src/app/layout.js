@@ -3,7 +3,7 @@ import Layout from "@/components/layout/Layout";
 export const metadata = {
     title: 'Dataset Catalogue',
     description: 'Discoverable datasets admin UI',
-  }
+};
 
 export default function RootLayout({ children }) {
     return (
@@ -18,4 +18,4 @@ export default function RootLayout({ children }) {
             </body>
         </html>
     );
-}
+};
