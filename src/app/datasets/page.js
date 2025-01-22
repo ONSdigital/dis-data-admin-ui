@@ -14,7 +14,8 @@ export default async function Datasets() {
         url: "/datasets/create"
     }]
 
-    const data = await httpGet(reqCfg, "/datasets");
+    const response = await httpGet(reqCfg, "/datasets");
+    const data = response.current || response.next || response;
     let error = false
     if (data.ok != null && !data.ok) {
         error = true
