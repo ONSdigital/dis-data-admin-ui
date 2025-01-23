@@ -17,7 +17,7 @@ const severity = {
  * @param {Date} endedAt - end time of request 
  * @return {httpEvent} - object that matches our http logging standards
  */
-const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt}) => {
+const mapHTTPEvent = ({method, path, statusCode, startedAt, endedAt}) => {
     // we use "https://www.ons.gov.uk" as a base URL as Javascript's URL API 
     // doesn't support relative URL's. we can't use `document.location` as 
     // logging can also be called from server componeents. 
@@ -31,7 +31,7 @@ const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt})
         query: url.search || null,
         status_code: statusCode,
         started_at: startedAt,
-    }
+    };
 
     if (endedAt) {
         const duration = Date.parse(endedAt) - Date.parse(startedAt);
@@ -39,8 +39,8 @@ const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt})
         httpEvent.duration = duration;
     }
 
-    return httpEvent
-}
+    return httpEvent;
+};
 
 
 /**
@@ -67,7 +67,7 @@ const mapErrorEvent = (error) => {
         message: error.message,
         stack_trace: stackTrace,
     };
-}
+};
 
 /**
  * Represents a log object
@@ -83,24 +83,24 @@ const createLog = (severity, event, data = null, http = null, error = null) => {
         "event": event,
         "namespace": NAMESPACE,
         "severity": severity
-    }
+    };
 
     if (data) {
-        log.data = {...data}
+        log.data = {...data};
     }
 
     if (http) {
-        const mappedHTTP = mapHTTPEvent({...http})
+        const mappedHTTP = mapHTTPEvent({...http});
         log.http = mappedHTTP;
     }
 
     if (error) {
-        const mappedError = mapErrorEvent(error)
+        const mappedError = mapErrorEvent(error);
         log.errors = mappedError;
     }
 
     doLog(log);
-}
+};
 
 /**
  * Used for messages that confirm that the application is behaving as it should
@@ -110,7 +110,7 @@ const createLog = (severity, event, data = null, http = null, error = null) => {
  */
 const logInfo = (event, data, http) => {
     createLog(severity.info, event, data, http);
-}
+};
 
 /**
  * Used to indicates something that may cause a problem
@@ -121,7 +121,7 @@ const logInfo = (event, data, http) => {
  */
 const logWarn = (event, data, http, error) => {
     createLog(severity.warn, event, data, http, error);
-}
+};
 
 /**
  * Used to indicate that a required task failed
@@ -132,7 +132,7 @@ const logWarn = (event, data, http, error) => {
  */
 const logError = (event, data, http, error) => {
     createLog(severity.error, event, data, http, error);
-}
+};
 
 /**
  * Used to indicate a serious problem that can stop the application from running
@@ -143,11 +143,11 @@ const logError = (event, data, http, error) => {
  */
 const logFatal = (event, data, http, error) => {
     createLog(severity.fatal, event,  data, http, error);
-}
+};
 
 // extract the "doing" logic here - could add log to websocket or stdout in future
 const doLog = (log) => {
     console.log(JSON.stringify(log));
-}
+};
 
-export { logInfo, logWarn, logError, logFatal }
+export { logInfo, logWarn, logError, logFatal };
