@@ -2,17 +2,17 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import List from "../../../components/list/List"
+import List from "../../../components/list/List";
 import { mapListItems } from './mapper';
 
 export default async function Dataset({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
 
-    const { id } = await params
-    let dataset = await httpGet(reqCfg, `/datasets/${id}`)
-    let editions = await httpGet(reqCfg, `/datasets/${id}/editions`)
+    const { id } = await params;
+    let dataset = await httpGet(reqCfg, `/datasets/${id}`);
+    let editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
 
-    const listItems = mapListItems(editions.items, id)
+    const listItems = mapListItems(editions.items, id);
     return (
         <>
             <h1 className="ons-u-fs-xxxl">Dataset</h1>

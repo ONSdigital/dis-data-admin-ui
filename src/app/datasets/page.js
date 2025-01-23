@@ -12,12 +12,12 @@ export default async function Datasets() {
         id: "Create New Dataset",
         title: "Create",
         url: "/datasets/create"
-    }]
+    }];
 
     const data = await httpGet(reqCfg, "/datasets");
-    let error = false
+    let error = false;
     if (data.ok != null && !data.ok) {
-        error = true
+        error = true;
     } else {
         listItems.push(...mapListItems(data.items));
     }
