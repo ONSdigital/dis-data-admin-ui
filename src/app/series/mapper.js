@@ -3,8 +3,9 @@ export  function mapListItems(items) {
         const item = listItem?.current || listItem?.next || listItem;
         return {
             id: item.id,
-            url: "/datasets/" + item.id,
-            title: item.title
+            url: "/series/" + item.id,
+            title: item.title,
+            description: item.description
         }
     })
 }

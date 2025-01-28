@@ -17,6 +17,11 @@ export default function List({ items }) {
                                     <li className="ons-document-list__item-attribute">
                                         <span className="ons-u-fw-b">ID: </span>{item.id}
                                     </li>
+                                    { item.description ? 
+                                        <li className="ons-document-list__item-attribute">
+                                            <span className="ons-u-fw-b">Description: </span> { item.description } 
+                                        </li> : ''
+                                    }
                                 </ul>
                             </div>
                         </div>

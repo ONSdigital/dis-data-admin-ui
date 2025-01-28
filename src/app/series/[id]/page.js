@@ -11,7 +11,7 @@ export default async function Dataset({ params }) {
     const { id } = await params
     let dataset = await httpGet(reqCfg, `/datasets/${id}`)
     let editions = await httpGet(reqCfg, `/datasets/${id}/editions`)
-
+    console.log(editions)
     const listItems = mapListItems(editions.items, id)
     return (
         <>

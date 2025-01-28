@@ -2,16 +2,17 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
+import HeroPanel from "@/components/heroPanel/HeroPanel";
 import Panel from "@/components/panel/Panel";
 import List from "../../components/list/List";
 import { mapListItems } from "./mapper";
 
-export default async function Datasets() {
+export default async function Series() {
     const reqCfg = await SSRequestConfig(cookies);
     const listItems = [{
-        id: "Create New Dataset",
+        id: "Create New Dataset Series",
         title: "Create",
-        url: "/datasets/create"
+        url: "/series/create"
     }]
 
     const data = await httpGet(reqCfg, "/datasets");    
@@ -24,10 +25,9 @@ export default async function Datasets() {
 
     return (
         <>
-            <h1 className="ons-u-fs-xxxl">Find a dataset</h1>
             { error ? <Panel title="Error" variant="error">
                     <p>
-                        There was an issue retrieving the list of datasets
+                        There was an issue retrieving the list of dataset series.
                     </p>
                 </Panel> : ''}
             <div className="ons-u-mt-l ons-u-mb-l">
