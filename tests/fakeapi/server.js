@@ -7,15 +7,15 @@ import { editions } from "../mocks/editions.mjs";
 const app = express();
 const PORT = 29401;
 
-app.get("/datasets", (req, res) => {
+app.get("/series", (req, res) => {
     res.send(datasetList);
 });
 
-app.get("/datasets/:id", (req, res) => {
+app.get("/series/:id", (req, res) => {
     res.send(dataset);
 });
 
-app.get("/datasets/:id/editions", (req, res) => {
+app.get("/series/:id/editions", (req, res) => {
     res.send(editions);
 });
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { MainLayout } from "author-design-system-react"
 
@@ -37,10 +37,14 @@ const mainLayoutProps = {
 
 export default function Layout({ children }) {
     const pathname = usePathname()
+    const router = useRouter()
+
     switch (pathname) {
         case "/series":
-            mainLayoutProps.pageConfig = {heroPanel: <HeroPanel title="Dataset Series" wide/>};
+            mainLayoutProps.pageConfig = {heroPanel: <HeroPanel button={{onClick: () => {router.push('/series/create')}, text: "Create New Dataset Series"}} title="Dataset Series" wide/>};
             break;
+        default:
+            mainLayoutProps.pageConfig = {}
         }
     
     return (
