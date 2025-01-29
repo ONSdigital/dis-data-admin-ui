@@ -11,10 +11,10 @@ export default async function Series() {
     const reqCfg = await SSRequestConfig(cookies);
     const listItems = [];
 
-    const data = await httpGet(reqCfg, "/datasets");    
-    let error = false
+    const data = await httpGet(reqCfg, "/datasets");
+    let error = false;
     if (data.ok != null && !data.ok) {
-        error = true
+        error = true;
     } else {
         listItems.push(...mapListItems(data.items));
     }

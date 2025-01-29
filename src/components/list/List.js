@@ -1,10 +1,10 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function List({ items }) {
     if (!items || items.length === 0) {
         return (
             <p>No results</p>
-        )
+        );
     } else {
         return (
             <ul className="ons-document-list">
@@ -28,6 +28,6 @@ export default function List({ items }) {
                     </li>
                 ))}
             </ul>
-        )
+        );
     }
 }

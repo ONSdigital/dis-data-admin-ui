@@ -4,6 +4,6 @@ export  function mapListItems(items, datasetID) {
             id: item.edition,
             url: `/series/${datasetID}/editions/${item.edition}`,
             title: item.edition
-        }
-    })
-}
+        };
+    });
+};

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 /**
  * adds serverside configuration to cookies so that can be read by any client side code
  */
-export async function configToClientMiddleware(req) {
+export async function configToClientMiddleware() {
     const apiRouterURL = process.env.API_ROUTER_URL;
     const cookieStore = await cookies();
     cookieStore.set({

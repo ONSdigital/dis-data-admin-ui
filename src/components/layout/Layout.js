@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { usePathname, useRouter } from 'next/navigation'
 
@@ -13,7 +13,7 @@ const mainLayoutProps = {
     me: {
         displayName: 'User 01',
     },
-    signOut: () => { logout() },
+    signOut: () => { logout(); },
     headerConfig: {
         navigationLinks: [
             {

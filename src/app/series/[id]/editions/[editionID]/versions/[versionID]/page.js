@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation'
+import { useParams } from 'next/navigation';
 
-import request from "@/utils/request/request"
+import request from "@/utils/request/request";
 
-import { TextInput } from "author-design-system-react"
+import { TextInput } from "author-design-system-react";
 
 export default function Dataset() {
-    const { id, editionID, versionID } = useParams()
+    const { id, editionID, versionID } = useParams();
     const [response, setResponse] = useState(null);
 
 
     useEffect(() => {
-        fetchData()
+        fetchData();
     }), [];
 
     const fetchData = async() => {
         if (!response) {
-            const resp = await request(`/data-admin/api/getall?datasetID=${id}&editionID=${editionID}&versionID=${versionID}`)
+            const resp = await request(`/data-admin/api/getall?datasetID=${id}&editionID=${editionID}&versionID=${versionID}`);
             setResponse(resp);
         }
-    }
+    };
 
-    if (!response) return false
+    if (!response) return false;
     return (
         <>
             <div className="ons-u-fs-m ons-u-mt-s ons-u-pb-xxs" style={{"color":"#707071"}}>Version</div>
