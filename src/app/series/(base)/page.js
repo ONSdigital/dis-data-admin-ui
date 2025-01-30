@@ -2,9 +2,8 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import HeroPanel from "@/components/heroPanel/HeroPanel";
 import Panel from "@/components/panel/Panel";
-import List from "../../components/list/List";
+import List from "../../../components/list/List";
 import { mapListItems } from "./mapper";
 
 export default async function Series() {
