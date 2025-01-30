@@ -1,12 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from 'next/navigation'
-
 import { MainLayout } from "author-design-system-react"
 
 import { logout } from "@/utils/auth/auth";
-
-import HeroPanel from "@/components/heroPanel/HeroPanel";
 
 const mainLayoutProps = {
     text: "Dataset Catalogue",
@@ -30,27 +26,13 @@ const mainLayoutProps = {
             },
         ],
     },
-    pageConfig: {
-
-    }
 };
 
 export default function Layout({ children }) {
-    const pathname = usePathname()
-    const router = useRouter()
-
-    switch (pathname) {
-        case "/series":
-            mainLayoutProps.pageConfig = {heroPanel: <HeroPanel button={{onClick: () => {router.push('/series/create')}, text: "Create New Dataset Series"}} title="Dataset Series" wide/>};
-            break;
-        default:
-            mainLayoutProps.pageConfig = {}
-        }
-    
     return (
           <>
               <MainLayout {...mainLayoutProps}>
-                  {children}
+                {children}
               </MainLayout>
           </>
     )
