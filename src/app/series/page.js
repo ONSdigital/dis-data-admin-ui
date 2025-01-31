@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import WrappedHeroPanel from "@/components/heroPanel/WrappedHeroPanel"
+import Hero from "@/components/hero/Hero"
 import Panel from "@/components/panel/Panel";
 import List from "@/components/list/List";
 import { mapListItems } from "./mapper";
@@ -21,7 +21,7 @@ export default async function Series() {
 
     return (
         <>
-            <WrappedHeroPanel hyperLink={{ text: 'Add New Dataset Series', url: 'series/create'}} title="Dataset Series" wide/>
+            <Hero hyperLink={{ text: 'Add New Dataset Series', url: 'series/create'}} title="Dataset Series" wide/>
             { error ? <Panel title="Error" variant="error">
                     <p>
                         There was an issue retrieving the list of dataset series.

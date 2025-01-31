@@ -21,7 +21,7 @@ const mainLayoutProps = {
                 url: '/data-admin/dashboard'
             },
             {
-                text: 'Series',
+                text: 'Dataset Series',
                 url: '/data-admin/series'
             },
         ],

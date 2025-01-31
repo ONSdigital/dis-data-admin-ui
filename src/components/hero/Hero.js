@@ -8,7 +8,7 @@ const heroWrapper = {
     marginRight: '-100%'
 }
  
-export default function WrappedHeroPanel(props){
+export default function Hero(props){
     return (
         <>
             <div style={heroWrapper}>
