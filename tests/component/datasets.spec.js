@@ -23,7 +23,7 @@ test.describe('series', () => {
         ]);
 
         await page.goto('./series')
-        await page.getByRole('button', { name: 'Create New Dataset Series' }).click();
+        await page.getByRole('link', { name: 'Add New Dataset Series' }).click();
         await expect(page.getByText('Create Dataset Series Page')).toBeVisible();
     });
 
