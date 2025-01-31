@@ -32,7 +32,7 @@ export default async function Series() {
                         There was an issue retrieving the list of dataset series.
                     </p>
                 </Panel> : ''}
-            <div className="ons-u-mt-l ons-u-mb-l test">
+            <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems}/>
             </div>
         </>
