@@ -16,6 +16,25 @@ const NAVIGATION_OPTIONS = [
     },
 ];
 
+/**
+ * Checks current path against list of navigation options
+ * @return {string} - path from navigation options
+ */
+const setActiveNavItem = () => {
+    const currentPath = window.location.pathname;
+    let activeLink;
+    NAVIGATION_OPTIONS.forEach(item => {
+        if (currentPath.includes(item.url)) {
+            activeLink = item.url;
+        }
+    })
+    return activeLink;
+}
+
+/**
+ * Returns mapped object that matches mainLayoutProps from design system
+ * @return {object} - mainLayoutProps from design system
+ */
 export default function getLayoutProps() {
     const layout = {
         text: HEADER_TITLE,
@@ -25,6 +44,7 @@ export default function getLayoutProps() {
         signOut: () => { logout(); },
         headerConfig: {
             navigationLinks: NAVIGATION_OPTIONS,
+            navigationLinksCurrentPath: setActiveNavItem(),
         },
     };
     return layout;
