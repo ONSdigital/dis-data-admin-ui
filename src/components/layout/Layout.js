@@ -24,6 +24,10 @@ const mainLayoutProps = {
                 text: 'Dataset Series',
                 url: '/data-admin/series'
             },
+            {
+                text: 'Upload (POC)',
+                url: '/data-admin/upload'
+            },
         ],
     },
 };
