@@ -1,10 +1,29 @@
 # dis-data-admin-ui
-Data Admin UI
+The dataset publishing UI used for datasets on the ONS website.
 
 ### Getting started
 
-* Run `make debug` to run application on http://localhost:29400
-* Run `make help` to see full list of make targets
+To run dis-data-admin-ui locally:
+
+1. [nvm](https://github.com/nvm-sh/nvm) installed:
+
+   ```shell
+   brew install nvm
+   ```
+
+   :warning: Make sure to follow the instructions provided at the end of the install to configure up your shell profile.
+
+1. The node version specified in [`.nvmrc`](./.nvmrc) installed through nvm:
+
+   ```shell
+   nvm install
+   ```
+
+1. Start the app:
+
+   ```shell
+   make debug
+   ```
 
 ### Dependencies
 
