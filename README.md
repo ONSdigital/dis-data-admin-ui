@@ -27,7 +27,10 @@ To run dis-data-admin-ui locally:
 
 ### Dependencies
 
-* No further dependencies other than those defined in `go.mod`
+There are other ONS digital applications that you'll need to run to allow dis-data-admin-ui to work end-to-end:
+- [API Router](https://github.com/ONSdigital/dp-api-router)
+- [Dataset API](https://github.com/ONSdigital/dp-dataset-api)
+
 
 ### Configuration
 
