@@ -1,3 +1,4 @@
+"use client"
 import { logout } from "@/utils/auth/auth";
 
 const HEADER_TITLE = "Dataset Catalogue";
@@ -18,13 +19,13 @@ const NAVIGATION_OPTIONS = [
 
 /**
  * Checks current path against list of navigation options
+ * @param  {string} currentPath - path of current page
  * @return {string} - path from navigation options
  */
-const setActiveNavItem = () => {
-    const currentPath = window.location.pathname;
-    let activeLink;
+const setActiveNavItem = (currentPath) => {
+    let activeLink = null;
     NAVIGATION_OPTIONS.forEach(item => {
-        if (currentPath.includes(item.url)) {
+        if (item.url.includes(currentPath)) {
             activeLink = item.url;
         }
     })
@@ -33,9 +34,10 @@ const setActiveNavItem = () => {
 
 /**
  * Returns mapped object that matches mainLayoutProps from design system
+ * @param  {string} currentPath - path of current page
  * @return {object} - mainLayoutProps from design system
  */
-export default function getLayoutProps() {
+const getLayoutProps = (currentPath) => {
     const layout = {
         text: HEADER_TITLE,
         me: {
@@ -44,8 +46,10 @@ export default function getLayoutProps() {
         signOut: () => { logout(); },
         headerConfig: {
             navigationLinks: NAVIGATION_OPTIONS,
-            navigationLinksCurrentPath: setActiveNavItem(),
+            navigationLinksCurrentPath: setActiveNavItem(currentPath),
         },
     };
     return layout;
 }
+
+export { getLayoutProps, setActiveNavItem };
