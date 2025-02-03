@@ -1,6 +1,6 @@
 "use client";
 
-import { MainLayout } from "author-design-system-react";
+import { MainLayout } from "author-design-system-react"
 
 import { logout } from "@/utils/auth/auth";
 
@@ -21,19 +21,19 @@ const mainLayoutProps = {
                 url: '/data-admin/dashboard'
             },
             {
-                text: 'Datasets',
-                url: '/data-admin/datasets'
+                text: 'Dataset Series',
+                url: '/data-admin/series'
             },
         ],
-    }
+    },
 };
 
 export default function Layout({ children }) {
     return (
           <>
               <MainLayout {...mainLayoutProps}>
-                  {children}
+                {children}
               </MainLayout>
           </>
-    );
-};
+    )
+}
