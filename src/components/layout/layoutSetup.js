@@ -1,4 +1,3 @@
-"use client"
 import { logout } from "@/utils/auth/auth";
 
 const HEADER_TITLE = "Dataset Catalogue";
@@ -28,9 +27,9 @@ const setActiveNavItem = (currentPath) => {
         if (item.url.includes(currentPath)) {
             activeLink = item.url;
         }
-    })
+    });
     return activeLink;
-}
+};
 
 /**
  * Returns mapped object that matches mainLayoutProps from design system
@@ -50,6 +49,6 @@ const getLayoutProps = (currentPath) => {
         },
     };
     return layout;
-}
+};
 
 export { getLayoutProps, setActiveNavItem };

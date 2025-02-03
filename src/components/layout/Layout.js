@@ -15,5 +15,5 @@ export default function Layout({ children }) {
                 {children}
               </MainLayout>
           </>
-    )
+    );
 }
