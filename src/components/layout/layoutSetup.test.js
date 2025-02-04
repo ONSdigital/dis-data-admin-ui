@@ -6,6 +6,9 @@ test("getLayoutProps returns the correct object", () => {
     expect(layoutProps.text).toBe("Dataset Catalogue");
     expect(layoutProps.me.displayName).toBe("User 01");
     expect(layoutProps.headerConfig.navigationLinks).toHaveLength(3);
+    expect(layoutProps.headerConfig.navigationLinks[0]).toStrictEqual({"text": "Home", "url": "/data-admin"});
+    expect(layoutProps.headerConfig.navigationLinks[1]).toStrictEqual({"text": "Dashboard", "url": "/data-admin/dashboard"});
+    expect(layoutProps.headerConfig.navigationLinks[2]).toStrictEqual({"text": "Dataset Series", "url": "/data-admin/series"});
     expect(layoutProps.headerConfig.navigationLinksCurrentPath).toBeNull();
 });
 
