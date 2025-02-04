@@ -1,43 +1,19 @@
 "use client";
 
-import { MainLayout } from "author-design-system-react"
+import { usePathname } from 'next/navigation';
 
-import { logout } from "@/utils/auth/auth";
+import { MainLayout } from "author-design-system-react";
 
-const mainLayoutProps = {
-    text: "Dataset Catalogue",
-    me: {
-        displayName: 'User 01',
-    },
-    signOut: () => { logout(); },
-    headerConfig: {
-        navigationLinks: [
-            {
-                text: 'Home',
-                url: '/data-admin'
-            },
-            {
-                text: 'Dashboard',
-                url: '/data-admin/dashboard'
-            },
-            {
-                text: 'Dataset Series',
-                url: '/data-admin/series'
-            },
-            {
-                text: 'Upload (POC)',
-                url: '/data-admin/upload'
-            },
-        ],
-    },
-};
+import { getLayoutProps } from "./layoutSetup";
 
 export default function Layout({ children }) {
+    const currentPath = usePathname();
+    const mainLayoutProps = getLayoutProps(currentPath);
     return (
           <>
               <MainLayout {...mainLayoutProps}>
                 {children}
               </MainLayout>
           </>
-    )
+    );
 }
