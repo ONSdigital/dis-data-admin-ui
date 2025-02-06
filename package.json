@@ -19,16 +19,17 @@
     "next": "15.1.6",
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "resumablejs": "^1.1.0",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
     "@next/eslint-plugin-next": "^15.1.5",
     "@playwright/test": "^1.48.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
-    "@eslint/js": "^9.18.0",
     "eslint": "^9.18.0",
     "eslint-config-next": "15.0.1",
     "eslint-plugin-react": "^7.37.4",
