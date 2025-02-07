@@ -6,9 +6,7 @@ import bindFileUploadInput from './bind';
 import { TextInput } from "author-design-system-react";
 
 const progressStyle = {
-    width: "100%",
-    backgroundColor: "--ons-color-branded"
-
+    width: "20rem",
 }
 
 const UPLOAD_TEXT_ID = "dataset-upload";
@@ -17,9 +15,10 @@ export default function ResumableFileUpload({ children }) {
 
     const [showFileUpload, setShowFileUpload] = useState(true);
     const [showProgressBar, setShowProgressBar] = useState(false);
-    const [progress, setProgress] = useState(70);
+    const [progress, setProgress] = useState(0);
     const [showIsComplete, setShowIsComplete] = useState(false);
     const [error, setError] = useState();
+    const [file, setFile] = useState();
 
     const handleFileStart = () => {
         setShowFileUpload(false);
@@ -27,6 +26,7 @@ export default function ResumableFileUpload({ children }) {
         setProgress(0);
         setShowIsComplete(false);
         setError(null);
+        setFile(null);
     }
 
     const handleFileProgress = (progress) => {
@@ -35,14 +35,16 @@ export default function ResumableFileUpload({ children }) {
         setProgress(progress);
         setShowIsComplete(false);
         setError(null);
+        setFile(null);
     }
 
-    const handleFileComplete = () => {
+    const handleFileComplete = (file) => {
         setShowFileUpload(false);
         setShowProgressBar(false);
         setProgress(100);
         setShowIsComplete(true);
         setError(null);
+        setFile(file);
     }
 
     const handleError = (msg) => {
@@ -50,7 +52,8 @@ export default function ResumableFileUpload({ children }) {
         setShowProgressBar(false);
         setProgress(0);
         setShowIsComplete(false);
-        setError(msg)
+        setError(msg);
+        setFile(null);
     }
 
     useEffect(() => {
@@ -72,9 +75,10 @@ export default function ResumableFileUpload({ children }) {
     
     return (
         <>
+            { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
-            { showIsComplete ? <p>File has been uploaded.</p> : null }
+            { showIsComplete ? <p>File has been uploaded: {file}</p> : null }
         </>
     )
 }
