@@ -9,9 +9,7 @@ const progressStyle = {
     width: "20rem",
 }
 
-const UPLOAD_TEXT_ID = "dataset-upload";
-
-export default function ResumableFileUpload({ children }) {
+export default function ResumableFileUpload({ id = "dataset-upload", label, description  }) {
 
     const [showFileUpload, setShowFileUpload] = useState(true);
     const [showProgressBar, setShowProgressBar] = useState(false);
@@ -57,11 +55,11 @@ export default function ResumableFileUpload({ children }) {
     }
 
     useEffect(() => {
-        bindFileUploadInput(UPLOAD_TEXT_ID, handleFileStart, handleFileProgress, handleFileComplete, handleError);
+        bindFileUploadInput(id, handleFileStart, handleFileProgress, handleFileComplete, handleError);
     }, []);
 
     const renderFileInput = () => {
-        return <TextInput id={UPLOAD_TEXT_ID} label={{text: "File upload", description: "Click browse or drag file here"}} type="file"/>;
+        return <TextInput id={id} label={{text: label, description: description}} type="file"/>;
     };
 
     const renderFileProgressBar = () => {
