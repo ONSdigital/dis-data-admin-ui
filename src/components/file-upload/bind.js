@@ -11,12 +11,12 @@ const RESUMABLE_OPTIONS = {
     path: "dataset-upload", // hardcoded for POC - needs fixing
 };
 
-const routerAPIURL = "http://localhost:23200/v1" //hardcoded for local testing - needs fixing
-
 const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     const input = document.getElementById(elementID);
+    const reqCfg = CSRequestConfig();
+    const uploadURL = reqCfg?.baseURL+"/upload-new";
     const r = new Resumable({
-        target: `${routerAPIURL}/upload-new`,
+        target: uploadURL,
         chunkSize: FIVE_MEGABYTES,
         query: {
             aliasName: "",
