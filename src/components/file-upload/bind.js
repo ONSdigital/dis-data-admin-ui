@@ -47,12 +47,12 @@ const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, han
 const beginUploadAndUpdateComponentState = (resumable, resumableOptions, file, handleFileStart) => {
     resumable.opts.query = resumableOptions;
     resumable.upload();
-    handleFileStart()
-}
+    handleFileStart();
+};
 
 const updateProgress = (file, handleFileProgress) => {
     const progressPercentage = Math.round(Number(file.progress() * 100));
     handleFileProgress(progressPercentage);
-}
+};
 
 export default bindFileUploadInput;
