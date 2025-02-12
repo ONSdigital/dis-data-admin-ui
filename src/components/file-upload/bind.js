@@ -31,28 +31,37 @@ const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, han
             ...RESUMABLE_OPTIONS,
             aliasName: file.container.name,
         };
-        beginUploadAndUpdateComponentState(r, options, file, handleFileStart);
+        onFileAdded(r, options, file, handleFileStart);
     });
     r.on("fileProgress", file => {
-        updateProgress(file, handleFileProgress);
+        onFileProgress(file, handleFileProgress);
     });
     r.on("fileError", (file, message) => {
-        handleError(message);
+        onFileError(message, handleError);
     });
     r.on("fileSuccess", file => {
-        handleFileComplete(`${r.opts.query.path}/${file.relativePath}`);
+        onFileSuccess(r, file, handleFileComplete);
     });
 };
 
-const beginUploadAndUpdateComponentState = (resumable, resumableOptions, file, handleFileStart) => {
+const onFileAdded = (resumable, resumableOptions, file, handleFileStart) => {
     resumable.opts.query = resumableOptions;
     resumable.upload();
     handleFileStart();
 };
 
-const updateProgress = (file, handleFileProgress) => {
+const onFileProgress = (file, handleFileProgress) => {
     const progressPercentage = Math.round(Number(file.progress() * 100));
     handleFileProgress(progressPercentage);
 };
 
+const onFileError = (message, handleError) => {
+    handleError(message);
+};
+
+const onFileSuccess = (resumable, file, handleFileComplete) => {
+    handleFileComplete(`${resumable.opts.query.path}/${file.relativePath}`);
+};
+
 export default bindFileUploadInput;
+export { onFileAdded, onFileProgress, onFileError, onFileSuccess };
