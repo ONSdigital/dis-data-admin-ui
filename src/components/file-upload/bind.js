@@ -1,5 +1,5 @@
 import Resumable from "resumablejs";
-import { httpGet, CSRequestConfig } from "@/utils/request/request";
+import { CSRequestConfig } from "@/utils/request/request";
 
 const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
