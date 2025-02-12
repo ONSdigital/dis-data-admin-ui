@@ -7,7 +7,7 @@ import { TextInput } from "author-design-system-react";
 
 const progressStyle = {
     width: "20rem",
-}
+};
 
 export default function ResumableFileUpload({ id = "dataset-upload", label = "File upload", description }) {
 
@@ -25,7 +25,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setShowIsComplete(false);
         setError(null);
         setFile(null);
-    }
+    };
 
     const handleFileProgress = (progress) => {
         setShowFileUpload(false);
@@ -34,7 +34,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setShowIsComplete(false);
         setError(null);
         setFile(null);
-    }
+    };
 
     const handleFileComplete = (file) => {
         setShowFileUpload(false);
@@ -43,7 +43,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setShowIsComplete(true);
         setError(null);
         setFile(file);
-    }
+    };
 
     const handleError = (msg) => {
         setShowFileUpload(true);
@@ -52,11 +52,11 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setShowIsComplete(false);
         setError(msg);
         setFile(null);
-    }
+    };
 
     useEffect(() => {
         bindFileUploadInput(id, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, []);
+    }, [id]);
 
     const renderFileInput = () => {
         return <TextInput id={id} label={{text: label, description: description}} type="file"/>;
@@ -78,5 +78,5 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
             { showProgressBar ? renderFileProgressBar() : null }
             { showIsComplete ? <p>File has been uploaded: {file}</p> : null }
         </>
-    )
+    );
 }
