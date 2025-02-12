@@ -1,6 +1,6 @@
 "use client";
 
-import ResumableFileUpload from "@/components/file-upload/ResumableFIleUpload";
+import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
 export default function Upload() {
     return (

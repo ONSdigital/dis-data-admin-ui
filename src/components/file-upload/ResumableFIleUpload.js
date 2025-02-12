@@ -9,7 +9,7 @@ const progressStyle = {
     width: "20rem",
 }
 
-export default function ResumableFileUpload({ id = "dataset-upload", label, description  }) {
+export default function ResumableFileUpload({ id = "dataset-upload", label = "File upload", description }) {
 
     const [showFileUpload, setShowFileUpload] = useState(true);
     const [showProgressBar, setShowProgressBar] = useState(false);
