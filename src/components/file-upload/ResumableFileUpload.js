@@ -66,7 +66,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         return (
             <>
                 <label htmlFor="file-progress" className="ons-label ons-label--with-description">File upload in progress:</label>
-                <progress id="file-progross" max="100" style={progressStyle} value={progress}>{progress}%</progress>
+                <progress id="file-progress" max="100" style={progressStyle} value={progress}>{progress}%</progress>
             </>
         );
     };
