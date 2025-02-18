@@ -21,7 +21,7 @@ const setHeaders = (authToken) => {
 // work in progress/place holder request func
 const request = async (cfg, url, method, body) => {
     const startedAt = new Date(Date.now()).toISOString();
-    logInfo("http request started", null, {requestID: "", method: method, path: url, statusCode: 0, startedAt: startedAt, endedAt: null});
+    logInfo("http request started", null, { requestID: "", method: method, path: url, statusCode: 0, startedAt: startedAt, endedAt: null });
 
     const headers = setHeaders(cfg.authToken);
     const fetchConfig = {
@@ -34,15 +34,15 @@ const request = async (cfg, url, method, body) => {
     }
 
     const response = await fetch(cfg.baseURL + url, fetchConfig);
-    
-    if (response.status >= 400 ) {
-        logError("http request failed", {error: response}, {requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null});
+
+    if (response.status >= 400) {
+        logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
         return response;
     }
     const json = await response.json();
 
     const endedAt = new Date(Date.now()).toISOString();
-    logInfo("http request completed", null, {requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt});
+    logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
     return json;
 };
 
@@ -53,7 +53,7 @@ const request = async (cfg, url, method, body) => {
 const SSRequestConfig = async (cookies) => {
     const baseURL = process.env.API_ROUTER_URL;
     const cookieStore = await cookies();
-    const authToken =  cookieStore.get("access_token");
+    const authToken = cookieStore.get("access_token");
     const cleanAuthToken = authToken.value.replace(/"/g, "");
     return { baseURL: baseURL, authToken: cleanAuthToken };
 };
@@ -65,9 +65,9 @@ const CSRequestConfig = () => {
     const cookies = document.cookie.split(";");
     let baseURL, authToken;
     cookies.forEach(cookie => {
-       const c = cookie.split("=");
-       if (c[0] == "api_router_url") { baseURL = decodeURI(c[1]); }
-       if (c[0] == "id_token") {authToken = bearerPrefix + c[1]; }
+        const c = cookie.split("=");
+        if (c[0] == " api_router_url") { baseURL = decodeURIComponent(c[1]); }
+        if (c[0] == "id_token") { authToken = bearerPrefix + c[1]; }
     });
     return { baseURL: baseURL, authToken: authToken };
 };
