@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-export default function List({ items }) {
+export default function List({ items, noResultsText = "No results" }) {
     if (!items || items.length === 0) {
         return (
-            <p>No results</p>
+            <p>{noResultsText}</p>
         );
     } else {
         return (
