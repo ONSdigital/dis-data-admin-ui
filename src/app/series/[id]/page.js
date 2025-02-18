@@ -38,22 +38,22 @@ export default async function Dataset({ params }) {
         )
     }
 
-    //const listItems = mapListItems(editions.items, id);
+    const createURL = `${id}/create`;
     return (
         <>
             { !datasetError ? 
                 <>
-                    <Hero hyperLink={{ text: "Add new dataset edition", url: "/create" }} title={dataset.title} wide />           
+                    <Hero hyperLink={{ text: "Add new dataset edition", url: createURL }} title={dataset.title} wide />           
                     <div className="ons-grid ons-u-mt-xl">
                         <div className="ons-grid__col ons-col-6@m">
                             { renderEditionsList() }
                         </div>
                         <div className="ons-grid__col ons-col-6@m ">
                             <h2 className="ons-u-mt-m@xxs@m">ID</h2>
-                            <p>{dataset.id}</p>
+                            <p data-testid="id-field">{dataset.id}</p>
 
                             <h2 className="ons-u-mt-m@xxs@m">Summary</h2>
-                            <p>{dataset.description}</p>
+                            <p data-testid="description-field">{dataset.description}</p>
                         </div>
                     </div>
                 </>
