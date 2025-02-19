@@ -3,6 +3,8 @@ import express from "express";
 import { datasetList } from "../mocks/datasets.mjs";
 import { dataset } from "../mocks/dataset.mjs";
 import { editions } from "../mocks/editions.mjs";
+import { edition } from "../mocks/edition.mjs";
+import { versions } from "../mocks/versions.mjs";
 
 const app = express();
 const PORT = 29401;
@@ -17,6 +19,14 @@ app.get("/datasets/:id", (req, res) => {
 
 app.get("/datasets/:id/editions", (req, res) => {
     res.send(editions);
+});
+
+app.get("/datasets/:id/editions/:editionID", (req, res) => {
+    res.send(edition);
+});
+
+app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
+    res.send(versions);
 });
 
 app.listen(PORT, () => {
