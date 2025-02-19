@@ -35,8 +35,8 @@ export default async function Dataset({ params }) {
                 </>
             : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p></Panel> }
             </>
-        )
-    }
+        );
+    };
 
     const createURL = `${id}/create`;
     return (
