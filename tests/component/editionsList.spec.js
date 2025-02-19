@@ -23,7 +23,7 @@ test.describe('dataset seriesoverview/editions list page', () => {
         addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
         await page.getByRole('link', { name: 'time-series' }).click();
-        await page.waitForTimeout(1000); // wait for new page to make fake api calls and load
+        await page.waitForTimeout(3000); // wait for new page to make fake api calls and load
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
     });
 });
