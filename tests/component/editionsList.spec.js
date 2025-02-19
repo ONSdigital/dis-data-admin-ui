@@ -1,15 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { createValidJWTCookieValue } from "../utils/utils";
+import { addValidAuthCookies } from "../utils/utils";
 
 test.describe('dataset seriesoverview/editions list page', () => {
     test("renders as expected", async ({ page, context }) => {
-        // add auth cookie
-        await context.addCookies([
-            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'},
-            { name: 'access_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
-        ]);
-
+        addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
         await expect(page.getByRole('heading', { level: 1 })).toContainText('Mock Dataset');
         await expect(page.getByRole('link', { name: 'time-series' })).toBeVisible();
@@ -18,26 +13,17 @@ test.describe('dataset seriesoverview/editions list page', () => {
     });
 
     test("routes to create new edition page", async ({ page, context }) => {
-        // add auth cookie
-        await context.addCookies([
-            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'},
-            { name: 'access_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
-        ]);
-
+        addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
         await page.getByRole('link', { name: 'Add new dataset edition' }).click();
         await expect(page.url().toString()).toContain('series/mock-quarterly/create');
     });
 
     test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {
-        // add auth cookie
-        await context.addCookies([
-            { name: 'id_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'},
-            { name: 'access_token', value: createValidJWTCookieValue(), path: '/',  domain: '127.0.0.1'}
-        ]);
-
+        addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
         await page.getByRole('link', { name: 'time-series' }).click();
+        await page.waitForTimeout(1000); // wait for new page to make fake api calls and load
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
     });
 });
