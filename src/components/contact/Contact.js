@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { TextInput } from "author-design-system-react";
 import { Button } from "author-design-system-react";
 import { Summary } from 'author-design-system-react';
+import { Field } from 'author-design-system-react';
 
-
-export default function Contact() {
+export default function Contact({contactsError}) {
 
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
@@ -16,6 +16,9 @@ export default function Contact() {
     return (
         <>
             <h2>Contacts</h2>
+            <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
+                <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
+            </Field>
             <Summary
                 summaries={[
                     {
@@ -50,7 +53,6 @@ export default function Contact() {
                     }
                 ]}
             />
-            <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-5@m">
