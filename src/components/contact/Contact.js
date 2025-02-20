@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { TextInput } from "author-design-system-react";
 import { Button } from "author-design-system-react";
-import { Summary } from 'author-design-system-react';
 import { Field } from 'author-design-system-react';
 
 export default function Contact({contactsError}) {
@@ -19,40 +18,44 @@ export default function Contact({contactsError}) {
             <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
                 <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
             </Field>
-            <Summary
-                summaries={[
-                    {
-                        groups: [{
-                            id: 'group1',
-                            noDividers: true,
-                            rows: contacts.map(contact => (
-                                {
-                                    id: 'row' + contact.email,
-                                    rowItems: [
-                                        {
-                                            actions: [{
-                                                isTertiaryButton: true,
-                                                onClick: () => {
-                                                    setContacts(
-                                                        contacts.filter(c =>
-                                                            c.email !== contact.email
-                                                        )
-                                                    )
-                                                },
-                                                text: 'Remove',
-                                                url: '#',
-                                                visuallyHiddenText: 'Remove'
-                                            }],
-                                            id: 'item' + contact.email,
-                                            rowTitle: contact.name + ' - ' + contact.email
-                                        }
-                                    ]
-                                }
-                            ))
-                        }]
-                    }
-                ]}
-            />
+            { contacts ?  
+                <ul className="ons-document-list">
+                {contacts.map((contact) => (
+                    <li key={contact.email} className="ons-document-list__item">
+                        <div className="ons-document-list__item-content">
+                            <div className='ons-container'>
+                                <div className="ons-grid">
+                                    <div className="ons-grid__col ons-col-5@m">
+                                        <span className="ons-u-fw">{contact.name}</span>
+                                    </div>
+                                    <div className="ons-grid__col ons-col-5@m">
+                                        <span className="ons-u-fw">{contact.email}</span>          
+                                    </div>
+                                    <div className="ons-grid__col ons-col-2@m">
+                                        <Button
+                                        dataTestId="datasetSeriesRemoveContactButton"
+                                        id="datasetSeriesRemoveContactButton"
+                                        text="Remove"
+                                        variants={[
+                                            'tertiary',
+                                            'small'
+                                        ]}
+                                        onClick={() => {
+                                            setContacts(
+                                                contacts.filter(c =>
+                                                    c.email !== contact.email
+                                                )
+                                            )
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>      
+                        </div>
+                    </li>
+                ))}
+                </ul>
+            : ""}
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-5@m">
