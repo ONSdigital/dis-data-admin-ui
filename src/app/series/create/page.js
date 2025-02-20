@@ -37,7 +37,7 @@ export default function Create() {
                         <HyperLinksList itemsList={listOfErrors}/>
                     </Panel> : ""
             }
-            <h2>Series Details</h2>
+            <h2 className="ons-u-mt-l">Series Details</h2>
             <form action={formAction}>
                 <TextInput
                 id="datasetSeriesTitle"
@@ -70,7 +70,7 @@ export default function Create() {
                     <textarea name="datasetSeriesDescription" rows={5} cols={80} />
                 </Field>
                 <Contact contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : undefined}/>
-                <button type="submit" className="ons-btn">
+                <button type="submit" className="ons-btn ons-u-mt-l">
                     <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
                 </button>
             </form>

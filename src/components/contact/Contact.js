@@ -14,21 +14,20 @@ export default function Contact({contactsError}) {
 
     return (
         <>
-            <h2>Contacts</h2>
             <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
+            <h2>Contacts</h2>
                 <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
-            </Field>
             { contacts ?  
-                <ul className="ons-document-list">
+                <ul className="ons-document-list ons-u-mb-l">
                 {contacts.map((contact) => (
-                    <li key={contact.email} className="ons-document-list__item">
+                    <li key={contact.email}>
                         <div className="ons-document-list__item-content">
                             <div className='ons-container'>
                                 <div className="ons-grid">
-                                    <div className="ons-grid__col ons-col-5@m">
+                                    <div className="ons-grid__col ons-col-3@m">
                                         <span className="ons-u-fw">{contact.name}</span>
                                     </div>
-                                    <div className="ons-grid__col ons-col-5@m">
+                                    <div className="ons-grid__col ons-col-3@m">
                                         <span className="ons-u-fw">{contact.email}</span>          
                                     </div>
                                     <div className="ons-grid__col ons-col-2@m">
@@ -106,6 +105,7 @@ export default function Contact({contactsError}) {
                         </div>
                     </div>
                 </div>
+                </Field>
         </>
     );
 }
