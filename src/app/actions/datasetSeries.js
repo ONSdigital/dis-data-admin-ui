@@ -17,7 +17,7 @@ const schema = z.object({
 })
 
 export async function createDatasetSeries(currentstate, formData) {
-  const datasetSeries = {
+  const datasetSeriesSubmission = {
       title: formData.get('datasetSeriesTitle'),
       id: formData.get('datasetSeriesID'),
       description: formData.get('datasetSeriesDescription'),
@@ -25,12 +25,13 @@ export async function createDatasetSeries(currentstate, formData) {
   }
 
   let response = {}
-  const result = schema.safeParse(datasetSeries)
+  const result = schema.safeParse(datasetSeriesSubmission)
 
   if (!result.success) {
     response = {
       success: result.success,
       errors: result.error.flatten().fieldErrors,
+      submission: datasetSeriesSubmission
     }
     return response
   } else {
@@ -41,11 +42,16 @@ export async function createDatasetSeries(currentstate, formData) {
     const reqCfg = await SSRequestConfig(cookies);
 
     try {
-      const data = await httpPost(reqCfg, "/datasets", datasetSeries);
+      const data = await httpPost(reqCfg, "/datasets", datasetSeriesSubmission);
       if (data.id) {
         return response
-      } else {
-        return "Server Denied Your Submission"
+      } else if (data.status == 403) {
+        response = {
+          success: false,
+          recentlySumbitted: false,
+          code: data.status
+        }
+        return response
       }
     } catch (err) {
       return err.toString();

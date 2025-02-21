@@ -11,6 +11,10 @@ import { createDatasetSeries } from "@/app/actions/datasetSeries"
 
 export default function Create() {
     const [formState, formAction] = useActionState(createDatasetSeries, {})
+
+    const [title, setTitle] = useState('')
+    const [id, setID] = useState('')
+    const [description, setDescription] = useState('')
     const [contacts, setContacts] = useState([]);
 
     let listOfErrors = []
@@ -25,6 +29,9 @@ export default function Create() {
 
     if (formState && formState.recentlySumbitted == true) {
         formState.recentlySumbitted = false
+        setTitle('')
+        setID('')
+        setDescription('')
         setContacts([])
     }
 
@@ -37,10 +44,20 @@ export default function Create() {
                         <p>
                             Form submitted successfully
                         </p>
-                    </Panel> : ""}{
-                formState.success == false  ?    
+                    </Panel> : ""
+            }
+            {
+                formState.success == false && !formState.code ?    
                     <Panel title="There was a problem submitting your form" variant="error">
                         <HyperLinksList itemsList={listOfErrors}/>
+                    </Panel> : ""
+            }
+            {
+                formState.success == false && formState.code == 403 ?    
+                    <Panel title="There was a problem submitting your form" variant="error">
+                        <p>
+                            This datasetseries already exists
+                        </p>
                     </Panel> : ""
             }
             <h2 className="ons-u-mt-m">Series Details</h2>
@@ -53,6 +70,8 @@ export default function Create() {
                     text: 'Title'
                 }}
                 error={ (formState.errors && formState.errors.title) ? {id:'dataSeriesTitleError', text: formState.errors.title} : undefined}
+                value={title}
+                onChange={e => setTitle(e.target.value)}
                 />
                 <TextInput
                 id="datasetSeriesID"
@@ -62,6 +81,8 @@ export default function Create() {
                     text: 'ID'
                 }}
                 error={(formState.errors && formState.errors.id)  ? {id:'dataSeriesIDError', text: formState.errors.id} : undefined}
+                value={id}
+                onChange={e => setID(e.target.value)}
                 />
                 <Field 
                 dataTestId="field-datasetseriesdescription"             
@@ -73,7 +94,12 @@ export default function Create() {
                     for="datasetSeriesDescription"
                     text="Description"
                     />
-                    <textarea name="datasetSeriesDescription" rows={5} cols={80} />
+                    <textarea
+                    value={description}
+                    onChange={e => setDescription(e.target.value)} 
+                    name="datasetSeriesDescription" 
+                    rows={5} 
+                    cols={80} />
                 </Field>
                 <Contact contacts={contacts} setContacts={setContacts} contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : undefined}/>
                 <button type="submit" className="ons-btn ons-u-mt-l">

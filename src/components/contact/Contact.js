@@ -11,11 +11,9 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
 
-    return (
-        <>
-            <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
-            <h2>Contacts</h2>
-                <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
+    const renderContactList = () => {
+        return (
+            <>
             { contacts ?  
                 <ul className="ons-document-list ons-u-mb-l">
                 {contacts.map((contact) => (
@@ -52,8 +50,17 @@ export default function Contact({contacts, setContacts, contactsError}) {
                         </div>
                     </li>
                 ))}
-                </ul>
-            : ""}
+                </ul> : ""}
+            </>
+        )
+    }
+
+    return (
+        <>
+            <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
+            <h2>Contacts</h2>
+                <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
+                {renderContactList()}
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-5@m">
