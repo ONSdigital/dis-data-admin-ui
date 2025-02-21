@@ -6,11 +6,10 @@ import { TextInput } from "author-design-system-react";
 import { Button } from "author-design-system-react";
 import { Field } from 'author-design-system-react';
 
-export default function Contact({contactsError}) {
+export default function Contact({contacts, setContacts, contactsError}) {
 
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
-    const [contacts, setContacts] = useState([]);
 
     return (
         <>
@@ -105,7 +104,7 @@ export default function Contact({contactsError}) {
                         </div>
                     </div>
                 </div>
-                </Field>
+            </Field>
         </>
     );
 }

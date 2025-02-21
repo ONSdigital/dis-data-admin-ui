@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from 'author-design-system-react';
 
@@ -11,6 +11,7 @@ import { createDatasetSeries } from "@/app/actions/datasetSeries"
 
 export default function Create() {
     const [formState, formAction] = useActionState(createDatasetSeries, {})
+    const [contacts, setContacts] = useState([]);
 
     let listOfErrors = []
     if (formState && formState.errors) {
@@ -20,6 +21,11 @@ export default function Create() {
                 {text: error[1][0]}
             ]
         ))
+    }
+
+    if (formState && formState.recentlySumbitted == true) {
+        formState.recentlySumbitted = false
+        setContacts([])
     }
 
     return (
@@ -37,7 +43,7 @@ export default function Create() {
                         <HyperLinksList itemsList={listOfErrors}/>
                     </Panel> : ""
             }
-            <h2 className="ons-u-mt-l">Series Details</h2>
+            <h2 className="ons-u-mt-m">Series Details</h2>
             <form action={formAction}>
                 <TextInput
                 id="datasetSeriesTitle"
@@ -69,7 +75,7 @@ export default function Create() {
                     />
                     <textarea name="datasetSeriesDescription" rows={5} cols={80} />
                 </Field>
-                <Contact contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : undefined}/>
+                <Contact contacts={contacts} setContacts={setContacts} contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : undefined}/>
                 <button type="submit" className="ons-btn ons-u-mt-l">
                     <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
                 </button>

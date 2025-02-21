@@ -35,7 +35,8 @@ export async function createDatasetSeries(currentstate, formData) {
     return response
   } else {
     response = {
-      success: result.success
+      success: result.success,
+      recentlySumbitted: true
     }
     const reqCfg = await SSRequestConfig(cookies);
 
