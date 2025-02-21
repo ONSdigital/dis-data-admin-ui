@@ -10,12 +10,12 @@ import { mapListItems } from './mapper';
 export default async function Dataset({ params }) {
     const { id } = await params;
     const reqCfg = await SSRequestConfig(cookies);
-    let dataset = await httpGet(reqCfg, `/datasets/${id}`);
+    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
     let editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
 
     let datasetError, editionsError = false;
     const listItems = [];
-    if (dataset.ok != null && !dataset.ok) {
+    if (datasetResp.ok != null && !datasetResp.ok) {
         datasetError = true;
     }
 
@@ -39,6 +39,7 @@ export default async function Dataset({ params }) {
     };
 
     const createURL = `${id}/create`;
+    const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     return (
         <>
             { !datasetError ? 
