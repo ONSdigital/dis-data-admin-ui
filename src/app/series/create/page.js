@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState, useEffect } from 'react';
+import { useActionState } from 'react';
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from 'author-design-system-react';
 
@@ -24,7 +24,7 @@ export default function Create() {
 
     return (
         <>
-            <Hero hyperLink={{ text: 'View Existing Dataset Series', url: '/data-admin/series'}} title="Create dataset Series" wide/>
+            <Hero hyperLink={{ text: 'View Existing Dataset Series', url: '/data-admin/series'}} title="Create dataset series" wide/>
             { 
                 formState.success == true  ?
                     <Panel variant="success">

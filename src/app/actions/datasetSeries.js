@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 import { httpPost, SSRequestConfig } from "@/utils/request/request";
 
-import { z } from 'zod'
+import { z } from "zod";
  
 const schema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
