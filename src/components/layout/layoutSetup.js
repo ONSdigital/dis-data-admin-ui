@@ -26,10 +26,11 @@ const NAVIGATION_OPTIONS = [
  * @return {string} - path from navigation options
  */
 const setActiveNavItem = (currentPath) => {
+    if (!currentPath) return null;
     let activeLink = null;
     NAVIGATION_OPTIONS.forEach(item => {
         const navOptionRoot = item.url.split("/data-admin")[1];
-        if (currentPath.includes(navOptionRoot)) {
+        if (currentPath.includes(navOptionRoot) && navOptionRoot.length) {
             activeLink = item.url;
         }
     });
