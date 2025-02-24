@@ -57,7 +57,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
     return (
         <>
-            <Field error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
+            <Field dataTestId="field-datasetseriescontacts" error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
             <h2>Contacts</h2>
                 <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
                 {renderContactList()}
