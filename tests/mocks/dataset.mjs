@@ -1,5 +1,5 @@
 export const dataset = {
-    description: 'blah blah blah',
+    description: 'This is a mock dataset test description',
     id: 'mock-quarterly',
     keywords: [ 'mock' ],
     national_statistic: false,

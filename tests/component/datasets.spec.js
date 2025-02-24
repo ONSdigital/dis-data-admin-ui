@@ -37,6 +37,6 @@ test.describe('series', () => {
         await page.goto('./series')
         await page.getByRole('link', { name: 'Test dataset' }).click();
         await expect(page.getByText('test-dataset')).toBeVisible();
-        await expect(page.getByText('Select an edition to view or edit')).toBeVisible();
+        await expect(page.getByText('Available editions')).toBeVisible();
     });
 });
