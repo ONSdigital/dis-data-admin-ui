@@ -1,8 +1,8 @@
 'use client'
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState } from "react";
 
-import { TextInput, Label,  Field, Panel, HyperLinksList} from 'author-design-system-react';
+import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
 
 import Hero from "@/components/hero/Hero"
 import Contact from "@/components/contact/Contact";

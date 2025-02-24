@@ -24,7 +24,7 @@ test.describe('series', () => {
 
         await page.goto('./series')
         await page.getByRole('link', { name: 'Add New Dataset Series' }).click();
-        await expect(page.getByText('Create Dataset Series Page')).toBeVisible();
+        await expect(page.getByText('Create dataset series')).toBeVisible();
     });
 
     test("Choose from a list of datasets and route to chosen dataset page", async ({ page, context }) => {
