@@ -1,5 +1,4 @@
 import express from "express";
-import multer from "multer";
 
 import { datasetList } from "../mocks/datasets.mjs";
 import { dataset } from "../mocks/dataset.mjs";
@@ -7,7 +6,6 @@ import { editions } from "../mocks/editions.mjs";
 import { edition } from "../mocks/edition.mjs";
 import { versions } from "../mocks/versions.mjs";
 
-const upload = multer()
 
 const app = express();
 const PORT = 29401;
@@ -16,7 +14,7 @@ app.get("/datasets", (req, res) => {
     res.send(datasetList);
 });
 
-app.post("/datasets", upload.any(), (req, res) => {
+app.post("/datasets", (req, res) => {
     console.log("working")
     console.log(req)
     console.log(req.body)
