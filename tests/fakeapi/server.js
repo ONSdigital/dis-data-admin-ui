@@ -10,6 +10,8 @@ import { versions } from "../mocks/versions.mjs";
 const app = express();
 const PORT = 29401;
 
+app.use(express.json())
+
 app.get("/datasets", (req, res) => {
     res.send(datasetList);
 });
