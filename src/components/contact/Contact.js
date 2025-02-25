@@ -1,15 +1,16 @@
 'use client'
 
 import { useState } from 'react';
+import isEmail from 'validator/lib/isEmail';
 
 import { TextInput } from "author-design-system-react";
 import { Button } from "author-design-system-react";
 import { Field } from 'author-design-system-react';
 
 export default function Contact({contacts, setContacts, contactsError}) {
-
     const [contactName, setContactName] = useState('');
     const [contactEmail, setContactEmail] = useState('');
+    const [contactEmailError, setContactEmailError] = useState('');
 
     const renderContactList = () => {
         return (
@@ -87,6 +88,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                             }}
                             value={contactEmail}
                             onChange={e => setContactEmail(e.target.value)}
+                            error={ (contactEmailError) ? {id:'dataSeriesEmailError', text: 'Invalid email'} : undefined}
                             />
                         </div>
                         <div className="ons-grid__col ons-col-2@m ">
@@ -99,13 +101,18 @@ export default function Contact({contacts, setContacts, contactsError}) {
                                 'small'
                             ]}
                             onClick={() => {
-                                setContacts([
-                                ...contacts,
-                                { name: contactName, email: contactEmail }
-                                ]);
+                                if(!isEmail(contactEmail)){
+                                    setContactEmailError(true)
+                                } else {
+                                    setContacts([
+                                    ...contacts,
+                                    { name: contactName, email: contactEmail }
+                                    ]);
 
-                                setContactName('')
-                                setContactEmail('')
+                                    setContactName('')
+                                    setContactEmail('')
+                                    setContactEmailError('')
+                                }
                             }}
                             />
                         </div>

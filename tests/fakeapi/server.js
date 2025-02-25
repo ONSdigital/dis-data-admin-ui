@@ -17,12 +17,8 @@ app.get("/datasets", (req, res) => {
 });
 
 app.post("/datasets", (req, res) => {
-    console.log("working")
-    console.log(req)
-    console.log(req.body)
     if(req.body.id == 'test dup')
     {
-        console.log("yo")
         res.send({
             status: 403
         })
