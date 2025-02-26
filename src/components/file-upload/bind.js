@@ -13,8 +13,7 @@ const RESUMABLE_OPTIONS = {
 
 const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     const input = document.getElementById(elementID);
-    const reqCfg = CSRequestConfig();
-    const uploadURL = reqCfg?.baseURL+"/upload-new";
+    const uploadURL = "/upload-new";
     const r = new Resumable({
         target: uploadURL,
         chunkSize: FIVE_MEGABYTES,
