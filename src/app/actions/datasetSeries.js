@@ -17,6 +17,8 @@ const schema = z.object({
 })
 
 export async function createDatasetSeries(currentstate, formData) {
+    let response = {}
+
     const datasetSeriesSubmission = {
         title: formData.get('datasetSeriesTitle'),
         id: formData.get('datasetSeriesID'),
@@ -24,37 +26,26 @@ export async function createDatasetSeries(currentstate, formData) {
         contacts: JSON.parse(formData.get('datasetSeriesContacts'))
     }
 
-    let response = {}
     const result = schema.safeParse(datasetSeriesSubmission)
+    response.success = result.success
 
-    if (!result.success) {
-        response = {
-            success: result.success,
-            errors: result.error.flatten().fieldErrors,
-            submission: datasetSeriesSubmission
-        }
-        return response
+    if (!response.success) {
+        response.errors = result.error.flatten().fieldErrors
+        response.submission = datasetSeriesSubmission
     } else {
-        response = {
-            success: result.success,
-            recentlySumbitted: true
-        }
         const reqCfg = await SSRequestConfig(cookies);
-
         try {
             const data = await httpPost(reqCfg, "/datasets", datasetSeriesSubmission);
-            if (data.id) {
-                return response
-            } else if (data.status == 403) {
-                response = {
-                    success: false,
-                    recentlySumbitted: false,
-                    code: data.status
-                }
-                return response
+            if (data.status == 403) {
+                response.success = false
+                response.recentlySumbitted = false
+                response.code = data.status
+            } else {
+                response.recentlySumbitted = true
             }
         } catch (err) {
             return err.toString();
         }
     }
+    return response
 }

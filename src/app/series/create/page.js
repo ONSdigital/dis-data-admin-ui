@@ -10,7 +10,7 @@ import Contact from "@/components/contact/Contact";
 import { createDatasetSeries } from "@/app/actions/datasetSeries"
 
 export default function Create() {
-    const [formState, formAction] = useActionState(createDatasetSeries, {})
+    const [formState, formAction, isPending] = useActionState(createDatasetSeries, {})
 
     const [title, setTitle] = useState('')
     const [id, setID] = useState('')
@@ -18,21 +18,25 @@ export default function Create() {
     const [contacts, setContacts] = useState([]);
 
     let listOfErrors = []
-    if (formState && formState.errors) {
-        Object.entries(formState.errors).map((error) => (
-            listOfErrors = [
-                ...listOfErrors,
-                {text: error[1][0]}
-            ]
-        ))
-    }
+    if (formState) {
+        if (formState.errors){
+            Object.entries(formState.errors).map((error) => (
+                listOfErrors = [
+                    ...listOfErrors,
+                    {text: error[1][0]}
+                ]
+            ))
+        } else if (formState.recentlySumbitted == true) {
+            formState.recentlySumbitted = false
+            setTitle('')
+            setID('')
+            setDescription('')
+            setContacts([])
+        }
+    }    
 
-    if (formState && formState.recentlySumbitted == true) {
-        formState.recentlySumbitted = false
-        setTitle('')
-        setID('')
-        setDescription('')
-        setContacts([])
+    if(isPending){
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
 
     return (
@@ -102,7 +106,7 @@ export default function Create() {
                     cols={80} />
                 </Field>
                 <Contact contacts={contacts} setContacts={setContacts} contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : undefined}/>
-                <button type="submit" className="ons-btn ons-u-mt-l">
+                <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
                     <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
                 </button>
             </form>
