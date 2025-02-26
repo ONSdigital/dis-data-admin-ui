@@ -31,6 +31,7 @@ const request = async (cfg, url, method, body) => {
 
     if (method === "POST" || method === "PUT") {
         fetchConfig.body = JSON.stringify(body || {});
+        fetchConfig.headers.append("Content-Type", "application/json");
     }
 
     const response = await fetch(cfg.baseURL + url, fetchConfig);
