@@ -20,10 +20,10 @@ export default function Create() {
     let listOfErrors = []
     if (formState) {
         if (formState.errors){
-            Object.entries(formState.errors).map((error) => (
+            Object.values(formState.errors).map((error) => (
                 listOfErrors = [
                     ...listOfErrors,
-                    {text: error[1][0]}
+                    {text: error}
                 ]
             ))
         } else if (formState.recentlySumbitted == true) {
