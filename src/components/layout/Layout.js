@@ -10,10 +10,10 @@ export default function Layout({ children }) {
     const currentPath = usePathname();
     const mainLayoutProps = getLayoutProps(currentPath);
     return (
-          <>
-              <MainLayout {...mainLayoutProps}>
+        <>
+            <MainLayout {...mainLayoutProps}>
                 {children}
-              </MainLayout>
-          </>
+            </MainLayout>
+        </>
     );
 }
