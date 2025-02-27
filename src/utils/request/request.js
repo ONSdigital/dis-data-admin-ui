@@ -34,8 +34,6 @@ const request = async (cfg, url, method, body) => {
         fetchConfig.headers.append("Content-Type", "application/json");
     }
 
-    console.log("FETCH CONFIG", fetchConfig)
-
     const response = await fetch(cfg.baseURL + url, fetchConfig);
 
     if (response.status >= 400) {
