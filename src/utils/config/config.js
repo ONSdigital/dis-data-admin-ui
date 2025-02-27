@@ -33,9 +33,9 @@ const getAppConfig = (envVars) => {
     return {
         apiRouterURL,
         uploadBaseURL
-    }
+    };
 };
 
 export default getAppConfig;
 // for testing
-export { getAPIRouterURL, getUploadBaseURL }
+export { getAPIRouterURL, getUploadBaseURL };
