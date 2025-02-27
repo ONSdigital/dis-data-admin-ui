@@ -59,17 +59,17 @@ const SSRequestConfig = async (cookies) => {
 };
 
 /**
+ * @param {object} appConfig - appCongfg object, see: utils/config
  * @return {object} response config object contain base url and authorisation values
  */
-const CSRequestConfig = () => {
+const CSRequestConfig = (appConfig) => {
     const cookies = document.cookie.split(";");
-    let baseURL, authToken;
+    let authToken;
     cookies.forEach(cookie => {
         const c = cookie.split("=");
-        if (c[0] == " api_router_url") { baseURL = decodeURIComponent(c[1]); }
         if (c[0] == "id_token") { authToken = bearerPrefix + c[1]; }
     });
-    return { baseURL: baseURL, authToken: authToken };
+    return { baseURL: appConfig.apiRouterURL, authToken: authToken };
 };
 
 /**
