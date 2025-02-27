@@ -1,5 +1,4 @@
 import Resumable from "resumablejs";
-import { CSRequestConfig } from "@/utils/request/request";
 
 const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
@@ -13,8 +12,7 @@ const RESUMABLE_OPTIONS = {
 
 const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     const input = document.getElementById(elementID);
-    const reqCfg = CSRequestConfig();
-    const uploadURL = reqCfg?.baseURL+"/upload-new";
+    const uploadURL = "/upload-new";
     const r = new Resumable({
         target: uploadURL,
         chunkSize: FIVE_MEGABYTES,
