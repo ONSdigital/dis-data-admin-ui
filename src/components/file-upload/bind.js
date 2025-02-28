@@ -10,9 +10,9 @@ const RESUMABLE_OPTIONS = {
     path: "dataset-upload", // hardcoded for POC - needs fixing
 };
 
-const bindFileUploadInput = (elementID, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
+const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     const input = document.getElementById(elementID);
-    const uploadURL = "/upload-new";
+    const uploadURL = uploadBaseURL + "/upload-new";
     const r = new Resumable({
         target: uploadURL,
         chunkSize: FIVE_MEGABYTES,
