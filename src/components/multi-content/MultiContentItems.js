@@ -4,14 +4,24 @@ import { useState } from 'react';
 
 import { Button } from "author-design-system-react";
 import MultiContentFieldsInput from './MultiContentFieldsInput';
+import MultiContentFieldsSelect from './MultiContentFieldsSelect';
 
-export default function MultiContentItems({contentItems, id, setContacts, contactsError}) {
-    const [itemsNumber, setItemsNumber] = useState(contentItems.length ? contentItems.length : 1)
+export default function MultiContentItems(props) {
+    const [itemsNumber, setItemsNumber] = useState(props.contentItems.length ? props.contentItems.length : 1)
 
     const renderItemFields = () => {
         const items =[];
         for (let i = 0; i < itemsNumber; i++) {
-            items.push(<MultiContentFieldsInput key={i} field={contentItems[i]} id={id} index={i}/>);
+            switch (props.fieldType) {
+                case "input":
+                    items.push(<MultiContentFieldsInput key={i} field={props.contentItems[i]} id={props.id} index={i}/>);
+                    break;
+                case "select":
+                    items.push(<MultiContentFieldsSelect key={i} field={props.contentItems[i]} id={props.id} index={i}/>);
+                    break;
+                default:
+                    console.warn("No 'fieldType' prop given")
+            }
         }
         return <>{items}</>
     };
@@ -22,7 +32,7 @@ export default function MultiContentItems({contentItems, id, setContacts, contac
             <Button
                 dataTestId="datasetSeriesAddContactButton"
                 id="datasetSeriesAddContactButton"
-                text="Add another usage note"
+                text={props.buttonLabel}
                 variants={[
                     "secondary",
                     "small"
