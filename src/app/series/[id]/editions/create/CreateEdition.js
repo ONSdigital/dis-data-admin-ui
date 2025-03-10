@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useActionState } from 'react';
+import { useContext, useActionState, useState } from 'react';
 import { ConfigContext } from '@/context/context';
 
 import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
@@ -16,6 +16,8 @@ import { TextInput, Button, Select } from "author-design-system-react";
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {})
     const appConfig = useContext(ConfigContext);
+
+    const [qualityDesingation, setQualityDesingation] = useState("");
     return (
         <>
             <Hero hyperLink={{ text: `Back to ${datasetID} dataset series overview`, url: "sup" }} title={`Create a new dataset edition for ${datasetID}`} wide />           
@@ -29,7 +31,8 @@ export default function CreateEditionForm({ datasetID }) {
                 <div className="ons-u-mb-l">
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
-                <Select id="qualityDesingation" label={{text: "Quality designation", description: "Something about what quality designation means"}} 
+                <input id="qualityDesingationValue" name="qualityDesingationValue" type="hidden" value={qualityDesingation} />
+                <Select id="qualityDesingation" label={{text: "Quality designation", description: "Something about what quality designation means"}} onChange={e => setQualityDesingation(e)} 
                     options={[
                         {
                             value:"",
@@ -55,9 +58,10 @@ export default function CreateEditionForm({ datasetID }) {
                     ]}
                 />
                 <h3 className="ons-u-mt-xl">Usage notes</h3>
-                <MultiContentItems contentItems={[{title: "test", note: "blah blah blah"}]} id="usageNotes"></MultiContentItems>
+                <MultiContentItems contentItems={[{title: "test", note: "A test usage notes"}]} id="usageNotes" fieldType="input" buttonLabel="Add new usage note"></MultiContentItems>
 
                 <h3 className="ons-u-mt-xl">Alerts</h3>
+                <MultiContentItems contentItems={[{type: "notice", note: "Correction notice test"}]} id="alerts" fieldType="select" buttonLabel="Add new alert"></MultiContentItems>
 
                 <h2 className="ons-u-mt-xl">Dataset file</h2>
                 <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
