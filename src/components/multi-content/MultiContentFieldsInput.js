@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { TextInput } from "author-design-system-react";
 import TextArea from '../textarea/Textarea';
 
-export default function MultiContentFields(props) {
+export default function MultiContentFieldsInput(props) {
     const [contentTitle, setContentTitle] = useState(props.field?.title || "");
     const [contentBody, setContentBody] = useState(props.field?.note || "");
 

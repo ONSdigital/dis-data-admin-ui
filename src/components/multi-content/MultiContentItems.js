@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { Button } from "author-design-system-react";
-import MultiContentFields from './MultiContentFields';
+import MultiContentFieldsInput from './MultiContentFieldsInput';
 
 export default function MultiContentItems({contentItems, id, setContacts, contactsError}) {
     const [itemsNumber, setItemsNumber] = useState(contentItems.length ? contentItems.length : 1)
@@ -11,7 +11,7 @@ export default function MultiContentItems({contentItems, id, setContacts, contac
     const renderItemFields = () => {
         const items =[];
         for (let i = 0; i < itemsNumber; i++) {
-            items.push(<MultiContentFields key={i} field={contentItems[i]} id={id} index={i}/>);
+            items.push(<MultiContentFieldsInput key={i} field={contentItems[i]} id={id} index={i}/>);
         }
         return <>{items}</>
     };
