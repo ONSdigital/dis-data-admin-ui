@@ -10,21 +10,75 @@ import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
-
-import { TextInput, Button, Select } from "author-design-system-react";
+import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
 
 export default function CreateEditionForm({ datasetID }) {
-    const [formState, formAction, isPending] = useActionState(createDatasetEdition, {})
+    const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
+    const [editionTitle, setEditionTitle] = useState("");
+    const [qualityDesingation, setQualityDesingation] = useState("");
+
     const appConfig = useContext(ConfigContext);
 
-    const [qualityDesingation, setQualityDesingation] = useState("");
+    let listOfErrors = []
+    if (formState) {
+        if (formState.errors){
+            Object.values(formState.errors).map((error) => (
+                listOfErrors = [
+                    ...listOfErrors,
+                    {text: error}
+                ]
+            ))
+        } else if (formState.recentlySumbitted == true) {
+            formState.recentlySumbitted = false
+            // setTitle('')
+            // setID('')
+            // setDescription('')
+            // setContacts([])
+        }
+    }  
+
+    const renderSuccessOrFailure = () => {
+        return (
+            <>
+                { 
+                    formState.success == true  ?
+                        <Panel classes="ons-u-mb-xl" variant="success">
+                            <p>
+                                Form submitted successfully
+                            </p>
+                        </Panel> : ""
+                }
+                {
+                    formState.success == false && !formState.code ?    
+                        <Panel classes="ons-u-mb-xl"title="There was a problem creating this dataset edition" variant="error">
+                            <HyperLinksList itemsList={listOfErrors}/>
+                        </Panel> : ""
+                }
+                {
+                    formState.success == false && formState.code ?    
+                        <Panel classes="ons-u-mb-xl" title="There was a problem creating this dataset edition" variant="error">
+                            <p>An error occured when trying to create this dataset edition.</p>
+                        </Panel> : ""
+                }
+            </>
+        )
+    }
+
     return (
         <>
-            <Hero hyperLink={{ text: `Back to ${datasetID} dataset series overview`, url: "sup" }} title={`Create a new dataset edition for ${datasetID}`} wide />           
+            <Hero hyperLink={{ text: `Back to ${datasetID} dataset series overview`, url: "sup" }} title={`Create a new dataset edition for ${datasetID}`} wide />     
+            { renderSuccessOrFailure() }      
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
-                <TextInput id="editionID" name="editionID" label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} dataTestId="editionID"/>
+                <TextInput id="editionID" 
+                    name="editionID" 
+                    label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} 
+                    dataTestId="editionID"
+                    value={editionTitle}
+                    onChange={e => setEditionTitle(e.target.value)}
+                    error={ (formState.errors && formState.errors.title) ? {id:'editionTitleError', text: formState.errors.title} : null}
+                />
 
                 <h2 className="ons-u-mt-xl">Dataset details</h2>
                 <p>The information in these fields may be copied from the most recent version.</p>
@@ -32,7 +86,10 @@ export default function CreateEditionForm({ datasetID }) {
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
                 <input id="qualityDesingationValue" name="qualityDesingationValue" type="hidden" value={qualityDesingation} />
-                <Select id="qualityDesingation" label={{text: "Quality designation", description: "Something about what quality designation means"}} onChange={e => setQualityDesingation(e)} 
+                <Select id="qualityDesingation" 
+                    label={{text: "Quality designation", description: "Something about what quality designation means"}} 
+                    onChange={e => setQualityDesingation(e)} 
+                    error={ (formState.errors && formState.errors.title) ? {id:'qualityDesignationError', text: formState.errors.quality_designation} : null}
                     options={[
                         {
                             value:"",
@@ -65,7 +122,7 @@ export default function CreateEditionForm({ datasetID }) {
 
                 <h2 className="ons-u-mt-xl">Dataset file</h2>
                 <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
-                <ResumableFileUpload id="poc-dataset-upload" label="File upload" description="Click browse or drag file here" uploadBaseURL={appConfig.uploadBaseURL} />
+                <ResumableFileUpload id="dataset-upload" label="File upload" description="Click browse or drag file here" uploadBaseURL={appConfig.uploadBaseURL} />
 
                 {/* <Button type="submit" classes="ons-u-mt-xl" variants="primary" text="Create dataset edition"/> */}
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
