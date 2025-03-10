@@ -8,8 +8,8 @@ import { z } from "zod";
  
 const editionSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
-    qualityDesignation: z.string().min(1, { message: "Quality designation is required" }),
-    datasetFile: z.string().min(1, { message: "File is required" }),
+    quality_designation: z.string().min(1, { message: "Quality designation is required" }),
+    distributions: z.string().min(1, { message: "File is required" }),
 });
 
 export async function createDatasetEdition(currentstate, formData) {
@@ -17,8 +17,12 @@ export async function createDatasetEdition(currentstate, formData) {
 
     const datasetEdition = {
         title: formData.get("editionID"),
-        quality_designation: formData.get("qualityDesingation"),
-        usageNotes: formData.getAll("usageNotes"),
+        quality_designation: formData.get("qualityDesingationValue"),
+        usage_notes: formData.getAll("usageNotes"),
+        alerts: formData.getAll("alerts"),
+        distributions: {
+            download_url: formData.get("dataset-upload-value"),
+        },
     };
 
     const result = editionSchema.safeParse(datasetEdition)
@@ -42,5 +46,5 @@ export async function createDatasetEdition(currentstate, formData) {
             return err.toString();
         }
     }
-    return response
+    return response;
 }
