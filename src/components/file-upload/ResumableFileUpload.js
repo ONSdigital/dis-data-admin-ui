@@ -16,7 +16,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
     const [progress, setProgress] = useState(0);
     const [showIsComplete, setShowIsComplete] = useState(false);
     const [error, setError] = useState();
-    const [file, setFile] = useState();
+    const [file, setFile] = useState("");
 
     const handleFileStart = () => {
         setShowFileUpload(false);
@@ -59,7 +59,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
     }, [id, uploadBaseURL]);
 
     const renderFileInput = () => {
-        return <TextInput id={id} label={{text: label, description: description}} type="file"/>;
+        return <TextInput id={id} label={{text: label, description: description}} type="file" value=""/>;
     };
 
     const renderFileProgressBar = () => {
@@ -73,6 +73,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
     
     return (
         <>
+            <input id={`${id}-value`} name={`${id}-value`} type="hidden" value={file} />
             { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
