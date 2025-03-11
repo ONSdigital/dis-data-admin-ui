@@ -71,6 +71,7 @@ export default function CreateEditionForm({ datasetID }) {
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
+                <input id="datasetID" name="datasetID" type="hidden" value={datasetID} />
                 <TextInput id="editionID" 
                     name="editionID" 
                     label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} 
