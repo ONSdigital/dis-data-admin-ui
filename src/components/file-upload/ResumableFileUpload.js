@@ -9,7 +9,7 @@ const progressStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", label = "File upload", description, uploadBaseURL }) {
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError }) {
 
     const [showFileUpload, setShowFileUpload] = useState(true);
     const [showProgressBar, setShowProgressBar] = useState(false);
@@ -24,7 +24,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setProgress(0);
         setShowIsComplete(false);
         setError(null);
-        setFile(null);
+        setFile("");
     };
 
     const handleFileProgress = (progress) => {
@@ -33,7 +33,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setProgress(progress);
         setShowIsComplete(false);
         setError(null);
-        setFile(null);
+        setFile("");
     };
 
     const handleFileComplete = (file) => {
@@ -51,7 +51,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
         setProgress(0);
         setShowIsComplete(false);
         setError(msg);
-        setFile(null);
+        setFile("");
     };
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
     }, [id, uploadBaseURL]);
 
     const renderFileInput = () => {
-        return <TextInput id={id} label={{text: label, description: description}} type="file" value=""/>;
+        return <TextInput id={id} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
     };
 
     const renderFileProgressBar = () => {
@@ -73,7 +73,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", label = "Fi
     
     return (
         <>
-            <input id={`${id}-value`} name={`${id}-value`} type="hidden" value={file} />
+            <input id={`${id}Value`} name={`${id}Value`} type="hidden" value={file} />
             { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
