@@ -11,7 +11,8 @@ const RESUMABLE_OPTIONS = {
 };
 
 const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
-    const input = document.getElementById(elementID);
+    const elID = elementID.toLowerCase();
+    const input = document.getElementById(elID);
     const uploadURL = uploadBaseURL + "/upload-new";
     const r = new Resumable({
         target: uploadURL,

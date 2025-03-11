@@ -10,7 +10,6 @@ const progressStyle = {
 };
 
 export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError }) {
-
     const [showFileUpload, setShowFileUpload] = useState(true);
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
