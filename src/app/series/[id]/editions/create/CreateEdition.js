@@ -89,7 +89,7 @@ export default function CreateEditionForm({ datasetID }) {
                 <Select id="qualityDesingation" 
                     label={{text: "Quality designation", description: "Something about what quality designation means"}} 
                     onChange={e => setQualityDesingation(e)} 
-                    error={ (formState.errors && formState.errors.title) ? {id:'qualityDesignationError', text: formState.errors.quality_designation} : null}
+                    error={ (formState.errors && formState.errors.quality_designation) ? {id:'qualityDesignationError', text: formState.errors.quality_designation} : null}
                     options={[
                         {
                             value:"",
@@ -122,9 +122,12 @@ export default function CreateEditionForm({ datasetID }) {
 
                 <h2 className="ons-u-mt-xl">Dataset file</h2>
                 <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
-                <ResumableFileUpload id="dataset-upload" label="File upload" description="Click browse or drag file here" uploadBaseURL={appConfig.uploadBaseURL} />
+                <ResumableFileUpload id="dataset-upload" 
+                    label="File upload" 
+                    description="Click browse or drag file here" 
+                    uploadBaseURL={appConfig.uploadBaseURL} 
+                    validationError={(formState.errors && formState.errors.distributions) ? {id:'dataset-upload-error', text: formState.errors.distributions} : null} />
 
-                {/* <Button type="submit" classes="ons-u-mt-xl" variants="primary" text="Create dataset edition"/> */}
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
                     <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
                 </button>
