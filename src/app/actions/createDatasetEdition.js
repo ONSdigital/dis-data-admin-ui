@@ -9,7 +9,9 @@ import { z } from "zod";
 const editionSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
-    distributions: z.string().min(1, { message: "File is required" }),
+    distributions: z.object({
+        download_url: z.string().min(1, { message: "A file is required" }),
+    }).required({ message: "A file is required" })
 });
 
 export async function createDatasetEdition(currentstate, formData) {
@@ -20,9 +22,7 @@ export async function createDatasetEdition(currentstate, formData) {
         quality_designation: formData.get("qualityDesingationValue"),
         usage_notes: formData.getAll("usageNotes"),
         alerts: formData.getAll("alerts"),
-        distributions: {
-            download_url: formData.get("dataset-upload-value"),
-        },
+        distributions: JSON.parse(formData.get('dataset-upload-value'))
     };
 
     const result = editionSchema.safeParse(datasetEdition)
