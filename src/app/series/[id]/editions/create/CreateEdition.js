@@ -98,19 +98,19 @@ export default function CreateEditionForm({ datasetID }) {
                             disabled: true
                         },
                         {
-                            value:"national-statistic",
+                            value:"accredited-official",
                             text: "National Statistic",
                         },
                         {
-                            value:"offical-statistic",
+                            value:"official",
                             text: "Offical Statistic",
                         },
                         {
-                            value:"offical-statistic-in-development",
+                            value:"official-in-development",
                             text: "Offical Statistic in Development",
                         },
                         {
-                            value:"none",
+                            value:"",
                             text: "None",
                         },
                     ]}
@@ -119,7 +119,7 @@ export default function CreateEditionForm({ datasetID }) {
                 <MultiContentItems contentItems={[{title: "test", note: "A test usage notes"}]} id="usageNotes" fieldType="input" buttonLabel="Add new usage note"></MultiContentItems>
 
                 <h3 className="ons-u-mt-xl">Alerts</h3>
-                <MultiContentItems contentItems={[{type: "notice", note: "Correction notice test"}]} id="alerts" fieldType="select" buttonLabel="Add new alert"></MultiContentItems>
+                <MultiContentItems contentItems={[{type: "alert", note: "Correction notice test"}]} id="alerts" fieldType="select" buttonLabel="Add new alert"></MultiContentItems>
 
                 <h2 className="ons-u-mt-xl">Dataset file</h2>
                 <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
