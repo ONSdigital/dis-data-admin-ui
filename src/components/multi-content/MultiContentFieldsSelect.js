@@ -14,7 +14,7 @@ export default function MultiContentFieldsSelect(props) {
 
     return (
         <>
-            <input id={props.id} name={props.id} type="hidden" value={JSON.stringify({type: contentType, note: contentBody})} />
+            <input id={props.id} name={props.id} type="hidden" value={JSON.stringify({type: contentType, description: contentBody})} />
             <Select id={selectID} dataTestId={selectID} name={selectID} label={{text: "Type"}} onChange={e => setContentType(e)} value={contentType}
                 options={[
                     {
@@ -27,7 +27,7 @@ export default function MultiContentFieldsSelect(props) {
                         text: "Correction",
                     },
                     {
-                        value:"notice",
+                        value:"alert",
                         text: "Notice",
                     }
                 ]}
