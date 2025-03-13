@@ -44,7 +44,9 @@ export async function createDatasetEdition(currentstate, formData) {
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],
-        release_date: "hello"
+        // hardcoded date until a date/time picker is built or we get
+        // date/time from scheduling service/CMS
+        release_date: new Date().toISOString()
     };
 
     console.log(datasetEdition);
