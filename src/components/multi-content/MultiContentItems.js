@@ -7,7 +7,7 @@ import MultiContentFieldsInput from './MultiContentFieldsInput';
 import MultiContentFieldsSelect from './MultiContentFieldsSelect';
 
 export default function MultiContentItems(props) {
-    const [itemsNumber, setItemsNumber] = useState(props.contentItems.length ? props.contentItems.length : 1)
+    const [itemsNumber, setItemsNumber] = useState(props.contentItems.length ? props.contentItems.length : 1);
 
     const renderItemFields = () => {
         const items =[];
@@ -20,10 +20,10 @@ export default function MultiContentItems(props) {
                     items.push(<MultiContentFieldsSelect key={i} field={props.contentItems[i]} id={props.id} index={i}/>);
                     break;
                 default:
-                    console.warn("No 'fieldType' prop given")
+                    console.warn("No 'fieldType' prop given");
             }
         }
-        return <>{items}</>
+        return <>{items}</>;
     };
 
     return (
@@ -39,7 +39,7 @@ export default function MultiContentItems(props) {
                 ]}
                 classes="ons-u-mt-s"
                 onClick={() => {
-                    setItemsNumber(itemsNumber + 1)
+                    setItemsNumber(itemsNumber + 1);
                 }}
                 />
         </>

@@ -43,5 +43,5 @@ export default function MultiContentFieldsSelect(props) {
                 onChange={e => setContentBody(e.target.value)}
             />
         </>
-    )
+    );
 };

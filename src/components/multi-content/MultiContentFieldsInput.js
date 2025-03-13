@@ -38,5 +38,5 @@ export default function MultiContentFieldsInput(props) {
                 onChange={e => setContentBody(e.target.value)}
             />
         </>
-    )
+    );
 };
