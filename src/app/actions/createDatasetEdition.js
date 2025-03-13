@@ -29,8 +29,8 @@ const addUploadFileErrorMessage = (errors) => {
 export async function createDatasetEdition(currentstate, formData) {
     let actionResponse = {};
 
-    const datasetID = formData.get("datasetID");
-    const usageNotes = formData.getAll("usageNotes");
+    const datasetID = formData.get("dataset-id");
+    const usageNotes = formData.getAll("usage-notes");
     const parsedUsageNotes = usageNotes.map(note => {
         return JSON.parse(note);
     })
@@ -39,8 +39,8 @@ export async function createDatasetEdition(currentstate, formData) {
         return JSON.parse(alert);
     })
     const datasetEdition = {
-        title: formData.get("editionID"),
-        quality_designation: formData.get("qualityDesingationValue"),
+        title: formData.get("edition-id"),
+        quality_designation: formData.get("quality-desingation-value"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],

@@ -9,8 +9,8 @@ export default function MultiContentFieldsInput(props) {
     const [contentTitle, setContentTitle] = useState(props.field?.title || "");
     const [contentBody, setContentBody] = useState(props.field?.note || "");
 
-    const inputID = props.id + "Input" + props.index;
-    const textareaID = props.id + "TextArea" + props.index;
+    const inputID = props.id + "-input-" + props.index;
+    const textareaID = props.id + "-textarea-" + props.index;
 
     return (
         <>

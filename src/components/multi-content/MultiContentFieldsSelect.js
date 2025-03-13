@@ -9,8 +9,8 @@ export default function MultiContentFieldsSelect(props) {
     const [contentType, setContentType] = useState(props.field?.type || "");
     const [contentBody, setContentBody] = useState(props.field?.note || "");
 
-    const selectID = props.id + "Select" + props.index;
-    const textareaID = props.id + "TextArea" + props.index;
+    const selectID = props.id + "-select-" + props.index;
+    const textareaID = props.id + "-textarea-" + props.index;
 
     return (
         <>

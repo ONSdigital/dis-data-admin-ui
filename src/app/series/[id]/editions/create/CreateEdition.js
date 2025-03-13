@@ -10,7 +10,7 @@ import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
-import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
+import { TextInput, Button, Select, HyperLinksList, Link } from "author-design-system-react";
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
@@ -43,22 +43,20 @@ export default function CreateEditionForm({ datasetID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>
-                                Form submitted successfully
-                            </p>
-                        </Panel> : ""
+                            <p>Dataset edition "{editionTitle}" created successfully. View new <a href={editionTitle}>edition.</a></p>
+                        </Panel> : null
                 }
                 {
                     formState.success == false && !formState.code ?    
                         <Panel classes="ons-u-mb-xl"title="There was a problem creating this dataset edition" variant="error">
                             <HyperLinksList itemsList={listOfErrors}/>
-                        </Panel> : ""
+                        </Panel> : null
                 }
                 {
                     formState.success == false && formState.code ?    
                         <Panel classes="ons-u-mb-xl" title="There was a problem creating this dataset edition" variant="error">
                             <p>An error occured when trying to create this dataset edition.</p>
-                        </Panel> : ""
+                        </Panel> : null
                 }
             </>
         )
@@ -71,14 +69,14 @@ export default function CreateEditionForm({ datasetID }) {
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
-                <input id="datasetID" name="datasetID" type="hidden" value={datasetID} />
-                <TextInput id="editionID" 
-                    name="editionID" 
+                <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
+                <TextInput id="edition-id" 
+                    name="edition-id" 
                     label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} 
-                    dataTestId="editionID"
+                    dataTestId="edition-id"
                     value={editionTitle}
                     onChange={e => setEditionTitle(e.target.value)}
-                    error={ (formState.errors && formState.errors.title) ? {id:'editionTitleError', text: formState.errors.title} : null}
+                    error={ (formState.errors && formState.errors.title) ? {id:'edition-title-error', text: formState.errors.title} : null}
                 />
 
                 <h2 className="ons-u-mt-xl">Dataset details</h2>
@@ -86,11 +84,11 @@ export default function CreateEditionForm({ datasetID }) {
                 <div className="ons-u-mb-l">
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
-                <input id="qualityDesingationValue" name="qualityDesingationValue" type="hidden" value={qualityDesingation} />
-                <Select id="qualityDesingation" 
+                <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
+                <Select id="quality-desingation" 
                     label={{text: "Quality designation", description: "Something about what quality designation means"}} 
                     onChange={e => setQualityDesingation(e)} 
-                    error={ (formState.errors && formState.errors.quality_designation) ? {id:'qualityDesignationError', text: formState.errors.quality_designation} : null}
+                    error={ (formState.errors && formState.errors.quality_designation) ? {id:'quality-designation-error', text: formState.errors.quality_designation} : null}
                     options={[
                         {
                             value:"",
@@ -116,10 +114,10 @@ export default function CreateEditionForm({ datasetID }) {
                     ]}
                 />
                 <h3 className="ons-u-mt-xl">Usage notes</h3>
-                <MultiContentItems contentItems={[{title: "test", note: "A test usage notes"}]} id="usageNotes" fieldType="input" buttonLabel="Add new usage note"></MultiContentItems>
+                <MultiContentItems id="usage-notes" fieldType="input" buttonLabel="Add new usage note" contentItems={[]}></MultiContentItems>
 
                 <h3 className="ons-u-mt-xl">Alerts</h3>
-                <MultiContentItems contentItems={[{type: "alert", note: "Correction notice test"}]} id="alerts" fieldType="select" buttonLabel="Add new alert"></MultiContentItems>
+                <MultiContentItems id="alerts" fieldType="select" buttonLabel="Add new alert" contentItems={[]}></MultiContentItems>
 
                 <h2 className="ons-u-mt-xl">Dataset file</h2>
                 <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
