@@ -1,4 +1,4 @@
-import { Field, Label, sanitiseString } from "author-design-system-react"
+import { Field, Label, sanitiseString } from "author-design-system-react";
 
 export default function TextArea(props) {
 
@@ -10,18 +10,18 @@ export default function TextArea(props) {
             <>
                 <Label
                 for={sanitisedId}
-                id={props.label.id}
-                text={props.label.text}
-                classes={props.label.classes}
-                description={props.label.description}
-                attributes={props.label.attributes}
+                id={props.label?.id}
+                text={props.label?.text}
+                classes={props.label?.classes}
+                description={props.label?.description}
+                attributes={props.label?.attributes}
                 accessiblePlaceholder={props.accessiblePlaceholder}
                 dataTestId={sanitisedDataTestId}
                 />
-                <textarea id={props.id} className="ons-input ons-input--textarea" name={props.name} value={props.value} rows="5" onChange={props.onChange}></textarea>
+                <textarea id={sanitisedId} className="ons-input ons-input--textarea" name={props.name} value={props.value} rows="5" onChange={props.onChange} data-testid={sanitisedDataTestId}></textarea>
             </>
-        )
-    }
+        );
+    };
 
     return (
         <Field
@@ -34,5 +34,5 @@ export default function TextArea(props) {
         >
         {renderTextArea()}
         </Field>
-    )
+    );
 };
