@@ -64,7 +64,7 @@ export default function CreateEditionForm({ datasetID }) {
 
     return (
         <>
-            <Hero hyperLink={{ text: `Back to ${datasetID} dataset series overview`, url: "sup" }} title={`Create a new dataset edition for ${datasetID}`} wide />     
+            <Hero hyperLink={{ text: `Back to ${datasetID} dataset series overview`, url: "../" }} title={`Create a new dataset edition for ${datasetID}`} wide />     
             { renderSuccessOrFailure() }      
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
