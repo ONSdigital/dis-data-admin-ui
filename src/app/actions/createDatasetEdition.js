@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import { cookies } from "next/headers";
 
@@ -23,8 +23,8 @@ const addUploadFileErrorMessage = (errors) => {
     if (errors.distributions) {
         errors.distributions = ["File upload is required"];
     }
-    return errors
-}
+    return errors;
+};
 
 export async function createDatasetEdition(currentstate, formData) {
     let actionResponse = {};
@@ -33,11 +33,11 @@ export async function createDatasetEdition(currentstate, formData) {
     const usageNotes = formData.getAll("usage-notes");
     const parsedUsageNotes = usageNotes.map(note => {
         return JSON.parse(note);
-    })
+    });
     const alerts = formData.getAll("alerts");
     const parsedAlerts = alerts.map(alert => {
         return JSON.parse(alert);
-    })
+    });
     const datasetEdition = {
         title: formData.get("edition-id"),
         quality_designation: formData.get("quality-desingation-value"),
@@ -49,14 +49,12 @@ export async function createDatasetEdition(currentstate, formData) {
         release_date: new Date().toISOString()
     };
 
-    console.log(datasetEdition);
-
-    const validationResult = editionSchema.safeParse(datasetEdition)
-    actionResponse.success = validationResult.success
+    const validationResult = editionSchema.safeParse(datasetEdition);
+    actionResponse.success = validationResult.success;
 
     if (!actionResponse.success) {
         actionResponse.errors = validationResult.error.flatten().fieldErrors;
-        actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors)
+        actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
         actionResponse.submission = datasetEdition;
     } else {
         const reqCfg = await SSRequestConfig(cookies);
