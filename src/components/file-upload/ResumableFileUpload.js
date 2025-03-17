@@ -58,7 +58,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     }, [id, uploadBaseURL]);
 
     const renderFileInput = () => {
-        return <TextInput id={id} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
+        return <TextInput id={id} dataTestId={id} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
     };
 
     const renderFileProgressBar = () => {
