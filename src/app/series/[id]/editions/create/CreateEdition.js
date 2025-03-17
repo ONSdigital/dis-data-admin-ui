@@ -128,7 +128,7 @@ export default function CreateEditionForm({ datasetID }) {
                     validationError={(formState.errors && formState.errors.distributions) ? {id:'dataset-upload-error', text: formState.errors.distributions} : null} />
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
+                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset edition</span></span>
                 </button>
             </form>
         </>
