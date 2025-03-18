@@ -10,7 +10,7 @@ import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
-import { TextInput, Button, Select, HyperLinksList, Link } from "author-design-system-react";
+import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
@@ -19,7 +19,7 @@ export default function CreateEditionForm({ datasetID }) {
 
     const appConfig = useContext(ConfigContext);
 
-    let listOfErrors = []
+    let listOfErrors = [];
     if (formState) {
         if (formState.errors){
             Object.values(formState.errors).map((error) => (
@@ -27,9 +27,9 @@ export default function CreateEditionForm({ datasetID }) {
                     ...listOfErrors,
                     {text: error}
                 ]
-            ))
+            ));
         } else if (formState.recentlySumbitted == true) {
-            formState.recentlySumbitted = false
+            formState.recentlySumbitted = false;
             // setTitle('')
             // setID('')
             // setDescription('')
@@ -43,7 +43,7 @@ export default function CreateEditionForm({ datasetID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>Dataset edition "{editionTitle}" created successfully. View new <a href={editionTitle}>edition.</a></p>
+                            <p>{`Dataset edition "${editionTitle}" created successfully. View new `}<a href={editionTitle}>edition.</a></p>
                         </Panel> : null
                 }
                 {
@@ -59,8 +59,8 @@ export default function CreateEditionForm({ datasetID }) {
                         </Panel> : null
                 }
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>
