@@ -31,12 +31,18 @@ export async function createDatasetEdition(currentstate, formData) {
 
     const datasetID = formData.get("dataset-id");
     const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = usageNotes.map(note => {
-        return JSON.parse(note);
+    const parsedUsageNotes = [];
+    usageNotes.map(note => {
+        if (note.title && note.note) {
+            parsedUsageNotes.push(JSON.parse(note));
+        }
     });
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = alerts.map(alert => {
-        return JSON.parse(alert);
+    const parsedAlerts = []
+    alerts.map(alert => {
+        if (alert.type && alert.description) {
+            parsedAlerts.push(JSON.parse(alert));
+        }
     });
     const datasetEdition = {
         title: formData.get("edition-id"),
