@@ -87,6 +87,7 @@ export default function CreateEditionForm({ datasetID }) {
                 <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
                 <Select id="quality-desingation" 
                     label={{text: "Quality designation", description: "Something about what quality designation means"}} 
+                    dataTestId="quality-desingation"
                     onChange={e => setQualityDesingation(e)} 
                     error={ (formState.errors && formState.errors.quality_designation) ? {id:'quality-designation-error', text: formState.errors.quality_designation} : null}
                     options={[
