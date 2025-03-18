@@ -55,7 +55,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL]);
+    }, [id, uploadBaseURL, validationError]);
 
     const renderFileInput = () => {
         return <TextInput id={id} dataTestId={`${id}-input`} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
