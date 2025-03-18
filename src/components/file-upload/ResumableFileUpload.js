@@ -58,7 +58,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     }, [id, uploadBaseURL]);
 
     const renderFileInput = () => {
-        return <TextInput id={id} dataTestId={id} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
+        return <TextInput id={id} dataTestId={`${id}-input`} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
     };
 
     const renderFileProgressBar = () => {
@@ -72,7 +72,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     
     return (
         <>
-            <input id={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
+            <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
             { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
