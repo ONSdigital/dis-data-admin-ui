@@ -17,8 +17,7 @@ app.get("/datasets", (req, res) => {
 });
 
 app.post("/datasets", (req, res) => {
-    if(req.body.id == 'test dup')
-    {
+    if(req.body.id == 'test dup'){
         res.send({
             status: 403
         })
@@ -43,6 +42,10 @@ app.get("/datasets/:id/editions/:editionID", (req, res) => {
 
 app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
     res.send(versions);
+});
+
+app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
+    res.send({status: 201});
 });
 
 app.listen(PORT, () => {
