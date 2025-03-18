@@ -38,7 +38,7 @@ export async function createDatasetEdition(currentstate, formData) {
         }
     });
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = []
+    const parsedAlerts = [];
     alerts.map(alert => {
         if (alert.type && alert.description) {
             parsedAlerts.push(JSON.parse(alert));
