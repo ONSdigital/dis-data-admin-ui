@@ -1,5 +1,3 @@
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
-
 import CreateEditionForm from "./CreateEdition";
 
 
