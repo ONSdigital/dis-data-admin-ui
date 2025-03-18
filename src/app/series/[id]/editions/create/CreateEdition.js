@@ -28,12 +28,6 @@ export default function CreateEditionForm({ datasetID }) {
                     {text: error}
                 ]
             ));
-        } else if (formState.recentlySumbitted == true) {
-            formState.recentlySumbitted = false;
-            // setTitle('')
-            // setID('')
-            // setDescription('')
-            // setContacts([])
         }
     }  
 

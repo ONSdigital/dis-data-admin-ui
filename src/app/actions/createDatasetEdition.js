@@ -68,11 +68,8 @@ export async function createDatasetEdition(currentstate, formData) {
             const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.title}/versions`, datasetEdition);
             if (data.status >= 400) {
                 actionResponse.success = false;
-                actionResponse.recentlySumbitted = false;
                 actionResponse.code = data.status;
-            } else {
-                actionResponse.recentlySumbitted = true;
-            }
+            } 
         } catch (err) {
             return err.toString();
         }
