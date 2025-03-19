@@ -12,6 +12,8 @@ import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
 import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
 
+import DOMPurify from "dompurify";
+
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
     const [editionTitle, setEditionTitle] = useState("");
@@ -37,7 +39,7 @@ export default function CreateEditionForm({ datasetID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>{`Dataset edition "${editionTitle}" created successfully. View new `}<a href={editionTitle}>edition.</a></p>
+                            <p>{`Dataset edition "${DOMPurify.sanitize(editionTitle)}" created successfully. View new `}<a href={DOMPurify.sanitize(editionTitle)}>edition.</a></p>
                         </Panel> : null
                 }
                 {
