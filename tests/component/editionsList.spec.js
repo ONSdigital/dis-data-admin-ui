@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 import { addValidAuthCookies } from "../utils/utils";
 
-test.describe('dataset seriesoverview/editions list page', () => {
+test.describe('Dataset series overview/editions list page', () => {
     test("renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
