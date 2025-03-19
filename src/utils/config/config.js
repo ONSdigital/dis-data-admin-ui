@@ -15,7 +15,7 @@ const getAPIRouterURL = (envVars) => {
 const getUploadBaseURL = (envVars) => {
     const envName = envVars.ENV_NAME;
     if (envName === "sandbox" || envName === "staging" || envName === "prod") {
-        return "";
+        return "/api/v1";
     } else {
         return getAPIRouterURL(envVars);
     }
