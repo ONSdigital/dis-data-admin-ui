@@ -17,7 +17,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
     
     const input = document.getElementById(elID);
     if (!input) {
-        return
+        return;
     };
     const uploadURL = uploadBaseURL + "/upload-new";
     const r = new Resumable({
