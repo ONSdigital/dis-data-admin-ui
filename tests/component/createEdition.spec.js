@@ -35,8 +35,14 @@ test.describe("Create edition page", () => {
         await page.getByTestId("select-quality-desingation").selectOption("official");
         await page.getByTestId("usage-notes-input-0").fill("Test usage notes");
         await page.getByTestId("usage-notes-textarea-0").fill("Something about usage notes");
+        await page.getByTestId("usage-notes-add-button").click();
+        await page.getByTestId("usage-notes-input-1").fill("Another test usage notes");
+        await page.getByTestId("usage-notes-textarea-1").fill("Another something about usage notes");
         await page.getByTestId("select-alerts-select-0").selectOption("correction");
         await page.getByTestId("alerts-textarea-0").fill("Something about a correction");
+        await page.getByTestId("alerts-add-button").click();
+        await page.getByTestId("select-alerts-select-1").selectOption("alert");
+        await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
         await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify({download_url: "test/file.csv"}); });
 
         await page.getByRole("button", { name: /Save new dataset edition/i }).click();
