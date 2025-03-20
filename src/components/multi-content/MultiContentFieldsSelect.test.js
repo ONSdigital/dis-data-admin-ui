@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import MultiContentFieldsSelect from './MultiContentFieldsSelect';
 
-describe("MultiContentItems", () => {
+describe("MultiContentItemsSelect", () => {
     it("renders correctly when type=input", () => {
         render(<MultiContentFieldsSelect id="multi-content-test" index={1}/>);
         const select = screen.getByTestId("multi-content-test-select-1");
