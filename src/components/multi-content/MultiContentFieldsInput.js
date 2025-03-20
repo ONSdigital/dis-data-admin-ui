@@ -13,7 +13,7 @@ export default function MultiContentFieldsInput(props) {
     const textareaID = props.id + "-textarea-" + props.index;
 
     return (
-        <>
+        <div className="ons-u-mb-m">
             <input id={props.id} name={props.id} type="hidden" value={JSON.stringify({title: contentTitle, note: contentBody})} />
             <TextInput
                 id={inputID}
@@ -37,6 +37,6 @@ export default function MultiContentFieldsInput(props) {
                 key={textareaID} 
                 onChange={e => setContentBody(e.target.value)}
             />
-        </>
+        </div>
     );
 };

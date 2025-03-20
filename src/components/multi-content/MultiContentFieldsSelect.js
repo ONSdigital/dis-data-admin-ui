@@ -13,7 +13,7 @@ export default function MultiContentFieldsSelect(props) {
     const textareaID = props.id + "-textarea-" + props.index;
 
     return (
-        <>
+        <div className="ons-u-mb-m">
             <input id={props.id} name={props.id} data-testid={props.id} type="hidden" value={JSON.stringify({type: contentType, description: contentBody})} />
             <Select id={selectID} dataTestId={selectID} name={selectID} label={{text: "Type"}} onChange={e => setContentType(e)} value={contentType}
                 options={[
@@ -42,6 +42,6 @@ export default function MultiContentFieldsSelect(props) {
                 key={textareaID} 
                 onChange={e => setContentBody(e.target.value)}
             />
-        </>
+        </div>
     );
 };

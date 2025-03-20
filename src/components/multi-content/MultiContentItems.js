@@ -37,7 +37,6 @@ export default function MultiContentItems(props) {
                     "secondary",
                     "small"
                 ]}
-                classes="ons-u-mt-s"
                 onClick={() => {
                     setItemsNumber(itemsNumber + 1);
                 }}
