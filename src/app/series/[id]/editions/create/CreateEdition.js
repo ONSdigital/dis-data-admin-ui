@@ -1,6 +1,10 @@
 "use client";
 
 import { useContext, useActionState, useState } from 'react';
+import DOMPurify from "dompurify";
+
+import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
+
 import { ConfigContext } from '@/context/context';
 
 import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
@@ -10,9 +14,6 @@ import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
-import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
-
-import DOMPurify from "dompurify";
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
