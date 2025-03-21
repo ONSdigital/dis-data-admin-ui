@@ -38,7 +38,7 @@ export default async function Dataset({ params }) {
         );
     };
 
-    const createURL = `${id}/create`;
+    const createURL = `${id}/editions/create`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     return (
         <>

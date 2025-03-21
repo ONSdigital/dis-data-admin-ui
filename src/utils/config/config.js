@@ -14,9 +14,11 @@ const getAPIRouterURL = (envVars) => {
  */
 const getUploadBaseURL = (envVars) => {
     const envName = envVars.ENV_NAME;
+    console.log("envName is:", envName, "envVars.ENV_NAME is:", envVars.ENV_NAME);
     if (envName === "sandbox" || envName === "staging" || envName === "prod") {
         return "/api/v1";
     } else {
+        console.log("NOT inside envName conditional. returning API_ROUTER_URL ");
         return getAPIRouterURL(envVars);
     }
 };
@@ -29,7 +31,7 @@ const getUploadBaseURL = (envVars) => {
 const getAppConfig = (envVars) => {
     const apiRouterURL = getAPIRouterURL(envVars);
     const uploadBaseURL = getUploadBaseURL(envVars);
-
+    console.log("uploadBaseURL is:", uploadBaseURL);
     return {
         apiRouterURL,
         uploadBaseURL

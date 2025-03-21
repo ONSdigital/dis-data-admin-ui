@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 import { addValidAuthCookies } from "../utils/utils";
 
-test.describe('dataset seriesoverview/editions list page', () => {
+test.describe('Dataset series overview/editions list page', () => {
     test("renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
@@ -16,7 +16,7 @@ test.describe('dataset seriesoverview/editions list page', () => {
         addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly');
         await page.getByRole('link', { name: 'Add new dataset edition' }).click();
-        await expect(page.url().toString()).toContain('series/mock-quarterly/create');
+        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/create');
     });
 
     test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {

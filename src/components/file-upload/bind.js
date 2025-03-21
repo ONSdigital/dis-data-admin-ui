@@ -11,7 +11,14 @@ const RESUMABLE_OPTIONS = {
 };
 
 const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
-    const input = document.getElementById(elementID);
+    // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
+    // by the <TextInput /> componeent from eq-author and there will be errors when trying to bind
+    const elID = elementID.toLowerCase();
+    
+    const input = document.getElementById(elID);
+    if (!input) {
+        return;
+    };
     const uploadURL = uploadBaseURL + "/upload-new";
     const r = new Resumable({
         target: uploadURL,
@@ -58,7 +65,12 @@ const onFileError = (message, handleError) => {
 };
 
 const onFileSuccess = (resumable, file, handleFileComplete) => {
-    handleFileComplete(`${resumable.opts.query.path}/${file.relativePath}`);
+    const fileInfo = {
+        download_url: `${resumable.opts.query.path}/${file.relativePath}`,
+        byte_size: file.size,
+        media_type: file.file.type
+    };
+    handleFileComplete(fileInfo);
 };
 
 export default bindFileUploadInput;
