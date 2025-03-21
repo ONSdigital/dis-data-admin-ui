@@ -30,19 +30,19 @@ describe("getUploadBaseURL", () => {
         expect(getUploadBaseURL(mockEnv)).toBe(mockEnv.API_ROUTER_URL);
     });
 
-    it("return an empty string if 'ENV_NAME' is set to 'sandbox'", () => {
+    it("return an API proxy url string if 'ENV_NAME' is set to 'sandbox'", () => {
         mockEnv.ENV_NAME = "sandbox";
-        expect(getUploadBaseURL(mockEnv)).toBe("");
+        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
     });
 
-    it("return an empty string if 'ENV_NAME' is set to 'staging'", () => {
+    it("return an API proxy url string if 'ENV_NAME' is set to 'staging'", () => {
         mockEnv.ENV_NAME = "staging";
-        expect(getUploadBaseURL(mockEnv)).toBe("");
+        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
     });
 
-    it("return an empty string if 'ENV_NAME' is set to 'prod'", () => {
+    it("return an API proxy url string if 'ENV_NAME' is set to 'prod'", () => {
         mockEnv.ENV_NAME = "prod";
-        expect(getUploadBaseURL(mockEnv)).toBe("");
+        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
     });
 });
 
