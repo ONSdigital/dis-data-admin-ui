@@ -7,7 +7,8 @@ import { httpPost, SSRequestConfig } from "@/utils/request/request";
 import { z } from "zod";
  
 const editionSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
+    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition_title: z.string().min(1, { message: "Edition title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
     distributions: z.array(z.object({
         download_url: z.string(),
@@ -45,7 +46,8 @@ export async function createDatasetEdition(currentstate, formData) {
         }
     });
     const datasetEdition = {
-        title: formData.get("edition-id"),
+        edition: formData.get("edition-id"),
+        edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-desingation-value"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
@@ -65,7 +67,7 @@ export async function createDatasetEdition(currentstate, formData) {
     } else {
         const reqCfg = await SSRequestConfig(cookies);
         try {
-            const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.title}/versions`, datasetEdition);
+            const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.edition}/versions`, datasetEdition);
             if (data.status >= 400) {
                 actionResponse.success = false;
                 actionResponse.code = data.status;

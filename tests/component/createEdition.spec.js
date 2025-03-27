@@ -32,6 +32,7 @@ test.describe("Create edition page", () => {
 
         await page.goto("./series/mock-quarterly/editions/create");
         await page.getByTestId("edition-id").fill("test-id");
+        await page.getByTestId("edition-title").fill("Test title");
         await page.getByTestId("select-quality-desingation").selectOption("official");
         await page.getByTestId("usage-notes-input-0").fill("Test usage notes");
         await page.getByTestId("usage-notes-textarea-0").fill("Something about usage notes");
@@ -58,11 +59,13 @@ test.describe("Create edition page", () => {
         await page.getByRole("button", { name: /Save new dataset edition/i }).click();
 
         await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
-        await expect(page.getByLabel("There was a problem").getByText("Title is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Edition ID is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Quality designation is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("File upload is required")).toBeVisible();
 
-        await expect(page.getByTestId("field-edition-id-error").getByText("Title is required")).toBeVisible();
+        await expect(page.getByTestId("field-edition-id-error").getByText("Edition ID is required")).toBeVisible();
+        await expect(page.getByTestId("field-edition-title-error").getByText("Edition title is required")).toBeVisible();  
         await expect(page.getByTestId("quality-desingation-error").getByText("Quality designation is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-upload-input-error").getByText("File upload is required")).toBeVisible();
     });

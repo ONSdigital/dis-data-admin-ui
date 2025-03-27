@@ -17,6 +17,7 @@ import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
+    const [edition, setEdition] = useState("");
     const [editionTitle, setEditionTitle] = useState("");
     const [qualityDesingation, setQualityDesingation] = useState("");
 
@@ -40,7 +41,7 @@ export default function CreateEditionForm({ datasetID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>{`Dataset edition "${DOMPurify.sanitize(editionTitle)}" created successfully. View new `}<a href={DOMPurify.sanitize(editionTitle)}>edition.</a></p>
+                            <p>{`Dataset edition "${DOMPurify.sanitize(edition)}" created successfully. View new `}<a href={DOMPurify.sanitize(edition)}>edition.</a></p>
                         </Panel> : null
                 }
                 {
@@ -69,11 +70,20 @@ export default function CreateEditionForm({ datasetID }) {
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <TextInput id="edition-id" 
                     name="edition-id" 
-                    label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} 
+                    label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
                     dataTestId="edition-id"
+                    value={edition}
+                    onChange={e => setEdition(e.target.value)}
+                    error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
+                />
+
+                <TextInput id="edition-title" 
+                    name="edition-title" 
+                    label={{text: `Edition title`, description: `E.g "January 2025" or "Time series"`}} 
+                    dataTestId="edition-title"
                     value={editionTitle}
                     onChange={e => setEditionTitle(e.target.value)}
-                    error={ (formState.errors && formState.errors.title) ? {id:'edition-title-error', text: formState.errors.title} : null}
+                    error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
                 />
 
                 <h2 className="ons-u-mt-xl">Dataset details</h2>
