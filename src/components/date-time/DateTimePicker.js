@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DatesInput, Fieldset, TextInput, sanitiseString } from "author-design-system-react";
+import { Fieldset, TextInput, sanitiseString } from "author-design-system-react";
 
 export default function DateTimePicker(props) {
     const [day, setDay] = useState("");
@@ -98,9 +98,8 @@ export default function DateTimePicker(props) {
                 dataTestId={`${sanitisedDataTestId}-minutes`}
             />
         </div>
-    )
+    );
 
-    console.log(props.errors)
     return (
         <div className="ons-u-mb-l">
             <Fieldset
