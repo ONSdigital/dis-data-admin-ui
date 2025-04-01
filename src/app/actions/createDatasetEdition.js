@@ -38,11 +38,10 @@ const mergeDateTimeErrors = (errors) => {
         return;
     } 
     if (errors.release_day || errors.release_month || errors.release_year || errors.release_hour || errors.release_minutes) {
-        console.log("we're in here")
         errors.release_date_time = ["A release time and date is required"];
     }
     return errors;
-}
+};
 
 export async function createDatasetEdition(currentstate, formData) {
     let actionResponse = {};
@@ -88,7 +87,7 @@ export async function createDatasetEdition(currentstate, formData) {
         return actionResponse;
     } 
 
-    datasetEdition.release_date =  new Date(datasetEdition.release_year, datasetEdition.release_month - 1, datasetEdition.release_day, datasetEdition.release_hour, datasetEdition.release_minutes).toISOString()
+    datasetEdition.release_date =  new Date(datasetEdition.release_year, datasetEdition.release_month - 1, datasetEdition.release_day, datasetEdition.release_hour, datasetEdition.release_minutes).toISOString();
 
     const reqCfg = await SSRequestConfig(cookies);
     try {
