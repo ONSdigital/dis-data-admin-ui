@@ -92,6 +92,7 @@ export async function createDatasetEdition(currentstate, formData) {
     const reqCfg = await SSRequestConfig(cookies);
     try {
         const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.edition}/versions`, datasetEdition);
+        actionResponse.success = true;
         if (data.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = data.status;
