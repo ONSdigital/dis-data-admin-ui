@@ -93,7 +93,7 @@ export default function CreateEditionForm({ datasetID }) {
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
 
-                <DateTimePicker id="release-date" errors={formState.errors}/>
+                <DateTimePicker id="release-date" dataTestId="release-date" errors={formState.errors}/>
 
                 <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
                 <Select id="quality-desingation" 
