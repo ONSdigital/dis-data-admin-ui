@@ -42,11 +42,11 @@ const setActiveNavItem = (currentPath) => {
  * @param  {string} currentPath - path of current page
  * @return {object} - mainLayoutProps from design system
  */
-const getLayoutProps = (currentPath) => {
+const getLayoutProps = (currentPath, username) => {
     const layout = {
         text: HEADER_TITLE,
         me: {
-            displayName: 'User 01',
+            displayName: username,
         },
         signOut: () => { logout(); },
         headerConfig: {
