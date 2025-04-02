@@ -8,9 +8,9 @@ import { ConfigContext } from '@/context/context';
 
 import { getLayoutProps } from "./layoutSetup";
 
-export default function Layout({ appConfig, children }) {
+export default function Layout({ appConfig, username, children }) {
     const currentPath = usePathname();
-    const mainLayoutProps = getLayoutProps(currentPath);
+    const mainLayoutProps = getLayoutProps(currentPath, username);
     return (
         <>  
             <ConfigContext.Provider value={appConfig}>
