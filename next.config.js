@@ -4,8 +4,7 @@ module.exports = {
     basePath: "/data-admin",
     experimental: {
         serverActions: {
-          allowedOrigins: ['publishing.dp.aws.onsdigital.uk'],
-          allowedOrigins: ['publishing.dp-staging.aws.onsdigital.uk']
+          allowedOrigins: ['publishing.dp.aws.onsdigital.uk', 'publishing.dp-staging.aws.onsdigital.uk'],
         },
       },
 };
