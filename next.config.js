@@ -5,6 +5,7 @@ module.exports = {
     experimental: {
         serverActions: {
           allowedOrigins: ['publishing.dp.aws.onsdigital.uk'],
+          allowedOrigins: ['publishing.dp-staging.aws.onsdigital.uk']
         },
       },
 };
