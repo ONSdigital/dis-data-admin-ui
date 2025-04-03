@@ -104,8 +104,8 @@ export default function DateTimePicker(props) {
         <div className="ons-u-mb-l">
             <Fieldset
                 id={sanitisedId}
-                legend="Release date and time"
-                description="For example, 31 3 1980"
+                legend={props.legend}
+                description={props.description}
                 dataTestId={`fieldset-${sanitisedDataTestId}`}
                 error={(props.errors && props.errors.release_date_time) ? {id:'release-date-time-error', text: props.errors.release_date_time} : null} 
             >
