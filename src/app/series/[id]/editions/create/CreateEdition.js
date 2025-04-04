@@ -13,10 +13,12 @@ import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
+import DateTimePicker from '@/components/date-time/DateTimePicker';
 
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
+    const [edition, setEdition] = useState("");
     const [editionTitle, setEditionTitle] = useState("");
     const [qualityDesingation, setQualityDesingation] = useState("");
 
@@ -40,7 +42,7 @@ export default function CreateEditionForm({ datasetID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>{`Dataset edition "${DOMPurify.sanitize(editionTitle)}" created successfully. View new `}<a href={DOMPurify.sanitize(editionTitle)}>edition.</a></p>
+                            <p>{`Dataset edition "${DOMPurify.sanitize(edition)}" created successfully. View new `}<a href={DOMPurify.sanitize(edition)}>edition.</a></p>
                         </Panel> : null
                 }
                 {
@@ -69,18 +71,30 @@ export default function CreateEditionForm({ datasetID }) {
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <TextInput id="edition-id" 
                     name="edition-id" 
-                    label={{text: `Edition title`, description: `E.g "January-2025" or "time-series"`}} 
+                    label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
                     dataTestId="edition-id"
-                    value={editionTitle}
-                    onChange={e => setEditionTitle(e.target.value)}
-                    error={ (formState.errors && formState.errors.title) ? {id:'edition-title-error', text: formState.errors.title} : null}
+                    value={edition}
+                    onChange={e => setEdition(e.target.value)}
+                    error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
                 />
 
-                <h2 className="ons-u-mt-xl">Dataset details</h2>
+                <TextInput id="edition-title" 
+                    name="edition-title" 
+                    label={{text: `Edition title`, description: `E.g "January 2025" or "Time series"`}} 
+                    dataTestId="edition-title"
+                    value={editionTitle}
+                    onChange={e => setEditionTitle(e.target.value)}
+                    error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
+                />
+
+                <h2 className="ons-u-mt-xl">Dataset version details</h2>
                 <p>The information in these fields may be copied from the most recent version.</p>
                 <div className="ons-u-mb-l">
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
+
+                <DateTimePicker id="release-date" dataTestId="release-date" legend="Release date and time" description="For example, 31 3 1980" errors={formState.errors}/>
+
                 <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
                 <Select id="quality-desingation" 
                     label={{text: "Quality designation", description: "Something about what quality designation means"}} 

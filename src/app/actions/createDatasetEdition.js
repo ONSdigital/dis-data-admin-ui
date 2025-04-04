@@ -7,8 +7,14 @@ import { httpPost, SSRequestConfig } from "@/utils/request/request";
 import { z } from "zod";
  
 const editionSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
+    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition_title: z.string().min(1, { message: "Edition title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
+    release_day: z.string().min(1, { message: "Day is required" }),
+    release_month: z.string().min(1, { message: "Month is required" }),
+    release_year: z.string().min(1, { message: "Year is required" }),
+    release_hour: z.string().min(1, { message: "Hour is required" }),
+    release_minutes: z.string().min(1, { message: "Minutes are required" }),
     distributions: z.array(z.object({
         download_url: z.string(),
     })).min(1, { message: "A file upload is required" })
@@ -22,6 +28,17 @@ const addUploadFileErrorMessage = (errors) => {
     } 
     if (errors.distributions) {
         errors.distributions = ["File upload is required"];
+    }
+    return errors;
+};
+
+// check if any release date or time errors exists and merge them into one for time and date fieldset
+const mergeDateTimeErrors = (errors) => {
+    if (!errors) {
+        return;
+    } 
+    if (errors.release_day || errors.release_month || errors.release_year || errors.release_hour || errors.release_minutes) {
+        errors.release_date_time = ["A release time and date is required"];
     }
     return errors;
 };
@@ -45,34 +62,44 @@ export async function createDatasetEdition(currentstate, formData) {
         }
     });
     const datasetEdition = {
-        title: formData.get("edition-id"),
+        edition: formData.get("edition-id"),
+        edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-desingation-value"),
+        release_day: formData.get("release-date-day"),
+        release_month: formData.get("release-date-month"),
+        release_year: formData.get("release-date-year"),
+        release_hour: formData.get("release-date-hour"),
+        release_minutes: formData.get("release-date-minutes"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],
-        // hardcoded date until a date/time picker is built or we get
-        // date/time from scheduling service/CMS
-        release_date: new Date().toISOString()
+        release_date: null,
     };
 
-    const validationResult = editionSchema.safeParse(datasetEdition);
-    actionResponse.success = validationResult.success;
+    const validation = editionSchema.safeParse(datasetEdition);
 
-    if (!actionResponse.success) {
-        actionResponse.errors = validationResult.error.flatten().fieldErrors;
+    if (!validation.success) {
+        actionResponse.success = validation.success;
+        actionResponse.errors = validation.error.flatten().fieldErrors;
         actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
+        actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
         actionResponse.submission = datasetEdition;
-    } else {
-        const reqCfg = await SSRequestConfig(cookies);
-        try {
-            const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.title}/versions`, datasetEdition);
-            if (data.status >= 400) {
-                actionResponse.success = false;
-                actionResponse.code = data.status;
-            } 
-        } catch (err) {
-            return err.toString();
-        }
+        return actionResponse;
+    } 
+
+    datasetEdition.release_date =  new Date(datasetEdition.release_year, datasetEdition.release_month - 1, datasetEdition.release_day, datasetEdition.release_hour, datasetEdition.release_minutes).toISOString();
+
+    const reqCfg = await SSRequestConfig(cookies);
+    try {
+        const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${datasetEdition.edition}/versions`, datasetEdition);
+        actionResponse.success = true;
+        if (data.status >= 400) {
+            actionResponse.success = false;
+            actionResponse.code = data.status;
+        } 
+    } catch (err) {
+        return err.toString();
     }
+
     return actionResponse;
 }
