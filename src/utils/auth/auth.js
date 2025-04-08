@@ -29,13 +29,22 @@ const getLoginURLWithRedirect = (redirectPath) => {
 };
 
 /**
+ * Decodes JWT
+ * @param  {JWT} token - JWT cookie value
+ * @return {object}
+ */
+const decodeToken = (token) => {
+    return jwtDecode(token);
+}
+
+/**
  * Decodes JWT and validates
  * @param  {JWT} jwt - JWT cookie value
  * @return {boolean}
  */
 const validateCookie = (token) => {
     try {
-        const cookie = jwtDecode(token);
+        const cookie = decodeToken(token);
         if (cookie?.exp * millisecondsMultiplier < Date.now()) {
             return false;
         }
@@ -46,4 +55,14 @@ const validateCookie = (token) => {
     }
 };
 
-export { logout, getLoginURLWithRedirect, validateCookie };
+const getUserName = (token) => {
+    try {
+        const cookie = decodeToken(token);
+        return cookie.given_name + " " + cookie.family_name;
+    } catch (error) {
+        logError("error getting user name from token", null, null, error);
+        return null;
+    }
+}
+
+export { logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName };
