@@ -57,13 +57,6 @@ export default async function Dataset({ params }) {
                         <div className="ons-grid__col ons-col-6@m">
                             { renderVersionsList() }
                         </div>
-                        <div className="ons-grid__col ons-col-6@m ">
-                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
-                            <p data-testid="id-field">{dataset.id}</p>
-
-                            <h2 className="ons-u-mt-m@xxs@m">Summary</h2>
-                            <p data-testid="description-field">{dataset.description}</p>
-                        </div>
                     </div>
                 </>
             : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
