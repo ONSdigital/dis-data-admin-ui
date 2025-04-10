@@ -45,9 +45,9 @@ export default async function Dataset({ params }) {
             );
         };
 
-    const createURL = `${id}/editions/create`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const edition = editionResp?.current || editionResp?.next || editionResp;
+    const createURL = `${edition.edition}/versions/create`;
     return (
         <>
             { !datasetError ? 
