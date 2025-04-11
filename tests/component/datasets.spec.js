@@ -55,7 +55,9 @@ test.describe('create', () => {
         await page.goto('./series/create')
         await page.getByLabel('Title').fill('test title');
         await page.getByLabel('ID', {exact: true}).fill('test ID');
-        await page.getByTestId('field-datasetseriesdescription').getByRole('textbox').fill('test description');
+        await page.getByLabel('Topics').selectOption('2945');
+        await page.getByRole('button', { name: /Add Topic/i }).click();
+        await page.getByTestId('field-dataset-series-description').getByRole('textbox').fill('test description');
         await page.getByLabel('Name').fill('test name');
         await page.getByLabel('Email').fill('test-email@test.com');
         await page.getByRole('button', { name: /Add contact/i }).click();
@@ -77,10 +79,10 @@ test.describe('create', () => {
         await expect(page.getByLabel('There was a problem').getByText('Description is required')).toBeVisible();
         await expect(page.getByLabel('There was a problem').getByText('Contact is required')).toBeVisible();
 
-        await expect(page.getByTestId('field-datasetseriestitle-error').getByText('Title is required')).toBeVisible();
-        await expect(page.getByTestId('field-datasetseriesid-error').getByText('ID is required')).toBeVisible();
-        await expect(page.getByTestId('field-datasetseriesdescription-error').getByText('Description is required')).toBeVisible();
-        await expect(page.getByTestId('field-datasetseriescontacts-error').getByText('Contact is required')).toBeVisible();
+        await expect(page.getByTestId('field-dataset-series-title-error').getByText('Title is required')).toBeVisible();
+        await expect(page.getByTestId('field-dataset-series-id-error').getByText('ID is required')).toBeVisible();
+        await expect(page.getByTestId('field-dataset-series-description-error').getByText('Description is required')).toBeVisible();
+        await expect(page.getByTestId('field-dataset-series-contacts-error').getByText('Contact is required')).toBeVisible();
     });
 
     test("Show error on invalid email", async ({ page, context }) => {
@@ -90,7 +92,7 @@ test.describe('create', () => {
 
         await page.getByLabel('Email').fill('test-email');
         await page.getByRole('button', { name: /Add contact/i }).click();
-        await expect(page.getByTestId('field-datasetseriescontactemail-error').getByText('Invalid email')).toBeVisible();
+        await expect(page.getByTestId('field-dataset-series-contact-email-error').getByText('Invalid email')).toBeVisible();
     });
 
     test("Does not allow duplicate dataset series to be created", async ({ page, context }) => {
@@ -99,7 +101,9 @@ test.describe('create', () => {
         await page.goto('./series/create')
         await page.getByLabel('Title').fill('test title');
         await page.getByLabel('ID', {exact: true}).fill('test dup');
-        await page.getByTestId('field-datasetseriesdescription').getByRole('textbox').fill('test description');
+        await page.getByLabel('Topics').selectOption('2945');
+        await page.getByRole('button', { name: /Add Topic/i }).click();
+        await page.getByTestId('field-dataset-series-description').getByRole('textbox').fill('test description');
         await page.getByLabel('Name').fill('test name');
         await page.getByLabel('Email').fill('tes-email@test.com');
         await page.getByRole('button', { name: /Add contact/i }).click();

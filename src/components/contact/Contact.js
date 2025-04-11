@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
 
-import { TextInput } from "author-design-system-react";
-import { Button } from "author-design-system-react";
-import { Field } from 'author-design-system-react';
+import { TextInput, Field, Button } from "author-design-system-react";
 
 export default function Contact({contacts, setContacts, contactsError}) {
     const [contactName, setContactName] = useState('');
@@ -15,105 +13,105 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const renderContactList = () => {
         return (
             <>
-            { contacts ?  
-                <ul className="ons-document-list ons-u-mb-l">
-                {contacts.map((contact) => (
-                    <li key={contact.email}>
-                        <div className="ons-document-list__item-content">
-                            <div className='ons-container'>
-                                <div className="ons-grid">
-                                    <div className="ons-grid__col ons-col-3@m">
-                                        <span className="ons-u-fw">{contact.name}</span>
+                { contacts ?  
+                    <ul className="ons-document-list ons-u-mb-l">
+                    {contacts.map((contact) => (
+                        <li key={contact.email}>
+                            <div className="ons-document-list__item-content">
+                                <div className='ons-container'>
+                                    <div className="ons-grid">
+                                        <div className="ons-grid__col ons-col-3@m">
+                                            <span className="ons-u-fw">{contact.name}</span>
+                                        </div>
+                                        <div className="ons-grid__col ons-col-3@m">
+                                            <span className="ons-u-fw">{contact.email}</span>          
+                                        </div>
+                                        <div className="ons-grid__col ons-col-2@m">
+                                            <Button
+                                                dataTestId="datasetSeriesRemoveContactButton"
+                                                id="datasetSeriesRemoveContactButton"
+                                                text="Remove"
+                                                variants={[
+                                                    'tertiary',
+                                                    'small'
+                                                ]}
+                                                onClick={() => {
+                                                    setContacts(
+                                                        contacts.filter(c =>
+                                                            c.email !== contact.email
+                                                        )
+                                                    )
+                                                }}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="ons-grid__col ons-col-3@m">
-                                        <span className="ons-u-fw">{contact.email}</span>          
-                                    </div>
-                                    <div className="ons-grid__col ons-col-2@m">
-                                        <Button
-                                        dataTestId="datasetSeriesRemoveContactButton"
-                                        id="datasetSeriesRemoveContactButton"
-                                        text="Remove"
-                                        variants={[
-                                            'tertiary',
-                                            'small'
-                                        ]}
-                                        onClick={() => {
-                                            setContacts(
-                                                contacts.filter(c =>
-                                                    c.email !== contact.email
-                                                )
-                                            )
-                                        }}
-                                        />
-                                    </div>
-                                </div>
-                            </div>      
-                        </div>
-                    </li>
-                ))}
-                </ul> : ""}
+                                </div>      
+                            </div>
+                        </li>
+                    ))}
+                    </ul> : null}
             </>
         )
     }
 
     return (
         <>
-            <Field dataTestId="field-datasetseriescontacts" error={contactsError ? {id:'dataSeriesContactsError', text: contactsError} : undefined}>
-            <h2>Contacts</h2>
-                <input id="datasetSeriesContacts" type="hidden" name="datasetSeriesContacts" value={JSON.stringify(contacts)} />
+            <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:'dataset-series-contacts-error', text: contactsError} : null}>
+                <h2>Contacts</h2>
+                <input id="dataset-series-contacts" type="hidden" name="dataset-series-contacts" value={JSON.stringify(contacts)} />
                 {renderContactList()}
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-5@m">
                             <TextInput
-                            id="datasetSeriesContactName"
-                            dataTestId="datasetSeriesContactName"
-                            name="datasetSeriesContactName"
-                            label={{
-                                text: 'Name: ',
-                                inline: true,
-                            }}
-                            value={contactName}
-                            onChange={e => setContactName(e.target.value)}
+                                id="dataset-series-contact-name"
+                                dataTestId="dataset-series-contact-name"
+                                name="dataset-series-contact-name"
+                                label={{
+                                    text: 'Name: ',
+                                    inline: true,
+                                }}
+                                value={contactName}
+                                onChange={e => setContactName(e.target.value)}
                             />
                         </div>
                         <div className="ons-grid__col ons-col-5@m ">
                             <TextInput
-                            id="datasetSeriesContactEmail"
-                            dataTestId="datasetSeriesContactEmail"
-                            name="datasetSeriesContactEmail"
-                            label={{
-                                text: 'Email: ',
-                                inline: true
-                            }}
-                            value={contactEmail}
-                            onChange={e => setContactEmail(e.target.value)}
-                            error={ (contactEmailError) ? {id:'dataSeriesEmailError', text: 'Invalid email'} : undefined}
+                                id="dataset-series-contact-email"
+                                dataTestId="dataset-series-contact-email"
+                                name="dataset-series-contact-email"
+                                label={{
+                                    text: 'Email: ',
+                                    inline: true
+                                }}
+                                value={contactEmail}
+                                onChange={e => setContactEmail(e.target.value)}
+                                error={ (contactEmailError) ? {id:'dataSeriesEmailError', text: 'Invalid email'} : null}
                             />
                         </div>
                         <div className="ons-grid__col ons-col-2@m ">
                             <Button
-                            dataTestId="datasetSeriesAddContactButton"
-                            id="datasetSeriesAddContactButton"
-                            text="Add contact"
-                            variants={[
-                                'secondary',
-                                'small'
-                            ]}
-                            onClick={() => {
-                                if(!isEmail(contactEmail)){
-                                    setContactEmailError(true)
-                                } else {
-                                    setContacts([
-                                    ...contacts,
-                                    { name: contactName, email: contactEmail }
-                                    ]);
+                                dataTestId="dataset-series-add-contact-button"
+                                id="dataset-series-add-contact-button"
+                                text="Add contact"
+                                variants={[
+                                    'secondary',
+                                    'small'
+                                ]}
+                                onClick={() => {
+                                    if(!isEmail(contactEmail)){
+                                        setContactEmailError(true)
+                                    } else {
+                                        setContacts([
+                                        ...contacts,
+                                        { name: contactName, email: contactEmail }
+                                        ]);
 
-                                    setContactName('')
-                                    setContactEmail('')
-                                    setContactEmailError('')
-                                }
-                            }}
+                                        setContactName('')
+                                        setContactEmail('')
+                                        setContactEmailError('')
+                                    }
+                                }}
                             />
                         </div>
                     </div>

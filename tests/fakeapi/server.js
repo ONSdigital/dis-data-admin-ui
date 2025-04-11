@@ -5,6 +5,7 @@ import { dataset } from "../mocks/dataset.mjs";
 import { editions } from "../mocks/editions.mjs";
 import { edition } from "../mocks/edition.mjs";
 import { versions } from "../mocks/versions.mjs";
+import { topics } from "../mocks/topics.mjs";
 
 
 const app = express();
@@ -46,6 +47,10 @@ app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
     res.send({status: 201});
+});
+
+app.get("/topics", (req, res) => {
+    res.send(topics);
 });
 
 app.listen(PORT, () => {

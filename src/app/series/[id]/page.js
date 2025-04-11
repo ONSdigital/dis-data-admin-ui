@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
+import Link from 'next/link'
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
-
 import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
@@ -39,6 +39,7 @@ export default async function Dataset({ params }) {
     };
 
     const createURL = `${id}/editions/create`;
+    const editURL = `/series/${id}/edit`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     return (
         <>
@@ -55,6 +56,7 @@ export default async function Dataset({ params }) {
 
                             <h2 className="ons-u-mt-m@xxs@m">Summary</h2>
                             <p data-testid="description-field">{dataset.description}</p>
+                            <Link href={editURL}>Edit Metadata</Link>
                         </div>
                     </div>
                 </>

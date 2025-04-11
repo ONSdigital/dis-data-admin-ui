@@ -32,7 +32,7 @@ describe("Contact", () => {
 
     it("onChange handler updates text input state", () => {
         render(<Contact/>);
-        const contactName = screen.getByTestId("datasetseriescontactname");
+        const contactName = screen.getByTestId("dataset-series-contact-name");
         fireEvent.change(contactName, {target: {value: "test name"}});
         expect(contactName.value).toBe("test name");
     });
@@ -43,9 +43,9 @@ describe("Contact", () => {
 
         render(<Contact  contacts={[]} setContacts={handleClick}/>);
 
-        const contactName = screen.getByTestId("datasetseriescontactname");
-        const contactEmail = screen.getByTestId("datasetseriescontactemail")
-        const button = screen.getByTestId("datasetseriesaddcontactbutton");
+        const contactName = screen.getByTestId("dataset-series-contact-name");
+        const contactEmail = screen.getByTestId("dataset-series-contact-email")
+        const button = screen.getByTestId("dataset-series-add-contact-button");
 
         fireEvent.change(contactName, {target: {value: "test name"}});
         fireEvent.change(contactEmail, {target: {value: "testemail@test.com"}});
