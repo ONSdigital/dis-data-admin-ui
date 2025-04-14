@@ -9,7 +9,7 @@ import { mapListItems } from "./mapper";
 
 export default async function Series() {
     const reqCfg = await SSRequestConfig(cookies);
-    const data = await httpGet(reqCfg, "/datasets");
+    const data = await httpGet(reqCfg, "/datasets?type=static");
 
     let error = false;
     const listItems = [];
