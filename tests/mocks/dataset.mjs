@@ -7,5 +7,14 @@ export const dataset = {
     release_frequency: 'Quarterly',
     state: 'published',
     title: 'Mock Dataset',
-    unit_of_measure: 'Percentage'
+    unit_of_measure: 'Percentage',
+    contacts: [
+        {
+            name: "test name",
+            email: "testemail@testemail.com"
+        }
+    ],
+    topics: [
+        "2945"
+    ]
 }

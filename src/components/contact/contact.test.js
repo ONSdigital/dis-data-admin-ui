@@ -27,7 +27,6 @@ describe("Contact", () => {
 
         const list = screen.getAllByRole("listitem")
         expect(list.length).toBe(2)
-
     })
 
     it("onChange handler updates text input state", () => {
@@ -53,5 +52,4 @@ describe("Contact", () => {
 
         expect(handleClick).toHaveBeenCalledTimes(1)
     });
-
 });

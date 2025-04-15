@@ -97,7 +97,7 @@ export default function seriesForm({currentTitle = "", currentID = "", currentDe
                         error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
-                    /> : <input id="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />
+                    /> : <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />
                 }
                 <Topics 
                     listOfTopics={listOfTopics} 
@@ -114,7 +114,8 @@ export default function seriesForm({currentTitle = "", currentID = "", currentDe
                     />
                     <textarea
                         value={description}
-                        onChange={e => setDescription(e.target.value)} 
+                        onChange={e => setDescription(e.target.value)}
+                        data-testid="dataset-series-description" 
                         name="dataset-series-description" 
                         rows={5} 
                         cols={80} 

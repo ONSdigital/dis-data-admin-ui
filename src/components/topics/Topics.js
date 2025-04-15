@@ -45,7 +45,7 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
                 { topicList ?  
                     <ul className="ons-document-list ons-u-mt-s">
                     {topicList.map((topic) => (
-                        <li key={topic.id}>
+                        <li data-testid="dataset-series-topics-list-item" key={topic.id}>
                             <div className="ons-document-list__item-content">
                                 <div className="ons-grid">
                                     <div className="ons-grid__col ons-col-3@m">
@@ -93,7 +93,8 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
                         <div className="ons-grid__col ons-col-4@m">
                             <label className="ons-label" htmlFor="dataset-series-topic">Topics</label>
                             <select
-                                id="dataset-series-topic" 
+                                id="dataset-series-topic"
+                                data-testid="dataset-series-topics-select"
                                 className="ons-input ons-input--select"
                                 defaultValue=""
                                 onChange={e => {
@@ -102,14 +103,14 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
                                 }}
                             >
                             {topicSelectOptions.map((topic) => (
-                                <option key={topic.value} value={topic.value}>{topic.text}</option>
+                                <option data-testid="dataset-series-topics-option" key={topic.value} value={topic.value}>{topic.text}</option>
                             ))}
                             </select>
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-u-mt-l">
                             <Button
-                                dataTestId="dataset-series-add-topic-button"
                                 id="dataset-series-add-topic-button"
+                                dataTestId="dataset-series-add-topic-button"
                                 text="Add Topic"
                                 variants={[
                                     'secondary',
