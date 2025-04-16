@@ -75,6 +75,7 @@ export default function seriesForm({currentTitle = "", currentID = "", currentDe
             <h2 className="ons-u-mt-m">Series Details</h2>
             <form action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value={"static"} />
+                { currentID != "" ? <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} /> : null}
                 <TextInput 
                     id="dataset-series-title"
                     dataTestId="dataset-series-title"
@@ -97,7 +98,7 @@ export default function seriesForm({currentTitle = "", currentID = "", currentDe
                         error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
-                    /> : <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />
+                    /> : null
                 }
                 <Topics 
                     listOfTopics={listOfTopics} 

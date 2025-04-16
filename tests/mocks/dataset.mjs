@@ -16,5 +16,19 @@ export const dataset = {
     ],
     topics: [
         "2945"
-    ]
+    ],
+    next : {
+        description: 'This is a mock dataset test description',
+        id: 'mock-quarterly',
+        title: 'Mock Dataset',
+        contacts: [
+            {
+                name: "test name",
+                email: "testemail@testemail.com"
+            }
+        ],
+        topics: [
+            "2945"
+        ]
+    }
 }

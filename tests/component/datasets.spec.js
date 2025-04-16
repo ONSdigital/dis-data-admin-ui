@@ -112,3 +112,34 @@ test.describe('create', () => {
         await expect(page.getByText('This datasetseries already exists')).toBeVisible();
     });
 });
+
+test.describe('edit', () => {
+    test("Route from dataset series id page to edit page", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto('./series')
+        await page.getByRole('link', { name: 'Test dataset' }).click();
+        await page.waitForURL('**/series/test-dataset');
+        await page.getByRole('link', { name: 'Edit Metadata' }).click();
+        await page.waitForURL('**/series/test-dataset/edit');
+
+        await expect(page.url().toString()).toContain('series/test-dataset/edit');
+    });
+
+    test("Submit form successfully", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto('./series/mock-quarterly/edit')
+
+        await page.getByTestId('dataset-series-title').fill('test edit title');
+        await page.getByLabel('Topics').selectOption('3161');
+        await page.getByRole('button', { name: /Add Topic/i }).click();
+        await page.getByTestId('field-dataset-series-description').getByRole('textbox').fill('test edit description');
+        await page.getByLabel('Name').fill('test edit name');
+        await page.getByLabel('Email').fill('test-email-edit@test.com');
+        await page.getByRole('button', { name: /Add contact/i }).click();
+        await page.getByRole('button', { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText('Form submitted successfully')).toBeVisible();
+    });
+});
