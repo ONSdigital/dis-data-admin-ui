@@ -29,6 +29,29 @@ test.describe('series', () => {
         await expect(page.getByText('Available editions')).toBeVisible();
         await page.waitForURL('**/series/test-dataset');
         await expect(page.url().toString()).toContain('series/test-dataset');
+        await expect(page.getByTestId('id-field')).toContainText('mock-quarterly');
+        await expect(page.getByTestId('type-field')).toContainText('static');
+        await expect(page.getByTestId('title-field')).toContainText('Mock Dataset');
+        await expect(page.getByTestId('description-field')).toContainText('This is a mock dataset test description');
+        await expect(page.getByTestId('topics-field')).toBeVisible();
+        await expect(page.getByTestId('topics-field')).toContainText('Education');
+        await expect(page.getByTestId('topics-field')).toContainText('Business');
+        await expect(page.getByTestId('last-updated-field')).toContainText('1 January 2000');
+        await expect(page.getByTestId('license-field')).toContainText('My License');
+        await expect(page.getByTestId('next-release-field')).toContainText('TBC');
+        await expect(page.getByTestId('keywords-field')).toBeVisible();
+        await expect(page.getByTestId('keywords-field')).toContainText('mock');
+        await expect(page.getByTestId('keywords-field')).toContainText('test');
+        await expect(page.getByTestId('qmi-field')).toContainText('https://www.ons.gov.uk');
+        await expect(page.getByTestId('contacts-field')).toBeVisible();
+        await expect(page.getByTestId('contact-name-field-0')).toContainText('First Contact');
+        await expect(page.getByTestId('contact-email-field-0')).toHaveAttribute('href', 'mailto:contactOne@ons.gov.uk');
+        await expect(page.getByTestId('contact-telephone-field-0')).toHaveAttribute('href', 'tel:+44 1234 567891');
+        await expect(page.getByTestId('contact-name-field-1')).toContainText('Second Contact');
+        await expect(page.getByTestId('contact-email-field-1')).toHaveAttribute('href', 'mailto:contactTwo@ons.gov.uk')
+        await expect(page.getByTestId('contact-telephone-field-1')).toHaveAttribute('href', 'tel:+44 1234 567892');
+        await expect(page.getByTestId('publisher-name-field')).toContainText('ONS');
+        await expect(page.getByTestId('publisher-href-field')).toContainText('https://www.ons.gov.uk');
     });
 });
 
