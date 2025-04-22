@@ -1,11 +1,9 @@
 "use client";
 
-import { useContext, useActionState, useState } from 'react';
+import { useActionState, useState } from 'react';
 import DOMPurify from "dompurify";
 
-import { TextInput, Button, Select, HyperLinksList } from "author-design-system-react";
-
-import { ConfigContext } from '@/context/context';
+import { TextInput, HyperLinksList } from "author-design-system-react";
 
 import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
 
@@ -21,9 +19,6 @@ export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
     const [edition, setEdition] = useState("");
     const [editionTitle, setEditionTitle] = useState("");
-    const [qualityDesingation, setQualityDesingation] = useState("");
-
-    const appConfig = useContext(ConfigContext);
 
     let listOfErrors = [];
     if (formState) {
