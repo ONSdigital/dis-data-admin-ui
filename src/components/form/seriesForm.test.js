@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
-import SeriesForm from './seriesForm'
+import SeriesForm from './SeriesForm'
 import { dataset } from '../../../tests/mocks/dataset.mjs';
 
 describe("Series Form", () => {

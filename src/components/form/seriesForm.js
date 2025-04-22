@@ -8,7 +8,7 @@ import Hero from "@/components/hero/Hero"
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
-export default function seriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfTopics, action}) {
+export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfTopics, action}) {
 
     const [title, setTitle] = useState(currentTitle)
     const [id, setID] = useState(currentID)
