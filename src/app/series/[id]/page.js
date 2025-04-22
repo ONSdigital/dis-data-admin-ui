@@ -76,14 +76,7 @@ export default async function Dataset({ params }) {
 
                             <h2 className="ons-u-mt-m@xxs@m">Last Updated</h2>
                             <p data-testid="last-updated-field">
-                                {(() => {
-                                    try {
-                                        return formatDate(dataset.last_updated);
-                                    } catch (error) {
-                                        console.error("Error formatting date:", error);
-                                        return "missing date";
-                                    }
-                                })()}
+                                {formatDate(dataset.last_updated)}
                             </p>
 
                             <h2 className="ons-u-mt-m@xxs@m">License</h2>
