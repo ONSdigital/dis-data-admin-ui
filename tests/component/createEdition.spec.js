@@ -33,6 +33,11 @@ test.describe("Create edition page", () => {
         await page.goto("./series/mock-quarterly/editions/create");
         await page.getByTestId("edition-id").fill("test-id");
         await page.getByTestId("edition-title").fill("Test title");
+        await page.getByTestId("release-date-day").fill("1");
+        await page.getByTestId("release-date-month").fill("1");
+        await page.getByTestId("release-date-year").fill("2020");
+        await page.getByTestId("release-date-hour").fill("9");
+        await page.getByTestId("release-date-minutes").fill("30");
         await page.getByTestId("select-quality-desingation").selectOption("official");
         await page.getByTestId("usage-notes-input-0").fill("Test usage notes");
         await page.getByTestId("usage-notes-textarea-0").fill("Something about usage notes");
@@ -63,6 +68,7 @@ test.describe("Create edition page", () => {
         await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Quality designation is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("File upload is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("A release time and date is required")).toBeVisible();
 
         await expect(page.getByTestId("field-edition-id-error").getByText("Edition ID is required")).toBeVisible();
         await expect(page.getByTestId("field-edition-title-error").getByText("Edition title is required")).toBeVisible();  

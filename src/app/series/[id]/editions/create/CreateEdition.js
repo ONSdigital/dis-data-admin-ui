@@ -13,6 +13,7 @@ import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import MultiContentItems from '@/components/multi-content/MultiContentItems';
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
+import DateTimePicker from '@/components/date-time/DateTimePicker';
 
 
 export default function CreateEditionForm({ datasetID }) {
@@ -86,11 +87,14 @@ export default function CreateEditionForm({ datasetID }) {
                     error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
                 />
 
-                <h2 className="ons-u-mt-xl">Dataset details</h2>
+                <h2 className="ons-u-mt-xl">Dataset version details</h2>
                 <p>The information in these fields may be copied from the most recent version.</p>
                 <div className="ons-u-mb-l">
                     <Button variants="secondary" text="Copy from previous dataset"/>
                 </div>
+
+                <DateTimePicker id="release-date" dataTestId="release-date" legend="Release date and time" description="For example, 31 3 1980" errors={formState.errors}/>
+
                 <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
                 <Select id="quality-desingation" 
                     label={{text: "Quality designation", description: "Something about what quality designation means"}} 
