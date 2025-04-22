@@ -10,10 +10,6 @@ import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import VersionFields from '../[editionID]/versions/create/VersionFields';
-import MultiContentItems from '@/components/multi-content/MultiContentItems';
-import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
-import DateTimePicker from '@/components/date-time/DateTimePicker';
-
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
