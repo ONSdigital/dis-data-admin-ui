@@ -74,8 +74,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
             {renderSuccessOrFailure()}
             <h2 className="ons-u-mt-m">Series Details</h2>
             <form action={formAction}>
-                <input id="dataset-series-type" name="dataset-series-type" type="hidden" value={"static"} />
-                <input id="dataset-series-license" name="dataset-series-license" type="hidden" value={"Open Government License v3.0"} />
+                <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
+                <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
                 { currentID != "" ? <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} /> : null}
                 <TextInput 
                     id="dataset-series-title"
