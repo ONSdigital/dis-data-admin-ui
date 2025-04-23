@@ -1,5 +1,5 @@
 import Hero from "@/components/hero/Hero";
-import VersionForm from "./VersionForm";
+import VersionForm from "@/components/form/version/VersionForm";
 
 export default async function CreateVersion({ params }) {
     const { id, editionID } = await params;

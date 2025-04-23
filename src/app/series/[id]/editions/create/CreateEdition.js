@@ -1,15 +1,15 @@
 "use client";
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState } from "react";
 import DOMPurify from "dompurify";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
 
-import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
+import { createDatasetEdition } from "@/app/actions/createDatasetEdition";
 
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
-import VersionFields from '../[editionID]/versions/create/VersionFields';
+import VersionFields from "@/components/form/version/VersionFields";
 
 export default function CreateEditionForm({ datasetID }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
