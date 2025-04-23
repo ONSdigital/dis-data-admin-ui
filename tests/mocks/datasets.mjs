@@ -55,7 +55,7 @@ export const datasetList = {
                     "name": "First Contact"
                 }
             ],
-            "last_updated": "2000-01-02T07:00:00.000Z",
+            "last_updated": "invalid/missing date",
             "license": "My Minimal License",
             "type": "static"
         }

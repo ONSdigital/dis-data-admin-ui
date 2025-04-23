@@ -69,7 +69,7 @@ test.describe('series', () => {
         await expect(page.getByTestId('description-field')).toContainText('This is a minimal mock dataset test description');
         await expect(page.getByTestId('topics-field')).toBeVisible();
         await expect(page.getByTestId('topics-field')).toContainText('Economy');
-        await expect(page.getByTestId('last-updated-field')).toContainText('2 January 2000');
+        await expect(page.getByTestId('last-updated-field')).toContainText('missing date');
         await expect(page.getByTestId('license-field')).toContainText('My Minimal License');
         await expect(page.getByTestId('next-release-field')).not.toBeVisible();
         await expect(page.getByTestId('keywords-field')).not.toBeVisible();
