@@ -3,7 +3,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import { updateDatasetSeries } from "@/app/actions/datasetSeries"
 
-import SeriesForm from "../../../../components/form/SeriesForm";
+import SeriesForm from "../../../../components/form/series/SeriesForm";
 
 export default async function createPage({params}) {
     const { id } = await params;

@@ -23,6 +23,7 @@ const getFormData = (formData) => {
     // keywords and next_release is placeholder untill a ticket is made, possibly with design, to implement these fields properly.
     const datasetSeriesSubmission = {
         type: formData.get('dataset-series-type'),
+        license: formData.get('dataset-series-license'),
         title: formData.get('dataset-series-title'),
         id : formData.get('dataset-series-id'),
         topics: JSON.parse(formData.get('dataset-series-topics')),
