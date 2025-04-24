@@ -47,7 +47,7 @@ export default async function Dataset({ params }) {
 
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const edition = editionResp?.current || editionResp?.next || editionResp;
-    const createURL = `${edition.edition}/versions/create`;
+    const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     return (
         <>
             { !datasetError ? 
