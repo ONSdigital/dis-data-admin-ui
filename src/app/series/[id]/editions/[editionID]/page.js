@@ -16,14 +16,14 @@ export default async function Dataset({ params }) {
     let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
     let versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
 
-    let datasetError, editionsError, versionsError = false;
+    let datasetError, editionError, versionsError = false;
     const listItems = [];
     if (datasetResp.ok != null && !datasetResp.ok) {
         datasetError = true;
     }
 
     if (editionResp.ok != null && !editionResp.ok) {
-        editionsError = true;
+        editionError = true;
     }
 
     if (versions.ok != null && !versions.ok) {
@@ -50,7 +50,7 @@ export default async function Dataset({ params }) {
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     return (
         <>
-            { !datasetError ? 
+            { !datasetError || editionError ? 
                 <>
                     <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />           
                     <div className="ons-grid ons-u-mt-xl">
