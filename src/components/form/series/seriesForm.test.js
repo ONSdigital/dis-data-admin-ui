@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import SeriesForm from './SeriesForm'
-import { dataset } from '../../../../tests/mocks/dataset.mjs';
+import { datasetList } from '../../../../tests/mocks/datasets.mjs';
 
 describe("Series Form", () => {
     const listOfTopics = [
@@ -15,6 +15,7 @@ describe("Series Form", () => {
         }
     ]
     const mockAction = jest.fn()
+    const dataset = datasetList.items[2]
 
     test("Series form renders props correctly", () => {
         render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfTopics={listOfTopics} action={mockAction}/>);

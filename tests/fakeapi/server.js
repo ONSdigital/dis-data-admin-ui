@@ -1,7 +1,6 @@
 import express from "express";
 
 import { datasetList } from "../mocks/datasets.mjs";
-import { dataset } from "../mocks/dataset.mjs";
 import { editions } from "../mocks/editions.mjs";
 import { edition } from "../mocks/edition.mjs";
 import { versions } from "../mocks/versions.mjs";
@@ -30,7 +29,7 @@ app.post("/datasets", (req, res) => {
 });
 
 app.get("/datasets/:id", (req, res) => {
-    res.send(dataset);
+    res.send(datasetList.items.find(item => item.id === req.params.id));
 });
 
 app.get("/datasets/:id/editions", (req, res) => {
