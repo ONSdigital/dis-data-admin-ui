@@ -34,7 +34,7 @@ export default function VersionForm({ datasetID, editionID }) {
                 { 
                     formState.success == true  ?
                         <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>{`Dataset version created successfully.`}</p>
+                            <p>Dataset version created successfully.</p>
                         </Panel> : null
                 }
                 {
@@ -64,7 +64,7 @@ export default function VersionForm({ datasetID, editionID }) {
                 <VersionFields errors={formState.errors} />
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset edition</span></span>
+                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset version</span></span>
                 </button>
             </form>
         </>
