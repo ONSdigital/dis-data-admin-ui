@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState } from 'react';
-import { useSearchParams } from 'next/navigation'
+import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { HyperLinksList } from "author-design-system-react";
 
-import { datasetVersion } from '@/app/actions/datasetVersion';
+import { datasetVersion } from "@/app/actions/datasetVersion";
 
 import Panel from "@/components/panel/Panel";
 import VersionFields from './VersionFields';

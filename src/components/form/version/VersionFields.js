@@ -1,16 +1,14 @@
 "use client";
 
-import { useContext, useActionState, useState } from 'react';
+import { useContext, useState } from "react";
 
-import { Button, Select, HyperLinksList } from "author-design-system-react";
+import { Button, Select } from "author-design-system-react";
 
-import { ConfigContext } from '@/context/context';
+import { ConfigContext } from "@/context/context";
 
-import { createDatasetEdition } from '@/app/actions/createDatasetEdition';
-
-import MultiContentItems from '@/components/multi-content/MultiContentItems';
+import MultiContentItems from "@/components/multi-content/MultiContentItems";
 import ResumableFileUpload from "@/components/file-upload/ResumableFileUpload";
-import DateTimePicker from '@/components/date-time/DateTimePicker';
+import DateTimePicker from "@/components/date-time/DateTimePicker";
 
 
 export default function VersionFields(props) {
