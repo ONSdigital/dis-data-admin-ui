@@ -62,6 +62,7 @@ export async function datasetVersion(currentstate, formData) {
     });
     const datasetVersion = {
         edition: editionID,
+        edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-desingation-value"),
         release_day: formData.get("release-date-day"),
         release_month: formData.get("release-date-month"),
