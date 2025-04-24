@@ -50,7 +50,7 @@ export default async function Dataset({ params }) {
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     return (
         <>
-            { !datasetError || editionError ? 
+            { !datasetError && !editionError ? 
                 <>
                     <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />           
                     <div className="ons-grid ons-u-mt-xl">
