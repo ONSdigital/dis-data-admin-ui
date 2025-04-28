@@ -20,7 +20,7 @@ export const datasetList = {
             "state": "published",
             "title": "Mock Dataset",
             "unit_of_measure": "Percentage",
-            "topics": ["Education", "Business"],
+            "topics": ["id1", "id2"],
             "contacts": [
                 {
                     "email": "contactOne@ons.gov.uk",
@@ -48,7 +48,7 @@ export const datasetList = {
             "description": "This is a minimal mock dataset test description",
             "id": "mock-minimal",
             "title": "Minimal Mock Dataset",
-            "topics": ["Economy"],
+            "topics": ["id1", "id3"],
             "contacts": [
                 {
                     "email": "contactOne@ons.gov.uk",

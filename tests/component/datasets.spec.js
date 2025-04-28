@@ -34,8 +34,8 @@ test.describe('series', () => {
         await expect(page.getByTestId('title-field')).toContainText('Mock Dataset');
         await expect(page.getByTestId('description-field')).toContainText('This is a mock dataset test description');
         await expect(page.getByTestId('topics-field')).toBeVisible();
-        await expect(page.getByTestId('topics-field')).toContainText('Education');
-        await expect(page.getByTestId('topics-field')).toContainText('Business');
+        await expect(page.getByTestId('topics-field')).toContainText('Topic 1');
+        await expect(page.getByTestId('topics-field')).toContainText('Topic 2');
         await expect(page.getByTestId('last-updated-field')).toContainText('1 January 2000');
         await expect(page.getByTestId('license-field')).toContainText('My License');
         await expect(page.getByTestId('next-release-field')).toContainText('TBC');
@@ -68,7 +68,8 @@ test.describe('series', () => {
         await expect(page.getByTestId('title-field')).toContainText('Minimal Mock Dataset');
         await expect(page.getByTestId('description-field')).toContainText('This is a minimal mock dataset test description');
         await expect(page.getByTestId('topics-field')).toBeVisible();
-        await expect(page.getByTestId('topics-field')).toContainText('Economy');
+        await expect(page.getByTestId('topics-field')).toContainText('Topic 1');
+        await expect(page.getByTestId('topics-field')).toContainText('id3 - unable to find topic title');
         await expect(page.getByTestId('last-updated-field')).toContainText('missing date');
         await expect(page.getByTestId('license-field')).toContainText('My Minimal License');
         await expect(page.getByTestId('next-release-field')).not.toBeVisible();

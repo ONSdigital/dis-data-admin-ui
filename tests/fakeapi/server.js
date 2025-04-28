@@ -3,6 +3,7 @@ import express from "express";
 import { datasetList } from "../mocks/datasets.mjs";
 import { editions } from "../mocks/editions.mjs";
 import { edition } from "../mocks/edition.mjs";
+import { topicList } from "../mocks/topics.mjs";
 import { versions } from "../mocks/versions.mjs";
 
 
@@ -45,6 +46,10 @@ app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
     res.send({status: 201});
+});
+
+app.get("/topics/:id", (req, res) => {
+    res.send(topicList.items.find(item => item.id === req.params.id));
 });
 
 app.listen(PORT, () => {
