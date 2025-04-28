@@ -6,7 +6,7 @@ jest.mock("../../utils/request/request");
 jest.mock("../log/log");
 
 describe("convertTopicIDsToTopicTitles", () => {
-    const reqCfg = { headers: { Authorization: "Bearer token" } };
+    const reqCfg = null;
 
     afterEach(() => {
         jest.clearAllMocks();
