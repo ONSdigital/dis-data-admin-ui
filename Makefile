@@ -29,8 +29,8 @@ node-modules:
 	$(NPM) install --legacy-peer-deps
 
 .PHONY: test
-test: node-modules## Runs unit tests including checks for race conditions and returns coverage
-	$(NPM) run test
+test: node-modules ## Runs unit tests including checks for race conditions and returns coverage
+	$(NPM) run test -- --coverage
 
 .PHONY: test-component
 test-component: ## Runs component test suite
