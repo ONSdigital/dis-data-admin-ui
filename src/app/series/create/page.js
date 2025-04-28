@@ -3,18 +3,18 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import { createDatasetSeries } from "@/app/actions/datasetSeries"
 
-import SeriesForm from "../../../components/form/series/SeriesForm";
+import SeriesForm from "@/components/form/series/SeriesForm"
 
 export default async function createPage() {
 
     const reqCfg = await SSRequestConfig(cookies);
     const response = await httpGet(reqCfg, "/topics");
-    const listOfTopics = response.items
+    const listOfAllTopics = response.items
 
     return (
         <>
             <SeriesForm 
-                listOfTopics={listOfTopics} 
+                listOfAllTopics={listOfAllTopics} 
                 action={createDatasetSeries}
             />
         </>

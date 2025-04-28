@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { useState, useActionState } from "react";
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
@@ -8,15 +10,16 @@ import Hero from "@/components/hero/Hero"
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
-export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfTopics, action}) {
+export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
 
     const [title, setTitle] = useState(currentTitle)
     const [id, setID] = useState(currentID)
-    const [topics, setTopics] = useState(currentTopics);
+    const [selectedTopics, setSelectedTopics] = useState(currentTopics);
     const [description, setDescription] = useState(currentDescription)
     const [contacts, setContacts] = useState(currentContacts);
 
     const [formState, formAction, isPending] = useActionState(action, {})
+    const [savedDatasetURL, setSavedDatasetURL] = useState("")
 
     let listOfErrors = []
 
@@ -28,28 +31,26 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
             ]
         ))
     } 
-    
+
     if (formState.recentlySumbitted == true) {
         formState.recentlySumbitted = false
+        setSavedDatasetURL("/series/" + id)
         setTitle('')
         setID('')
         setDescription('')
         setContacts([])
-        setTopics([])
+        setSelectedTopics([])
     }
 
     if(isPending){
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
-
     const renderSuccessOrFailure = () => {
         return (
             <>
                 { formState.success == true  ?
                     <Panel variant="success">
-                        <p>
-                            Form submitted successfully
-                        </p>
+                        <p>Dataset Series Saved. <Link href={savedDatasetURL}>View Dataset</Link></p>
                     </Panel> : null
                 }
                 { formState.success == false && !formState.code ?    
@@ -59,9 +60,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 }
                 { formState.success == false && formState.code == 403 ?    
                     <Panel title="There was a problem submitting your form" variant="error">
-                        <p>
-                            This datasetseries already exists
-                        </p>
+                        <p>This datasetseries already exists</p>
                     </Panel> : null
                 }
             </>
@@ -102,9 +101,9 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     /> : null
                 }
                 <Topics 
-                    listOfTopics={listOfTopics} 
-                    topics={topics} 
-                    setTopics={setTopics} 
+                    listOfAllTopics={listOfAllTopics} 
+                    selectedTopics={selectedTopics} 
+                    setSelectedTopics={setSelectedTopics} 
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
                 <Field dataTestId="field-dataset-series-description" error={(formState.errors && formState.errors.description) ? {id:'dataset-series-description-error', text: formState.errors.description} : null}>

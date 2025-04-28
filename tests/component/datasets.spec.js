@@ -117,7 +117,7 @@ test.describe('create', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('Form submitted successfully')).toBeVisible();
+        await expect(page.getByText('Dataset Series Saved')).toBeVisible();
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
@@ -194,6 +194,6 @@ test.describe('edit', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('Form submitted successfully')).toBeVisible();
+        await expect(page.getByText('Dataset Series Saved')).toBeVisible();
     });
 });

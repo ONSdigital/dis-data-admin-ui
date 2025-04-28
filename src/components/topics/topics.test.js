@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import Topics from './Topics'
 
 describe("Topics", () => {
-        const listOfTopics = [
+        const listOfAllTopics = [
             {
                 "id": "2945",
                 "title": "Business, industry and trade",
@@ -15,10 +15,10 @@ describe("Topics", () => {
         ]
 
         test("Topics renders props correctly", () => {
-            const topics = ['2945']
-            const setTopics = jest.fn()
+            const selectedTopics = ['2945']
+            const setSelectedTopics = jest.fn()
     
-            render(<Topics listOfTopics={listOfTopics} topics={topics} setTopics={setTopics}/>);
+            render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
     
             const select = screen.getByTestId('dataset-series-topics-select');
             expect(select).toBeInTheDocument();
@@ -31,10 +31,10 @@ describe("Topics", () => {
         })
     
         it("onClick handler gets called", () => {
-            const topics = ['2945']
-            const setTopics = jest.fn()
+            const selectedTopics = ['2945']
+            const setSelectedTopics = jest.fn()
 
-            render(<Topics listOfTopics={listOfTopics} topics={topics} setTopics={setTopics}/>);
+            render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
 
             let list = screen.getAllByTestId("dataset-series-topics-list-item")
             expect(list.length).toBe(1)
@@ -43,9 +43,9 @@ describe("Topics", () => {
             const button = screen.getByTestId("dataset-series-add-topic-button");
             fireEvent.change(select, { target: { value: 3161 } })
 
-            expect(setTopics.mock.calls).toHaveLength(0);
+            expect(setSelectedTopics.mock.calls).toHaveLength(0);
             fireEvent.click(button)
-            expect(setTopics).toHaveBeenCalledTimes(1)
+            expect(setSelectedTopics).toHaveBeenCalledTimes(1)
 
             list = screen.getAllByTestId("dataset-series-topics-list-item")
             expect(list.length).toBe(2)

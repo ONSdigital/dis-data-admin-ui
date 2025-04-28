@@ -50,7 +50,6 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
                 data = await httpPut(reqCfg, url, datasetSeriesSubmission)
             } else {
                 data = await httpPost(reqCfg, url, datasetSeriesSubmission);
-                console.log(data)
             }
             if (data.status == 403) {
                 response.success = false

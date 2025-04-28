@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Field, Button} from "author-design-system-react";
 
-export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
+export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopics, topicsError}) {
     const [topicValue, setTopicValue] = useState("");
     const [topicText, setTopicText] = useState("");
     const [topicList, setTopicList] = useState([]);
@@ -14,7 +14,7 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
         text: "Select an option",
     }]
 
-    listOfTopics.forEach(topic => {
+    listOfAllTopics.forEach(topic => {
         topicSelectOptions.push({
             "value": topic.id,
             "text": topic.title
@@ -22,10 +22,10 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
     });
 
     // This is for setting up the topic list when editing a dataseries which already has topics associated with it.
-    if(topics.length > 0 && topicList.length == 0){
+    if(selectedTopics.length > 0 && topicList.length == 0){
         const currentTopicList = []
-        topics.forEach(topic => {
-            const result = listOfTopics.find(({ id }) => id === topic )
+        selectedTopics.forEach(topic => {
+            const result = listOfAllTopics.find(({ id }) => id === topic )
             currentTopicList.push({
                 id : result.id, 
                 text : result.title
@@ -35,7 +35,7 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
     }
 
     // This is for successful submission to clear the topiclist.
-    if(topics.length == 0 && topicList.length > 0){
+    if(selectedTopics.length == 0 && topicList.length > 0){
         setTopicList([])
     }
 
@@ -61,8 +61,8 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
                                                 'small'
                                             ]}
                                             onClick={() => {
-                                                setTopics(
-                                                    topics.filter(t => 
+                                                setSelectedTopics(
+                                                    selectedTopics.filter(t => 
                                                         t !== topic.id
                                                     )
                                                 );
@@ -87,7 +87,7 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
     return (
         <>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? {id:'dataset-series-topics-error', text: topicsError} : null}>
-                <input id="dataset-series-topics" type="hidden" name="dataset-series-topics" value={JSON.stringify(topics)} />
+                <input id="dataset-series-topics" type="hidden" name="dataset-series-topics" value={JSON.stringify(selectedTopics)} />
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-4@m">
@@ -117,9 +117,9 @@ export default function Topics({listOfTopics, topics, setTopics, topicsError}) {
                                     'small'
                                 ]}
                                 onClick={ () => {
-                                    if(!topics.includes(topicValue)){
-                                        setTopics([
-                                            ...topics,
+                                    if(!selectedTopics.includes(topicValue)){
+                                        setSelectedTopics([
+                                            ...selectedTopics,
                                             topicValue
                                         ]);
                                         setTopicList([

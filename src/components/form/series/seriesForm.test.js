@@ -4,7 +4,7 @@ import SeriesForm from './SeriesForm'
 import { datasetList } from '../../../../tests/mocks/datasets.mjs';
 
 describe("Series Form", () => {
-    const listOfTopics = [
+    const listOfAllTopics = [
         {
             "id": "2945",
             "title": "Business, industry and trade",
@@ -18,7 +18,7 @@ describe("Series Form", () => {
     const dataset = datasetList.items[2]
 
     test("Series form renders props correctly", () => {
-        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfTopics={listOfTopics} action={mockAction}/>);
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
 
         const title = screen.getByTestId("dataset-series-title");
         expect(title.value).toBe("Mock Dataset");
@@ -31,7 +31,7 @@ describe("Series Form", () => {
     })
 
     it("onChange handler updates text input state", () => {
-        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfTopics={listOfTopics} action={mockAction}/>);
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
         
         const title = screen.getByTestId("dataset-series-title");
         fireEvent.change(title, {target: {value: "test name"}});
