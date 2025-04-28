@@ -7,6 +7,7 @@ import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
 import { mapListItems } from './mapper';
+import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
 export default async function Dataset({ params }) {
     const { id } = await params;
@@ -41,6 +42,7 @@ export default async function Dataset({ params }) {
 
     const createURL = `${id}/editions/create`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
+    const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     return (
         <>
             { !datasetError ? 
@@ -63,12 +65,12 @@ export default async function Dataset({ params }) {
                             <h2 className="ons-u-mt-m@xxs@m">Description</h2>
                             <p data-testid="description-field">{dataset.description}</p>
 
-                            {dataset.topics && dataset.topics.length > 0 && (
+                            {topicTitles && topicTitles.length > 0 && (
                                 <>
                                     <h2 className="ons-u-mt-m@xxs@m">Topics</h2>
                                     <ul data-testid="topics-field">
-                                        {dataset.topics.map((topic, index) => (
-                                            <li className="ons-u-mb-no" key={index}>{topic}</li>
+                                        {topicTitles.map((topicTitle, index) => (
+                                            <li className="ons-u-mb-no" key={index}>{topicTitle}</li>
                                         ))}
                                     </ul>
                                 </>
