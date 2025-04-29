@@ -1,8 +1,8 @@
 import { logError } from "../log/log";
 import { httpGet } from "@/utils/request/request";
 
-export async function convertTopicIDsToTopicTitles(topicIDs, reqCfg) {
-    const topicTitles = await Promise.all(
+export function convertTopicIDsToTopicTitles(topicIDs, reqCfg) {
+    return Promise.all(
         topicIDs.map(async (topicID) => {
             try {
                 const response = await httpGet(reqCfg, `/topics/${topicID}`);
@@ -13,5 +13,4 @@ export async function convertTopicIDsToTopicTitles(topicIDs, reqCfg) {
             }
         })
     );
-    return topicTitles;
 }
