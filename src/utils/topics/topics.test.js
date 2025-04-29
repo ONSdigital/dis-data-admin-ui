@@ -12,16 +12,6 @@ describe("convertTopicIDsToTopicTitles", () => {
         jest.clearAllMocks();
     });
 
-    it("should return an empty array if topicIDs is null", async () => {
-        const result = await convertTopicIDsToTopicTitles(null, reqCfg);
-        expect(result).toEqual([]);
-    });
-
-    it("should return an empty array if topicIDs is an empty array", async () => {
-        const result = await convertTopicIDsToTopicTitles([], reqCfg);
-        expect(result).toEqual([]);
-    });
-
     it("should return topic titles for valid topicIDs", async () => {
         httpGet.mockResolvedValueOnce({ title: "Topic 1" });
         httpGet.mockResolvedValueOnce({ title: "Topic 2" });

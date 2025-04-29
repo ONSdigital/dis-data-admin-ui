@@ -2,10 +2,6 @@ import { logError } from "../log/log";
 import { httpGet } from "@/utils/request/request";
 
 export async function convertTopicIDsToTopicTitles(topicIDs, reqCfg) {
-    if (!topicIDs || topicIDs.length === 0) {
-        return [];
-    }
-
     const topicTitles = await Promise.all(
         topicIDs.map(async (topicID) => {
             try {
