@@ -24,9 +24,9 @@ export default function VersionFields(props) {
                 <Button variants="secondary" text="Copy from previous dataset"/>
             </div>
 
-            <DateTimePicker id="release-date" dataTestId="release-date" legend="Release date and time" description="For example, 31 3 1980" errors={props.errors}/>
+            <DateTimePicker id="release-date" dataTestId="release-date" legend="Release date and time" description="For example, 31 3 1980 09 30" errors={props.errors}/>
 
-            <input id="quality-desingation-value" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
+            <input id="quality-desingation-value" data-testid="quality-desingation-value-input" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
             <Select id="quality-desingation" 
                 label={{text: "Quality designation", description: "Something about what quality designation means"}} 
                 dataTestId="quality-desingation"
@@ -67,7 +67,7 @@ export default function VersionFields(props) {
             <ResumableFileUpload id="dataset-upload" 
                 label="File upload" 
                 description="Click browse or drag file here" 
-                uploadBaseURL={appConfig.uploadBaseURL} 
+                uploadBaseURL={appConfig?.uploadBaseURL} 
                 validationError={(props.errors && props.errors.distributions) ? {id:'dataset-upload-error', text: props.errors.distributions} : null} />
         </>
     );
