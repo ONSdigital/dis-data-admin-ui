@@ -42,7 +42,7 @@ export default async function Dataset({ params }) {
 
     const createURL = `${id}/editions/create`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
-    const topicTitles = dataset.topics && dataset.topics.length > 0 ? await convertTopicIDsToTopicTitles(dataset.topics, reqCfg) : undefined;
+    const topicTitles = dataset.topics && dataset.topics.length > 0 ? await convertTopicIDsToTopicTitles(dataset.topics, reqCfg) : null;
     return (
         <>
             { !datasetError ? 
