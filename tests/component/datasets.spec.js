@@ -7,7 +7,7 @@ test.describe('series', () => {
         addValidAuthCookies(context);
 
         await page.goto('./series')
-        await expect(page.getByRole('heading', { level: 1 })).toContainText('Dataset Series');
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Dataset series');
         await expect(page.getByRole('link', { name: 'Weekly deaths' })).toBeVisible();
     });
 
@@ -15,7 +15,7 @@ test.describe('series', () => {
         addValidAuthCookies(context);
 
         await page.goto('./series')
-        await page.getByRole('link', { name: 'Add New Dataset Series' }).click();
+        await page.getByRole('link', { name: 'Add new dataset series' }).click();
         await page.waitForURL('**/series/create');
         await expect(page.url().toString()).toContain('series/create');
     });
@@ -117,7 +117,7 @@ test.describe('create', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('Dataset Series Saved')).toBeVisible();
+        await expect(page.getByText('Dataset series saved')).toBeVisible();
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
@@ -163,7 +163,7 @@ test.describe('create', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('This datasetseries already exists')).toBeVisible();
+        await expect(page.getByText('This dataset series already exists')).toBeVisible();
     });
 });
 
@@ -194,6 +194,6 @@ test.describe('edit', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('Dataset Series Saved')).toBeVisible();
+        await expect(page.getByText('Dataset series saved')).toBeVisible();
     });
 });
