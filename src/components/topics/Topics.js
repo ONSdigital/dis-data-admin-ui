@@ -26,10 +26,12 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
         const currentTopicList = []
         selectedTopics.forEach(topic => {
             const result = listOfAllTopics.find(({ id }) => id === topic )
-            currentTopicList.push({
-                id : result.id, 
-                text : result.title
-            })
+            if (result) {
+                currentTopicList.push({
+                    id : result.id, 
+                    text : result.title
+                })
+            }
         })
         setTopicList(currentTopicList)
     }
