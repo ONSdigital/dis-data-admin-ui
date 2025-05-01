@@ -53,7 +53,7 @@ export default async function Dataset({ params }) {
                             { renderEditionsList() }
                         </div>
                         <div className="ons-grid__col ons-col-6@m ">
-                            <Link href={editURL}>Edit Metadata</Link>
+                            <Link href={editURL}>Edit metadata</Link>
 
                             <h2 className="ons-u-mt-m@xxs@m">ID</h2>
                             <p data-testid="id-field">{dataset.id}</p>
@@ -78,7 +78,7 @@ export default async function Dataset({ params }) {
                                 </>
                             )}
 
-                            <h2 className="ons-u-mt-m@xxs@m">Last Updated</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Last updated</h2>
                             <p data-testid="last-updated-field">
                                 {formatDate(dataset.last_updated)}
                             </p>
@@ -88,7 +88,7 @@ export default async function Dataset({ params }) {
 
                             {dataset.next_release && (
                                 <>
-                                    <h2 className="ons-u-mt-m@xxs@m">Next Release</h2>
+                                    <h2 className="ons-u-mt-m@xxs@m">Next release</h2>
                                     <p data-testid="next-release-field">{dataset.next_release}</p>
                                 </>
                             )}
