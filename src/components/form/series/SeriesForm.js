@@ -50,7 +50,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
             <>
                 { formState.success == true  ?
                     <Panel variant="success">
-                        <p>Dataset Series Saved. <Link href={savedDatasetURL}>View Dataset</Link></p>
+                        <p>Dataset series saved. <Link href={savedDatasetURL}>View dataset</Link></p>
                     </Panel> : null
                 }
                 { formState.success == false && !formState.code ?    
@@ -60,7 +60,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 }
                 { formState.success == false && formState.code == 403 ?    
                     <Panel title="There was a problem submitting your form" variant="error">
-                        <p>This datasetseries already exists</p>
+                        <p>This dataset series already exists</p>
                     </Panel> : null
                 }
             </>
