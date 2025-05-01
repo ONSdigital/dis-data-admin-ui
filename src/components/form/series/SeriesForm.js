@@ -69,9 +69,10 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
 
     return (
         <>
-            <Hero hyperLink={{ text: 'View Existing Dataset Series', url: '/data-admin/series'}} title="Create dataset series" wide/>
+            <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
             {renderSuccessOrFailure()}
-            <h2 className="ons-u-mt-m">Series Details</h2>
+            <h2 className="ons-u-mt-m">Series details</h2>
+            <p>The information in these fields is unique to a series.</p>
             <form action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
