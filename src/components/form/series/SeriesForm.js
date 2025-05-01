@@ -77,18 +77,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
                 { currentID != "" ? <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} /> : null}
-                <TextInput 
-                    id="dataset-series-title"
-                    dataTestId="dataset-series-title"
-                    name="dataset-series-title"
-                    label={{
-                        text: 'Title',
-                        description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
-                    }}
-                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                />
                 { currentID == "" ?  
                     <TextInput 
                         id="dataset-series-id"
@@ -103,6 +91,18 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         onChange={e => setID(e.target.value)}
                     /> : null
                 }
+                <TextInput 
+                    id="dataset-series-title"
+                    dataTestId="dataset-series-title"
+                    name="dataset-series-title"
+                    label={{
+                        text: 'Title',
+                        description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
+                    }}
+                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                />
                 <Topics 
                     listOfAllTopics={listOfAllTopics} 
                     selectedTopics={selectedTopics} 
