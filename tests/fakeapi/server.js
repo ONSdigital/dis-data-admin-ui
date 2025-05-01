@@ -52,6 +52,10 @@ app.get("/topics/:id", (req, res) => {
     res.send(topicList.items.find(item => item.id === req.params.id));
 });
 
+app.get("/topics", (req, res) => {
+    res.send(topicList);
+});
+
 app.listen(PORT, () => {
     console.log(`Express server running at http://localhost:${PORT}/`);
 });

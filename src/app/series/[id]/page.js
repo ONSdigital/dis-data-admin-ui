@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Link from 'next/link'
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
@@ -41,6 +42,7 @@ export default async function Dataset({ params }) {
     };
 
     const createURL = `${id}/editions/create`;
+    const editURL = `/series/${id}/edit`;
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     return (
@@ -53,6 +55,8 @@ export default async function Dataset({ params }) {
                             { renderEditionsList() }
                         </div>
                         <div className="ons-grid__col ons-col-6@m ">
+                            <Link href={editURL}>Edit Metadata</Link>
+
                             <h2 className="ons-u-mt-m@xxs@m">ID</h2>
                             <p data-testid="id-field">{dataset.id}</p>
 

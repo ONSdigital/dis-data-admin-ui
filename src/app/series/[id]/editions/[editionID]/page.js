@@ -2,7 +2,9 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import List from "../../../../../components/list/List";
+import Hero from "@/components/hero/Hero";
+import List from "@/components/list/List";
+import Panel from "@/components/panel/Panel";
 import { mapListItems } from "./mapper";
 
 
@@ -10,17 +12,54 @@ export default async function Dataset({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
 
     const { id, editionID } = await params;
-    let dataset = await httpGet(reqCfg, `/datasets/${id}`);
-    let edition = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
+    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
     let versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
 
-    const listItems = mapListItems(versions.items, id, editionID);
+    let datasetError, editionError, versionsError = false;
+    const listItems = [];
+    if (datasetResp.ok != null && !datasetResp.ok) {
+        datasetError = true;
+    }
+
+    if (editionResp.ok != null && !editionResp.ok) {
+        editionError = true;
+    }
+
+    if (versions.ok != null && !versions.ok) {
+        versionsError = true;
+    } else {
+        listItems.push(...mapListItems(versions.items, id, editionID));
+    }
+
+    const renderVersionsList = () => {
+            return (
+                <>
+                { !versionsError ? 
+                    <>
+                        <h2 className="ons-u-mt-m@xxs@m">Available versions</h2>
+                        <List items={listItems} noResultsText="No editions found for dataset"></List>
+                    </>
+                : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel> }
+                </>
+            );
+        };
+
+    const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
+    const edition = editionResp?.current || editionResp?.next || editionResp;
+    const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     return (
         <>
-            <div className="ons-u-fs-m ons-u-mt-s ons-u-pb-xxs" style={{"color":"#707071"}}>Edition </div>
-            <h1 className="ons-u-fs-xxxl">{dataset.title}: {edition.edition}</h1>
-            <p>Select a version to view or edit.</p>
-            <List items={listItems} />
+            { !datasetError && !editionError ? 
+                <>
+                    <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />           
+                    <div className="ons-grid ons-u-mt-xl">
+                        <div className="ons-grid__col ons-col-6@m">
+                            { renderVersionsList() }
+                        </div>
+                    </div>
+                </>
+            : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
         </>
     );
 }
