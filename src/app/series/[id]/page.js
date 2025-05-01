@@ -65,7 +65,7 @@ export default async function Dataset({ params }) {
                             <h2 className="ons-u-mt-m@xxs@m">Description</h2>
                             <p data-testid="description-field">{dataset.description}</p>
 
-                            {topicTitles && topicTitles.length > 0 && (
+                            {topicTitles && (
                                 <>
                                     <h2 className="ons-u-mt-m@xxs@m">Topics</h2>
                                     <ul data-testid="topics-field">
