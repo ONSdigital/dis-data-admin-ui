@@ -21,7 +21,7 @@ export default async function Series() {
 
     return (
         <>
-            <Hero hyperLink={{ text: 'Add New Dataset Series', url: 'series/create'}} title="Dataset Series" wide/>
+            <Hero hyperLink={{ text: 'Add new dataset series', url: 'series/create'}} title="Dataset series" wide/>
             { error ? <Panel title="Error" variant="error">
                     <p>
                         There was an issue retrieving the list of dataset series.
