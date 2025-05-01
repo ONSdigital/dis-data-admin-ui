@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
 
@@ -42,6 +43,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
     if (!result.success) {
         response.errors = result.error.flatten().fieldErrors
         response.submission = datasetSeriesSubmission
+        logInfo("failed dataset series validation", null, null)
     } else {
         const reqCfg = await SSRequestConfig(cookies);
         try {
@@ -57,6 +59,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
                 response.code = data.status
             } else {
                 response.recentlySumbitted = true
+                logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null)
             }
         } catch (err) {
             return err.toString();

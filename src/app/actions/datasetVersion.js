@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 
 import { httpPost, SSRequestConfig } from "@/utils/request/request";
+import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
  
@@ -83,6 +84,7 @@ export async function datasetVersion(currentstate, formData) {
         actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
         actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
         actionResponse.submission = datasetVersion;
+        logInfo("failed dataset version validation", null, null)
         return actionResponse;
     } 
 
@@ -95,7 +97,9 @@ export async function datasetVersion(currentstate, formData) {
         if (data.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = data.status;
-        } 
+            return;
+        }
+        logInfo("created dataset version successfully", null, null)
     } catch (err) {
         return err.toString();
     }
