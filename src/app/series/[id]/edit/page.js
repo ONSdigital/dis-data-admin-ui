@@ -23,7 +23,7 @@ export default async function createPage({params}) {
             </>
         )
     } else {
-        const listOfAllTopics = response.items
+        const listOfAllTopics = topicsResponse.items
         return (
             <>
                 <SeriesForm 

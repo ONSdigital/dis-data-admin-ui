@@ -33,7 +33,9 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                 })
             }
         })
-        setTopicList(currentTopicList)
+        if(Object.keys(currentTopicList).length > 0){
+            setTopicList(currentTopicList)
+        }
     }
 
     // This is for successful submission to clear the topiclist.
