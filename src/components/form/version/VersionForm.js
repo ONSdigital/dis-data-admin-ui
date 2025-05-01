@@ -26,7 +26,11 @@ export default function VersionForm({ datasetID, editionID }) {
                 ]
             ));
         }
-    }  
+    }
+
+    if(isPending){
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
 
     const renderSuccessOrFailure = () => {
         return (
