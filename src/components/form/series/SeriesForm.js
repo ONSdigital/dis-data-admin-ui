@@ -82,7 +82,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-title"
                     name="dataset-series-title"
                     label={{
-                        text: 'Title'
+                        text: 'Title',
+                        description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
                     }}
                     error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
                     value={title}
@@ -94,7 +95,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: 'ID'
+                            text: 'ID',
+                            description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
                         error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
                         value={id}
