@@ -28,6 +28,11 @@ export default function CreateEditionForm({ datasetID }) {
         }
     }  
 
+    if(isPending){
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+
+
     const renderSuccessOrFailure = () => {
         return (
             <>

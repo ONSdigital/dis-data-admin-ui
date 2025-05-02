@@ -50,7 +50,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
             <>
                 { formState.success == true  ?
                     <Panel variant="success">
-                        <p>Dataset Series Saved. <Link href={savedDatasetURL}>View Dataset</Link></p>
+                        <p>Dataset series saved. <Link href={savedDatasetURL}>View dataset</Link></p>
                     </Panel> : null
                 }
                 { formState.success == false && !formState.code ?    
@@ -60,7 +60,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 }
                 { formState.success == false && formState.code == 403 ?    
                     <Panel title="There was a problem submitting your form" variant="error">
-                        <p>This datasetseries already exists</p>
+                        <p>This dataset series already exists</p>
                     </Panel> : null
                 }
             </>
@@ -69,37 +69,40 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
 
     return (
         <>
-            <Hero hyperLink={{ text: 'View Existing Dataset Series', url: '/data-admin/series'}} title="Create dataset series" wide/>
+            <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
             {renderSuccessOrFailure()}
-            <h2 className="ons-u-mt-m">Series Details</h2>
+            <h2 className="ons-u-mt-m">Series details</h2>
+            <p>The information in these fields is unique to a series.</p>
             <form action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
                 { currentID != "" ? <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} /> : null}
-                <TextInput 
-                    id="dataset-series-title"
-                    dataTestId="dataset-series-title"
-                    name="dataset-series-title"
-                    label={{
-                        text: 'Title'
-                    }}
-                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                />
                 { currentID == "" ?  
                     <TextInput 
                         id="dataset-series-id"
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: 'ID'
+                            text: 'ID',
+                            description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
                         error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
                     /> : null
                 }
+                <TextInput 
+                    id="dataset-series-title"
+                    dataTestId="dataset-series-title"
+                    name="dataset-series-title"
+                    label={{
+                        text: 'Title',
+                        description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
+                    }}
+                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                />
                 <Topics 
                     listOfAllTopics={listOfAllTopics} 
                     selectedTopics={selectedTopics} 

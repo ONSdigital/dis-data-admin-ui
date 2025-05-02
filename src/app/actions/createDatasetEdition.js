@@ -1,8 +1,9 @@
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 
 import { httpPost, SSRequestConfig } from "@/utils/request/request";
+import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
  
@@ -84,6 +85,7 @@ export async function createDatasetEdition(currentstate, formData) {
         actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
         actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
         actionResponse.submission = datasetEdition;
+        logInfo("failed dataset edition validation", null, null)
         return actionResponse;
     } 
 
@@ -96,7 +98,9 @@ export async function createDatasetEdition(currentstate, formData) {
         if (data.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = data.status;
+            return;
         } 
+        logInfo("created dataset edition successfully", null, null)
     } catch (err) {
         return err.toString();
     }
