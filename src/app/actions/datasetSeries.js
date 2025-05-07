@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import { cookies } from "next/headers";
 
@@ -16,7 +16,7 @@ const createSchema = z.object({
         name: z.string(),
         email: z.string()
     })).min(1, { message: "Contact is required" })
-})
+});
 
 const editSchema = createSchema.omit({ id: true });
 
@@ -32,57 +32,57 @@ const getFormData = (formData) => {
         contacts: JSON.parse(formData.get('dataset-series-contacts')),
         keywords: [""],
         next_release: "To be announced"
-    }
+    };
 
-    return datasetSeriesSubmission
+    return datasetSeriesSubmission;
 };
 
 const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
-    const response = {}
-    response.success = result.success
+    const response = {};
+    response.success = result.success;
     if (!result.success) {
-        response.errors = result.error.flatten().fieldErrors
-        response.submission = datasetSeriesSubmission
-        logInfo("failed dataset series validation", null, null)
+        response.errors = result.error.flatten().fieldErrors;
+        response.submission = datasetSeriesSubmission;
+        logInfo("failed dataset series validation", null, null);
     } else {
         const reqCfg = await SSRequestConfig(cookies);
         try {
-            let data
+            let data;
             if (type == "put"){
-                data = await httpPut(reqCfg, url, datasetSeriesSubmission)
+                data = await httpPut(reqCfg, url, datasetSeriesSubmission);
             } else {
                 data = await httpPost(reqCfg, url, datasetSeriesSubmission);
             }
             if (data.status == 403) {
-                response.success = false
-                response.recentlySumbitted = false
-                response.code = data.status
+                response.success = false;
+                response.recentlySumbitted = false;
+                response.code = data.status;
             } else {
-                response.recentlySumbitted = true
-                logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null)
+                response.recentlySumbitted = true;
+                logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null);
             }
         } catch (err) {
             return err.toString();
         }
     }
-    return response
+    return response;
 };
 
 export async function createDatasetSeries(currentstate, formData) {
-    const url = "/datasets"
+    const url = "/datasets";
 
-    const datasetSeriesSubmission = getFormData(formData)
-    const result = createSchema.safeParse(datasetSeriesSubmission)
+    const datasetSeriesSubmission = getFormData(formData);
+    const result = createSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, result, url)
+    return createResponse(datasetSeriesSubmission, result, url);
 }
 
 export async function updateDatasetSeries(currentstate, formData) {
-    const datasetSeriesSubmissionID = formData.get('dataset-series-id')
-    const url = "/datasets/" + datasetSeriesSubmissionID
+    const datasetSeriesSubmissionID = formData.get('dataset-series-id');
+    const url = "/datasets/" + datasetSeriesSubmissionID;
 
-    const datasetSeriesSubmission = getFormData(formData)
-    const result = editSchema.safeParse(datasetSeriesSubmission)
+    const datasetSeriesSubmission = getFormData(formData);
+    const result = editSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, result, url, "put")
+    return createResponse(datasetSeriesSubmission, result, url, "put");
 }
