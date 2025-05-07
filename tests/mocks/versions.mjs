@@ -1,57 +1,138 @@
 export const versions = {
-    count: 20,
     items: [
         {
-            collection_id: "test-collection-001",
-            dataset_id: "mock-dataset",
-            dimensions: [],
-            downloads: {
-                csv: {
-                    href: "2.csv",
-                    size: "4578032"
+            "edition": "time-series",
+            "edition_title": "This is an edition title for version 1",
+            "last_updated": {
+                "$date": "2025-02-26T16:12:31.377Z"
+            },
+            "links": {
+                "dataset": {
+                    "href": "/datasets/mock-quarterly",
+                    "id": "mock-quarterly"
                 },
-                csvw: {
-                    href: "2.json",
-                    size: "1600"
+                "edition": {
+                    "href": "/datasets/mock-quarterly/editions/time-series",
+                    "id": "time-series"
                 },
-                xls: {
-                    href: "2.xlsx",
-                    size: "277582"
+                "self": {
+                    "href": "/datasets/mock-quarterly/editions/time-series/versions/1"
+                },
+                "version": {
+                    "href": "/datasets/mock-quarterly/editions/time-series/versions/1",
+                    "id": "1"
                 }
             },
-            edition: "time-series",
-            id: "ff8daa7b-4713-4147-9e5e-228441c2c89e",
-            release_date: "2025-02-19T00:00:00.000Z",
-            state: "published",
-            type: "v4",
-            usage_notes: [],
-            version: 2
+            "release_date": "2025-01-26T07:00:00.000Z",
+            "state": "published",
+            "usage_notes": [
+                {
+                    "title": "Usage Note 1",
+                    "note": "This is a usage note for version 1"
+                },
+                {
+                    "title": "Usage Note 2",
+                    "note": "This is another usage note for version 1"
+                }
+            ],
+            "alerts": [
+                {
+                    "type": "alert",
+                    "date": "2025-01-26T08:00:00.000Z",
+                    "description": "This is an alert for version 1"
+                },
+                {
+                    "type": "correction",
+                    "date": "2025-01-26T09:00:00.000Z",
+                    "description": "This is a correction for version 1"
+                }
+            ],
+            "version": 1,
+            "type": "static",
+            "quality_designation": "accredited-official",
+            "distributions": [
+                {
+                    "title": "Full Dataset (CSV)",
+                    "format": "csv",
+                    "media_type": "text/csv",
+                    "download_url": "/datasets/RM086/editions/2021/versions/1.csv",
+                    "byte_size": 4300000
+                },
+                {
+                    "title": "Full Dataset (XLS)",
+                    "format": "xls",
+                    "media_type": "application/vnd.ms-excel",
+                    "download_url": "/datasets/RM086/editions/2021/versions/1.xls",
+                    "byte_size": 265000
+                }
+            ]
         },
         {
-            collection_id: "test-collection-001",
-            dataset_id: "mock-dataset",
-            dimensions: [],
-            downloads: {
-                csv: {
-                    href: "1.csv",
-                    size: "4578032"
+            "edition": "time-series",
+            "edition_title": "This is an edition title for version 2",
+            "last_updated": {
+                "$date": "2025-02-26T16:12:31.377Z"
+            },
+            "links": {
+                "dataset": {
+                    "href": "/datasets/static-test-dataset",
+                    "id": "static-test-dataset"
                 },
-                csvw: {
-                    href: "1-metadata.json",
-                    size: "1600"
+                "edition": {
+                    "href": "/datasets/static-test-dataset/editions/time-series",
+                    "id": "time-series"
                 },
-                xls: {
-                    href: "1.xlsx",
-                    size: "277582"
+                "self": {
+                    "href": "/datasets/static-test-dataset/editions/time-series/versions/2"
+                },
+                "version": {
+                    "href": "/datasets/static-test-dataset/editions/time-series/versions/2",
+                    "id": "2"
                 }
             },
-            edition: "time-series",
-            id: "ff8daa7b-4713-4147-9e5e-228441c2c89e",
-            release_date: "2025-02-19T00:00:00.000Z",
-            state: "published",
-            type: "v4",
-            usage_notes: [],
-            version: 1
-        },
+            "release_date": "2025-01-27T07:00:00.000Z",
+            "state": "published",
+            "usage_notes": [
+                {
+                    "title": "Usage Note 1",
+                    "note": "This is a usage note for version 2"
+                },
+                {
+                    "title": "Usage Note 2",
+                    "note": "This is another usage note for version 2"
+                }
+            ],
+            "alerts": [
+                {
+                    "type": "alert",
+                    "date": "2025-01-27T08:00:00.000Z",
+                    "description": "This is an alert for version 2"
+                },
+                {
+                    "type": "correction",
+                    "date": "2025-01-27T09:00:00.000Z",
+                    "description": "This is a correction for version 2"
+                }
+            ],
+            "version": 2,
+            "type": "static",
+            "quality_designation": "accredited-official",
+            "distributions": [
+                {
+                    "title": "Full Dataset (CSV)",
+                    "format": "csv",
+                    "media_type": "text/csv",
+                    "download_url": "/datasets/RM086/editions/2021/versions/2.csv",
+                    "byte_size": 4300000
+                },
+                {
+                    "title": "Full Dataset (XLS)",
+                    "format": "xls",
+                    "media_type": "application/vnd.ms-excel",
+                    "download_url": "/datasets/RM086/editions/2021/versions/2.xls",
+                    "byte_size": 265000
+                }
+            ]
+        }
     ]
 };

@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import { updateDatasetSeries } from "@/app/actions/datasetSeries"
+import { updateDatasetSeries } from "@/app/actions/datasetSeries";
 
 import Panel from "@/components/panel/Panel";
-import SeriesForm from "@/components/form/series/SeriesForm"
+import SeriesForm from "@/components/form/series/SeriesForm";
 
 export default async function createPage({params}) {
     const { id } = await params;
@@ -12,7 +12,7 @@ export default async function createPage({params}) {
     const reqCfg = await SSRequestConfig(cookies);
     const topicsResponse = await httpGet(reqCfg, "/topics");
     const response = await httpGet(reqCfg, `/datasets/${id}`);
-    const dataset = response.next
+    const dataset = response.next;
 
     if(Object.keys(topicsResponse).length === 0){
         return(
@@ -21,9 +21,9 @@ export default async function createPage({params}) {
                     <p>There was a problem connecting to the topics api which is required for this form. Please try again later.</p>
                 </Panel>
             </>
-        )
+        );
     } else {
-        const listOfAllTopics = topicsResponse.items
+        const listOfAllTopics = topicsResponse.items;
         return (
             <>
                 <SeriesForm 

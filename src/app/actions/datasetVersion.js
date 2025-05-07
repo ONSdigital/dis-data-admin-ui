@@ -84,7 +84,7 @@ export async function datasetVersion(currentstate, formData) {
         actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
         actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
         actionResponse.submission = datasetVersion;
-        logInfo("failed dataset version validation", null, null)
+        logInfo("failed dataset version validation", null, null);
         return actionResponse;
     } 
 
@@ -99,7 +99,7 @@ export async function datasetVersion(currentstate, formData) {
             actionResponse.code = data.status;
             return;
         }
-        logInfo("created dataset version successfully", null, null)
+        logInfo("created dataset version successfully", null, null);
     } catch (err) {
         return err.toString();
     }

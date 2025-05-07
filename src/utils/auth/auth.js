@@ -35,7 +35,7 @@ const getLoginURLWithRedirect = (redirectPath) => {
  */
 const decodeToken = (token) => {
     return jwtDecode(token);
-}
+};
 
 /**
  * Decodes JWT and validates
@@ -63,6 +63,6 @@ const getUserName = (token) => {
         logError("error getting user name from token", null, null, error);
         return null;
     }
-}
+};
 
 export { logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName };

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import Link from 'next/link'
+import Link from 'next/link';
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
