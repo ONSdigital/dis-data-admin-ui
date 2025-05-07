@@ -8,7 +8,7 @@ import Panel from "@/components/panel/Panel";
 import { mapListItems } from "./mapper";
 
 
-export default async function Dataset({ params }) {
+export default async function Edition({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
 
     const { id, editionID } = await params;
