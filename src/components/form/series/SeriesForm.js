@@ -69,7 +69,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
 
     return (
         <>
-            <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
             {renderSuccessOrFailure()}
             <h2 className="ons-u-mt-m">Series details</h2>
             <p>The information in these fields is unique to a series.</p>
