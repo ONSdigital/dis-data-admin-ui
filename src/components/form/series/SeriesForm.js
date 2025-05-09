@@ -6,7 +6,6 @@ import { useState, useActionState } from "react";
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
 
-import Hero from "@/components/hero/Hero"
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
