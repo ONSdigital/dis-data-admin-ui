@@ -3,26 +3,22 @@ import { test, expect } from '@playwright/test';
 import { addValidAuthCookies } from "../utils/utils";
 
 test.describe("version overview page", () => {
-    test("renders as expected", async ({ page, context }) => {
+    test("route from list of version to version overview page", async ({ page, context }) => {
         addValidAuthCookies(context);
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
-        await expect(page.getByTestId('id-field')).toContainText('mock-quarterly');
-        await expect(page.getByTestId('edition-field')).toContainText('time-series');
-        await expect(page.getByTestId('version-field')).toContainText('1');
-    });
-
-    test("route from series page to version overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto('./series')
-        await page.getByRole('link', { name: 'Mock Dataset', exact: true }).click();
-        await page.waitForURL("**/series/mock-quarterly");
-        await expect(page.url().toString()).toContain("series/mock-quarterly");
-        await page.getByRole('link', { name: 'time-series' }).click();
-        await page.waitForURL('**/series/mock-quarterly/editions/time-series');
+        await page.goto('./series/mock-quarterly/editions/time-series');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
         await page.getByRole('link', { name: 'Version: 1' }).click();
         await page.waitForURL('**/series/mock-quarterly/editions/time-series/versions/1');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
+    });
+
+    test("route from version overview page to list of versions", async ({ page, context }) => {
+        addValidAuthCookies(context);
+        await page.goto('./series/mock-quarterly/editions/time-series/versions/1');
+        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
+        await page.getByRole('link', { name: 'Back to version overview' }).click();
+        await page.waitForURL('**/series/mock-quarterly/editions/time-series');
+        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
     });
 
     test("fully populated version page renders as expected", async ({ page, context }) => {
