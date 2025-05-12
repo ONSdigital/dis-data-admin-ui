@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
 
+import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 
 export default async function Version({ params }) {
@@ -17,6 +18,7 @@ export default async function Version({ params }) {
 
     return (
         <>
+        <Hero hyperLink={{ text: `Back to list of versions`, url: "../"}} title={`${metadata.edition_title}`} wide/>
             { !metadataError ?
                 <>
                     <div className="ons-grid ons-u-mt-xl">
@@ -27,10 +29,10 @@ export default async function Version({ params }) {
                             <h2 className="ons-u-mt-m@xxs@m">Edition</h2>
                             <p data-testid="edition-field">{metadata.edition}</p>
 
-                            <h2 className="ons-u-mt-m@xxs@m">Edition Title</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Edition title</h2>
                             <p data-testid="edition-title-field">{metadata.edition_title}</p>
 
-                            <h2 className="ons-u-mt-m@xxs@m">Release Date</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
                             <p data-testid="release-date-field">
                                 {formatDate(metadata.release_date)}
                             </p>
@@ -38,21 +40,21 @@ export default async function Version({ params }) {
                             <h2 className="ons-u-mt-m@xxs@m">Version</h2>
                             <p data-testid="version-field">{metadata.version}</p>
 
-                            <h2 className="ons-u-mt-m@xxs@m">Last Updated</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Last updated</h2>
                             <p data-testid="last-updated-field">
                                 {formatDate(metadata.last_updated)}
                             </p>
 
                             {metadata.quality_designation && (
                                 <>
-                                    <h2 className="ons-u-mt-m@xxs@m">Quality Designation</h2>
+                                    <h2 className="ons-u-mt-m@xxs@m">Quality designation</h2>
                                     <p data-testid="quality-designation-field">{metadata.quality_designation}</p>
                                 </>
                             )}
 
                             {metadata.usage_notes && metadata.usage_notes.length > 0 && (
                                 <>
-                                    <h2 className="ons-u-mt-m@xxs@m">Usage Notes</h2>
+                                    <h2 className="ons-u-mt-m@xxs@m">Usage notes</h2>
                                     {metadata.usage_notes.map((item, index) => (
                                         <div key={index}>
                                             <h3 data-testid={`usage-note-title-${index}`}>{item.title}</h3>
@@ -77,7 +79,7 @@ export default async function Version({ params }) {
 
                             {metadata.distributions && metadata.distributions.length > 0 && (
                                 <>
-                                    <h2 className="ons-u-mt-m@xxs@m">Distributions</h2>
+                                    <h2 className="ons-u-mt-m@xxs@m">Downloads</h2>
                                     {metadata.distributions.map((distribution, index) => (
                                         <div key={index}>
                                             <h3 data-testid={`distribution-title-${index}`}>{distribution.title}</h3>
