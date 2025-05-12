@@ -6,7 +6,6 @@ import { useState, useActionState } from "react";
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
 
-import Hero from "@/components/hero/Hero";
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
@@ -69,7 +68,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
 
     return (
         <>
-            <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
             {renderSuccessOrFailure()}
             <h2 className="ons-u-mt-m">Series details</h2>
             <p>The information in these fields is unique to a series.</p>
