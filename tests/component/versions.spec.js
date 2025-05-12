@@ -16,7 +16,7 @@ test.describe("version overview page", () => {
         addValidAuthCookies(context);
         await page.goto('./series/mock-quarterly/editions/time-series/versions/1');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
-        await page.getByRole('link', { name: 'Back to version overview' }).click();
+        await page.getByRole('link', { name: 'Back to list of versions' }).click();
         await page.waitForURL('**/series/mock-quarterly/editions/time-series');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
     });
