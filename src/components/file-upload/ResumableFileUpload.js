@@ -9,13 +9,13 @@ const progressStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError }) {
-    const [showFileUpload, setShowFileUpload] = useState(true);
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile }) {
+    const [showFileUpload, setShowFileUpload] = useState(uploadedFile ? false : true);
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [showIsComplete, setShowIsComplete] = useState(false);
+    const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
     const [error, setError] = useState();
-    const [file, setFile] = useState({});
+    const [file, setFile] = useState(uploadedFile || {});
 
     const handleFileStart = () => {
         setShowFileUpload(false);
