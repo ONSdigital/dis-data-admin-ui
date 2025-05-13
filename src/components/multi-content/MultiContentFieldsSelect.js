@@ -7,7 +7,7 @@ import TextArea from '../textarea/Textarea';
 
 export default function MultiContentFieldsSelect(props) {
     const [contentType, setContentType] = useState(props.field?.type || "");
-    const [contentBody, setContentBody] = useState(props.field?.note || "");
+    const [contentBody, setContentBody] = useState(props.field?.note || props.field?.description || "");
 
     const selectID = props.id + "-select-" + props.index;
     const textareaID = props.id + "-textarea-" + props.index;
