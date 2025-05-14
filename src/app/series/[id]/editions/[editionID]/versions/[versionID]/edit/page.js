@@ -23,7 +23,7 @@ export default async function EditVersion({ params }) {
         <>
             { !versionError ?
                 <>
-                    <Hero hyperLink={{ text: `Back to dataset version overview`, url: "../" }} title={`Edit version ${versionID}`} wide /> 
+                    <Hero hyperLink={{ text: `Back to dataset version overview`, url: "../../" }} title={`Edit version ${versionID}`} wide /> 
                     <VersionForm datasetID={id} editionID={editionID} version={version} action={updateDatasetVersion} />
                 </>
             : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
