@@ -152,7 +152,7 @@ test.describe('create', () => {
 
         await page.goto('./series/create')
         await page.getByLabel('Title').fill('test title');
-        await page.getByLabel('ID', {exact: true}).fill('test dup');
+        await page.getByLabel('ID', {exact: true}).fill('duplicate-id');
         await page.getByLabel('Topics').selectOption('1000');
         await page.getByRole('button', { name: /Add Topic/i }).click();
         await page.getByTestId('field-dataset-series-description').getByRole('textbox').fill('test description');
@@ -161,7 +161,24 @@ test.describe('create', () => {
         await page.getByRole('button', { name: /Add contact/i }).click();
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText('This dataset series already exists')).toBeVisible();
+        await expect(page.getByText('dataset series already exists')).toBeVisible();
+    });
+
+    test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto('./series/create')
+        await page.getByLabel('Title').fill('duplicate-title');
+        await page.getByLabel('ID', {exact: true}).fill('test ID');
+        await page.getByLabel('Topics').selectOption('1000');
+        await page.getByRole('button', { name: /Add Topic/i }).click();
+        await page.getByTestId('field-dataset-series-description').getByRole('textbox').fill('test description');
+        await page.getByLabel('Name').fill('test name');
+        await page.getByLabel('Email').fill('test@email.com');
+        await page.getByRole('button', { name: /Add contact/i }).click();
+        await page.getByRole('button', { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText('dataset title already exists')).toBeVisible();
     });
 });
 
@@ -193,5 +210,16 @@ test.describe('edit', () => {
         await page.getByRole('button', { name: /Save new dataset series/i }).click();
 
         await expect(page.getByText('Dataset series saved')).toBeVisible();
+    });
+
+    test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto('./series/mock-quarterly/edit')
+
+        await page.getByTestId('dataset-series-title').fill('duplicate-title');
+        await page.getByRole('button', { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText('dataset title already exists')).toBeVisible();
     });
 });
