@@ -51,14 +51,13 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
 
     try {
         const data = await makeRequest(reqCfg, url, datasetVersionSubmission);
-        console.log("DATA IS: ", data)
         actionResponse.success = true;
         if (data.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = data.status;
             return actionResponse;
         }
-        logInfo("created dataset version successfully", null, null)
+        logInfo("created dataset version successfully", null, null);
     } catch (err) {
         return err.toString();
     }
@@ -113,7 +112,7 @@ const handleFailedValidation = (validation, datasetVersionSubmission) => {
     actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
     actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
     actionResponse.submission = datasetVersionSubmission;
-    logInfo("failed dataset version validation", null, null)
+    logInfo("failed dataset version validation", null, null);
     return actionResponse;
 };
 
