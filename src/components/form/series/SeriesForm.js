@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 import { useState, useActionState } from "react";
 
@@ -11,16 +11,16 @@ import Contact from "@/components/contact/Contact";
 
 export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
 
-    const [title, setTitle] = useState(currentTitle)
-    const [id, setID] = useState(currentID)
+    const [title, setTitle] = useState(currentTitle);
+    const [id, setID] = useState(currentID);
     const [selectedTopics, setSelectedTopics] = useState(currentTopics);
-    const [description, setDescription] = useState(currentDescription)
+    const [description, setDescription] = useState(currentDescription);
     const [contacts, setContacts] = useState(currentContacts);
 
-    const [formState, formAction, isPending] = useActionState(action, {})
-    const [savedDatasetURL, setSavedDatasetURL] = useState("")
+    const [formState, formAction, isPending] = useActionState(action, {});
+    const [savedDatasetURL, setSavedDatasetURL] = useState("");
 
-    let listOfErrors = []
+    let listOfErrors = [];
 
     if (formState.errors){
         Object.values(formState.errors).map((error) => (
@@ -28,7 +28,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 ...listOfErrors,
                 {text: error}
             ]
-        ))
+        ));
     } 
 
     if (formState.recentlySubmitted == true) {
@@ -42,7 +42,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     }
 
     if(isPending){
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
     const renderSuccessOrFailure = () => {
         return (
@@ -63,8 +63,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     </Panel> : null
                 }
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>

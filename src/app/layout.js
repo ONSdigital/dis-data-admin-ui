@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 
 import Layout from "@/components/layout/Layout";
 

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import Hero from "@/components/hero/Hero"
+import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import List from "@/components/list/List";
 import { mapListItems } from "./mapper";

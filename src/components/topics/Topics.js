@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 
@@ -12,35 +12,35 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
     const topicSelectOptions = [{                        
         value: "",
         text: "Select an option",
-    }]
+    }];
 
     listOfAllTopics.forEach(topic => {
         topicSelectOptions.push({
             "value": topic.id,
             "text": topic.title
-        })
+        });
     });
 
     // This is for setting up the topic list when editing a dataseries which already has topics associated with it.
     if(selectedTopics.length > 0 && topicList.length == 0){
-        const currentTopicList = []
+        const currentTopicList = [];
         selectedTopics.forEach(topic => {
-            const result = listOfAllTopics.find(({ id }) => id === topic )
+            const result = listOfAllTopics.find(({ id }) => id === topic );
             if (result) {
                 currentTopicList.push({
                     id : result.id, 
                     text : result.title
-                })
+                });
             }
-        })
+        });
         if(Object.keys(currentTopicList).length > 0){
-            setTopicList(currentTopicList)
+            setTopicList(currentTopicList);
         }
     }
 
     // This is for successful submission to clear the topiclist.
     if(selectedTopics.length == 0 && topicList.length > 0){
-        setTopicList([])
+        setTopicList([]);
     }
 
     const renderTopicsList = () => {
@@ -74,7 +74,7 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                                                     topicList.filter(t =>
                                                         t.id !== topic.id
                                                     )
-                                                )
+                                                );
                                             }}
                                         />
                                     </div>
@@ -85,8 +85,8 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                     </ul> : null
                 }
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>
@@ -102,8 +102,8 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                                 className="ons-input ons-input--select"
                                 defaultValue=""
                                 onChange={e => {
-                                    setTopicValue(e.target.value)
-                                    setTopicText(e.target.selectedOptions[0].text)
+                                    setTopicValue(e.target.value);
+                                    setTopicText(e.target.selectedOptions[0].text);
                                 }}
                             >
                             {topicSelectOptions.map((topic) => (
@@ -132,7 +132,7 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                                                 id : topicValue, 
                                                 text : topicText
                                             }
-                                        ])
+                                        ]);
                                     }
                                 }}
                             />

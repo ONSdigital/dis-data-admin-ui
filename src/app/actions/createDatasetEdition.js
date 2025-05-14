@@ -85,7 +85,7 @@ export async function createDatasetEdition(currentstate, formData) {
         actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
         actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
         actionResponse.submission = datasetEdition;
-        logInfo("failed dataset edition validation", null, null)
+        logInfo("failed dataset edition validation", null, null);
         return actionResponse;
     } 
 
@@ -100,7 +100,7 @@ export async function createDatasetEdition(currentstate, formData) {
             actionResponse.code = data.status;
             return;
         } 
-        logInfo("created dataset edition successfully", null, null)
+        logInfo("created dataset edition successfully", null, null);
     } catch (err) {
         return err.toString();
     }
