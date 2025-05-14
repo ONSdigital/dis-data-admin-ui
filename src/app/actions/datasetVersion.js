@@ -69,19 +69,25 @@ const getFormData = (formData) => {
     const editionID = formData.get("edition-id");
     const versionID = formData.get("version-id");
     const usageNotes = formData.getAll("usage-notes");
+    console.log("USAGE NOTES ARE: ", usageNotes)
     const parsedUsageNotes = [];
     usageNotes.map(note => {
-        if (note.title && note.note) {
+
+            console.log("we're parsing usage notes");
             parsedUsageNotes.push(JSON.parse(note));
-        }
+
     });
+    console.log("PARSED UN ARE: ", parsedUsageNotes);
     const alerts = formData.getAll("alerts");
+    console.log("ALERTS ARE: ", alerts)
     const parsedAlerts = [];
     alerts.map(alert => {
-        if (alert.type && alert.description) {
+
+            console.log("we're parsing alerts");
             parsedAlerts.push(JSON.parse(alert));
-        }
+        
     });
+    console.log("PARSED ALERTS ARE: ", parsedAlerts);
     const datasetVersion = {
         dataset_id: datasetID,
         edition: editionID,
@@ -123,6 +129,9 @@ const createDatasetVersion = async (currentstate, formData) => {
     if (!validation.success) {
         return handleFailedValidation(validation, datasetVersionSubmission);
     }
+
+    console.log(datasetVersionSubmission)
+
     return doSubmission(datasetVersionSubmission, httpPost);
 };
 
