@@ -31,7 +31,6 @@ export default function VersionForm({ datasetID, editionID, version, action }) {
     }
 
     const renderSuccessOrFailure = () => {
-        console.log("FORMSTATE IS:", formState);
         return (
             <>
                 { 
