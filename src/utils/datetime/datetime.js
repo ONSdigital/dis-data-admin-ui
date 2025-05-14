@@ -32,7 +32,7 @@ export function ISOToDMYMHValues(dateString) {
         }
 
         let minutes = date.getMinutes();
-        if (minutes < 9) { minutes = "0" + minutes }
+        if (minutes < 9) { minutes = "0" + minutes; }
 
         return {day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear(), minutes: minutes, hour: date.getHours()};
     } catch (error) {
