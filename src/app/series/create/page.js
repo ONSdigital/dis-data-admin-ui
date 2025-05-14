@@ -1,8 +1,9 @@
 import { cookies } from "next/headers";
 
+import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
-import SeriesForm from "@/components/form/series/SeriesForm"
-import { createDatasetSeries } from "@/app/actions/datasetSeries"
+import SeriesForm from "@/components/form/series/SeriesForm";
+import { createDatasetSeries } from "@/app/actions/datasetSeries";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 export default async function createPage() {
@@ -17,11 +18,12 @@ export default async function createPage() {
                     <p>There was a problem connecting to the topics api which is required for this form. Please try again later.</p>
                 </Panel>
             </>
-        )
+        );
     } else {
-        const listOfAllTopics = response.items
+        const listOfAllTopics = response.items;
         return (
             <>
+                <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
                 <SeriesForm 
                     listOfAllTopics={listOfAllTopics} 
                     action={createDatasetSeries}

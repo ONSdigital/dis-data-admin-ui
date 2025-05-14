@@ -5,6 +5,7 @@ import { editions } from "../mocks/editions.mjs";
 import { edition } from "../mocks/edition.mjs";
 import { topicList } from "../mocks/topics.mjs";
 import { versions } from "../mocks/versions.mjs";
+import { metadataList } from "../mocks/metadata.mjs";
 
 
 const app = express();
@@ -46,6 +47,17 @@ app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
     res.send({status: 201});
+});
+
+app.get("/datasets/:id/editions/:editionID/versions/:versionID/metadata", (req, res) => {
+    res.send(
+        metadataList.items.find(
+            (item) =>
+                item.id === req.params.id &&
+                item.edition === req.params.editionID &&
+                item.version === req.params.versionID
+        )
+    );
 });
 
 app.get("/topics/:id", (req, res) => {

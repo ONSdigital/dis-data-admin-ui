@@ -1,27 +1,26 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 import { useState, useActionState } from "react";
 
 import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
 
-import Hero from "@/components/hero/Hero"
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
 export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
 
-    const [title, setTitle] = useState(currentTitle)
-    const [id, setID] = useState(currentID)
+    const [title, setTitle] = useState(currentTitle);
+    const [id, setID] = useState(currentID);
     const [selectedTopics, setSelectedTopics] = useState(currentTopics);
-    const [description, setDescription] = useState(currentDescription)
+    const [description, setDescription] = useState(currentDescription);
     const [contacts, setContacts] = useState(currentContacts);
 
-    const [formState, formAction, isPending] = useActionState(action, {})
-    const [savedDatasetURL, setSavedDatasetURL] = useState("")
+    const [formState, formAction, isPending] = useActionState(action, {});
+    const [savedDatasetURL, setSavedDatasetURL] = useState("");
 
-    let listOfErrors = []
+    let listOfErrors = [];
 
     if (formState.errors){
         Object.values(formState.errors).map((error) => (
@@ -29,21 +28,21 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 ...listOfErrors,
                 {text: error}
             ]
-        ))
+        ));
     } 
 
     if (formState.recentlySumbitted == true) {
-        formState.recentlySumbitted = false
-        setSavedDatasetURL("/series/" + id)
-        setTitle('')
-        setID('')
-        setDescription('')
-        setContacts([])
-        setSelectedTopics([])
+        formState.recentlySumbitted = false;
+        setSavedDatasetURL("/series/" + id);
+        setTitle('');
+        setID('');
+        setDescription('');
+        setContacts([]);
+        setSelectedTopics([]);
     }
 
     if(isPending){
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
     const renderSuccessOrFailure = () => {
         return (
@@ -64,12 +63,11 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     </Panel> : null
                 }
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>
-            <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
             {renderSuccessOrFailure()}
             <h2 className="ons-u-mt-m">Series details</h2>
             <p>The information in these fields is unique to a series.</p>

@@ -1,45 +1,102 @@
-"use client";
+import { cookies } from "next/headers";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { formatDate } from "@/utils/datetime/datetime";
 
-import request from "@/utils/request/request";
+import Hero from "@/components/hero/Hero";
+import Panel from "@/components/panel/Panel";
 
-import { TextInput } from "author-design-system-react";
+export default async function Version({ params }) {
+    const { id, editionID, versionID } = await params;
+    const reqCfg = await SSRequestConfig(cookies);
+    let metadata = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}/metadata`);
 
-export default function Dataset() {
-    const { id, editionID, versionID } = useParams();
-    const [response, setResponse] = useState(null);
+    let metadataError = false;
+    if (metadata.ok != null && !metadata.ok) {
+        metadataError = true;
+    }
 
-
-    useEffect(() => {
-        fetchData();
-    }), [];
-
-    const fetchData = async() => {
-        if (!response) {
-            const resp = await request(`/data-admin/api/getall?datasetID=${id}&editionID=${editionID}&versionID=${versionID}`);
-            setResponse(resp);
-        }
-    };
-
-    if (!response) return false;
     return (
         <>
-            <div className="ons-u-fs-m ons-u-mt-s ons-u-pb-xxs" style={{"color":"#707071"}}>Version</div>
-            <h1 className="ons-u-fs-xxxl">{response.dataset.title}: {response.edition.edition} (Version: {versionID})</h1>
-            <p>View or edit a version.</p>
+        <Hero hyperLink={{ text: `Back to list of versions`, url: "../"}} title={`${metadata.edition_title}`} wide/>
+            { !metadataError ?
+                <>
+                    <div className="ons-grid ons-u-mt-xl">
+                        <div className="ons-grid__col ons-col-6@m ">
+                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
+                            <p data-testid="id-field">{metadata.id}</p>
 
-            <TextInput inputMode="text" value={response.dataset.title} width={800} label={{text: 'Dataset name'}} name="dataset-search" />
+                            <h2 className="ons-u-mt-m@xxs@m">Edition</h2>
+                            <p data-testid="edition-field">{metadata.edition}</p>
 
-            <TextInput inputMode="text" value={response.version.release_date} width={800} label={{text: 'Release date'}} name="dataset-search" />
+                            <h2 className="ons-u-mt-m@xxs@m">Edition title</h2>
+                            <p data-testid="edition-title-field">{metadata.edition_title}</p>
 
-            <TextInput inputMode="text" value={response.version.release_date} width={800} label={{text: 'Next release'}} name="dataset-search" />
+                            <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
+                            <p data-testid="release-date-field">
+                                {formatDate(metadata.release_date)}
+                            </p>
 
-            <p className="ons-u-mt-s ons-u-mb-xs"><strong>Description</strong></p>
+                            <h2 className="ons-u-mt-m@xxs@m">Version</h2>
+                            <p data-testid="version-field">{metadata.version}</p>
 
-            <textarea rows="10" cols="100" defaultValue={response.dataset.description}></textarea>
+                            <h2 className="ons-u-mt-m@xxs@m">Last updated</h2>
+                            <p data-testid="last-updated-field">
+                                {formatDate(metadata.last_updated)}
+                            </p>
 
+                            {metadata.quality_designation && (
+                                <>
+                                    <h2 className="ons-u-mt-m@xxs@m">Quality designation</h2>
+                                    <p data-testid="quality-designation-field">{metadata.quality_designation}</p>
+                                </>
+                            )}
+
+                            {metadata.usage_notes && metadata.usage_notes.length > 0 && (
+                                <>
+                                    <h2 className="ons-u-mt-m@xxs@m">Usage notes</h2>
+                                    {metadata.usage_notes.map((item, index) => (
+                                        <div key={index}>
+                                            <h3 data-testid={`usage-note-title-${index}`}>{item.title}</h3>
+                                            <p data-testid={`usage-note-text-${index}`}>{item.note}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+
+                            {metadata.alerts && metadata.alerts.length > 0 && (
+                                <>
+                                    <h2 className="ons-u-mt-m@xxs@m">Alerts</h2>
+                                    {metadata.alerts.map((alert, index) => (
+                                        <div key={index}>
+                                            <h3 data-testid={`alert-type-${index}`}>{alert.type}</h3>
+                                            <p data-testid={`alert-date-${index}`}>{formatDate(alert.date)}</p>
+                                            <p data-testid={`alert-description-${index}`}>{alert.description}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+
+                            {metadata.distributions && metadata.distributions.length > 0 && (
+                                <>
+                                    <h2 className="ons-u-mt-m@xxs@m">Downloads</h2>
+                                    {metadata.distributions.map((distribution, index) => (
+                                        <div key={index}>
+                                            <h3 data-testid={`distribution-title-${index}`}>{distribution.title}</h3>
+                                            <p data-testid={`distribution-format-${index}`}>{distribution.format}</p>
+                                            <p data-testid={`distribution-media-type-${index}`}>{distribution.media_type}</p>
+                                            <p data-testid={`distribution-byte-size-${index}`}>{distribution.byte_size} bytes</p>
+                                            <p>
+                                                <a href={distribution.download_url} target="_blank" data-testid={`distribution-download-url-${index}`}>{distribution.download_url}</a>
+                                            </p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </>
+            : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
         </>
     );
 }

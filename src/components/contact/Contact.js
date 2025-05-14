@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import isEmail from 'validator/lib/isEmail';
@@ -40,7 +40,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                                                         contacts.filter(c =>
                                                             c.email !== contact.email
                                                         )
-                                                    )
+                                                    );
                                                 }}
                                             />
                                         </div>
@@ -51,8 +51,8 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     ))}
                     </ul> : null}
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>
@@ -100,16 +100,16 @@ export default function Contact({contacts, setContacts, contactsError}) {
                                 ]}
                                 onClick={() => {
                                     if(!isEmail(contactEmail)){
-                                        setContactEmailError(true)
+                                        setContactEmailError(true);
                                     } else {
                                         setContacts([
                                         ...contacts,
                                         { name: contactName, email: contactEmail }
                                         ]);
 
-                                        setContactName('')
-                                        setContactEmail('')
-                                        setContactEmailError('')
+                                        setContactName('');
+                                        setContactEmail('');
+                                        setContactEmailError('');
                                     }
                                 }}
                             />
