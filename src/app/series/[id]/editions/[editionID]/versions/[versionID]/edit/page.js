@@ -19,7 +19,7 @@ export default async function EditVersion({ params }) {
         versionError = true;
     }
 
-    const heroLink = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}`
+    const heroLink = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}`;
     return (
         <>
             { !versionError ?
