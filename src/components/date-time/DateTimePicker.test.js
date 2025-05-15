@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import DateTimePicker from './DateTimePicker';
 
-renderDateTimePicker = (releaseDate) => {
+const renderDateTimePicker = (releaseDate) => {
     render(<DateTimePicker id="release-date" dataTestId="release-date" legend="Test date and time" description="" releaseDate={releaseDate}/>);
 }
 
