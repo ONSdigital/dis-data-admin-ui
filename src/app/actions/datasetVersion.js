@@ -116,9 +116,6 @@ const createDatasetVersion = async (currentstate, formData) => {
     if (!validation.success) {
         return handleFailedValidation(validation, datasetVersionSubmission);
     }
-
-    console.log(datasetVersionSubmission)
-
     return doSubmission(datasetVersionSubmission, httpPost);
 };
 
