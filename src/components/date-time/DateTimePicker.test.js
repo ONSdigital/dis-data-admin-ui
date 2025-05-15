@@ -2,8 +2,8 @@ import '@testing-library/jest-dom'
 import { render, screen, fireEvent } from '@testing-library/react'
 import DateTimePicker from './DateTimePicker';
 
-renderDateTimePicker = () => {
-    render(<DateTimePicker id="release-date" dataTestId="release-date" legend="Test date and time" description=""/>);
+renderDateTimePicker = (releaseDate) => {
+    render(<DateTimePicker id="release-date" dataTestId="release-date" legend="Test date and time" description="" releaseDate={releaseDate}/>);
 }
 
 describe("DateTimerPicker", () => {
@@ -23,6 +23,24 @@ describe("DateTimerPicker", () => {
 
         const minutes = screen.getByTestId("release-date-minutes");
         expect(minutes).toBeInTheDocument();
+    });
+
+    it("renders correctly when existing date is passed in", () => {
+        renderDateTimePicker("2025-02-25T09:30:00.000Z");
+        const day = screen.getByTestId("release-date-day");
+        expect(day.value).toBe("25");
+
+        const month = screen.getByTestId("release-date-month");
+        expect(month).toBeInTheDocument("2");
+
+        const year = screen.getByTestId("release-date-year");
+        expect(year).toBeInTheDocument("2025");
+
+        const hour = screen.getByTestId("release-date-hour");
+        expect(hour).toBeInTheDocument("9");
+
+        const minutes = screen.getByTestId("release-date-minutes");
+        expect(minutes).toBeInTheDocument("30");
     });
 
     it("onChange handler updates day state", () => {
