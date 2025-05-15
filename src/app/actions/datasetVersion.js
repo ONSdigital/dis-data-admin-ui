@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 
@@ -88,7 +88,7 @@ const getFormData = (formData) => {
         release_minutes: formData.get("release-date-minutes"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
-        distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],
+        distributions: [ JSON.parse(formData.get("dataset-upload-value")) ],
         release_date: null,
         type: "static",
     };
