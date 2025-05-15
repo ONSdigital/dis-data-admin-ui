@@ -65,9 +65,6 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
 };
 
 const getFormData = (formData) => {
-    const datasetID = formData.get("dataset-id");
-    const editionID = formData.get("edition-id");
-    const versionID = formData.get("version-id");
     const usageNotes = formData.getAll("usage-notes");
     const parsedUsageNotes = [];
     usageNotes.map(note => {
@@ -79,9 +76,9 @@ const getFormData = (formData) => {
         parsedAlerts.push(JSON.parse(alert));
     });
     const datasetVersion = {
-        dataset_id: datasetID,
-        edition: editionID,
-        version_id: versionID,
+        dataset_id: formData.get("dataset-id"),
+        edition: formData.get("edition-id"),
+        version_id: formData.get("version-id"),
         edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-desingation-value"),
         release_day: formData.get("release-date-day"),
