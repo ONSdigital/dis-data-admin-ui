@@ -1,4 +1,4 @@
-import express from "express";
+import express, { text } from "express";
 
 import { datasetList } from "../mocks/datasets.mjs";
 import { editions } from "../mocks/editions.mjs";
@@ -18,15 +18,33 @@ app.get("/datasets", (req, res) => {
 });
 
 app.post("/datasets", (req, res) => {
-    if(req.body.id == 'test dup'){
-        res.send({
-            status: 403
-        })
-    } else {
-        res.send({
-            id: req.body.id
-        });
+    if (req.body.id == 'duplicate-id') {
+        res.status(409).send("dataset series already exists");
+        return;
     }
+
+    if (req.body.title == 'duplicate-title') {
+        res.status(409).send("dataset title already exists");
+        return;
+    }
+    
+    res.send({
+        id: req.body.id
+    });
+});
+
+app.put("/datasets/:id", (req, res) => {
+    if (req.body.title == 'duplicate-title') {
+        res.status(409).send("dataset title already exists");
+        return;
+    }
+
+    res.send({
+        title: req.body.title,
+        topicList: req.body.topics,
+        description: req.body.description,
+        contacts: req.body.contacts
+    });
 });
 
 app.get("/datasets/:id", (req, res) => {

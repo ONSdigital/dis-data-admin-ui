@@ -21,7 +21,7 @@ const createSchema = z.object({
 const editSchema = createSchema.omit({ id: true });
 
 const getFormData = (formData) => {
-    // keywords and next_release is placeholder untill a ticket is made, possibly with design, to implement these fields properly.
+    // keywords and next_release is placeholder until a ticket is made, possibly with design, to implement these fields properly.
     const datasetSeriesSubmission = {
         type: formData.get('dataset-series-type'),
         license: formData.get('dataset-series-license'),
@@ -53,12 +53,13 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
             } else {
                 data = await httpPost(reqCfg, url, datasetSeriesSubmission);
             }
-            if (data.status == 403) {
+            if (data.status >= 400) {
                 response.success = false;
-                response.recentlySumbitted = false;
+                response.recentlySubmitted = false;
                 response.code = data.status;
+                response.httpError = data.errorMessage;
             } else {
-                response.recentlySumbitted = true;
+                response.recentlySubmitted = true;
                 logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null);
             }
         } catch (err) {

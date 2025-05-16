@@ -31,8 +31,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
         ));
     } 
 
-    if (formState.recentlySumbitted == true) {
-        formState.recentlySumbitted = false;
+    if (formState.recentlySubmitted == true) {
+        formState.recentlySubmitted = false;
         setSavedDatasetURL("/series/" + id);
         setTitle('');
         setID('');
@@ -57,9 +57,9 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         <HyperLinksList itemsList={listOfErrors}/>
                     </Panel> : null
                 }
-                { formState.success == false && formState.code == 403 ?    
+                { formState.success == false && formState.code >= 400 ?    
                     <Panel title="There was a problem submitting your form" variant="error">
-                        <p>This dataset series already exists</p>
+                        <p>{formState.httpError || "An unknown error occurred"}</p>
                     </Panel> : null
                 }
             </>
