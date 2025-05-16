@@ -51,7 +51,7 @@ test.describe("Create version page", () => {
 
         await page.getByRole("button", { name: /Save new dataset version/i }).click();
 
-        await expect(page.getByText("Dataset version created successfully.")).toBeVisible();
+        await expect(page.getByText("Dataset version saved successfully.")).toBeVisible();
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
