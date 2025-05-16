@@ -32,13 +32,13 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     } 
 
     if (formState.recentlySubmitted == true) {
-        formState.recentlySubmitted = false
-        setSavedDatasetURL("/series/" + id)
-        setTitle('')
-        setID('')
-        setDescription('')
-        setContacts([])
-        setSelectedTopics([])
+        formState.recentlySubmitted = false;
+        setSavedDatasetURL("/series/" + id);
+        setTitle('');
+        setID('');
+        setDescription('');
+        setContacts([]);
+        setSelectedTopics([]);
     }
 
     if(isPending){

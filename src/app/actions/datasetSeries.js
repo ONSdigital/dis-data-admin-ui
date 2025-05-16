@@ -54,13 +54,13 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
                 data = await httpPost(reqCfg, url, datasetSeriesSubmission);
             }
             if (data.status >= 400) {
-                response.success = false
-                response.recentlySubmitted = false
-                response.code = data.status
-                response.httpError = data.errorMessage
+                response.success = false;
+                response.recentlySubmitted = false;
+                response.code = data.status;
+                response.httpError = data.errorMessage;
             } else {
-                response.recentlySubmitted = true
-                logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null)
+                response.recentlySubmitted = true;
+                logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null);
             }
         } catch (err) {
             return err.toString();
