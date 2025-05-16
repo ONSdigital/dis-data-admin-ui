@@ -1,8 +1,8 @@
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 
-import { httpPost, SSRequestConfig } from "@/utils/request/request";
+import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
@@ -42,27 +42,43 @@ const mergeDateTimeErrors = (errors) => {
     return errors;
 };
 
-export async function datasetVersion(currentstate, formData) {
-    let actionResponse = {};
+const doSubmission = async (datasetVersionSubmission, makeRequest) => {
+    const actionResponse = {};
+    const reqCfg = await SSRequestConfig(cookies);
 
-    const datasetID = formData.get("dataset-id");
-    const editionID = formData.get("edition-id");
+    let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
+    if (datasetVersionSubmission.version_id) { url = url + `/${datasetVersionSubmission.version_id}`; }
+
+    try {
+        const data = await makeRequest(reqCfg, url, datasetVersionSubmission);
+        actionResponse.success = true;
+        if (data.status >= 400) {
+            actionResponse.success = false;
+            actionResponse.code = data.status;
+            return actionResponse;
+        }
+        logInfo("created dataset version successfully", null, null);
+    } catch (err) {
+        return err.toString();
+    }
+    return actionResponse;
+};
+
+const getFormData = (formData) => {
     const usageNotes = formData.getAll("usage-notes");
     const parsedUsageNotes = [];
     usageNotes.map(note => {
-        if (note.title && note.note) {
-            parsedUsageNotes.push(JSON.parse(note));
-        }
+        parsedUsageNotes.push(JSON.parse(note));
     });
     const alerts = formData.getAll("alerts");
     const parsedAlerts = [];
     alerts.map(alert => {
-        if (alert.type && alert.description) {
-            parsedAlerts.push(JSON.parse(alert));
-        }
+        parsedAlerts.push(JSON.parse(alert));
     });
     const datasetVersion = {
-        edition: editionID,
+        dataset_id: formData.get("dataset-id"),
+        edition: formData.get("edition-id"),
+        version_id: formData.get("version-id"),
         edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-desingation-value"),
         release_day: formData.get("release-date-day"),
@@ -72,37 +88,45 @@ export async function datasetVersion(currentstate, formData) {
         release_minutes: formData.get("release-date-minutes"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
-        distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],
+        distributions: [ JSON.parse(formData.get("dataset-upload-value")) ],
         release_date: null,
+        type: "static",
     };
-
-    const validation = versionSchema.safeParse(datasetVersion);
-
-    if (!validation.success) {
-        actionResponse.success = validation.success;
-        actionResponse.errors = validation.error.flatten().fieldErrors;
-        actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
-        actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
-        actionResponse.submission = datasetVersion;
-        logInfo("failed dataset version validation", null, null);
-        return actionResponse;
-    } 
 
     datasetVersion.release_date =  new Date(datasetVersion.release_year, datasetVersion.release_month - 1, datasetVersion.release_day, datasetVersion.release_hour, datasetVersion.release_minutes).toISOString();
 
-    const reqCfg = await SSRequestConfig(cookies);
-    try {
-        const data = await httpPost(reqCfg, `/datasets/${datasetID}/editions/${editionID}/versions`, datasetVersion);
-        actionResponse.success = true;
-        if (data.status >= 400) {
-            actionResponse.success = false;
-            actionResponse.code = data.status;
-            return;
-        }
-        logInfo("created dataset version successfully", null, null);
-    } catch (err) {
-        return err.toString();
-    }
+    return datasetVersion;
+};
 
+const handleFailedValidation = (validation, datasetVersionSubmission) => {
+    const actionResponse = {};
+    actionResponse.success = validation.success;
+    actionResponse.errors = validation.error.flatten().fieldErrors;
+    actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
+    actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
+    actionResponse.submission = datasetVersionSubmission;
+    logInfo("failed dataset version validation", null, null);
     return actionResponse;
-}
+};
+
+const createDatasetVersion = async (currentstate, formData) => {
+    const datasetVersionSubmission = getFormData(formData);
+    const validation = versionSchema.safeParse(datasetVersionSubmission);
+
+    if (!validation.success) {
+        return handleFailedValidation(validation, datasetVersionSubmission);
+    }
+    return doSubmission(datasetVersionSubmission, httpPost);
+};
+
+const updateDatasetVersion = async (currentstate, formData) => {
+    const datasetVersionSubmission = getFormData(formData);
+    const validation = versionSchema.safeParse(datasetVersionSubmission);
+
+    if (!validation.success) {
+        return handleFailedValidation(validation, datasetVersionSubmission);
+    }
+    return doSubmission(datasetVersionSubmission, httpPut);
+};
+
+export { createDatasetVersion, updateDatasetVersion };

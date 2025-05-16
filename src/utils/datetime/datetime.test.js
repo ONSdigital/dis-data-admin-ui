@@ -1,4 +1,4 @@
-import { formatDate } from './datetime';
+import { formatDate, ISOToDMYMHValues } from './datetime';
 
 describe('formatDate', () => {
     test('should format a valid date string correctly', () => {
@@ -30,5 +30,25 @@ describe('formatDate', () => {
         const result = formatDate('invalid-date');
         expect(result).toBe('missing date');
     });
-    
+});
+
+describe('ISOToDMYMHValues', () => {
+    test('should return correct values for valid date string', () => {
+        const result = ISOToDMYMHValues('2000-01-01T07:00:00.000Z');
+        expect(result.day).toBe(1);
+        expect(result.month).toBe(1);
+        expect(result.year).toBe(2000);
+        expect(result.minutes).toBe('00');
+        expect(result.hour).toBe(7);
+    });
+
+    // test('should return null when called with no arguments', () => {
+    //     const result = ISOToDMYMHValues();
+    //     expect(result).toBeNull();
+    // });
+
+    // test('should return null when called with non date string', () => {
+    //     const result = ISOToDMYMHValues('foobar');
+    //     expect(result).toBeNull();
+    // });
 });

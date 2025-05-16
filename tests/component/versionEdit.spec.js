@@ -6,8 +6,8 @@ test.describe("Create version page", () => {
     test("Renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create a new dataset version for mock-quarterly");
+        await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
+        await expect(page.getByRole("heading", { level: 1 })).toContainText("Edit version 1");
 
         
         await expect(page.getByTestId("select-quality-desingation")).toBeVisible();
@@ -15,22 +15,21 @@ test.describe("Create version page", () => {
         await expect(page.getByTestId("usage-notes-textarea-0")).toBeVisible();
         await expect(page.getByTestId("select-alerts-select-0")).toBeVisible();
         await expect(page.getByTestId("alerts-textarea-0")).toBeVisible();
-        await expect(page.getByTestId("dataset-upload-input")).toBeVisible();
     });
 
     test("Route back to dataset overview page works", async ({ page, context }) => {
         addValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
-        await page.getByRole("link", { name: "Back to time-series dataset edition overview" }).click();
-        await page.waitForURL("**/series/mock-quarterly/editions/time-series");
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
+        await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
+        await page.getByRole("link", { name: "Back to dataset version overview" }).click();
+        await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/1");
     });
 
     test("Submits form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
+        await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
         await page.getByTestId("release-date-day").fill("1");
         await page.getByTestId("release-date-month").fill("1");
         await page.getByTestId("release-date-year").fill("2020");
@@ -47,26 +46,9 @@ test.describe("Create version page", () => {
         await page.getByTestId("alerts-add-button").click();
         await page.getByTestId("select-alerts-select-1").selectOption("alert");
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
-        await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify({download_url: "test/file.csv"}); });
 
         await page.getByRole("button", { name: /Save new dataset version/i }).click();
 
         await expect(page.getByText("Dataset version saved successfully.")).toBeVisible();
-    });
-
-    test("Show errors on mandatory fields", async ({ page, context }) => {
-        addValidAuthCookies(context);
-
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
-
-        await page.getByRole("button", { name: /Save new dataset version/i }).click();
-
-        await expect(page.getByText("There was a problem creating this dataset version")).toBeVisible();
-        await expect(page.getByLabel("There was a problem").getByText("Quality designation is required")).toBeVisible();
-        await expect(page.getByLabel("There was a problem").getByText("File upload is required")).toBeVisible();
-        await expect(page.getByLabel("There was a problem").getByText("A release time and date is required")).toBeVisible();
-
-        await expect(page.getByTestId("quality-desingation-error").getByText("Quality designation is required")).toBeVisible();
-        await expect(page.getByTestId("field-dataset-upload-input-error").getByText("File upload is required")).toBeVisible();
     });
 });
