@@ -15,22 +15,34 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
     }];
 
     listOfAllTopics.forEach(topic => {
-        topicSelectOptions.push({
-            "value": topic.id,
-            "text": topic.title
-        });
+        const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
+        const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
+    
+        if (topicId && topicTitle) {
+            topicSelectOptions.push({
+                value: topicId,
+                text: topicTitle
+            });
+        }
     });
 
     // This is for setting up the topic list when editing a dataseries which already has topics associated with it.
     if(selectedTopics.length > 0 && topicList.length == 0){
         const currentTopicList = [];
         selectedTopics.forEach(topic => {
-            const result = listOfAllTopics.find(({ id }) => id === topic );
+            const result = listOfAllTopics.find(({ id, next, current }) => 
+                current?.id === topic || next?.id === topic || id === topic
+            );
             if (result) {
-                currentTopicList.push({
-                    id : result.id, 
-                    text : result.title
-                });
+                const topicId = result.current?.id || result.next?.id || result.id || "missing id";
+                const topicTitle = result.current?.title || result.next?.title || result.title || "missing title";
+        
+                if (topicId && topicTitle) {
+                    currentTopicList.push({
+                        id: topicId,
+                        text: topicTitle
+                    });
+                }
             }
         });
         if(Object.keys(currentTopicList).length > 0){
@@ -129,8 +141,8 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                                         setTopicList([
                                             ...topicList,
                                             {
-                                                id : topicValue, 
-                                                text : topicText
+                                                id: topicValue, 
+                                                text: topicText
                                             }
                                         ]);
                                     }
