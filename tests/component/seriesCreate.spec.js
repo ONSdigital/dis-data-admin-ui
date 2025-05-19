@@ -1,0 +1,101 @@
+import { test, expect } from "@playwright/test";
+
+import { addValidAuthCookies } from "../utils/utils";
+
+test.describe("Create series page", () => {
+    test("Renders as expected", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create dataset series");
+    });
+
+    test("Route from Create dataset series page to Series page", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+        await page.getByRole("link", { name: "View Existing Dataset Series" }).click();
+        await page.waitForURL("**/series");
+        await expect(page.url().toString()).toContain("series");
+    });
+
+    test("Submit form successfully", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+        await page.getByLabel("Title").fill("test title");
+        await page.getByLabel("ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Topics").selectOption("1000");
+        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByLabel("Name").fill("test name");
+        await page.getByLabel("Email").fill("test-email@test.com");
+        await page.getByRole("button", { name: /Add contact/i }).click();
+        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText("Dataset series saved")).toBeVisible();
+    });
+
+    test("Show errors on mandatory fields", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+
+        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText("There was a problem submitting your form")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Title is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("ID is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Description is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Contact is required")).toBeVisible();
+
+        await expect(page.getByTestId("field-dataset-series-title-error").getByText("Title is required")).toBeVisible();
+        await expect(page.getByTestId("field-dataset-series-id-error").getByText("ID is required")).toBeVisible();
+        await expect(page.getByTestId("field-dataset-series-description-error").getByText("Description is required")).toBeVisible();
+        await expect(page.getByTestId("field-dataset-series-contacts-error").getByText("Contact is required")).toBeVisible();
+    });
+
+    test("Show error on invalid email", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+
+        await page.getByLabel("Email").fill("test-email");
+        await page.getByRole("button", { name: /Add contact/i }).click();
+        await expect(page.getByTestId("field-dataset-series-contact-email-error").getByText("Invalid email")).toBeVisible();
+    });
+
+    test("Does not allow duplicate dataset series to be created", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+        await page.getByLabel("Title").fill("test title");
+        await page.getByLabel("ID", {exact: true}).fill("duplicate-id");
+        await page.getByLabel("Topics").selectOption("1000");
+        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByLabel("Name").fill("test name");
+        await page.getByLabel("Email").fill("tes-email@test.com");
+        await page.getByRole("button", { name: /Add contact/i }).click();
+        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText("dataset series already exists")).toBeVisible();
+    });
+
+    test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/create")
+        await page.getByLabel("Title").fill("duplicate-title");
+        await page.getByLabel("ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Topics").selectOption("1000");
+        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByLabel("Name").fill("test name");
+        await page.getByLabel("Email").fill("test@email.com");
+        await page.getByRole("button", { name: /Add contact/i }).click();
+        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+
+        await expect(page.getByText("dataset title already exists")).toBeVisible();
+    });
+});
