@@ -42,13 +42,13 @@ describe('ISOToDMYMHValues', () => {
         expect(result.hour).toBe(7);
     });
 
-    // test('should return null when called with no arguments', () => {
-    //     const result = ISOToDMYMHValues();
-    //     expect(result).toBeNull();
-    // });
+    test('should return null when called with no arguments', () => {
+        const result = ISOToDMYMHValues();
+        expect(result).toBeNull();
+    });
 
-    // test('should return null when called with non date string', () => {
-    //     const result = ISOToDMYMHValues('foobar');
-    //     expect(result).toBeNull();
-    // });
+    test('should return null when called with non date string', () => {
+        const result = ISOToDMYMHValues('foobar');
+        expect(result).toBeNull();
+    });
 });
