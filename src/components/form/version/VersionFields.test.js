@@ -13,7 +13,7 @@ test("VersionFields renders correctly", () => {
     expect(screen.getByTestId("release-date-hour")).toBeInTheDocument();
     expect(screen.getByTestId("release-date-minutes")).toBeInTheDocument();
     expect(screen.getByText("Quality designation")).toBeInTheDocument();
-    expect(screen.getByTestId("select-quality-desingation")).toBeInTheDocument();
+    expect(screen.getByTestId("select-quality-designation")).toBeInTheDocument();
     expect(screen.getByText("Usage notes")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-input-0")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-textarea-0")).toBeInTheDocument();
@@ -27,8 +27,8 @@ test("VersionFields renders correctly", () => {
 test("Quality designation handler works as expected", () => {
     render(<VersionFields />);
 
-    const input = screen.getByTestId("quality-desingation-value-input");
+    const input = screen.getByTestId("quality-designation-value-input");
     expect(input.value).toBe("");
-    fireEvent.change(screen.getByTestId("select-quality-desingation"), { target: { value: "official" } });
+    fireEvent.change(screen.getByTestId("select-quality-designation"), { target: { value: "official" } });
     expect(input.value).toBe("official");
 });

@@ -80,7 +80,7 @@ const getFormData = (formData) => {
         edition: formData.get("edition-id"),
         version_id: formData.get("version-id"),
         edition_title: formData.get("edition-title"),
-        quality_designation: formData.get("quality-desingation-value"),
+        quality_designation: formData.get("quality-designation-value"),
         release_day: formData.get("release-date-day"),
         release_month: formData.get("release-date-month"),
         release_year: formData.get("release-date-year"),

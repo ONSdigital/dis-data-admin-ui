@@ -12,7 +12,7 @@ import DateTimePicker from "@/components/date-time/DateTimePicker";
 
 
 export default function VersionFields(props) {
-    const [qualityDesingation, setQualityDesingation] = useState(props.fieldValues?.quality_designation || "");
+    const [qualityDesignation, setQualityDesignation] = useState(props.fieldValues?.quality_designation || "");
 
     const appConfig = useContext(ConfigContext);
 
@@ -33,11 +33,11 @@ export default function VersionFields(props) {
                 releaseDate={props.fieldValues?.release_date}
             />
 
-            <input id="quality-desingation-value" data-testid="quality-desingation-value-input" name="quality-desingation-value" type="hidden" value={qualityDesingation} />
-            <Select id="quality-desingation" 
+            <input id="quality-designation-value" data-testid="quality-designation-value-input" name="quality-designation-value" type="hidden" value={qualityDesignation} />
+            <Select id="quality-designation" 
                 label={{text: "Quality designation", description: "Something about what quality designation means"}} 
-                dataTestId="quality-desingation"
-                onChange={e => setQualityDesingation(e)} 
+                dataTestId="quality-designation"
+                onChange={e => setQualityDesignation(e)} 
                 error={ (props.errors && props.errors.quality_designation) ? {id:'quality-designation-error', text: props.errors.quality_designation} : null}
                 options={[
                     {
@@ -51,11 +51,11 @@ export default function VersionFields(props) {
                     },
                     {
                         value:"official",
-                        text: "Offical Statistic",
+                        text: "Official Statistic",
                     },
                     {
                         value:"official-in-development",
-                        text: "Offical Statistic in Development",
+                        text: "Official Statistic in Development",
                     },
                     {
                         value:"",

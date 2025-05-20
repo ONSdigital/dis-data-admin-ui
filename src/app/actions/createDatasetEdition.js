@@ -61,7 +61,7 @@ export async function createDatasetEdition(currentstate, formData) {
     const datasetEdition = {
         edition: formData.get("edition-id"),
         edition_title: formData.get("edition-title"),
-        quality_designation: formData.get("quality-desingation-value"),
+        quality_designation: formData.get("quality-designation-value"),
         release_day: formData.get("release-date-day"),
         release_month: formData.get("release-date-month"),
         release_year: formData.get("release-date-year"),

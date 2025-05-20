@@ -10,7 +10,7 @@ test.describe("Create version page", () => {
         await expect(page.getByRole("heading", { level: 1 })).toContainText("Create a new dataset version for mock-quarterly");
 
         
-        await expect(page.getByTestId("select-quality-desingation")).toBeVisible();
+        await expect(page.getByTestId("select-quality-designation")).toBeVisible();
         await expect(page.getByTestId("usage-notes-input-0")).toBeVisible();
         await expect(page.getByTestId("usage-notes-textarea-0")).toBeVisible();
         await expect(page.getByTestId("select-alerts-select-0")).toBeVisible();
@@ -36,7 +36,7 @@ test.describe("Create version page", () => {
         await page.getByTestId("release-date-year").fill("2020");
         await page.getByTestId("release-date-hour").fill("9");
         await page.getByTestId("release-date-minutes").fill("30");
-        await page.getByTestId("select-quality-desingation").selectOption("official");
+        await page.getByTestId("select-quality-designation").selectOption("official");
         await page.getByTestId("usage-notes-input-0").fill("Test usage notes");
         await page.getByTestId("usage-notes-textarea-0").fill("Something about usage notes");
         await page.getByTestId("usage-notes-add-button").click();
@@ -66,7 +66,7 @@ test.describe("Create version page", () => {
         await expect(page.getByLabel("There was a problem").getByText("File upload is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("A release time and date is required")).toBeVisible();
 
-        await expect(page.getByTestId("quality-desingation-error").getByText("Quality designation is required")).toBeVisible();
+        await expect(page.getByTestId("quality-designation-error").getByText("Quality designation is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-upload-input-error").getByText("File upload is required")).toBeVisible();
     });
 });
