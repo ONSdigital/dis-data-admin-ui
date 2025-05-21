@@ -32,8 +32,10 @@ export default async function createPage({params}) {
                     currentTitle={dataset.title} 
                     currentID={dataset.id} 
                     currentDescription={dataset.description} 
-                    currentContacts={dataset.contacts}
                     currentTopics={dataset.topics}
+                    currentQMI={dataset.qmi?.href}
+                    currentKeywords={dataset.keywords}
+                    currentContacts={dataset.contacts}
                     listOfAllTopics={listOfAllTopics}
                     action={updateDatasetSeries}
                 />

@@ -10,13 +10,13 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
+export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, action}) {
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
-    const [qmi, setQMI] = useState(currentID);
-    const [keywords, setKeywords] = useState(currentID);
     const [selectedTopics, setSelectedTopics] = useState(currentTopics);
     const [description, setDescription] = useState(currentDescription);
+    const [qmi, setQMI] = useState(currentQMI);
+    const [keywords, setKeywords] = useState(currentKeywords);
     const [contacts, setContacts] = useState(currentContacts);
 
     const [formState, formAction, isPending] = useActionState(action, {});
