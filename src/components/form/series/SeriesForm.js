@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 import { useState, useActionState } from "react";
 
@@ -35,15 +35,15 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     if (formState.recentlySubmitted == true) {
         formState.recentlySubmitted = false;
         setSavedDatasetURL("/series/" + id);
-        setTitle('');
-        setID('');
-        setDescription('');
+        setTitle("");
+        setID("");
+        setDescription("");
         setContacts([]);
         setSelectedTopics([]);
     }
 
     if(isPending){
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
     const renderSuccessOrFailure = () => {
         return (
@@ -82,10 +82,10 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: 'ID',
+                            text: "ID",
                             description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
-                        error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
+                        error={(formState.errors && formState.errors.id)  ? {id:"dataset-series-id-error", text: formState.errors.id} : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
                     /> : null
@@ -95,10 +95,10 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-title"
                     name="dataset-series-title"
                     label={{
-                        text: 'Title',
+                        text: "Title",
                         description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
                     }}
-                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
+                    error={(formState.errors && formState.errors.title) ? {id:"dataset-series-title-error", text: formState.errors.title} : null}
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
@@ -108,7 +108,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     setSelectedTopics={setSelectedTopics} 
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
-                <Field dataTestId="field-dataset-series-description" error={(formState.errors && formState.errors.description) ? {id:'dataset-series-description-error', text: formState.errors.description} : null}>
+                <Field dataTestId="field-dataset-series-description" error={(formState.errors && formState.errors.description) ? {id:"dataset-series-description-error", text: formState.errors.description} : null}>
                     <Label 
                         id="description-label-id"
                         dataTestId="description-label-id"
@@ -132,7 +132,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         text: "QMI",
                         description: "URL to related QMI documentation"
                     }}
-                    error={(formState.errors && formState.errors.qmi) ? {id:'dataset-series-qmi-error', text: formState.errors.qmi} : null}
+                    error={(formState.errors && formState.errors.qmi) ? {id:"dataset-series-qmi-error", text: formState.errors.qmi} : null}
                     value={qmi}
                     onChange={e => setQMI(e.target.value)}
                 />
@@ -144,7 +144,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         text: "Keywords",
                         description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
                     }}
-                    error={(formState.errors && formState.errors.keywords) ? {id:'dataset-series-keywords-error', text: formState.errors.keywords} : null}
+                    error={(formState.errors && formState.errors.keywords) ? {id:"dataset-series-keywords-error", text: formState.errors.keywords} : null}
                     value={keywords}
                     onChange={e => setKeywords(e.target.value)}
                 />
