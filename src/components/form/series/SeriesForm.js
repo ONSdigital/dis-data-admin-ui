@@ -4,10 +4,11 @@ import Link from "next/link";
 
 import { useState, useActionState } from "react";
 
-import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
+import { TextInput, Panel, HyperLinksList} from "author-design-system-react";
 
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
+import TextArea from "@/components/textarea/Textarea";
 
 export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
     const [id, setID] = useState(currentID);
@@ -108,22 +109,15 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     setSelectedTopics={setSelectedTopics} 
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
-                <Field dataTestId="field-dataset-series-description" error={(formState.errors && formState.errors.description) ? {id:"dataset-series-description-error", text: formState.errors.description} : null}>
-                    <Label 
-                        id="description-label-id"
-                        dataTestId="description-label-id"
-                        for="dataset-series-description"
-                        text="Description"
-                    />
-                    <textarea
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        data-testid="dataset-series-description" 
-                        name="dataset-series-description" 
-                        rows={5} 
-                        cols={80} 
-                    />
-                </Field>
+                <TextArea 
+                    id={"dataset-series-description"}
+                    dataTestId={"dataset-series-description"}
+                    name={"dataset-series-description"}
+                    label={{text: "Description"}} 
+                    value={description} 
+                    onChange={e => setDescription(e.target.value)}
+                    error={(formState.errors && formState.errors.description) ? {id:"dataset-series-description-error", text: formState.errors.description} : null}
+                />
                 <TextInput 
                     id="dataset-series-qmi"
                     dataTestId="dataset-series-qmi"
