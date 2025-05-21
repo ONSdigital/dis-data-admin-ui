@@ -10,9 +10,10 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 
 export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
-
-    const [title, setTitle] = useState(currentTitle);
     const [id, setID] = useState(currentID);
+    const [title, setTitle] = useState(currentTitle);
+    const [qmi, setQMI] = useState(currentID);
+    const [keywords, setKeywords] = useState(currentID);
     const [selectedTopics, setSelectedTopics] = useState(currentTopics);
     const [description, setDescription] = useState(currentDescription);
     const [contacts, setContacts] = useState(currentContacts);
@@ -123,6 +124,30 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         cols={80} 
                     />
                 </Field>
+                <TextInput 
+                    id="dataset-series-qmi"
+                    dataTestId="dataset-series-qmi"
+                    name="dataset-series-qmi"
+                    label={{
+                        text: "QMI",
+                        description: "URL to related QMI documentation"
+                    }}
+                    error={(formState.errors && formState.errors.qmi) ? {id:'dataset-series-qmi-error', text: formState.errors.qmi} : null}
+                    value={qmi}
+                    onChange={e => setQMI(e.target.value)}
+                />
+                <TextInput 
+                    id="dataset-series-keywords"
+                    dataTestId="dataset-series-keywords"
+                    name="dataset-series-keywords"
+                    label={{
+                        text: "Keywords",
+                        description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
+                    }}
+                    error={(formState.errors && formState.errors.keywords) ? {id:'dataset-series-keywords-error', text: formState.errors.keywords} : null}
+                    value={keywords}
+                    onChange={e => setKeywords(e.target.value)}
+                />
                 <Contact 
                     contacts={contacts} 
                     setContacts={setContacts} 
