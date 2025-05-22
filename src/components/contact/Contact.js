@@ -18,34 +18,32 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     {contacts.map((contact) => (
                         <li key={contact.email}>
                             <div className="ons-document-list__item-content">
-                                <div className='ons-container'>
-                                    <div className="ons-grid">
-                                        <div className="ons-grid__col ons-col-3@m">
-                                            <span className="ons-u-fw">{contact.name}</span>
-                                        </div>
-                                        <div className="ons-grid__col ons-col-3@m">
-                                            <span className="ons-u-fw">{contact.email}</span>          
-                                        </div>
-                                        <div className="ons-grid__col ons-col-2@m">
-                                            <Button
-                                                dataTestId="datasetSeriesRemoveContactButton"
-                                                id="datasetSeriesRemoveContactButton"
-                                                text="Remove"
-                                                variants={[
-                                                    'tertiary',
-                                                    'small'
-                                                ]}
-                                                onClick={() => {
-                                                    setContacts(
-                                                        contacts.filter(c =>
-                                                            c.email !== contact.email
-                                                        )
-                                                    );
-                                                }}
-                                            />
-                                        </div>
+                                <div className="ons-grid">
+                                    <div className="ons-grid__col ons-col-3@m">
+                                        <span className="ons-u-fw">{contact.name}</span>
                                     </div>
-                                </div>      
+                                    <div className="ons-grid__col ons-col-3@m">
+                                        <span className="ons-u-fw">{contact.email}</span>          
+                                    </div>
+                                    <div className="ons-grid__col ons-col-2@m">
+                                        <Button
+                                            dataTestId="datasetSeriesRemoveContactButton"
+                                            id="datasetSeriesRemoveContactButton"
+                                            text="Remove"
+                                            variants={[
+                                                'tertiary',
+                                                'small'
+                                            ]}
+                                            onClick={() => {
+                                                setContacts(
+                                                    contacts.filter(c =>
+                                                        c.email !== contact.email
+                                                    )
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                </div>    
                             </div>
                         </li>
                     ))}
