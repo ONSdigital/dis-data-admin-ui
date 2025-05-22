@@ -30,7 +30,10 @@ const getFormData = (formData) => {
         topics: JSON.parse(formData.get('dataset-series-topics')),
         description: formData.get('dataset-series-description'),
         contacts: JSON.parse(formData.get('dataset-series-contacts')),
-        keywords: [""],
+        qmi: { 
+            href: formData.get('dataset-series-qmi') 
+        },
+        keywords: [ formData.get('dataset-series-keywords') ],
         next_release: "To be announced"
     };
 
@@ -53,6 +56,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
             } else {
                 data = await httpPost(reqCfg, url, datasetSeriesSubmission);
             }
+            console.log(data)
             if (data.status >= 400) {
                 response.success = false;
                 response.recentlySubmitted = false;
