@@ -6,6 +6,6 @@ export  function mapListItems(items) {
             url: "/series/" + item.id,
             title: item.title,
             description: item.description
-        }
-    })
+        };
+    });
 }

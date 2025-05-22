@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Fieldset, TextInput, sanitiseString } from "author-design-system-react";
+import { ISOToDMYMHValues } from "@/utils/datetime/datetime";
 
 export default function DateTimePicker(props) {
-    const [day, setDay] = useState("");
-    const [month, setMonth] = useState("");
-    const [year, setYear] = useState("");
-    const [hour, setHour] = useState("");
-    const [minutes, setMinutes] = useState("");
+    const releaseDate = ISOToDMYMHValues(props.releaseDate);
+    const [day, setDay] = useState(releaseDate?.day || "");
+    const [month, setMonth] = useState(releaseDate?.month || "");
+    const [year, setYear] = useState(releaseDate?.year || "");
+    const [hour, setHour] = useState(releaseDate?.hour || "");
+    const [minutes, setMinutes] = useState(releaseDate?.minutes || "");
 
     const sanitisedId = sanitiseString(props.id);
     const sanitisedDataTestId = sanitiseString(props.dataTestId);
@@ -89,10 +91,7 @@ export default function DateTimePicker(props) {
                 }}
                 onChange={e => setMinutes(e.target.value)}
                 width="3"
-                min={0}
-                max={59}
-                maxLength={2}
-                type="number"
+                type="input"
                 value={minutes}
                 name={"release-date-minutes"}
                 dataTestId={`${sanitisedDataTestId}-minutes`}

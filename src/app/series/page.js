@@ -2,14 +2,14 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import Hero from "@/components/hero/Hero"
+import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import List from "@/components/list/List";
 import { mapListItems } from "./mapper";
 
 export default async function Series() {
     const reqCfg = await SSRequestConfig(cookies);
-    const data = await httpGet(reqCfg, "/datasets");
+    const data = await httpGet(reqCfg, "/datasets?type=static");
 
     let error = false;
     const listItems = [];
@@ -21,7 +21,7 @@ export default async function Series() {
 
     return (
         <>
-            <Hero hyperLink={{ text: 'Add New Dataset Series', url: 'series/create'}} title="Dataset Series" wide/>
+            <Hero hyperLink={{ text: 'Add new dataset series', url: 'series/create'}} title="Dataset series" wide/>
             { error ? <Panel title="Error" variant="error">
                     <p>
                         There was an issue retrieving the list of dataset series.
