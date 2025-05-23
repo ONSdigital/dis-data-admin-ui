@@ -57,7 +57,14 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
                 response.success = false;
                 response.recentlySubmitted = false;
                 response.code = data.status;
-                response.httpError = data.errorMessage;
+                
+                if (data.errorMessage.trim() === "dataset already exists") {
+                    response.httpError = `A dataset series with an ID of ${datasetSeriesSubmission.id} already exists`;
+                } else if (data.errorMessage.trim() === "dataset title already exists") {
+                    response.httpError = `A dataset series titled ${datasetSeriesSubmission.title} already exists`;
+                } else {
+                    response.httpError = data.errorMessage;
+                }
             } else {
                 response.recentlySubmitted = true;
                 logInfo("dataset series created/updated successfully", {dataset_id: datasetSeriesSubmission.id}, null);
