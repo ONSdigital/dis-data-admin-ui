@@ -1,7 +1,7 @@
-import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import SeriesForm from './SeriesForm'
-import { datasetList } from '../../../../tests/mocks/datasets.mjs';
+import "@testing-library/jest-dom"
+import { render, screen, fireEvent } from "@testing-library/react"
+import SeriesForm from "./SeriesForm"
+import { datasetList } from "../../../../tests/mocks/datasets.mjs";
 
 describe("Series Form", () => {
     const listOfAllTopics = [
@@ -17,6 +17,19 @@ describe("Series Form", () => {
     const mockAction = jest.fn()
     const dataset = datasetList.items[2]
 
+    test("Series form renders correctly", () => {
+        render(<SeriesForm listOfAllTopics={[]} action={mockAction}/>);
+
+        expect(screen.getByTestId("dataset-series-id")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-topics-select")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-description")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-qmi")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-keywords")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-contact-name")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-contact-email")).toBeInTheDocument();
+    });
+
     test("Series form renders props correctly", () => {
         render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
 
@@ -28,7 +41,7 @@ describe("Series Form", () => {
 
         const description = screen.getByTestId("dataset-series-description");
         expect(description.value).toBe("This is a mock dataset test description")
-    })
+    });
 
     it("onChange handler updates text input state", () => {
         render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
