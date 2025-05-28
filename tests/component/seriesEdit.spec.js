@@ -24,6 +24,8 @@ test.describe("Edit series page", () => {
         await page.getByLabel("Topics").selectOption("1001");
         await page.getByRole("button", { name: /Add Topic/i }).click();
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test edit description");
+        await page.getByTestId("dataset-series-qmi").fill("test-url.com");
+        await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test edit name");
         await page.getByLabel("Email").fill("test-email-edit@test.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
