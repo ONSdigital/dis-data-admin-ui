@@ -19,7 +19,7 @@ app.get("/datasets", (req, res) => {
 
 app.post("/datasets", (req, res) => {
     if (req.body.id == 'duplicate-id') {
-        res.status(409).send("dataset series already exists");
+        res.status(409).send("dataset already exists");
         return;
     }
 

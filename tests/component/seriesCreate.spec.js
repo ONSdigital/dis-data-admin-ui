@@ -83,7 +83,7 @@ test.describe("Create series page", () => {
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText("dataset series already exists")).toBeVisible();
+        await expect(page.getByText("A dataset series with an ID of duplicate-id already exists")).toBeVisible();
     });
 
     test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
@@ -102,6 +102,6 @@ test.describe("Create series page", () => {
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText("dataset title already exists")).toBeVisible();
+        await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
     });
 });

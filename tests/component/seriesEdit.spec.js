@@ -42,6 +42,6 @@ test.describe("Edit series page", () => {
         await page.getByTestId("dataset-series-title").fill("duplicate-title");
         await page.getByRole("button", { name: /Save new dataset series/i }).click();
 
-        await expect(page.getByText("dataset title already exists")).toBeVisible();
+        await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
     });
 });
