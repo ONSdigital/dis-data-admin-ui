@@ -39,6 +39,8 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
         setTitle("");
         setID("");
         setDescription("");
+        setQMI("");
+        setKeywords("");
         setContacts([]);
         setSelectedTopics([]);
     }
