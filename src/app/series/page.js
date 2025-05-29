@@ -15,7 +15,7 @@ export default async function Series({searchParams}) {
     if (Object.keys(pageParams).length === 0){
         pageParams.limit = 3
     }
-    const data = await httpGet(reqCfg, "/datasets?type=static" + "&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : ""));
+    const data = await httpGet(reqCfg, "/datasets?type=static&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : ""));
 
     let error = false;
     const listItems = [];
@@ -26,7 +26,7 @@ export default async function Series({searchParams}) {
     }
 
     const pageTotal = Math.ceil(data.total_count/pageParams.limit)
-    const currentPage = pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1
+    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1)
     
     return (
         <>
