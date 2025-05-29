@@ -3,7 +3,6 @@
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Pagination } from "author-design-system-react";
 
-// pass down offset then pass it back up so page can grab what it needs?
 export default function PaginationPOC({pageTotal, currentPage, limit}){
     const { push } = useRouter();
 
