@@ -25,21 +25,21 @@ export default async function Series({searchParams}) {
         listItems.push(...mapListItems(data.items));
     }
 
-    const pageTotal = Math.ceil(data.total_count/pageParams.limit)
+    const totalNumberOfPages = Math.ceil(data.total_count/pageParams.limit)
     const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1)
     
     return (
         <>
-            <Hero hyperLink={{ text: 'Add new dataset series', url: 'series/create'}} title="Dataset series" wide/>
+            <Hero hyperLink={{ text: "Add new dataset series", url: "series/create"}} title="Dataset series" wide/>
             { error ? <Panel title="Error" variant="error">
                     <p>
                         There was an issue retrieving the list of dataset series.
                     </p>
-                </Panel> : ''}
+                </Panel> : ""}
             <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems}/>
                 <Pagination
-                    pageTotal = {pageTotal}
+                    totalNumberOfPages = {totalNumberOfPages}
                     currentPage = {currentPage}
                     limit = {pageParams.limit}
                 />
