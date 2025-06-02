@@ -13,9 +13,9 @@ export default async function Series({searchParams}) {
 
     const pageParams = await searchParams
     if (Object.keys(pageParams).length === 0){
-        pageParams.limit = 3
+        pageParams.limit = 25
     }
-    
+
     const url = "/datasets?type=static&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "")
     const data = await httpGet(reqCfg, url);
 
