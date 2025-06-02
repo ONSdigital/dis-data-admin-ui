@@ -66,7 +66,7 @@ export default async function Edition({ params }) {
                             <p data-testid="title-field">{edition.edition_title}</p>
 
                             <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
-                            <p data-testid="description-field">{formatDate(edition.release_date)}</p>
+                            <p data-testid="release-date-field">{formatDate(edition.release_date)}</p>
                         </div>
                     </div>
                 </>
