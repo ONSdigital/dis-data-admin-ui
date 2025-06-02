@@ -1,20 +1,22 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 import { useState, useActionState } from "react";
 
-import { TextInput, Label,  Field, Panel, HyperLinksList} from "author-design-system-react";
+import { TextInput, Panel, HyperLinksList} from "author-design-system-react";
 
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
+import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentContacts = [], listOfAllTopics, action}) {
-
-    const [title, setTitle] = useState(currentTitle);
+export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, action}) {
     const [id, setID] = useState(currentID);
+    const [title, setTitle] = useState(currentTitle);
     const [selectedTopics, setSelectedTopics] = useState(currentTopics);
     const [description, setDescription] = useState(currentDescription);
+    const [qmi, setQMI] = useState(currentQMI);
+    const [keywords, setKeywords] = useState(currentKeywords);
     const [contacts, setContacts] = useState(currentContacts);
 
     const [formState, formAction, isPending] = useActionState(action, {});
@@ -34,15 +36,17 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     if (formState.recentlySubmitted == true) {
         formState.recentlySubmitted = false;
         setSavedDatasetURL("/series/" + id);
-        setTitle('');
-        setID('');
-        setDescription('');
+        setTitle("");
+        setID("");
+        setDescription("");
+        setQMI("");
+        setKeywords("");
         setContacts([]);
         setSelectedTopics([]);
     }
 
     if(isPending){
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
     const renderSuccessOrFailure = () => {
         return (
@@ -81,10 +85,10 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: 'ID',
+                            text: "ID",
                             description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
-                        error={(formState.errors && formState.errors.id)  ? {id:'dataset-series-id-error', text: formState.errors.id} : null}
+                        error={(formState.errors && formState.errors.id)  ? {id:"dataset-series-id-error", text: formState.errors.id} : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
                     /> : null
@@ -94,10 +98,10 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-title"
                     name="dataset-series-title"
                     label={{
-                        text: 'Title',
+                        text: "Title",
                         description: `E.g "Labour market" or "Deaths registered weekly in England and Wales"`
                     }}
-                    error={(formState.errors && formState.errors.title) ? {id:'dataset-series-title-error', text: formState.errors.title} : null}
+                    error={(formState.errors && formState.errors.title) ? {id:"dataset-series-title-error", text: formState.errors.title} : null}
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
@@ -107,22 +111,39 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     setSelectedTopics={setSelectedTopics} 
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
-                <Field dataTestId="field-dataset-series-description" error={(formState.errors && formState.errors.description) ? {id:'dataset-series-description-error', text: formState.errors.description} : null}>
-                    <Label 
-                        id="description-label-id"
-                        dataTestId="description-label-id"
-                        for="dataset-series-description"
-                        text="Description"
-                    />
-                    <textarea
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        data-testid="dataset-series-description" 
-                        name="dataset-series-description" 
-                        rows={5} 
-                        cols={80} 
-                    />
-                </Field>
+                <TextArea 
+                    id={"dataset-series-description"}
+                    dataTestId={"dataset-series-description"}
+                    name={"dataset-series-description"}
+                    label={{text: "Description"}} 
+                    value={description} 
+                    onChange={e => setDescription(e.target.value)}
+                    error={(formState.errors && formState.errors.description) ? {id:"dataset-series-description-error", text: formState.errors.description} : null}
+                />
+                <TextInput 
+                    id="dataset-series-qmi"
+                    dataTestId="dataset-series-qmi"
+                    name="dataset-series-qmi"
+                    label={{
+                        text: "QMI",
+                        description: "URL to related QMI documentation"
+                    }}
+                    error={(formState.errors && formState.errors.qmi) ? {id:"dataset-series-qmi-error", text: formState.errors.qmi} : null}
+                    value={qmi}
+                    onChange={e => setQMI(e.target.value)}
+                />
+                <TextInput 
+                    id="dataset-series-keywords"
+                    dataTestId="dataset-series-keywords"
+                    name="dataset-series-keywords"
+                    label={{
+                        text: "Keywords",
+                        description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
+                    }}
+                    error={(formState.errors && formState.errors.keywords) ? {id:"dataset-series-keywords-error", text: formState.errors.keywords} : null}
+                    value={keywords}
+                    onChange={e => setKeywords(e.target.value)}
+                />
                 <Contact 
                     contacts={contacts} 
                     setContacts={setContacts} 

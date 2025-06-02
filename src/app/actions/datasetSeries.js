@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { cookies } from "next/headers";
 
@@ -23,21 +23,24 @@ const editSchema = createSchema.omit({ id: true });
 const getFormData = (formData) => {
     // keywords and next_release is placeholder until a ticket is made, possibly with design, to implement these fields properly.
     const datasetSeriesSubmission = {
-        type: formData.get('dataset-series-type'),
-        license: formData.get('dataset-series-license'),
-        title: formData.get('dataset-series-title'),
-        id : formData.get('dataset-series-id'),
-        topics: JSON.parse(formData.get('dataset-series-topics')),
-        description: formData.get('dataset-series-description'),
-        contacts: JSON.parse(formData.get('dataset-series-contacts')),
-        keywords: [""],
+        type: formData.get("dataset-series-type"),
+        license: formData.get("dataset-series-license"),
+        title: formData.get("dataset-series-title"),
+        id : formData.get("dataset-series-id"),
+        topics: JSON.parse(formData.get("dataset-series-topics")),
+        description: formData.get("dataset-series-description"),
+        contacts: JSON.parse(formData.get("dataset-series-contacts")),
+        qmi: { 
+            href: formData.get("dataset-series-qmi") 
+        },
+        keywords: [ formData.get("dataset-series-keywords") ],
         next_release: "To be announced"
     };
 
     return datasetSeriesSubmission;
 };
 
-const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
+const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)  =>  {
     const response = {};
     response.success = result.success;
     if (!result.success) {
@@ -47,12 +50,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, type)  =>  {
     } else {
         const reqCfg = await SSRequestConfig(cookies);
         try {
-            let data;
-            if (type == "put"){
-                data = await httpPut(reqCfg, url, datasetSeriesSubmission);
-            } else {
-                data = await httpPost(reqCfg, url, datasetSeriesSubmission);
-            }
+            const data = await makeRequest(reqCfg, url, datasetSeriesSubmission);
             if (data.status >= 400) {
                 response.success = false;
                 response.recentlySubmitted = false;
@@ -80,17 +78,17 @@ export async function createDatasetSeries(currentstate, formData) {
     const url = "/datasets";
 
     const datasetSeriesSubmission = getFormData(formData);
-    const result = createSchema.safeParse(datasetSeriesSubmission);
+    const validation = createSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, result, url);
+    return createResponse(datasetSeriesSubmission, validation, url, httpPost);
 }
 
 export async function updateDatasetSeries(currentstate, formData) {
-    const datasetSeriesSubmissionID = formData.get('dataset-series-id');
+    const datasetSeriesSubmissionID = formData.get("dataset-series-id");
     const url = "/datasets/" + datasetSeriesSubmissionID;
 
     const datasetSeriesSubmission = getFormData(formData);
-    const result = editSchema.safeParse(datasetSeriesSubmission);
+    const validation = editSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, result, url, "put");
+    return createResponse(datasetSeriesSubmission, validation, url, httpPut);
 }
