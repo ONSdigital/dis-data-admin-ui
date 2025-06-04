@@ -1,9 +1,9 @@
-import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import PaginationPOC from './PaginationDisDataAdmin'
+import "@testing-library/jest-dom"
+import { render, screen, fireEvent } from "@testing-library/react"
+import PaginationPOC from "./PaginationDisDataAdmin"
 
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-jest.mock('next/navigation');
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+jest.mock("next/navigation");
 
 useRouter.mockReturnValue({
   push: jest.fn()
