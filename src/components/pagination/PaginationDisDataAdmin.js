@@ -32,6 +32,7 @@ export default function PaginationPOC({totalNumberOfPages, currentPage, limit}){
             <Pagination
                 currentPageNumber={currentPage}
                 pages={mapPages()}
+                dataTestId="dataset-series-list-pagination"
             />
         </>
   );

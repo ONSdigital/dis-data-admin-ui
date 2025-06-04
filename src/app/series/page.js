@@ -5,7 +5,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
 import List from "@/components/list/List";
-import Pagination  from "@/components/pagination/Pagination";
+import Pagination  from "@/components/pagination/PaginationDisDataAdmin";
 import { mapListItems } from "./mapper";
 
 export default async function Series({searchParams}) {
