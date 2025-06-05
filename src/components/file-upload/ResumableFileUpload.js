@@ -5,7 +5,7 @@ import bindFileUploadInput from './bind';
 
 import { TextInput } from "author-design-system-react";
 
-const progressStyle = {
+const progressBarStyle = {
     width: "20rem",
 };
 
@@ -65,7 +65,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         return (
             <>
                 <label htmlFor="file-progress" className="ons-label ons-label--with-description">File upload in progress:</label>
-                <progress id="file-progress" max="100" style={progressStyle} value={progress}>{progress}%</progress>
+                <progress id="file-progress" max="100" style={progressBarStyle} value={progress}>{progress}%</progress>
             </>
         );
     };
