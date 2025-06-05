@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import bindFileUploadInput from './bind';
+import { useEffect, useState } from "react";
+import bindFileUploadInput from "./bind";
 
 import { TextInput } from "author-design-system-react";
 
