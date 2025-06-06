@@ -5,8 +5,9 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
-import { mapListItems } from "./mapper";
 
+import { mapListItems } from "./mapper";
+import { formatDate } from "@/utils/datetime/datetime";
 
 export default async function Edition({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
@@ -56,6 +57,16 @@ export default async function Edition({ params }) {
                     <div className="ons-grid ons-u-mt-xl">
                         <div className="ons-grid__col ons-col-6@m">
                             { renderVersionsList() }
+                        </div>
+                        <div className="ons-grid__col ons-col-6@m ">
+                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
+                            <p data-testid="id-field">{edition.edition}</p>
+
+                            <h2 className="ons-u-mt-m@xxs@m">Title</h2>
+                            <p data-testid="title-field">{edition.edition_title}</p>
+
+                            <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
+                            <p data-testid="release-date-field">{formatDate(edition.release_date)}</p>
                         </div>
                     </div>
                 </>
