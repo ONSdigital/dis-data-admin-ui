@@ -11,7 +11,6 @@ const RESUMABLE_OPTIONS = {
 };
 
 const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
-    console.log("BIND CALLED")
     // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
     // by the <TextInput /> component from eq-author and there will be errors when trying to bind
     const elID = elementID.toLowerCase();
