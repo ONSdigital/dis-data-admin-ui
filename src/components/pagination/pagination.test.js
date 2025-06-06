@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
-import PaginationPOC from "./PaginationDisDataAdmin"
+import Pagination from "./Pagination"
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 jest.mock("next/navigation");
@@ -22,7 +22,7 @@ describe("Pagination", () => {
         const currentPage = 3
         const limit = 25
 
-        render(<PaginationPOC totalNumberOfPages={totalNumberOfPages} currentPage={currentPage} limit={limit}/>)
+        render(<Pagination totalNumberOfPages={totalNumberOfPages} currentPage={currentPage} limit={limit}/>)
 
         const pageLinks = screen.getAllByRole("listitem")
         expect(pageLinks.length).toBe(7)
