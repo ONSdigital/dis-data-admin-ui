@@ -15,7 +15,7 @@ const versionSchema = z.object({
     release_hour: z.string().min(1, { message: "Hour is required" }),
     release_minutes: z.string().min(1, { message: "Minutes are required" }),
     distributions: z.array(z.object({
-        download_url: z.string(),
+        download_url: z.string().min(1, { message: "A file upload is required" }),
     })).min(1, { message: "A file upload is required" })
 });
 
@@ -94,7 +94,6 @@ const getFormData = (formData) => {
     };
 
     datasetVersion.release_date =  new Date(datasetVersion.release_year, datasetVersion.release_month - 1, datasetVersion.release_day, datasetVersion.release_hour, datasetVersion.release_minutes).toISOString();
-
     return datasetVersion;
 };
 
