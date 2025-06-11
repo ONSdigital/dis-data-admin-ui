@@ -42,6 +42,20 @@ const mergeDateTimeErrors = (errors) => {
     return errors;
 };
 
+// check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
+const parseMutliContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    const parsedItems = [];
+    multiItem.forEach(item => {
+        const parsed = JSON.parse(item);
+        if (parsed.type || parsed.title) {
+            parsedItems.push(parsed);
+        }
+    })
+    return parsedItems;
+};
+
 const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     const actionResponse = {};
     const reqCfg = await SSRequestConfig(cookies);
@@ -66,15 +80,9 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
 
 const getFormData = (formData) => {
     const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = [];
-    usageNotes.map(note => {
-        parsedUsageNotes.push(JSON.parse(note));
-    });
+    const parsedUsageNotes = parseMutliContentField(usageNotes);
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = [];
-    alerts.map(alert => {
-        parsedAlerts.push(JSON.parse(alert));
-    });
+    const parsedAlerts = parseMutliContentField(alerts);
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
         edition: formData.get("edition-id"),
