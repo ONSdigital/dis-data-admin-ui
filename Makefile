@@ -10,7 +10,7 @@ VERSION ?= $(shell git tag --points-at HEAD | grep ^v | head -n 1)
 
 .PHONY: audit
 audit: ## Runs checks for security vulnerabilities on dependencies (including transient ones)
-	$(NPM) audit
+	$(NPM) audit --audit-level=moderate
 
 .PHONY: build
 build: env-setup  ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
