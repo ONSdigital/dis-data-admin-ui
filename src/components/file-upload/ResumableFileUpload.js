@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import bindFileUploadInput from './bind';
+import { useEffect, useState } from "react";
+
+import bindFileUploadInput from "./bind";
 
 import { TextInput } from "author-design-system-react";
 
-const progressStyle = {
+const progressBarStyle = {
     width: "20rem",
 };
 
@@ -53,9 +54,19 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFile({});
     };
 
+    const handleRemoveOnClick = (e) => {
+        e.preventDefault();
+        setShowFileUpload(true);
+        setShowProgressBar(false);
+        setProgress(0);
+        setShowIsComplete(false);
+        setError(null);
+        setFile({download_url: ""});
+    };
+
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL, validationError]);
+    }, [id, uploadBaseURL, validationError, showFileUpload]);
 
     const renderFileInput = () => {
         return <TextInput id={id} dataTestId={`${id}-input`} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
@@ -65,7 +76,16 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         return (
             <>
                 <label htmlFor="file-progress" className="ons-label ons-label--with-description">File upload in progress:</label>
-                <progress id="file-progress" max="100" style={progressStyle} value={progress}>{progress}%</progress>
+                <progress id="file-progress" max="100" style={progressBarStyle} value={progress}>{progress}%</progress>
+            </>
+        );
+    };
+
+    const renderCompleteFile = () => {
+        return (
+            <>
+                <p>File has been uploaded: {file.download_url}</p>
+                <p><a href="#" onClick={e => handleRemoveOnClick(e)}>Remove file</a></p>
             </>
         );
     };
@@ -76,7 +96,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
             { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
-            { showIsComplete ? <p>File has been uploaded: {file.download_url}</p> : null }
+            { showIsComplete ? renderCompleteFile() : null }
         </>
     );
 }
