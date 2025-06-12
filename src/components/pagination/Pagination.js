@@ -11,17 +11,19 @@ export default function PaginationDisDataAdmin({totalNumberOfPages, currentPage,
 
     const mapPages = () => {
         const pages = []
+        const params = new URLSearchParams(searchParams);
+        params.set("limit", limit);
+
         for (let i = 0; i < totalNumberOfPages; i++) {
+            const offset = limit * i
+            params.set("offset", offset);
+            const url = `${pathname}?${params.toString()}`;
+
             pages.push( {
                 onClick: () => {
-                    const offset = limit * i
-                    const params = new URLSearchParams(searchParams);
-                    params.set("limit", limit);
-                    params.set("offset", offset);
-                    const url = `${pathname}?${params.toString()}`;
                     push(url);
                 },
-                url: "#" + (i + 1)
+                url: url
             })
         }
         return pages
