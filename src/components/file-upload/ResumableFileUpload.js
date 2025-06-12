@@ -87,7 +87,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
                 <p>File has been uploaded: {file.download_url}</p>
                 <p><a href="#" onClick={e => handleRemoveOnClick(e)}>Remove file</a></p>
             </>
-        )
+        );
     };
     
     return (
