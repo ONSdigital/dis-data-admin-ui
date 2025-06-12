@@ -8,6 +8,9 @@ test.describe("Edition overview page", () => {
         await page.goto("./series/mock-quarterly/editions/time-series");
         await expect(page.getByRole("heading", { level: 1 })).toContainText("Mock Dataset: Timeseries");
         await expect(page.getByRole("link", { name: "Version: 1" })).toBeVisible();
+        await expect(page.getByTestId("id-field")).toContainText("time-series");
+        await expect(page.getByTestId("title-field")).toContainText("Timeseries");
+        await expect(page.getByTestId("release-date-field")).toContainText("26 January 2025");
     });
 
     test("routes to create new edition page", async ({ page, context }) => {

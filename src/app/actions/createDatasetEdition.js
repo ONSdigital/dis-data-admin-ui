@@ -44,20 +44,28 @@ const mergeDateTimeErrors = (errors) => {
     return errors;
 };
 
+// check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
+const parseMutliContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    const parsedItems = [];
+    multiItem.forEach(item => {
+        const parsed = JSON.parse(item);
+        if (parsed.type || parsed.title) {
+            parsedItems.push(parsed);
+        }
+    })
+    return parsedItems;
+};
+
 export async function createDatasetEdition(currentstate, formData) {
     let actionResponse = {};
 
     const datasetID = formData.get("dataset-id");
     const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = [];
-    usageNotes.map(note => {
-        parsedUsageNotes.push(JSON.parse(note));
-    });
+    const parsedUsageNotes = parseMutliContentField(usageNotes);
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = [];
-    alerts.map(alert => {
-        parsedAlerts.push(JSON.parse(alert));
-    });
+    const parsedAlerts = parseMutliContentField(alerts);
     const datasetEdition = {
         edition: formData.get("edition-id"),
         edition_title: formData.get("edition-title"),
