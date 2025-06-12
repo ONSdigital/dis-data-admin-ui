@@ -1,6 +1,6 @@
 export  function mapListItems(items) {
     return items.map(listItem => {
-        const item = listItem?.current || listItem?.next || listItem;
+        const item = listItem?.next || listItem?.current || listItem;
         return {
             id: item.id,
             url: "/series/" + item.id,
