@@ -14,7 +14,11 @@ const PORT = 29401;
 app.use(express.json())
 
 app.get("/datasets", (req, res) => {
-    res.send(datasetList);
+    const offset = req.query.offset ? req.query.offset : 0
+    const paginatedDatasetList = {}
+    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset))
+    paginatedDatasetList.total_count = datasetList.total_count
+    res.send(paginatedDatasetList);
 });
 
 app.post("/datasets", (req, res) => {
