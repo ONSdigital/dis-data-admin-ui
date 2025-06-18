@@ -17,12 +17,18 @@ export default function List({ items, noResultsText = "No results" }) {
                                     <li className="ons-document-list__item-attribute">
                                         <span className="ons-u-fw-b">ID: </span>{item.id}
                                     </li>
+                                    { item.published ? 
+                                        <li className="ons-document-list__item-attribute">
+                                            <span className="ons-u-fw-b">State: </span>{item.published}
+                                        </li>
+                                        : null
+                                    }
                                 </ul>
                             </div>
                                 { item.description ?
                                     <div className="ons-document-list__item-description">
                                         <p>{ item.description }</p>
-                                    </div>  : ''
+                                    </div>  : null
                                 }
                         </div>
                     </li>
