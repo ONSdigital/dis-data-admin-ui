@@ -4,7 +4,8 @@ export  function mapListItems(items, datasetID) {
         return {
             id: item.edition,
             url: `/series/${datasetID}/editions/${item.edition}`,
-            title: item.edition
+            title: item.edition,
+            published: item.state === "published" ? "Published" : "Not published yet"
         };
     });
 };
