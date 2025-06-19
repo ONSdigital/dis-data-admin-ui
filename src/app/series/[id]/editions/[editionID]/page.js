@@ -33,6 +33,13 @@ export default async function Edition({ params }) {
         listItems.push(...mapListItems(versions.items, id, editionID));
     }
 
+    let unpublishedVersion = false
+    versions.items.forEach(item => {
+        if (item.state != "published") {
+            unpublishedVersion = true
+        }
+    })
+
     const renderVersionsList = () => {
             return (
                 <>
@@ -53,7 +60,10 @@ export default async function Edition({ params }) {
         <>
             { !datasetError && !editionError ? 
                 <>
-                    <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />           
+                    { unpublishedVersion ? 
+                        <Hero subtitle="Unpublished version exists, cannot add new dataset version." title={dataset.title + ": " + edition.edition_title} wide />  :
+                        <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />
+                    }
                     <div className="ons-grid ons-u-mt-xl">
                         <div className="ons-grid__col ons-col-6@m">
                             { renderVersionsList() }

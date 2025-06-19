@@ -133,6 +133,17 @@ export const versions = {
                     "byte_size": 265000
                 }
             ]
+        },
+        {
+            "edition": "time-series-unpublished",
+            "edition_title": "This is an edition title for unpublished",
+            "last_updated": {
+                "$date": "2025-02-26T16:12:31.377Z"
+            },
+            "release_date": "2025-01-26T07:00:00.000Z",
+            "state": "created",
+            "version": 1,
+            "type": "static",
         }
     ]
 };
