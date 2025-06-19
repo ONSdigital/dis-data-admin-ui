@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import List from './List';
+import "@testing-library/jest-dom"
+import { render, screen } from "@testing-library/react"
+import List from "./List";
 
 test("List renders props correctly", () => {
     let datasets =  {
@@ -24,7 +24,7 @@ test("List renders props correctly", () => {
     }
     render(<List items={datasets.items}/>);
 
-    const element = screen.getByRole('heading', {name: /Test dataset/i});
+    const element = screen.getByRole("heading", {name: /Test dataset/i});
     expect(element).toBeInTheDocument();
 
     const list = screen.getAllByRole("heading")
