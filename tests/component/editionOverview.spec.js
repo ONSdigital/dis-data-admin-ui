@@ -23,7 +23,7 @@ test.describe("Edition overview page", () => {
     test("routes to create new edition page with unpublished version", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
-        await expect(page.getByText('Unpublished version exists, cannot add new dataset version.')).toBeVisible();
+        await expect(page.getByText("Unpublished version exists, cannot add new dataset version.")).toBeVisible();
     });
 
     test("routes to version overview page when selecting version from list", async ({ page, context }) => {
