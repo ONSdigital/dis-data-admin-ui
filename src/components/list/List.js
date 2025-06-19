@@ -18,9 +18,9 @@ export default function List({ items, noResultsText = "No results" }) {
                                 <li className="ons-document-list__item-attribute">
                                     <span className="ons-u-fw-b">ID: </span>{item.id}
                                 </li>
-                                { item.published ? 
+                                { item.state ? 
                                     <li className="ons-document-list__item-attribute">
-                                        <span className="ons-u-fw-b">State: </span>{item.published}
+                                        <span className="ons-u-fw-b">State: </span>{item.state}
                                     </li>
                                     : null
                                 }
