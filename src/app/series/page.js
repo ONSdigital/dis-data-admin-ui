@@ -16,7 +16,7 @@ export default async function Series({searchParams}) {
         pageParams.limit = 25
     }
 
-    const url = "/datasets?type=static&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "")
+    const url = "/datasets?type=static&sort_order=ASC&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "")
     const data = await httpGet(reqCfg, url);
 
     let error = false;

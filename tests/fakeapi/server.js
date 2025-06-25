@@ -64,7 +64,7 @@ app.get("/datasets/:id/editions/:editionID", (req, res) => {
 });
 
 app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
-    res.send(versions);
+    res.send({items: versions.items.filter((item => item.edition === req.params.editionID))})
 });
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {

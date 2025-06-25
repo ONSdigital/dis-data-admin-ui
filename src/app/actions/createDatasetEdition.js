@@ -79,6 +79,7 @@ export async function createDatasetEdition(currentstate, formData) {
         alerts: parsedAlerts,
         distributions: [ JSON.parse(formData.get('dataset-upload-value')) ],
         release_date: null,
+        type: "static"
     };
 
     const validation = editionSchema.safeParse(datasetEdition);
