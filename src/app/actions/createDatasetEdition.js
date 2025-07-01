@@ -54,7 +54,7 @@ const parseMutliContentField = (multiItem) => {
         if (parsed.type || parsed.title) {
             parsedItems.push(parsed);
         }
-    })
+    });
     return parsedItems;
 };
 
