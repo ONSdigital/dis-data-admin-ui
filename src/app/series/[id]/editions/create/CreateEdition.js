@@ -5,7 +5,7 @@ import DOMPurify from "dompurify";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
 
-import { createDatasetEdition } from "@/app/actions/createDatasetEdition";
+import { createDatasetEdition } from "@/app/actions/datasetEdition";
 
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
