@@ -1,4 +1,4 @@
-import CreateEditionForm from "./CreateEdition";
+import CreateEditionForm from "@/components/form/edition/EditionForm";
 
 
 export default async function CreateEditionPage({ params }) {
