@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Link from 'next/link';
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
@@ -67,6 +68,7 @@ export default async function Edition({ params }) {
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
+    const editURL = `/series/${id}/editions/${editionID}/edit`
     return (
         <>
             { !datasetError && !editionError ? 
@@ -77,6 +79,7 @@ export default async function Edition({ params }) {
                             { renderVersionsList() }
                         </div>
                         <div className="ons-grid__col ons-col-6@m ">
+                            <Link href={editURL}>Edit metadata</Link>
                             <h2 className="ons-u-mt-m@xxs@m">ID</h2>
                             <p data-testid="id-field">{edition.edition}</p>
 
