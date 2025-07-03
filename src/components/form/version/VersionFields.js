@@ -63,10 +63,10 @@ export default function VersionFields(props) {
                     },
                 ]}
             />
-            <h3 className="ons-u-mt-xl">Usage notes</h3>
+            <h3 className="ons-u-mt-xl">Usage notes (optional)</h3>
             <MultiContentItems id="usage-notes" fieldType="input" buttonLabel="Add new usage note" contentItems={props.fieldValues?.usage_notes || []}></MultiContentItems>
 
-            <h3 className="ons-u-mt-xl">Alerts</h3>
+            <h3 className="ons-u-mt-xl">Alerts (optional)</h3>
             <MultiContentItems id="alerts" fieldType="select" buttonLabel="Add new alert" contentItems={props.fieldValues?.alerts || []}></MultiContentItems>
 
             <h2 className="ons-u-mt-xl">Dataset file</h2>
