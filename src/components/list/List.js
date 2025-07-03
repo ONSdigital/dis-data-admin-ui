@@ -28,11 +28,6 @@ export default function List({ items, noResultsText = "No results" }) {
                                 }
                             </ul>
                         </div>
-                            { item.description ?
-                                <div className="ons-document-list__item-description">
-                                    <p data-testid={`list-item-${index}-description`}>{ item.description }</p>
-                                </div>  : null
-                            }
                     </div>
                 </li>
             ))}
