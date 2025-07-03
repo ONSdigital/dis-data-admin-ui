@@ -34,7 +34,7 @@ export default async function EditEdition({ params }) {
             <Hero hyperLink={{ text: "Back to edition overview", url: "../" }} title={"Edit edition : " + edition.edition_title} wide />
             { !editionError ?  
                 <> 
-                    <EditionForm />
+                    <EditionForm datasetID={id} isNewEdition={false}/>
                 </>
                 : renderErrorPanel()
             }

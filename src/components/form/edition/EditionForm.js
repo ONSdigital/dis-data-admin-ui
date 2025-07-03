@@ -10,7 +10,7 @@ import { createDatasetEdition } from "@/app/actions/datasetEdition";
 import Panel from "@/components/panel/Panel";
 import VersionFields from "@/components/form/version/VersionFields";
 
-export default function CreateEditionForm({ datasetID }) {
+export default function CreateEditionForm({ datasetID, isNewEdition }) {
     const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
     const [edition, setEdition] = useState("");
     const [editionTitle, setEditionTitle] = useState("");
@@ -82,7 +82,7 @@ export default function CreateEditionForm({ datasetID }) {
                     error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
                 />
 
-                <VersionFields errors={formState.errors} />
+                { isNewEdition ? <VersionFields errors={formState.errors} /> : null }
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
                     <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset edition</span></span>
