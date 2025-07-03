@@ -39,7 +39,7 @@ export default async function Series({searchParams}) {
                     </p>
                 </Panel> : ""}
             <div className="ons-u-mt-l ons-u-mb-l">
-                <List items={listItems}/>
+                <List items={listItems} type="series"/>
                 <Pagination
                     totalNumberOfPages = {totalNumberOfPages}
                     currentPage = {currentPage}

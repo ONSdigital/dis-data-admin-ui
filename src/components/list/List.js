@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function List({ items, noResultsText = "No results" }) {
+export default function List({ items, type, noResultsText = "No results" }) {
     if (!items || items.length === 0) {
         return (
             <p>{noResultsText}</p>
@@ -17,9 +17,12 @@ export default function List({ items, noResultsText = "No results" }) {
                                 <Link href={`${item.url}`}>{item.title}</Link>
                             </h2>
                             <ul className="ons-document-list__item-metadata ons-u-mb-2xs">
-                                <li className="ons-document-list__item-attribute">
-                                    <span className="ons-u-fw-b" data-testid={`list-item-${index}-id`}>ID: </span>{item.id}
-                                </li>
+                                { type == "series"  ? 
+                                    <li className="ons-document-list__item-attribute">
+                                        <span className="ons-u-fw-b" data-testid={`list-item-${index}-id`}>ID: </span>{item.id}
+                                    </li>
+                                    : null
+                                }
                                 { item.state ? 
                                     <li className="ons-document-list__item-attribute">
                                         <span className="ons-u-fw-b" data-testid={`list-item-${index}-state`}>State: </span>{item.state}
