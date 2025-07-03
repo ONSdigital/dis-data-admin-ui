@@ -85,7 +85,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: "ID",
+                            text: "Series ID",
                             description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
                         error={(formState.errors && formState.errors.id)  ? {id:"dataset-series-id-error", text: formState.errors.id} : null}

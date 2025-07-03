@@ -77,7 +77,7 @@ export default async function Edition({ params }) {
                             { renderVersionsList() }
                         </div>
                         <div className="ons-grid__col ons-col-6@m ">
-                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Edition ID</h2>
                             <p data-testid="id-field">{edition.edition}</p>
 
                             <h2 className="ons-u-mt-m@xxs@m">Title</h2>

@@ -19,7 +19,7 @@ export default function List({ items, type, noResultsText = "No results" }) {
                             <ul className="ons-document-list__item-metadata ons-u-mb-2xs">
                                 { type == "series"  ? 
                                     <li className="ons-document-list__item-attribute">
-                                        <span className="ons-u-fw-b" data-testid={`list-item-${index}-id`}>ID: </span>{item.id}
+                                        <span className="ons-u-fw-b" data-testid={`list-item-${index}-id`}>Series ID: </span>{item.id}
                                     </li>
                                     : null
                                 }
