@@ -136,4 +136,4 @@ const updateDatasetVersion = async (currentstate, formData) => {
     return doSubmission(datasetVersionSubmission, httpPut);
 };
 
-export { createDatasetVersion, updateDatasetVersion };
+export { createDatasetVersion, updateDatasetVersion, getFormData };
