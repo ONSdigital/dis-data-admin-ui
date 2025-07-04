@@ -10,10 +10,10 @@ import { createDatasetEdition } from "@/app/actions/datasetEdition";
 import Panel from "@/components/panel/Panel";
 import VersionFields from "@/components/form/version/VersionFields";
 
-export default function CreateEditionForm({ datasetID, isNewEdition }) {
-    const [formState, formAction, isPending] = useActionState(createDatasetEdition, {});
-    const [edition, setEdition] = useState("");
-    const [editionTitle, setEditionTitle] = useState("");
+export default function CreateEditionForm({ datasetID, edition, isNewEdition, action }) {
+    const [formState, formAction, isPending] = useActionState(action, {});
+    const [editionID, setEditionID] = useState(edition?.edition || "");
+    const [editionTitle, setEditionTitle] = useState(edition?.edition_title || "");
 
     let listOfErrors = [];
     if (formState) {
@@ -30,7 +30,6 @@ export default function CreateEditionForm({ datasetID, isNewEdition }) {
     if(isPending){
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-
 
     const renderSuccessOrFailure = () => {
         return (
@@ -64,12 +63,13 @@ export default function CreateEditionForm({ datasetID, isNewEdition }) {
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
+                <input id="current-edition-id" name="current-edition-id" type="hidden" value={edition?.edition} />
                 <TextInput id="edition-id" 
                     name="edition-id" 
                     label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
                     dataTestId="edition-id"
-                    value={edition}
-                    onChange={e => setEdition(e.target.value)}
+                    value={editionID}
+                    onChange={e => setEditionID(e.target.value)}
                     error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
                 />
 
