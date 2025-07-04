@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { updateDatasetEdition } from "@/app/actions/datasetEdition";
 
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
@@ -31,10 +32,10 @@ export default async function EditEdition({ params }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     return (
         <>
-            <Hero hyperLink={{ text: "Back to edition overview", url: "../" }} title={"Edit edition : " + edition.edition_title} wide />
+            <Hero hyperLink={{ text: "Back to edition overview", url: "../" }} title={ "Edit edition : " + edition.edition_title } wide />
             { !editionError ?  
                 <> 
-                    <EditionForm datasetID={id} isNewEdition={false}/>
+                    <EditionForm datasetID={ id } isNewEdition={ false } action={ updateDatasetEdition }/>
                 </>
                 : renderErrorPanel()
             }
