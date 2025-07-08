@@ -6,14 +6,16 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
+import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 
 import { mapListItems } from "./mapper";
 import { formatDate } from "@/utils/datetime/datetime";
 
-export default async function Edition({ params }) {
+export default async function Edition({ params, searchParams }) {
     const reqCfg = await SSRequestConfig(cookies);
 
     const { id, editionID } = await params;
+    const query = await searchParams;
     let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
     let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
     let versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
@@ -39,7 +41,7 @@ export default async function Edition({ params }) {
         if (item.state != "published") {
             unpublishedVersion = true
         }
-    })
+    });
 
     const renderVersionsList = () => {
             return (
@@ -75,6 +77,7 @@ export default async function Edition({ params }) {
                 <>
                     { renderHero() }
                     <div className="ons-grid ons-u-mt-xl">
+                        <CreateEditSuccess query={query} message="Dataset edition saved" />
                         <div className="ons-grid__col ons-col-6@m">
                             { renderVersionsList() }
                         </div>
