@@ -55,6 +55,7 @@ const getFormData = (formData) => {
         edition_id: formData.get("current-edition-id"),
         edition: formData.get("edition-id"),
         edition_title: formData.get("edition-title"),
+        type: "static",
     };
 };
 
