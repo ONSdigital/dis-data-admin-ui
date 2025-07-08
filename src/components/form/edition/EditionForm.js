@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import DOMPurify from "dompurify";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
 
