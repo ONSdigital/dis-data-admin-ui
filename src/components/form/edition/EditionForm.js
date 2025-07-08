@@ -5,12 +5,10 @@ import DOMPurify from "dompurify";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
 
-import { createDatasetEdition } from "@/app/actions/datasetEdition";
-
 import Panel from "@/components/panel/Panel";
 import VersionFields from "@/components/form/version/VersionFields";
 
-export default function CreateEditionForm({ datasetID, edition, isNewEdition, action }) {
+export default function EditionForm({ datasetID, edition, isNewEdition, action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
     const [editionID, setEditionID] = useState(edition?.edition || "");
     const [editionTitle, setEditionTitle] = useState(edition?.edition_title || "");
@@ -31,15 +29,12 @@ export default function CreateEditionForm({ datasetID, edition, isNewEdition, ac
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
 
-    const renderSuccessOrFailure = () => {
+    const handleSuccessOrFailure = () => {
+        if (formState.success == true) {
+            window.location = `/data-admin/series/${datasetID}/editions/${editionID}?display_success=true`;
+        }
         return (
             <>
-                { 
-                    formState.success == true  ?
-                        <Panel classes="ons-u-mb-xl" variant="success">
-                            <p>{`Dataset edition "${DOMPurify.sanitize(edition)}" created successfully. View new `}<a href={DOMPurify.sanitize(edition)}>edition.</a></p>
-                        </Panel> : null
-                }
                 {
                     formState.success == false && !formState.code ?    
                         <Panel classes="ons-u-mb-xl"title="There was a problem creating this dataset edition" variant="error">
@@ -58,7 +53,7 @@ export default function CreateEditionForm({ datasetID, edition, isNewEdition, ac
 
     return (
         <>    
-            { renderSuccessOrFailure() }      
+            { handleSuccessOrFailure() }      
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
