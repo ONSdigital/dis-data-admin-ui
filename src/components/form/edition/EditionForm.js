@@ -28,7 +28,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
 
-    const handleSuccessOrFailure = () => {
+    const renderFailure = () => {
         return (
             <>
                 {
@@ -49,7 +49,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
 
     return (
         <>    
-            { handleSuccessOrFailure() }      
+            { renderFailure() }      
             <h2>Edition details</h2>
             <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
