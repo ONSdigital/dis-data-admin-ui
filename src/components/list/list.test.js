@@ -34,7 +34,7 @@ describe("List", () => {
     });
 
     it("renders correctly when given list of contents", () => {
-        render(<List items={contents} />);
+        render(<List type="series" items={contents} />);
 
         const listItems = screen.getAllByRole("heading")
         expect(listItems.length).toBe(3)
@@ -50,12 +50,6 @@ describe("List", () => {
 
         const itemIDText = screen.getByText(/test-dataset/);
         expect(itemIDText).toBeInTheDocument();
-
-        const itemDescription = screen.getByTestId("list-item-0-description")
-        expect(itemDescription).toBeInTheDocument();
-
-        const itemDescriptionText = screen.getByText(/Something about a test dataset/);
-        expect(itemDescriptionText).toBeInTheDocument();
     });
 
     it("renders correctly when given list of contents with state", () => {

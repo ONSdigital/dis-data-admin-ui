@@ -85,7 +85,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                         dataTestId="dataset-series-id"
                         name="dataset-series-id"
                         label={{
-                            text: "ID",
+                            text: "Series ID",
                             description: `E.g "labour-market" or "weekly-registered-deaths"`,
                         }}
                         error={(formState.errors && formState.errors.id)  ? {id:"dataset-series-id-error", text: formState.errors.id} : null}
@@ -125,7 +125,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-qmi"
                     name="dataset-series-qmi"
                     label={{
-                        text: "QMI",
+                        text: "QMI (optional)",
                         description: "URL to related QMI documentation"
                     }}
                     error={(formState.errors && formState.errors.qmi) ? {id:"dataset-series-qmi-error", text: formState.errors.qmi} : null}
@@ -137,7 +137,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-keywords"
                     name="dataset-series-keywords"
                     label={{
-                        text: "Keywords",
+                        text: "Keywords (optional)",
                         description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
                     }}
                     error={(formState.errors && formState.errors.keywords) ? {id:"dataset-series-keywords-error", text: formState.errors.keywords} : null}

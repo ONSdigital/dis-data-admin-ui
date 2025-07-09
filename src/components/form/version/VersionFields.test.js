@@ -14,10 +14,10 @@ test("VersionFields renders correctly", () => {
     expect(screen.getByTestId("release-date-minutes")).toBeInTheDocument();
     expect(screen.getByText("Quality designation")).toBeInTheDocument();
     expect(screen.getByTestId("select-quality-designation")).toBeInTheDocument();
-    expect(screen.getByText("Usage notes")).toBeInTheDocument();
+    expect(screen.getByText("Usage notes (optional)")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-input-0")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-textarea-0")).toBeInTheDocument();
-    expect(screen.getByText("Alerts")).toBeInTheDocument();
+    expect(screen.getByText("Alerts (optional)")).toBeInTheDocument();
     expect(screen.getByTestId("select-alerts-select-0")).toBeInTheDocument();
     expect(screen.getByTestId("alerts-textarea-0")).toBeInTheDocument();
     expect(screen.getByText("Dataset file")).toBeInTheDocument();

@@ -57,7 +57,7 @@ export default async function Dataset({ params }) {
                         <div className="ons-grid__col ons-col-6@m ">
                             <Link href={editURL}>Edit metadata</Link>
 
-                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Series ID</h2>
                             <p data-testid="id-field">{dataset.id}</p>
 
                             <h2 className="ons-u-mt-m@xxs@m">Type</h2>

@@ -25,7 +25,7 @@ export default async function Version({ params }) {
                     <div className="ons-grid ons-u-mt-xl">
                         <div className="ons-grid__col ons-col-6@m ">
                         <Link href={`${versionID}/edit`}>Edit metadata</Link>
-                            <h2 className="ons-u-mt-m@xxs@m">ID</h2>
+                            <h2 className="ons-u-mt-m@xxs@m">Series ID</h2>
                             <p data-testid="id-field">{metadata.id}</p>
 
                             <h2 className="ons-u-mt-m@xxs@m">Edition</h2>

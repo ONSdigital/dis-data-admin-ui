@@ -24,7 +24,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
-        await page.getByLabel("ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Series ID", {exact: true}).fill("test ID");
         await page.getByLabel("Topics").selectOption("1000");
         await page.getByRole("button", { name: /Add Topic/i }).click();
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
@@ -72,7 +72,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
-        await page.getByLabel("ID", {exact: true}).fill("duplicate-id");
+        await page.getByLabel("Series ID", {exact: true}).fill("duplicate-id");
         await page.getByLabel("Topics").selectOption("1000");
         await page.getByRole("button", { name: /Add Topic/i }).click();
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
@@ -91,7 +91,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("duplicate-title");
-        await page.getByLabel("ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Series ID", {exact: true}).fill("test ID");
         await page.getByLabel("Topics").selectOption("1000");
         await page.getByRole("button", { name: /Add Topic/i }).click();
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
