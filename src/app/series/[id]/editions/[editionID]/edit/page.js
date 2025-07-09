@@ -32,7 +32,7 @@ export default async function EditEdition({ params }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     return (
         <>
-            <Hero hyperLink={{ text: "Back to edition overview", url: "./" }} title={ "Edit edition : " + edition.edition_title } wide />
+            <Hero hyperLink={{ text: "Back to edition overview", url: "./" }} title={ "Edit edition: " + edition.edition_title } wide />
             { !editionError ?  
                 <> 
                     <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } action={ updateDatasetEdition }/>
