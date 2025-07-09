@@ -29,9 +29,6 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
     }
 
     const handleSuccessOrFailure = () => {
-        if (formState.success == true) {
-            window.location = `/data-admin/series/${datasetID}/editions/${editionID}?display_success=true`;
-        }
         return (
             <>
                 {

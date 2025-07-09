@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -45,6 +46,9 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
         logInfo("saved dataset edition successfully", null, null);
     } catch (err) {
         return err.toString();
+    }
+    if (actionResponse.success === true) {
+        redirect(`/series/${datasetEditionSubmission.dataset_id}/editions/${datasetEditionSubmission.edition}?display_success=true`)
     }
     return actionResponse;
 };
