@@ -53,7 +53,10 @@ test.describe("Create edition page", () => {
 
         await page.getByRole("button", { name: /Save new dataset edition/i }).click();
 
-        await expect(page.getByText('Dataset edition "test-id" created successfully. View new edition.')).toBeVisible();
+        await page.waitForURL("**/series/mock-quarterly/editions/test-id**");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-id");
+
+        await expect(page.getByText("Dataset edition saved")).toBeVisible();
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
