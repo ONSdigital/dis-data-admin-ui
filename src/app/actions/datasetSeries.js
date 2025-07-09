@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from 'next/navigation'
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -69,6 +70,9 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
             }
         } catch (err) {
             return err.toString();
+        }
+        if (response.recentlySubmitted == true) {
+            redirect("/series/" + datasetSeriesSubmission.id)
         }
     }
     return response;

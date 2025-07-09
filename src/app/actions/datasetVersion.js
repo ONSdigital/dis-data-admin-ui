@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from 'next/navigation'
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -74,6 +75,9 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         logInfo("created dataset version successfully", null, null);
     } catch (err) {
         return err.toString();
+    }
+    if (actionResponse.success == true) {
+        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + datasetVersionSubmission.version_id)
     }
     return actionResponse;
 };

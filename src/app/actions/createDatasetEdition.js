@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from 'next/navigation'
 
 import { httpPost, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -108,6 +109,10 @@ export async function createDatasetEdition(currentstate, formData) {
         logInfo("created dataset edition successfully", null, null);
     } catch (err) {
         return err.toString();
+    }
+
+    if (actionResponse.success == true) {
+        redirect("/series/" + datasetID + "/editions/" + datasetEdition.edition)
     }
 
     return actionResponse;
