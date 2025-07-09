@@ -36,10 +36,10 @@ export default async function Edition({ params, searchParams }) {
         listItems.push(...mapListItems(versions.items, id, editionID));
     }
 
-    let unpublishedVersion = false
+    let unpublishedVersion = false;
     versions.items.forEach(item => {
         if (item.state != "published") {
-            unpublishedVersion = true
+            unpublishedVersion = true;
         }
     });
 
@@ -70,7 +70,7 @@ export default async function Edition({ params, searchParams }) {
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
-    const editURL = `/series/${id}/editions/${editionID}/edit`
+    const editURL = `/series/${id}/editions/${editionID}/edit`;
     return (
         <>
             { !datasetError && !editionError ? 

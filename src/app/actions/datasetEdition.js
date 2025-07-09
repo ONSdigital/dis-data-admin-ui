@@ -48,7 +48,7 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
         return err.toString();
     }
     if (actionResponse.success === true) {
-        redirect(`/series/${datasetEditionSubmission.dataset_id}/editions/${datasetEditionSubmission.edition}?display_success=true`)
+        redirect(`/series/${datasetEditionSubmission.dataset_id}/editions/${datasetEditionSubmission.edition}?display_success=true`);
     }
     return actionResponse;
 };
