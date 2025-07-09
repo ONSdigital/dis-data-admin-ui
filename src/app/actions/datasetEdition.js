@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
-import { getFormData as getEditionWithVersionFormData } from "./datasetVersion";
+import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation } from "./datasetVersion";
 
 import { z } from "zod";
  
@@ -67,8 +67,6 @@ const handleFailedValidation = (validation, datasetEditionSubmission) => {
     const actionResponse = {};
     actionResponse.success = validation.success;
     actionResponse.errors = validation.error.flatten().fieldErrors;
-    actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
-    actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
     actionResponse.submission = datasetEditionSubmission;
     logInfo("failed dataset edition validation", null, null);
     return actionResponse;
@@ -79,7 +77,7 @@ const createDatasetEdition = async (currentstate, formData) => {
     const validation = editionWithVersionSchema.safeParse(datasetEditionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetEditionSubmission);
+        return handleWithVersionFailedValidation(validation, datasetEditionSubmission);
     }
     return doSubmission(datasetEditionSubmission, httpPost);
 };
