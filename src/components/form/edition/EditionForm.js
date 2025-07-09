@@ -75,8 +75,8 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
 
                 { isNewEdition ? <VersionFields errors={formState.errors} /> : null }
 
-                <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset edition</span></span>
+                <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="edition-save-button">
+                    <span className="ons-btn__inner"><span className="ons-btn__text">Save dataset edition</span></span>
                 </button>
             </form>
         </>

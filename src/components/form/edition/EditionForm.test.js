@@ -8,6 +8,7 @@ describe("Edition form", () => {
 
         expect(screen.getByTestId("edition-id")).toBeInTheDocument();
         expect(screen.getByTestId("edition-title")).toBeInTheDocument();
+        expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
 
         //version fields
         expect(screen.queryByTestId("fieldset-release-date")).not.toBeInTheDocument();
@@ -20,6 +21,7 @@ describe("Edition form", () => {
 
         expect(screen.getByTestId("edition-id")).toBeInTheDocument();
         expect(screen.getByTestId("edition-title")).toBeInTheDocument();
+        expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
 
         //version fields
         expect(screen.getByTestId("fieldset-release-date")).toBeInTheDocument();
@@ -32,5 +34,6 @@ describe("Edition form", () => {
 
         expect(screen.getByTestId("edition-id").value).toBe("test-edition");
         expect(screen.getByTestId("edition-title").value).toBe("Test Edition");
+        expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
     });
 });
