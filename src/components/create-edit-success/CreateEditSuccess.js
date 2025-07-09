@@ -1,10 +1,8 @@
-'use client';
+"use client";
 
 import Panel from "@/components/panel/Panel";
 
-
 export default function CreateEditSuccess({query, message}) {
-
     if (query?.display_success !== "true") {
         return;
     }
