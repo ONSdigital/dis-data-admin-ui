@@ -32,8 +32,11 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
     const actionResponse = {};
     const reqCfg = await SSRequestConfig(cookies);
 
-    let url = `/datasets/${datasetEditionSubmission.dataset_id}/editions/${datasetEditionSubmission.edition_id}/versions`;
-    if (!datasetEditionSubmission.version_id) { url = url + `/1`; }
+    const datasetID = datasetEditionSubmission.dataset_id;
+    const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
+
+    let url = `/datasets/${datasetID}/editions/${editionID}/versions`;
+    if (datasetEditionSubmission.edition_id) { url = url + `/1`; }
 
     try {
         const data = await makeRequest(reqCfg, url, datasetEditionSubmission);
@@ -47,9 +50,11 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
     } catch (err) {
         return err.toString();
     }
+    
     if (actionResponse.success === true) {
-        redirect(`/series/${datasetEditionSubmission.dataset_id}/editions/${datasetEditionSubmission.edition}?display_success=true`);
+        redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
     }
+
     return actionResponse;
 };
 
