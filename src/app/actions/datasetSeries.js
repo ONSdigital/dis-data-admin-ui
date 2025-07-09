@@ -71,7 +71,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
         } catch (err) {
             return err.toString();
         }
-        if (response.recentlySubmitted == true) {
+        if (response.success == true) {
             redirect("/series/" + datasetSeriesSubmission.id)
         }
     }

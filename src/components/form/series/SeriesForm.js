@@ -33,29 +33,13 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
         ));
     } 
 
-    if (formState.recentlySubmitted == true) {
-        formState.recentlySubmitted = false;
-        setSavedDatasetURL("/series/" + id);
-        setTitle("");
-        setID("");
-        setDescription("");
-        setQMI("");
-        setKeywords("");
-        setContacts([]);
-        setSelectedTopics([]);
-    }
-
     if(isPending){
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-    const renderSuccessOrFailure = () => {
+
+    const renderFailure = () => {
         return (
             <>
-                { formState.success == true  ?
-                    <Panel variant="success">
-                        <p>Dataset series saved. <Link href={savedDatasetURL}>View dataset</Link></p>
-                    </Panel> : null
-                }
                 { formState.success == false && !formState.code ?    
                     <Panel title="There was a problem submitting your form" variant="error">
                         <HyperLinksList itemsList={listOfErrors}/>
@@ -72,7 +56,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
 
     return (
         <>
-            {renderSuccessOrFailure()}
+            {renderFailure()}
             <h2 className="ons-u-mt-m">Series details</h2>
             <p>The information in these fields is unique to a series.</p>
             <form action={formAction}>
