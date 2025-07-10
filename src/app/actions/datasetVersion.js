@@ -53,7 +53,7 @@ const parseMutliContentField = (multiItem) => {
         if (parsed.type || parsed.title) {
             parsedItems.push(parsed);
         }
-    })
+    });
     return parsedItems;
 };
 
@@ -140,4 +140,4 @@ const updateDatasetVersion = async (currentstate, formData) => {
     return doSubmission(datasetVersionSubmission, httpPut);
 };
 
-export { createDatasetVersion, updateDatasetVersion };
+export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation };
