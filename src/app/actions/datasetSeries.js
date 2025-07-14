@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -72,7 +72,7 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
             return err.toString();
         }
         if (response.success == true) {
-            redirect("/series/" + datasetSeriesSubmission.id)
+            redirect("/series/" + datasetSeriesSubmission.id + "?display_success=true");
         }
     }
     return response;

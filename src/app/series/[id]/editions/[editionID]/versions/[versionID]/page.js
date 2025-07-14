@@ -6,9 +6,11 @@ import { formatDate } from "@/utils/datetime/datetime";
 
 import Hero from "@/components/hero/Hero";
 import Panel from "@/components/panel/Panel";
+import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 
-export default async function Version({ params }) {
+export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
+    const query = await searchParams;
     const reqCfg = await SSRequestConfig(cookies);
     let metadata = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}/metadata`);
 
@@ -23,6 +25,7 @@ export default async function Version({ params }) {
             { !metadataError ?
                 <>
                     <div className="ons-grid ons-u-mt-xl">
+                        <CreateEditSuccess query={query} message="Dataset version saved" />
                         <div className="ons-grid__col ons-col-6@m ">
                         <Link href={`${versionID}/edit`}>Edit metadata</Link>
                             <h2 className="ons-u-mt-m@xxs@m">Series ID</h2>

@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logInfo } from "@/utils/log/log";
@@ -77,7 +77,7 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return err.toString();
     }
     if (actionResponse.success == true) {
-        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + datasetVersionSubmission.version_id)
+        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + datasetVersionSubmission.version_id + "?display_success=true");
     }
     return actionResponse;
 };

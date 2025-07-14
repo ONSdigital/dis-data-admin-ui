@@ -7,11 +7,15 @@ import { formatDate } from "@/utils/datetime/datetime";
 import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
+import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+
 import { mapListItems } from './mapper';
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
-export default async function Dataset({ params }) {
+export default async function Dataset({ params, searchParams }) {
     const { id } = await params;
+    const query = await searchParams;
+
     const reqCfg = await SSRequestConfig(cookies);
     let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
     let editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
@@ -51,6 +55,7 @@ export default async function Dataset({ params }) {
                 <>
                     <Hero hyperLink={{ text: "Add new dataset edition", url: createURL }} title={dataset.title} wide />           
                     <div className="ons-grid ons-u-mt-xl">
+                        <CreateEditSuccess query={query} message="Dataset series saved" />
                         <div className="ons-grid__col ons-col-6@m">
                             { renderEditionsList() }
                         </div>
