@@ -24,7 +24,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
-        await page.getByLabel("Series ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Series ID", {exact: true}).fill("testID");
         await page.getByLabel("Topics").selectOption("1000");
         await page.getByRole("button", { name: /Add Topic/i }).click();
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
@@ -34,6 +34,9 @@ test.describe("Create series page", () => {
         await page.getByLabel("Email").fill("test-email@test.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save new dataset series/i }).click();
+
+        await page.waitForURL("**/series/testID**");
+        await expect(page.url().toString()).toContain("series/testID");
 
         await expect(page.getByText("Dataset series saved")).toBeVisible();
     });
