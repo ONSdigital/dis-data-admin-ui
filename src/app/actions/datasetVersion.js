@@ -64,8 +64,9 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
     if (datasetVersionSubmission.version_id) { url = url + `/${datasetVersionSubmission.version_id}`; }
 
+    let data = {}
     try {
-        const data = await makeRequest(reqCfg, url, datasetVersionSubmission);
+        data = await makeRequest(reqCfg, url, datasetVersionSubmission);
         actionResponse.success = true;
         if (data.status >= 400) {
             actionResponse.success = false;
@@ -77,7 +78,7 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return err.toString();
     }
     if (actionResponse.success == true) {
-        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + datasetVersionSubmission.version_id + "?display_success=true");
+        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + data.version + "?display_success=true");
     }
     return actionResponse;
 };
