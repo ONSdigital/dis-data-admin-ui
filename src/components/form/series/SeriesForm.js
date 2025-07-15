@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { useState, useActionState } from "react";
 
 import { TextInput, Panel, HyperLinksList} from "author-design-system-react";
@@ -20,7 +18,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     const [contacts, setContacts] = useState(currentContacts);
 
     const [formState, formAction, isPending] = useActionState(action, {});
-    const [savedDatasetURL, setSavedDatasetURL] = useState("");
 
     let listOfErrors = [];
 

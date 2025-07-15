@@ -64,7 +64,7 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
     if (datasetVersionSubmission.version_id) { url = url + `/${datasetVersionSubmission.version_id}`; }
 
-    let data = {}
+    let data = {};
     try {
         data = await makeRequest(reqCfg, url, datasetVersionSubmission);
         actionResponse.success = true;

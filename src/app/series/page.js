@@ -11,12 +11,12 @@ import { mapListItems } from "./mapper";
 export default async function Series({searchParams}) {
     const reqCfg = await SSRequestConfig(cookies);
 
-    const pageParams = await searchParams
+    const pageParams = await searchParams;
     if (Object.keys(pageParams).length === 0){
-        pageParams.limit = 25
+        pageParams.limit = 25;
     }
 
-    const url = "/datasets?type=static&sort_order=ASC&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "")
+    const url = "/datasets?type=static&sort_order=ASC&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "");
     const data = await httpGet(reqCfg, url);
 
     let error = false;
@@ -27,8 +27,8 @@ export default async function Series({searchParams}) {
         listItems.push(...mapListItems(data.items));
     }
 
-    const totalNumberOfPages = Math.ceil(data.total_count/pageParams.limit)
-    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1)
+    const totalNumberOfPages = Math.ceil(data.total_count/pageParams.limit);
+    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
     
     return (
         <>
