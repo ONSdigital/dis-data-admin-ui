@@ -1,6 +1,6 @@
 import { logout } from "@/utils/auth/auth";
 
-const HEADER_TITLE = "Dataset Catalogue";
+const HEADER_TITLE = "Dataset Catalogue Manager";
 const NAVIGATION_OPTIONS = [
     {
         text: 'Home',
