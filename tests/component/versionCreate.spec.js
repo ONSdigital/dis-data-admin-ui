@@ -51,7 +51,10 @@ test.describe("Create version page", () => {
 
         await page.getByRole("button", { name: /Save new dataset version/i }).click();
 
-        await expect(page.getByText("Dataset version saved successfully.")).toBeVisible();
+        await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1**");
+
+        await expect(page.url().toString()).toContain("/series/mock-quarterly/editions/time-series/versions/1");
+        await expect(page.getByText("Dataset version saved")).toBeVisible();
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {

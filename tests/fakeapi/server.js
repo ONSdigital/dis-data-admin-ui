@@ -68,7 +68,10 @@ app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
 });
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
-    res.send({status: 201});
+    res.send({
+        status: 201,
+        version: 1
+    });
 });
 
 app.get("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
