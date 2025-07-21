@@ -1,18 +1,18 @@
 import { logout } from "@/utils/auth/auth";
 
-const HEADER_TITLE = "Dataset Catalogue";
+const HEADER_TITLE = "Dataset Catalogue Manager";
 const NAVIGATION_OPTIONS = [
     {
-        text: 'Home',
-        url: '/data-admin'
+        text: "Home",
+        url: "/data-admin"
     },
     {
-        text: 'Dashboard',
-        url: '/data-admin/dashboard'
+        text: "Dashboard",
+        url: "/data-admin/dashboard"
     },
     {
-        text: 'Dataset Series',
-        url: '/data-admin/series'
+        text: "Dataset Series",
+        url: "/data-admin/series"
     },
 ];
 

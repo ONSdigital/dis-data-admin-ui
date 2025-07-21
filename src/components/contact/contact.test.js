@@ -8,11 +8,11 @@ describe("Contact", () => {
         [
             {
                 "name": "Test Name",
-                "emails": "test@email.com",
+                "email": "test@email.com",
             },
             {
                 "name": "Test Name Two",
-                "emails": "testTwo@email.com",
+                "email": "testTwo@email.com",
             }
         ]
 
