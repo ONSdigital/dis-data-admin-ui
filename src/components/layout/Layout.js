@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import { MainLayout } from "author-design-system-react";
 
-import { ConfigContext } from '@/context/context';
+import { ConfigContext } from "@/context/context";
 
 import { getLayoutProps } from "./layoutSetup";
-import { initAuthRefresh } from '@/utils/auth/auth';
+import { initAuthRefresh } from "@/utils/auth/auth";
 
 export default function Layout({ appConfig, username, children }) {
     
