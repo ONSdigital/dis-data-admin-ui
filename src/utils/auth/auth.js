@@ -56,6 +56,11 @@ const validateCookie = (token) => {
     }
 };
 
+/**
+ * Decodes user given and family name from token
+ * @param  {JWT} jwt - JWT cookie value
+ * @return {string} - Formatted user name
+ */
 const getUserName = (token) => {
     try {
         const cookie = decodeToken(token);
