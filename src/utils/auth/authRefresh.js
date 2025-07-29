@@ -1,5 +1,7 @@
 import SessionManagement from "dis-authorisation-client-js";
 
+import { logout } from "@/utils/auth/auth";
+
 /**
  * Initialises session management library to handle passive auth refreshing 
  */
@@ -21,6 +23,6 @@ const initAuthRefresh = async () => {
 
     // Set the expiry timer using defaults from cookie
     SessionManagement.setSessionExpiryTime();
-}
+};
 
 export { initAuthRefresh };
