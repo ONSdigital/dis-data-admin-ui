@@ -38,7 +38,7 @@ const decodeToken = (token) => {
 };
 
 /**
- * Decodes JWT and validates cokkies expiry date
+ * Decodes JWT and validates cookies expiry date
  * @param  {JWT} jwt - JWT cookie value
  * @return {boolean}
  */
