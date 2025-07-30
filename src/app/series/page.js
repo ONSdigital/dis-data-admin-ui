@@ -1,10 +1,9 @@
 import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
-
-import Hero from "@/components/hero/Hero";
-import Panel from "@/components/panel/Panel";
 import List from "@/components/list/List";
+import LinkButton from "@/components/link-button/LinkButton";
+import Panel from "@/components/panel/Panel";
 import Pagination  from "@/components/pagination/Pagination";
 import { mapListItems } from "./mapper";
 
@@ -42,6 +41,11 @@ export default async function Series({searchParams}) {
                     FILTER
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
+                    Showing {data.offset + 1} to {data.offset + data.count} of {totalCount} series
+                    <LinkButton
+                        text="Create new series"
+                        link="series/create"          
+                    />   
                     <List items={listItems} type="series"/>
                     <Pagination
                         totalNumberOfPages = {totalNumberOfPages}
