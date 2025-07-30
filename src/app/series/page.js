@@ -37,13 +37,18 @@ export default async function Series({searchParams}) {
                         There was an issue retrieving the list of dataset series.
                     </p>
                 </Panel> : ""}
-            <div className="ons-u-mt-l ons-u-mb-l">
-                <List items={listItems} type="series"/>
-                <Pagination
-                    totalNumberOfPages = {totalNumberOfPages}
-                    currentPage = {currentPage}
-                    limit = {pageParams.limit}
-                />
+            <div className="ons-grid ons-u-mt-l ons-u-mb-l">
+                <div className="ons-grid__col ons-col-4@m ons-u-pr-m" style={{backgroundColor: "#bcbcbd", textAlign: "center", fontWeight: "bold", height: "100vh"}}>
+                    FILTER
+                </div>
+                <div className="ons-grid__col ons-col-8@m">
+                    <List items={listItems} type="series"/>
+                    <Pagination
+                        totalNumberOfPages = {totalNumberOfPages}
+                        currentPage = {currentPage}
+                        limit = {pageParams.limit}
+                    />
+                </div>
             </div>
         </>
     );
