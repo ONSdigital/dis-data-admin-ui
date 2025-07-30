@@ -5,7 +5,8 @@ export  function mapListItems(items) {
             id: item.id,
             url: "/series/" + item.id,
             title: item.title,
-            description: item.description
+            description: item.description,
+            type: item.type
         };
     });
 }
