@@ -54,6 +54,7 @@ export default async function Dataset({ params, searchParams }) {
             { !datasetError ? 
                 <>
                     <PageHeading 
+                        heading="Series"
                         title={dataset.title} 
                         linkCreate={createURL} 
                         createMessage="Create new edition" 

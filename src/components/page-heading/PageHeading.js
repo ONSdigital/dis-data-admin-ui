@@ -13,7 +13,7 @@ export default function PageHeading(props){
 
     return (
         <>
-            <h1 className="ons-u-fs-m ons-u-mb-xxs" style={headingStyle}>Series</h1>
+            <h1 className="ons-u-fs-m ons-u-mb-xxs" style={headingStyle}>{props.heading}</h1>
             <h2 className="ons-u-fs-xl ons-u-mb-l">{props.title}</h2>
                 <Button
                     text={props.createMessage}
