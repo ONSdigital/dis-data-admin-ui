@@ -7,7 +7,7 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Mock Dataset");
+        await expect(page.getByRole("heading", { level: 1 })).toContainText("Series");
         await expect(page.getByRole("link", { name: "time-series" })).toBeVisible();
         await expect(page.getByTestId("id-field")).toContainText("mock-quarterly");
         await expect(page.getByTestId("type-field")).toContainText("static");
@@ -62,7 +62,8 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
-        await page.getByRole("link", { name: "Add new dataset edition" }).click();
+        await page.getByRole("button", { name: "Create new edition" }).click();
+        await page.waitForURL("**/series/mock-quarterly/editions/create");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
     });
 
