@@ -8,6 +8,8 @@ export default function LinkButton(props){
     
     return (
         <Button
+            id="link-button"
+            dataTestId="link-button"
             text = {props.text}
             onClick={() => router.push(props.link)}            
         />
