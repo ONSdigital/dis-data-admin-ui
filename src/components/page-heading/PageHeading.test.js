@@ -2,10 +2,10 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import PageHeading from "./PageHeading";
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { expect } from "@playwright/test";
 
-jest.mock('next/navigation', () => ({ 
+jest.mock("next/navigation", () => ({ 
     useRouter: jest.fn().mockReturnValue({ 
         push: jest.fn(), 
     }), 

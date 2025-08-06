@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 import { Button } from "author-design-system-react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function LinkButton(props){
     const router = useRouter()

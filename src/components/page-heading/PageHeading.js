@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from 'author-design-system-react';
-import { useRouter } from 'next/navigation'
+import Link from "next/link";
+import { Button } from "author-design-system-react";
+import { useRouter } from "next/navigation"
 
 const headingStyle = {
     color: "#206095"

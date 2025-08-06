@@ -2,9 +2,9 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import LinkButton from "./LinkButton";
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
-jest.mock('next/navigation', () => ({ 
+jest.mock("next/navigation", () => ({ 
     useRouter: jest.fn().mockReturnValue({ 
         push: jest.fn(), 
     }), 
@@ -21,7 +21,7 @@ describe("LinkButton", () => {
         render(<LinkButton text={buttonProps.text} link={buttonProps.link}/>);
 
         const button = screen.getByTestId("link-button");
-        expect(button).toHaveTextContent('test')
+        expect(button).toHaveTextContent("test")
     })
 
     it("onClick handler gets called", () => {     
