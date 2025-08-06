@@ -2,6 +2,11 @@ import { logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserNa
 import { createValidJWTCookieValue, createExpiredJWTCookieValue, createValidJWTCookieValueWithUserDetails } from "../../../tests/utils/utils";
 
 
+// mock dis-authorisation-client-js library as it's an ESM and causing issues with Jest
+jest.mock("dis-authorisation-client-js", () => ({
+    SessionManagement: jest.fn(),
+}));
+
 test("logout redirects to the correct url ", () => {
     expect(logout()).toBe("/florence/logout");
 });

@@ -1,5 +1,10 @@
 import { getLayoutProps, setActiveNavItem } from "./layoutSetup";
 
+// mock dis-authorisation-client-js library as it's an ESM and causing issues with Jest
+jest.mock("dis-authorisation-client-js", () => ({
+    SessionManagement: jest.fn(),
+}));
+
 test("getLayoutProps returns the correct object", () => {
     const layoutProps = getLayoutProps("/test-url", "Test user");
     expect(layoutProps.text).toBe("Dataset Catalogue Manager");

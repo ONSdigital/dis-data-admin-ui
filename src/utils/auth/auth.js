@@ -29,7 +29,7 @@ const getLoginURLWithRedirect = (redirectPath) => {
 };
 
 /**
- * Decodes JWT
+ * Decodes JWT token
  * @param  {JWT} token - JWT cookie value
  * @return {object}
  */
@@ -38,7 +38,7 @@ const decodeToken = (token) => {
 };
 
 /**
- * Decodes JWT and validates
+ * Decodes JWT and validates cookies expiry date
  * @param  {JWT} jwt - JWT cookie value
  * @return {boolean}
  */
@@ -55,6 +55,11 @@ const validateCookie = (token) => {
     }
 };
 
+/**
+ * Decodes user given and family name from token
+ * @param  {JWT} jwt - JWT cookie value
+ * @return {string} - Formatted user name
+ */
 const getUserName = (token) => {
     try {
         const cookie = decodeToken(token);
@@ -64,5 +69,6 @@ const getUserName = (token) => {
         return null;
     }
 };
+
 
 export { logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName };
