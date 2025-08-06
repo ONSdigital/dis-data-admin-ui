@@ -7,7 +7,7 @@ test.describe("Series list page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series")
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Dataset series");
+        await expect(page.getByText("Showing 1 to 20 of 125 series")).toBeVisible();
         await expect(page.getByRole("link", { name: "Weekly deaths" })).toBeVisible();
     });
 
@@ -15,7 +15,7 @@ test.describe("Series list page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series")
-        await page.getByRole("link", { name: "Add new dataset series" }).click();
+        await page.getByRole("button", { name: "Create new series" }).click();
         await page.waitForURL("**/series/create");
         await expect(page.url().toString()).toContain("series/create");
     });
@@ -37,8 +37,8 @@ test.describe("Series list page", () => {
         await expect(page.getByRole("link", { name: "Consumer prices" })).toBeVisible();
         await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 26" })).not.toBeVisible();
         
-        await page.getByRole("link", { name: "Go to the last page (Page 5)" }).click();
-        await expect(page.getByText("Page 5 of")).toBeVisible();
+        await page.getByRole("link", { name: "Go to the last page (Page 7)" }).click();
+        await expect(page.getByText("Page 7 of")).toBeVisible();
         await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 121" })).toBeVisible();
     });
 
