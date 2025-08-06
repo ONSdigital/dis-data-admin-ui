@@ -19,33 +19,42 @@ export default async function Series({searchParams}) {
     const url = "/datasets?type=static&sort_order=ASC&limit=" + pageParams.limit + (pageParams.offset ? "&offset=" + pageParams.offset : "");
     const data = await httpGet(reqCfg, url);
 
-    let error = false;
+    let datasetFetchError = false;
     const listItems = [];
     if (data.ok != null && !data.ok) {
-        error = true;
+        datasetFetchError = true;
     } else {
         listItems.push(...mapListItems(data.items));
     }
 
     const totalNumberOfPages = Math.ceil(data.total_count/pageParams.limit);
     const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
+
+    const renderErrorPanel = () => {
+        return (
+            <Panel title="Error" variant="error">
+                <p>There was an issue retrieving the list of dataset series. Refresh the page to try again.</p>
+            </Panel>
+        )
+    }
     
     return (
         <>
-            <Hero hyperLink={{ text: "Add new dataset series", url: "series/create"}} title="Dataset series" wide/>
-            { error ? <Panel title="Error" variant="error">
-                    <p>
-                        There was an issue retrieving the list of dataset series.
-                    </p>
-                </Panel> : ""}
-            <div className="ons-u-mt-l ons-u-mb-l">
+            {!datasetFetchError ? 
+                <>
+                <Hero hyperLink={{ text: "Add new dataset series", url: "series/create"}} title="Dataset series" wide/>
+                <div className="ons-u-mt-l ons-u-mb-l">
                 <List items={listItems} type="series"/>
                 <Pagination
                     totalNumberOfPages = {totalNumberOfPages}
                     currentPage = {currentPage}
                     limit = {pageParams.limit}
                 />
-            </div>
+                </div>
+                </>
+                : renderErrorPanel()
+            }
+            
         </>
     );
 }
