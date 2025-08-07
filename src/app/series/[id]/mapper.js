@@ -6,7 +6,7 @@ const mapListItems = (items, datasetID) => {
         return {
             id: item.edition,
             url: `/series/${datasetID}/editions/${item.edition}`,
-            title: item.edition,
+            title: item.edition_title,
             state: mapStateToUserFriendlyString(item.state)
         };
     });
