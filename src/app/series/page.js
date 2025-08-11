@@ -15,7 +15,7 @@ export default async function Series({ searchParams }) {
     const pageParams = await searchParams;
     pageParams.limit = 20;
 
-    const requestURL = generateRequestURL(pageParams);
+    const requestURL = createRequestURL(pageParams);
     const data = await httpGet(reqCfg, requestURL);
 
     const listItems = [];
@@ -74,8 +74,11 @@ export default async function Series({ searchParams }) {
     );
 }
 
+// return errors based on request response
 const setErrors = (data, params) => {
     if (data.ok != null && !data.ok) {
+        // if we get a 404 and there's a dataset id param 
+        // assume the search has returned zero results
         if (data.status === 404 && params.id) {
             return [false, true];
         }
@@ -84,8 +87,8 @@ const setErrors = (data, params) => {
 return [false, false];
 }
 
-
-const generateRequestURL = (params) => {
+// build URL (with various params) to make request to dataset-api
+const createRequestURL = (params) => {
     let url = `/datasets?type=static&sort_order=ASC&limit=${params.limit}`;
     if (params.id && params.id.length > 0) {
         url = `${url}&id=${params.id}`;
