@@ -44,7 +44,7 @@ export default async function Series({ searchParams }) {
                     <Hero hyperLink={{ text: "Add new dataset series", url: "series/create" }} title="Dataset series" wide />
                     <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                         <div className="ons-grid__col ons-col-4@m ons-grid--gutterless">
-                            <SeriesListForm />
+                            <SeriesListForm datasetID={pageParams.id} />
                         </div>
                         <div className="ons-grid__col ons-col-8@m">
                             <List items={listItems} type="series" />
