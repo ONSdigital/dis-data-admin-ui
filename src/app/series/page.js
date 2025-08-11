@@ -18,11 +18,9 @@ export default async function Series({ searchParams }) {
     const requestURL = generateRequestURL(pageParams);
     const data = await httpGet(reqCfg, requestURL);
 
-    let datasetFetchError = false;
     const listItems = [];
-    if (data.ok != null && !data.ok) {
-        datasetFetchError = true;
-    } else {
+    const [ datasetFetchError, noSearchResults ] = setErrors(data, pageParams);
+    if (!datasetFetchError && !noSearchResults) {
         listItems.push(...mapListItems(data.items));
     }
 
@@ -37,6 +35,24 @@ export default async function Series({ searchParams }) {
         )
     }
 
+    const renderListArea = () => {
+        if (noSearchResults) {
+            return (
+                <p>No results found for {pageParams?.id}</p>
+            )
+        }
+        return (
+            <>
+                <List items={listItems} type="series" />
+                <Pagination
+                    totalNumberOfPages={totalNumberOfPages}
+                    currentPage={currentPage}
+                    limit={pageParams.limit}
+                />
+            </>
+        )
+    }
+
     return (
         <>
             {!datasetFetchError ?
@@ -47,12 +63,7 @@ export default async function Series({ searchParams }) {
                             <SeriesListForm datasetID={pageParams.id} />
                         </div>
                         <div className="ons-grid__col ons-col-8@m">
-                            <List items={listItems} type="series" />
-                            <Pagination
-                                totalNumberOfPages={totalNumberOfPages}
-                                currentPage={currentPage}
-                                limit={pageParams.limit}
-                            />
+                            { renderListArea() }
                         </div>
                     </div>
                 </>
@@ -62,6 +73,17 @@ export default async function Series({ searchParams }) {
         </>
     );
 }
+
+const setErrors = (data, params) => {
+    if (data.ok != null && !data.ok) {
+        if (data.status === 404 && params.id) {
+            return [false, true];
+        }
+    return [true, false];
+    }
+return [false, false];
+}
+
 
 const generateRequestURL = (params) => {
     let url = `/datasets?type=static&sort_order=ASC&limit=${params.limit}`;
