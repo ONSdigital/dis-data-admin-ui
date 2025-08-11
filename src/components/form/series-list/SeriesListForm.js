@@ -9,11 +9,11 @@ export default function SeriesListForm({datasetID}) {
     const [id, setID] = useState(datasetID || "");
     const { push } = useRouter();
     const handleSearchCLick = () => {
-        if (id.length < 1) {
+        if (id.length === 0) {
             push(`/series`);
             return;
         }
-        push(`/series/?id=${id}`);
+        push(`/series?id=${id}`);
     }
     return (
         <>    
