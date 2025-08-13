@@ -697,6 +697,11 @@ export const datasetList = {
             "title": "Lorem ipsum dolor sit amet 121",
             "description": "Consectetur adipiscing elit 121",
             "id": "Pagination 121"
+          },
+          {
+            "title": "Foobar test dataset",
+            "description": "A test dataset",
+            "id": "foo-bar"
           }
     ],
     "total_count": 125
