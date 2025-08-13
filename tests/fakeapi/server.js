@@ -26,10 +26,10 @@ app.get("/datasets", (req, res) => {
         res.send(result);
         return;
     }
-    const offset = req.query.offset ? req.query.offset : 0
-    const paginatedDatasetList = {}
-    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset))
-    paginatedDatasetList.total_count = datasetList.total_count
+    const offset = req.query.offset ? req.query.offset : 0;
+    const paginatedDatasetList = {};
+    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset));
+    paginatedDatasetList.total_count = datasetList.total_count;
     res.send(paginatedDatasetList);
 });
 
@@ -76,7 +76,7 @@ app.get("/datasets/:id/editions/:editionID", (req, res) => {
 });
 
 app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
-    res.send({items: versions.items.filter((item => item.edition === req.params.editionID))})
+    res.send({items: versions.items.filter((item => item.edition === req.params.editionID))});
 });
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
