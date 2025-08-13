@@ -54,3 +54,25 @@ test.describe("Series list page", () => {
         await expect(page.getByTestId("id-field")).toContainText("mock-quarterly");
     });
 });
+
+test.describe("Filtering on series list page", () => {
+    test ("Filtering by a valid ID returns correct results", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series");
+        await page.getByTestId("series-list-search-by-id").fill("foo-bar");
+        await page.getByTestId("icon-search").click();
+        await page.waitForURL("**/series?id=foo-bar");
+        await expect(page.getByRole("link", { name: "Foobar test dataset" })).toBeVisible();
+    });
+
+    test ("Filtering by non existent ID handles returned 404", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series");
+        await page.getByTestId("series-list-search-by-id").fill("bar-foo");
+        await page.getByTestId("icon-search").click();
+        await page.waitForURL("**/series?id=bar-foo");
+        await expect(page.getByText("No results found for bar-foo")).toBeVisible();
+    });
+})
