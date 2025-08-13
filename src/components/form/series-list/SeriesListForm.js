@@ -14,7 +14,7 @@ export default function SeriesListForm({datasetID}) {
             return;
         }
         push(`/series?id=${id}`);
-    }
+    };
     return (
         <>    
             <TextInput id="series-list-search-by-id" 
