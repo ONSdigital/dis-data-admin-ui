@@ -32,14 +32,14 @@ export default async function Series({ searchParams }) {
             <Panel title="Error" variant="error">
                 <p>There was an issue retrieving the list of dataset series. Refresh the page to try again.</p>
             </Panel>
-        )
-    }
+        );
+    };
 
     const renderListArea = () => {
         if (noSearchResults) {
             return (
                 <p>No results found for {pageParams?.id}</p>
-            )
+            );
         }
         return (
             <>
@@ -50,8 +50,8 @@ export default async function Series({ searchParams }) {
                     limit={pageParams.limit}
                 />
             </>
-        )
-    }
+        );
+    };
 
     return (
         <>
@@ -85,7 +85,7 @@ const setErrors = (data, params) => {
     return [true, false];
     }
 return [false, false];
-}
+};
 
 // build URL (with various params) to make request to dataset-api
 const createRequestURL = (params) => {
@@ -98,4 +98,4 @@ const createRequestURL = (params) => {
         url = `${url}&offset=${params.offset}`;
     }
     return url;
-}
+};
