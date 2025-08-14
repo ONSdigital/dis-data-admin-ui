@@ -71,7 +71,7 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
-        await page.getByRole("link", { name: "time-series" }).click();
+        await page.getByRole("link", { name: "Timeseries" }).click();
         await page.waitForURL("**/series/mock-quarterly/editions/time-series");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
