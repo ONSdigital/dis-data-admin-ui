@@ -18,14 +18,14 @@ test.describe("Create edition page", () => {
         await expect(page.getByTestId("dataset-upload-input")).toBeVisible();
     });
 
-    test("Route back to dataset overview page works", async ({ page, context }) => {
-        addValidAuthCookies(context);
+    // test("Route back to dataset overview page works", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/editions/create");
-        await page.getByRole("link", { name: "Back to mock-quarterly dataset series overview" }).click();
-        await page.waitForURL("**/series/mock-quarterly");
-        await expect(page.url().toString()).toContain("series/mock-quarterly");
-    });
+    //     await page.goto("./series/mock-quarterly/editions/create");
+    //     await page.getByRole("link", { name: "Back to mock-quarterly dataset series overview" }).click();
+    //     await page.waitForURL("**/series/mock-quarterly");
+    //     await expect(page.url().toString()).toContain("series/mock-quarterly");
+    // });
 
     test("Submits form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);

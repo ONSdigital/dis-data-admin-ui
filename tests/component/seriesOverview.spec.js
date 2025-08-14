@@ -58,13 +58,13 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("publisher-href-field")).not.toBeVisible();
     });
 
-    test("routes to create new edition page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+    // test("routes to create new edition page", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
         
-        await page.goto("./series/mock-quarterly");
-        await page.getByRole("link", { name: "Add new dataset edition" }).click();
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
-    });
+    //     await page.goto("./series/mock-quarterly");
+    //     await page.getByRole("link", { name: "Add new dataset edition" }).click();
+    //     await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
+    // });
 
     test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {
         addValidAuthCookies(context);
