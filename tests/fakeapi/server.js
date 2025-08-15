@@ -14,10 +14,22 @@ const PORT = 29401;
 app.use(express.json())
 
 app.get("/datasets", (req, res) => {
-    const offset = req.query.offset ? req.query.offset : 0
-    const paginatedDatasetList = {}
-    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset))
-    paginatedDatasetList.total_count = datasetList.total_count
+    // check 'id' param for search filter
+    const datasetID = req.query?.id;
+    if (datasetID) {
+        const foundDatasets = datasetList.items.filter((item) => item.id === req.query.id);
+        if (foundDatasets.length === 0) {
+            res.status(404).send("dataset not found");
+            return;
+        }
+        const result = {items: foundDatasets, total_count: foundDatasets.length};
+        res.send(result);
+        return;
+    }
+    const offset = req.query.offset ? req.query.offset : 0;
+    const paginatedDatasetList = {};
+    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset));
+    paginatedDatasetList.total_count = datasetList.total_count;
     res.send(paginatedDatasetList);
 });
 
@@ -64,7 +76,7 @@ app.get("/datasets/:id/editions/:editionID", (req, res) => {
 });
 
 app.get("/datasets/:id/editions/:editionID/versions", (req, res) => {
-    res.send({items: versions.items.filter((item => item.edition === req.params.editionID))})
+    res.send({items: versions.items.filter((item => item.edition === req.params.editionID))});
 });
 
 app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
