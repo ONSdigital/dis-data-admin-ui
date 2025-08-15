@@ -41,8 +41,9 @@ test.describe("Series list page", () => {
         await expect(page.getByRole("link", { name: "Consumer prices" })).toBeVisible();
         await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 26" })).not.toBeVisible();
         
-        await page.getByRole("link", { name: "Go to the last page (Page 5)" }).click();
-        await expect(page.getByText("Page 5 of")).toBeVisible();
+
+        await page.getByRole("link", { name: "Go to the last page (Page 7)" }).click();
+        await expect(page.getByText("Page 7 of")).toBeVisible();
         await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 121" })).toBeVisible();
     });
 
