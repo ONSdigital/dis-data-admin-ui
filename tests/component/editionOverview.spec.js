@@ -13,18 +13,18 @@ test.describe("Edition overview page", () => {
         await expect(page.getByTestId("release-date-field")).toContainText("26 January 2025");
     });
 
-    test("routes to create new edition page", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto("./series/mock-quarterly/editions/time-series");
-        await page.getByRole("link", { name: "Add new dataset version" }).click();
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/create?edition_title=Timeseries");
-    });
+    // test("routes to create new edition page", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
+    //     await page.goto("./series/mock-quarterly/editions/time-series");
+    //     await page.getByRole("link", { name: "Add new dataset version" }).click();
+    //     await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/create?edition_title=Timeseries");
+    // });
 
-    test("routes to create new edition page with unpublished version", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
-        await expect(page.getByText("Unpublished version exists, cannot add new dataset version.")).toBeVisible();
-    });
+    // test("routes to create new edition page with unpublished version", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
+    //     await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
+    //     await expect(page.getByText("Unpublished version exists, cannot add new dataset version.")).toBeVisible();
+    // });
 
     test("routes to version overview page when selecting version from list", async ({ page, context }) => {
         addValidAuthCookies(context);

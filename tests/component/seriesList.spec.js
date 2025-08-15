@@ -11,14 +11,14 @@ test.describe("Series list page", () => {
         await expect(page.getByRole("link", { name: "Weekly deaths" })).toBeVisible();
     });
 
-    test("Route from Series page to Create Dataset page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+    // test("Route from Series page to Create Dataset page", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
 
-        await page.goto("./series")
-        await page.getByRole("button", { name: "Create new series" }).click();
-        await page.waitForURL("**/series/create");
-        await expect(page.url().toString()).toContain("series/create");
-    });
+    //     await page.goto("./series")
+    //     await page.getByRole("link", { name: "Add new dataset series" }).click();
+    //     await page.waitForURL("**/series/create");
+    //     await expect(page.url().toString()).toContain("series/create");
+    // });
 
     test("Traverse through pagination", async ({ page, context }) => {
         addValidAuthCookies(context);

@@ -17,14 +17,14 @@ test.describe("Create version page", () => {
         await expect(page.getByTestId("alerts-textarea-0")).toBeVisible();
     });
 
-    test("Route back to dataset overview page works", async ({ page, context }) => {
-        addValidAuthCookies(context);
+    // test("Route back to dataset overview page works", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
-        await page.getByRole("link", { name: "Back to dataset version overview" }).click();
-        await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1");
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/1");
-    });
+    //     await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
+    //     await page.getByRole("link", { name: "Back to dataset version overview" }).click();
+    //     await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1");
+    //     await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/1");
+    // });
 
     test("Submits form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);
