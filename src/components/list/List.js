@@ -17,10 +17,15 @@ export default function List({ items, type, noResultsText = "No results" }) {
                                 <Link href={`${item.url}`}>{item.title}</Link>
                             </h2>
                             <ul className="ons-document-list__item-metadata ons-u-mb-2xs">
-                                { type == "series"  ? 
+                                { type == "series"  ?
+                                <>
                                     <li className="ons-document-list__item-attribute">
                                         <span className="ons-u-fw-b" data-testid={`list-item-${index}-id`}>Series ID: </span>{item.id}
                                     </li>
+                                    <li className="ons-document-list__item-attribute">
+                                        <span className="ons-u-fw-b" data-testid={`list-item-${index}-typw`}>Type: </span>{item.type}
+                                    </li>
+                                </>
                                     : null
                                 }
                                 { item.state ? 
