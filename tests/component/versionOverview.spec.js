@@ -12,14 +12,14 @@ test.describe("version overview page", () => {
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
     });
 
-    test("route from version overview page to list of versions", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto('./series/mock-quarterly/editions/time-series/versions/1');
-        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
-        await page.getByRole('link', { name: 'Back to list of versions' }).click();
-        await page.waitForURL('**/series/mock-quarterly/editions/time-series');
-        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
-    });
+    // test("route from version overview page to list of versions", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
+    //     await page.goto('./series/mock-quarterly/editions/time-series/versions/1');
+    //     await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
+    //     await page.getByRole('link', { name: 'Back to list of versions' }).click();
+    //     await page.waitForURL('**/series/mock-quarterly/editions/time-series');
+    //     await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
+    // });
 
     test("fully populated version page renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);

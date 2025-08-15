@@ -1,6 +1,6 @@
 export const editions = {
     count: 1,
-    items: [ { edition: 'time-series', state: 'published' } ],
+    items: [ { edition: 'time-series', state: 'published', edition_title: 'Timeseries' } ],
     limit: 20,
     offset: 0,
     total_count: 1

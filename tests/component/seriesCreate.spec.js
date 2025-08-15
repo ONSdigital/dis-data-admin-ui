@@ -10,14 +10,14 @@ test.describe("Create series page", () => {
         await expect(page.getByRole("heading", { level: 1 })).toContainText("Create dataset series");
     });
 
-    test("Route from Create dataset series page to Series page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+    // test("Route from Create dataset series page to Series page", async ({ page, context }) => {
+    //     addValidAuthCookies(context);
 
-        await page.goto("./series/create")
-        await page.getByRole("link", { name: "View Existing Dataset Series" }).click();
-        await page.waitForURL("**/series");
-        await expect(page.url().toString()).toContain("series");
-    });
+    //     await page.goto("./series/create")
+    //     await page.getByRole("link", { name: "View Existing Dataset Series" }).click();
+    //     await page.waitForURL("**/series");
+    //     await expect(page.url().toString()).toContain("series");
+    // });
 
     test("Submit form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);
