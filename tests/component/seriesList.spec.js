@@ -9,6 +9,10 @@ test.describe("Series list page", () => {
         await page.goto("./series")
         await expect(page.getByRole("heading", { level: 1 })).toContainText("Dataset series");
         await expect(page.getByRole("link", { name: "Weekly deaths" })).toBeVisible();
+
+        // check filters are present
+        await expect(page.getByTestId("series-list-search-by-id")).toBeVisible();
+        await expect(page.getByTestId("icon-search")).toBeVisible();
     });
 
     // test("Route from Series page to Create Dataset page", async ({ page, context }) => {
