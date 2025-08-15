@@ -17,12 +17,12 @@ app.get("/datasets", (req, res) => {
     // check 'id' param for search filter
     const datasetID = req.query?.id;
     if (datasetID) {
-        const foundDatasets = datasetList.items.find((item) => item.id === req.query.id);
-        if (!foundDatasets) {
+        const foundDatasets = datasetList.items.filter((item) => item.id === req.query.id);
+        if (foundDatasets.length === 0) {
             res.status(404).send("dataset not found");
             return;
         }
-        const result = {items: [foundDatasets], total_count: foundDatasets.length};
+        const result = {items: foundDatasets, total_count: foundDatasets.length};
         res.send(result);
         return;
     }
