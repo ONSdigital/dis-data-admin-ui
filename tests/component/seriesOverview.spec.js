@@ -8,7 +8,7 @@ test.describe("Series overview page", () => {
 
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("page-heading-header")).toContainText("Series");
-        await expect(page.getByRole("link", { name: "time-series" })).toBeVisible();
+        await expect(page.getByRole("link", { name: "Timeseries" })).toBeVisible();
         await expect(page.getByTestId("id-field")).toContainText("mock-quarterly");
         await expect(page.getByTestId("type-field")).toContainText("static");
         await expect(page.getByTestId("title-field")).toContainText("Mock Dataset");
