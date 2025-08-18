@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
 
-import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
 import Panel from "@/components/panel/Panel";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapListItems } from './mapper';
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
@@ -53,7 +53,14 @@ export default async function Dataset({ params, searchParams }) {
         <>
             { !datasetError ? 
                 <>
-                    <Hero hyperLink={{ text: "Add new dataset edition", url: createURL }} title={dataset.title} wide />           
+                    <PageHeading 
+                        heading="Series"
+                        title={dataset.title} 
+                        linkCreate={createURL} 
+                        createMessage="Create new edition" 
+                        linkBack="/series" 
+                        backToMessage="Back to dataset list"
+                    />        
                     <div className="ons-grid ons-u-mt-xl">
                         <CreateEditSuccess query={query} message="Dataset series saved" />
                         <div className="ons-grid__col ons-col-6@m">

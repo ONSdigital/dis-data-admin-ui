@@ -7,11 +7,7 @@ const NAVIGATION_OPTIONS = [
         url: "/data-admin"
     },
     {
-        text: "Dashboard",
-        url: "/data-admin/dashboard"
-    },
-    {
-        text: "Dataset Series",
+        text: "Dataset catalogue",
         url: "/data-admin/series"
     },
 ];

@@ -704,5 +704,6 @@ export const datasetList = {
             "id": "foo-bar"
           }
     ],
+    "count": 20,
     "total_count": 125
 }

@@ -6,7 +6,7 @@ import getAppConfig from "@/utils/config/config";
 import { getUserName } from "@/utils/auth/auth";
 
 export const metadata = {
-    title: "Dataset Catalogue Manager",
+    title: "Dataset catalogue manager",
     description: "Discoverable datasets admin UI",
 };
 

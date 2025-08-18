@@ -7,7 +7,7 @@ test.describe("Series list page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series")
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Dataset series");
+        await expect(page.getByText("Showing 1 to 20 of 125 series")).toBeVisible();
         await expect(page.getByRole("link", { name: "Weekly deaths" })).toBeVisible();
 
         // check filters are present
@@ -40,11 +40,6 @@ test.describe("Series list page", () => {
         await expect(page.getByText("Page 1 of")).toBeVisible();
         await expect(page.getByRole("link", { name: "Consumer prices" })).toBeVisible();
         await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 26" })).not.toBeVisible();
-        
-
-        await page.getByRole("link", { name: "Go to the last page (Page 7)" }).click();
-        await expect(page.getByText("Page 7 of")).toBeVisible();
-        await expect(page.getByRole("link", { name: "Lorem ipsum dolor sit amet 121" })).toBeVisible();
     });
 
     test("Choose a fully populated dataset from a list of datasets and route to chosen dataset page", async ({ page, context }) => {

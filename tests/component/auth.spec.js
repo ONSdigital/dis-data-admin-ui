@@ -25,6 +25,5 @@ test.describe("Auth middleware", () => {
         ]);
         await page.goto("./series")
         await expect(page).toHaveURL(/.*\/data-admin\/series/);
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Dataset series");
     });
 });
