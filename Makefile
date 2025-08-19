@@ -7,6 +7,7 @@ NPM = $(NVM_EXEC) npm
 BUILD_TIME = $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 GIT_COMMIT = $(shell git rev-parse HEAD)
 VERSION ?= $(shell git tag --points-at HEAD | grep ^v | head -n 1)
+PLAYWRIGHT_WORKERS ?= 1
 
 .PHONY: audit
 audit: ## Runs checks for security vulnerabilities on dependencies (including transient ones)
@@ -37,7 +38,7 @@ test-component: ## Runs component test suite
 	$(MAKE) test-server &
 	sleep 5
 	ps -eo pid,args | grep '[0-9] node server.js'
-	$(MAKE) node-modules && npx playwright install && npx playwright install-deps && $(NPM) run test:component
+	$(MAKE) node-modules && npx playwright install && npx playwright install-deps && $(NPM) run test:component -- --workers=$(PLAYWRIGHT_WORKERS)
 	$(MAKE) kill-test-server
 
 .PHONY: kill-test-server
