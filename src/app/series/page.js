@@ -19,7 +19,7 @@ export default async function Series({ searchParams }) {
     const data = await httpGet(reqCfg, requestURL);
 
     const listItems = [];
-    const [ datasetFetchError, noSearchResults ] = setErrors(data, pageParams);
+    const [ datasetFetchError, noSearchResults ] = checkErrors(data, pageParams);
     if (!datasetFetchError && !noSearchResults) {
         listItems.push(...mapListItems(data.items));
     }
@@ -105,7 +105,7 @@ export default async function Series({ searchParams }) {
 }
 
 // return errors based on request response
-const setErrors = (data, params) => {
+const checkErrors = (data, params) => {
     if (data.ok != null && !data.ok) {
         // if we get a 404 and there's a dataset id param 
         // assume the search has returned zero results
