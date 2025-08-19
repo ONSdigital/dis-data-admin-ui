@@ -4,7 +4,7 @@ import { Button } from "author-design-system-react";
 import { useRouter } from "next/navigation";
 
 export default function LinkButton(props){
-    const router = useRouter()
+    const router = useRouter();
     
     return (
         <Button
@@ -13,5 +13,5 @@ export default function LinkButton(props){
             text = {props.text}
             onClick={() => router.push(props.link)}            
         />
-    )
+    );
 };

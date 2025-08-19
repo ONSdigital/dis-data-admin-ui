@@ -24,7 +24,7 @@ export default async function Series({ searchParams }) {
         listItems.push(...mapListItems(data.items));
     }
 
-    const totalCount = data.total_count
+    const totalCount = data.total_count;
     const totalNumberOfPages = Math.ceil(totalCount/pageParams.limit);
     const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
 

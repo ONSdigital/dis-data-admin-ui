@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Button } from "author-design-system-react";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export default function PageHeading(props){
-    const router = useRouter()
+    const router = useRouter();
 
     return (
         <>
