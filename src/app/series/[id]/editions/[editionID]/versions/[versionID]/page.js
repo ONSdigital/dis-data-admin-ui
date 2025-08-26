@@ -5,7 +5,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
 
 import Hero from "@/components/hero/Hero";
-import Panel from "@/components/panel/Panel";
+import { Panel } from "@/components/design-system/DesignSystem"
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 
 export default async function Version({ params, searchParams }) {

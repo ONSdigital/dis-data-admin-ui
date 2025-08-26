@@ -4,7 +4,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { updateDatasetEdition } from "@/app/actions/datasetEdition";
 
 import Hero from "@/components/hero/Hero";
-import Panel from "@/components/panel/Panel";
+import { Panel } from "@/components/design-system/DesignSystem"
 import EditionForm from "@/components/form/edition/EditionForm";
 
 

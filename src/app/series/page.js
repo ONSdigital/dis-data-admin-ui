@@ -5,8 +5,7 @@ import List from "@/components/list/List";
 import Pagination from "@/components/pagination/Pagination";
 import SeriesListForm from "@/components/form/series-list/SeriesListForm";
 import LinkButton from "@/components/link-button/LinkButton";
-import Panel from "@/components/panel/Panel";
-import Select from "@/components/select/Select";
+import { Panel, Select } from "@/components/design-system/DesignSystem"
 import { mapListItems } from "./mapper";
 
 export default async function Series({ searchParams }) {

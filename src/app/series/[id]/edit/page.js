@@ -4,7 +4,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { updateDatasetSeries } from "@/app/actions/datasetSeries";
 
 import Hero from "@/components/hero/Hero";
-import Panel from "@/components/panel/Panel";
+import { Panel } from "@/components/design-system/DesignSystem"
 import SeriesForm from "@/components/form/series/SeriesForm";
 
 export default async function createPage({params}) {

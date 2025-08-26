@@ -5,7 +5,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import Hero from "@/components/hero/Hero";
 import List from "@/components/list/List";
-import Panel from "@/components/panel/Panel";
+import { Panel } from "@/components/design-system/DesignSystem"
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 
 import { mapListItems } from "./mapper";
