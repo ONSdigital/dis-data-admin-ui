@@ -1,6 +1,6 @@
 "use client";
 
-import { Panel } from "@/components/design-system/DesignSystem"
+import { Panel } from "@/components/design-system/DesignSystem";
 
 export default function CreateEditSuccess({query, message}) {
     if (query?.display_success !== "true") {

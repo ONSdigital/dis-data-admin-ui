@@ -5,7 +5,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
 
 import List from "@/components/list/List";
-import { Panel } from "@/components/design-system/DesignSystem"
+import { Panel, Summary } from "@/components/design-system/DesignSystem";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 import PageHeading from "@/components/page-heading/PageHeading";
 

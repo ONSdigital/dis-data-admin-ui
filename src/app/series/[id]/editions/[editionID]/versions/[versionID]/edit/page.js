@@ -5,7 +5,7 @@ import { updateDatasetVersion } from "@/app/actions/datasetVersion";
 
 import Hero from "@/components/hero/Hero";
 import VersionForm from "@/components/form/version/VersionForm";
-import { Panel } from "@/components/design-system/DesignSystem"
+import { Panel } from "@/components/design-system/DesignSystem";
 
 export default async function EditVersion({ params }) {
     const { id, editionID, versionID } = await params;

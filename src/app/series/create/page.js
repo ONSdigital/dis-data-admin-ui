@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import Hero from "@/components/hero/Hero";
-import { Panel } from "@/components/design-system/DesignSystem"
+import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
 import { createDatasetSeries } from "@/app/actions/datasetSeries";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";

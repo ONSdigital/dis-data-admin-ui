@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
 
-import { Panel } from "@/components/design-system/DesignSystem"
+import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from "@/components/form/version/VersionFields";
 
 export default function EditionForm({ datasetID, edition, isNewEdition, action }) {
