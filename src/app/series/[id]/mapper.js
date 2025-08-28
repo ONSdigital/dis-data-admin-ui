@@ -1,5 +1,5 @@
-
 import slugify from "slugify";
+
 import { mapStateToUserFriendlyString } from "./editions/[editionID]/mapper";
 import { formatDate } from "@/utils/datetime/datetime";
 
@@ -15,6 +15,7 @@ const mapListItems = (items, datasetID) => {
     });
 };
 
+// map content to design system <Summary> component
 const mapContentItems = (data, editBaseURL, topicTitles) => {
     const rows = [];
 
@@ -24,14 +25,14 @@ const mapContentItems = (data, editBaseURL, topicTitles) => {
 
     const mapItemValue = (value, multiValue) => {
         if (multiValue) {
-            return value.map((val, index) => {return {text: val}})
+            return value.map(val => {return {text: val};});
         }
         return [{
             text: value || "No value found"
-        }]
-    }
+        }];
+    };
     
-    const mapRow = (itemName, value, multiValue, hasAction, rowsArray) => {
+    const mapRow = (itemName, value, multiValue, hasAction) => {
         const item = {
             id: `row-${slugifyLowerCase(itemName)}`,
             rowTitle: itemName,
@@ -41,7 +42,7 @@ const mapContentItems = (data, editBaseURL, topicTitles) => {
                     valueList: mapItemValue(value, multiValue),
                 }
             ]
-        }
+        };
 
         if (hasAction) {
             item.rowItems[0].actions = [
@@ -52,7 +53,7 @@ const mapContentItems = (data, editBaseURL, topicTitles) => {
                     visuallyHiddenText: `Edit ${itemName}`,
                     url: `${editBaseURL}#dataset-series-${slugifyLowerCase(itemName)}`
                 }
-            ]
+            ];
         }
         rows.push(item);
     };
@@ -63,7 +64,7 @@ const mapContentItems = (data, editBaseURL, topicTitles) => {
     mapRow("Description", data.description, false, true);
 
     if (topicTitles && topicTitles.length > 0) {
-        mapRow("Topics", topicTitles, true, true)
+        mapRow("Topics", topicTitles, true, true);
     }
 
     mapRow("Last updated", formatDate(data.last_updated), false, false);

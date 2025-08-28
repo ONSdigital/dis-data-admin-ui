@@ -1,8 +1,6 @@
 import { cookies } from "next/headers";
-import Link from 'next/link';
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
-import { formatDate } from "@/utils/datetime/datetime";
 
 import List from "@/components/list/List";
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
@@ -49,7 +47,7 @@ export default async function Dataset({ params, searchParams }) {
     const editURL = `/data-admin/series/${id}/edit`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const contentItems = mapContentItems(dataset, editURL, topicTitles)
+    const contentItems = mapContentItems(dataset, editURL, topicTitles);
     return (
         <>
             { !datasetError ? 
