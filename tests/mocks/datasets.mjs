@@ -40,7 +40,7 @@ export const datasetList = {
                 "name": "ONS"
             },
             "qmi": {
-                "href": "https://www.ons.gov.uk"
+                "href": "https://www.ons.gov.uk/qmi"
             },
             "type": "static",
             "next" : {
