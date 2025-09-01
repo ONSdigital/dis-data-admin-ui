@@ -26,15 +26,15 @@ export default async function Version({ params, searchParams }) {
 
     return (
         <>
-        <PageHeading 
-            subtitle="Version"
-            title={`Version: ${versionID}`} 
-            buttonURL={`${currentURL}/edit`}
-            buttonText="Create new version" 
-            linkURL="/series" 
-            linkText="Back to edition overview"
-            breadcrumbs={breadcrumbs}
-        />  
+            <PageHeading 
+                subtitle="Version"
+                title={`Version: ${versionID}`} 
+                buttonURL={`${currentURL}/edit`}
+                buttonText="Create new version" 
+                linkURL="/series" 
+                linkText="Back to edition overview"
+                breadcrumbs={breadcrumbs}
+            />  
             { !metadataError ?
                 <>
                     <div className="ons-grid ons-u-mt-xl">
