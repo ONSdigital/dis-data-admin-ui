@@ -71,5 +71,23 @@ describe("mapContentItems", () => {
             url: "test/foo/edit#dataset-series-qmi"
         });
     });
+
+    test("returns expected object of mapped content items when no topics are passed in", () => {
+        const mapped = mapContentItems(datasetList.items[2], "test/foo/edit", []);
+        const mappedItems = mapped[0].groups[0].rows;
+        expect(mappedItems).toHaveLength(9);
+        mappedItems.forEach(item => {
+            expect(item.rowTitle).not.toBe("Topics");
+        });
+    });
+
+    test("returns expected object of mapped content items when no keywords are present", () => {
+        const mapped = mapContentItems(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mappedItems = mapped[0].groups[0].rows;
+        expect(mappedItems).toHaveLength(9);
+        mappedItems.forEach(item => {
+            expect(item.rowTitle).not.toBe("Keywords");
+        });
+    });
 });
 
