@@ -51,23 +51,23 @@ export default async function Dataset({ params, searchParams }) {
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const contentItems = mapContentItems(dataset, editURL, topicTitles);
     const currentURL = await pathname();
-    const breadcrumbs = generateBreadcrumb(currentURL)
+    const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
 
     return (
         <>
             { !datasetError ? 
                 <>
+                    <CreateEditSuccess query={query} message="Dataset series saved" />
                     <PageHeading 
-                        heading="Series"
+                        subtitle="Series"
                         title={dataset.title} 
-                        linkCreate={createURL} 
-                        createMessage="Create new edition" 
-                        linkBack="/series" 
-                        backToMessage="Back to dataset list"
+                        buttonURL={createURL} 
+                        buttonText="Create new edition" 
+                        linkURL="/series" 
+                        linkText="Back to dataset list"
                         breadcrumbs={breadcrumbs}
                     />        
                     <div className="ons-grid ons-u-mt-xl">
-                        <CreateEditSuccess query={query} message="Dataset series saved" />
                         <div className="ons-grid__col ons-col-6@m">
                             { renderEditionsList() }
                         </div>
