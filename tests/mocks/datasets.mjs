@@ -8,7 +8,6 @@ export const datasetList = {
             "next_release": "TBC",
             "release_frequency": "Quarterly",
             "state": "published",
-            "title": "Mock Dataset",
             "unit_of_measure": "Percentage",
             "topics": ["id1", "id2"],
             "last_updated": "2000-01-01T07:00:00.000Z",
