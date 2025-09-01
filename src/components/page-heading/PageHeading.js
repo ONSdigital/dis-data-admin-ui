@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "author-design-system-react";
+import { Button, Breadcrumb } from "author-design-system-react";
 import { useRouter } from "next/navigation";
 
 export default function PageHeading(props){
@@ -9,6 +9,7 @@ export default function PageHeading(props){
 
     return (
         <>
+            <Breadcrumb itemsList={props.breadcrumbs}/>
             <h2 data-testid="page-heading-header" className="ons-u-fs-m ons-u-mb-xxs" style={{color: "var(--ons-color-branded-text)"}}>{props.heading}</h2>
             <h1 data-testid="page-heading-title" className="ons-u-fs-xl ons-u-mb-l">{props.title}</h1>
                 <Button
