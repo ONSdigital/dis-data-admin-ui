@@ -8,7 +8,7 @@ export default function CreateEditSuccess({query, message}) {
     }
 
     return (
-        <div className="ons-grid__col ons-col-12@m ons-u-mb-xl">
+        <div className="ons-u-mb-l">
             <Panel variant="success" dataTestId="create-edit-success-panel">{message}</Panel>
         </div>
     );
