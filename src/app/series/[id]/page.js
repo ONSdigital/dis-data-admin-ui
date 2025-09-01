@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
+import { pathname } from "next-extra/pathname";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import List from "@/components/list/List";
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
@@ -48,6 +50,9 @@ export default async function Dataset({ params, searchParams }) {
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const contentItems = mapContentItems(dataset, editURL, topicTitles);
+    const currentURL = await pathname();
+    const breadcrumbs = generateBreadcrumb(currentURL)
+
     return (
         <>
             { !datasetError ? 
@@ -59,6 +64,7 @@ export default async function Dataset({ params, searchParams }) {
                         createMessage="Create new edition" 
                         linkBack="/series" 
                         backToMessage="Back to dataset list"
+                        breadcrumbs={breadcrumbs}
                     />        
                     <div className="ons-grid ons-u-mt-xl">
                         <CreateEditSuccess query={query} message="Dataset series saved" />
