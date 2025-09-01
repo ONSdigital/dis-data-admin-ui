@@ -1,12 +1,14 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { pathname } from "next-extra/pathname";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
+import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import Hero from "@/components/hero/Hero";
 import { Panel } from "@/components/design-system/DesignSystem";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+import PageHeading from "@/components/page-heading/PageHeading";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
@@ -19,9 +21,20 @@ export default async function Version({ params, searchParams }) {
         metadataError = true;
     }
 
+    const currentURL = await pathname();
+    const breadcrumbs = generateBreadcrumb(currentURL, metadata.title, metadata.edition_title);
+
     return (
         <>
-        <Hero hyperLink={{ text: `Back to list of versions`, url: "../"}} title={`${metadata.edition_title}`} wide/>
+        <PageHeading 
+            subtitle="Version"
+            title={`Version: ${versionID}`} 
+            buttonURL={`${currentURL}/edit`}
+            buttonText="Create new version" 
+            linkURL="/series" 
+            linkText="Back to edition overview"
+            breadcrumbs={breadcrumbs}
+        />  
             { !metadataError ?
                 <>
                     <div className="ons-grid ons-u-mt-xl">
