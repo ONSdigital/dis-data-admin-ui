@@ -62,10 +62,10 @@ export default async function Dataset({ params, searchParams }) {
                     />        
                     <div className="ons-grid ons-u-mt-xl">
                         <CreateEditSuccess query={query} message="Dataset series saved" />
-                        <div className="ons-grid__col ons-col-6@m">
+                        <div className="ons-grid__col ons-col-4@m">
                             { renderEditionsList() }
                         </div>
-                        <div className="ons-grid__col ons-col-6@m ">
+                        <div className="ons-col-7@m ons-push-1@m">
                             <Summary summaries={contentItems} />
                         </div>
                     </div>
