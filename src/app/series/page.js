@@ -89,7 +89,7 @@ export default async function Series({ searchParams }) {
             {!datasetFetchError ?
                 <>
                     <div className="ons-grid ons-u-mt-l ons-u-mb-l">
-                        <div className="ons-grid__col ons-col-4@m ons-grid--gutterless">
+                        <div className="ons-grid__col ons-col-4@m ons-u-pr-s">
                             <SeriesListForm datasetID={pageParams.id} />
                         </div>
                         <div className="ons-grid__col ons-col-8@m">
