@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
 import { createDatasetSeries } from "@/app/actions/datasetSeries";
@@ -23,7 +23,9 @@ export default async function createPage() {
         const listOfAllTopics = response.items;
         return (
             <>
-                <Hero hyperLink={{ text: "View existing dataset series", url: "/data-admin/series"}} title="Create dataset series" wide/>
+                <PageHeading 
+                    title="Create a new dataset series"
+                /> 
                 <SeriesForm 
                     listOfAllTopics={listOfAllTopics} 
                     action={createDatasetSeries}

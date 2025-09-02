@@ -7,17 +7,16 @@ test.describe("Create series page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/create")
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create dataset series");
+        await expect(page.getByTestId("page-heading-title")).toContainText("Create a new dataset series");
+        await expect(page.getByTestId("dataset-series-id")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-title")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-topics-select")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-description")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-qmi")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-keywords")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-contact-name")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-contact-email")).toBeVisible();
     });
-
-    // test("Route from Create dataset series page to Series page", async ({ page, context }) => {
-    //     addValidAuthCookies(context);
-
-    //     await page.goto("./series/create")
-    //     await page.getByRole("link", { name: "View Existing Dataset Series" }).click();
-    //     await page.waitForURL("**/series");
-    //     await expect(page.url().toString()).toContain("series");
-    // });
 
     test("Submit form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);
