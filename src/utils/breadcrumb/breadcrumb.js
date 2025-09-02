@@ -11,7 +11,7 @@ const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
     const breadcrumbs = [ firstBreadcrumb ]
 
     // add dataset series
-    if (urlSplit.length >= 3) {
+    if (urlSplit.length >= 4) {
         breadcrumbs.push({
             url: `${baseURL}/${urlSplit[2]}`,
             text: datasetTitle || urlSplit[2],
@@ -20,7 +20,7 @@ const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
     }
     
     // add dataset edition
-    if (urlSplit.length >= 5) {
+    if (urlSplit.length >= 6) {
         breadcrumbs.push({
             url: `${baseURL}/${urlSplit[2]}/editions/${urlSplit[4]}`,
             text: editionTitle || urlSplit[4],
@@ -29,7 +29,7 @@ const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
     }
 
     // add dataset version
-    if (urlSplit.length >= 7) {
+    if (urlSplit.length >= 8) {
         breadcrumbs.push({
             url: `${baseURL}/${urlSplit[2]}/editions/${urlSplit[4]}/versions/${urlSplit[6]}`,
             text: urlSplit[6],
