@@ -64,7 +64,7 @@ export default async function Dataset({ params, searchParams }) {
                         buttonURL={createURL} 
                         buttonText="Create new edition" 
                         linkURL="/series" 
-                        linkText="Back to dataset list"
+                        linkText="Back to dataset series list"
                         breadcrumbs={breadcrumbs}
                     />        
                     <div className="ons-grid ons-u-mt-xl">

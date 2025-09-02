@@ -7,8 +7,17 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
-        await expect(page.getByTestId("page-heading-header")).toContainText("Series");
+
+        // page heading
+        await expect(page.getByTestId("page-heading-title")).toContainText("Mock Dataset");
+        await expect(page.getByTestId("page-heading-subtitle")).toContainText("Series");
+        await expect(page.getByTestId("page-heading-create-button")).toContainText("Create new edition");
+        await expect(page.getByTestId("page-heading-back-link")).toContainText("Back to dataset series list");
+
+        // editions list
         await expect(page.getByRole("link", { name: "Timeseries" })).toBeVisible();
+
+        // body content
         await expect(page.locator("#series-id")).toContainText("mock-quarterly");
         await expect(page.locator("#type")).toContainText("static");
         await expect(page.locator("#title")).toContainText("Mock Dataset");
@@ -26,13 +35,24 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#qmi")).toContainText("https://www.ons.gov.uk");
     });
 
-    // test("routes to create new edition page", async ({ page, context }) => {
-    //     addValidAuthCookies(context);
+    test("page heading create button routes to create new edition page", async ({ page, context }) => {
+        addValidAuthCookies(context);
         
-    //     await page.goto("./series/mock-quarterly");
-    //     await page.getByRole("link", { name: "Add new dataset edition" }).click();
-    //     await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
-    // });
+        await page.goto("./series/mock-quarterly");
+        await page.getByTestId("page-heading-create-button").click();
+        await page.waitForURL("**/series/mock-quarterly/editions/create");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
+    });
+
+    test("page heading 'back to' link routes to series list page", async ({ page, context }) => {
+        addValidAuthCookies(context);
+        
+        await page.goto("./series/mock-quarterly");
+        await page.getByTestId("page-heading-back-link").click();
+        await page.waitForURL("**/series");
+        await expect(page.url().toString()).toContain("series");
+    });
+
 
     test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {
         addValidAuthCookies(context);
