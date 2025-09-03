@@ -11,7 +11,7 @@ export default function PageHeading(props){
         if (props.breadcrumbs) {
             return (
                 <Breadcrumb itemsList={props.breadcrumbs} classes="ons-u-mb-xs"/>
-            )
+            );
         }
     };
 
@@ -19,7 +19,7 @@ export default function PageHeading(props){
         if (props.subtitle) {
             return (
                 <h2 data-testid="page-heading-subtitle" className="ons-u-fs-m ons-u-mb-xxs" style={{color: "var(--ons-color-branded-text)"}}>{props.subtitle}</h2>
-            )
+            );
         }
     };
 
@@ -32,7 +32,7 @@ export default function PageHeading(props){
                     onClick={() => router.push(props.buttonURL)}      
                     variants={props.disableButton ? "disabled" : "primary"}         
                 /> 
-            )
+            );
         }
     };
 
@@ -40,15 +40,15 @@ export default function PageHeading(props){
         if (props.showPanel && props.panelText) {
             return (
                 <Panel variant="info" classes="ons-u-mb-l" dataTestId="page-heading-panel"><p>{props.panelText}</p></Panel>
-            )
+            );
         }
-    }
+    };
 
     const renderLink = () => {
         if (props.linkText && props.linkURL) {
             return (
                 <Link data-testid="page-heading-back-link" href={props.linkURL} className="ons-u-fs-s ons-u-dib ons-u-mt-s ons-u-ml-s">{props.linkText}</Link>
-            )
+            );
         }
     };
 

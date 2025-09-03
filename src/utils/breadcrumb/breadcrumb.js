@@ -1,14 +1,14 @@
 const baseURL = "/data-admin/series";
 
-const firstBreadcrumb = {
+const baseBreadcrumb = {
     url: baseURL,
     text: "Dataset catalogue",
     dataTestId: "breadcrumb-catalogue"
 };
 
 const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
-    const urlSplit = currentURL.split("/")
-    const breadcrumbs = [ firstBreadcrumb ]
+    const urlSplit = currentURL.split("/");
+    const breadcrumbs = [ baseBreadcrumb ];
 
     // add dataset series
     if (urlSplit.length >= 4) {
@@ -37,6 +37,6 @@ const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
         });
     }
     return breadcrumbs;
-}
+};
 
-export { generateBreadcrumb }
+export { generateBreadcrumb };

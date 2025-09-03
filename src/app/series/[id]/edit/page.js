@@ -48,7 +48,6 @@ export default async function createPage({params}) {
 
     const dataset = datasetResp?.next;
     const listOfAllTopics = topicsResp?.items;
-    const datasetTitle = dataset?.title || id;
     return (
         <>
             <PageHeading 
