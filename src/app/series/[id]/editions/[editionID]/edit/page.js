@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { updateDatasetEdition } from "@/app/actions/datasetEdition";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import EditionForm from "@/components/form/edition/EditionForm";
 
@@ -32,7 +32,9 @@ export default async function EditEdition({ params }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     return (
         <>
-            <Hero hyperLink={{ text: "Back to edition overview", url: "./" }} title={ "Edit edition: " + edition.edition_title } wide />
+            <PageHeading 
+                title={"Edit edition: " + edition.edition_title}
+            /> 
             { !editionError ?  
                 <> 
                     <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } action={ updateDatasetEdition }/>

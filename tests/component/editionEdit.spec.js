@@ -7,7 +7,7 @@ test.describe("Edit edition page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/edit");
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Edit edition: Timeseries");
+        await expect(page.getByTestId("page-heading-title")).toContainText("Edit edition: Timeseries");
 
         await expect(page.getByTestId("edition-id")).toBeVisible();
         await expect(page.getByTestId("edition-title")).toBeVisible();
