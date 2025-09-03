@@ -10,7 +10,7 @@ export default function List({ items, type, noResultsText = "No results" }) {
     return (
         <ul className="ons-document-list">
             {items.map((item, index) => (
-                <li key={item.id} className="ons-document-list__item">
+                <li key={item.id} className="ons-document-list__item ons-u-pb-s">
                     <div className="ons-document-list__item-content">
                         <div className="ons-document-list__item-header">
                             <h2 className="ons-document-list__item-title ons-u-fs-m ons-u-mt-no ons-u-mb-2xs" data-testid={`list-item-${index}-link`}>
