@@ -53,6 +53,13 @@ test.describe("Edition overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly");
     });
 
+    test("page heading displays panel stating 'cannot create new dataset' because of unpublished dataset version", async ({ page, context }) => {
+        addValidAuthCookies(context);
+        
+        await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
+        await expect(page.getByTestId("page-heading-panel")).toContainText("An unpublished version exists so cannot add new dataset version.");
+    });
+
     test("routes to version overview page when selecting version from list", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series");
