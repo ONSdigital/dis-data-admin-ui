@@ -11,56 +11,87 @@ jest.mock("next/navigation", () => ({
     }), 
 }));
 
-describe("PageHeading", () => {
-    test("PageHeading renders props correctly", () => {
-        const pageHeadingProps =  {
-            heading: "heading test",
-            title: "title test",
-            linkCreate: "/create",
-            createMessage: "create message test",
-            linkBack: "/back",
-            backToMessage: "back to message test"
-        }
+describe("PageHeading renders correctly", () => {
+    let pageHeadingProps =  {
+        title: "title test",
+    }
 
-        render(<PageHeading 
-            heading={pageHeadingProps.heading} 
-            title={pageHeadingProps.title}
-            linkCreate={pageHeadingProps.linkCreate}
-            createMessage={pageHeadingProps.createMessage} 
-            linkBack={pageHeadingProps.linkBack} 
-            backToMessage={pageHeadingProps.backToMessage}
-        />);
+    test("when only a title prop is passed in", () => {
+        render(<PageHeading {...pageHeadingProps} />);
 
-        expect(screen.getByText("heading test")).toBeInTheDocument();
         expect(screen.getByText("title test")).toBeInTheDocument();
-        expect(screen.getByText("create message test")).toBeInTheDocument();
-        expect(screen.getByText("back to message test")).toBeInTheDocument();
-    })
+        expect(screen.queryByTestId("page-heading-subtitle")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-create-button")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-link")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+    });
 
+    test("when only a title and subtitle prop is passed in", () => {
+        pageHeadingProps.subtitle = "subtitle test";
+        render(<PageHeading {...pageHeadingProps} />);
+
+        expect(screen.getByText("title test")).toBeInTheDocument();
+        expect(screen.getByText("subtitle test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-create-button")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-link")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+    });
+
+    test("when a title, subtitle, button and link prop is passed in", () => {
+        pageHeadingProps = {
+            ...pageHeadingProps,
+            buttonURL: "/button/url/test",
+            buttonText: "button test",
+            linkURL: "/link/url/test",
+            linkText: "link test"
+        };
+        render(<PageHeading {...pageHeadingProps} />);
+
+        expect(screen.getByText("title test")).toBeInTheDocument();
+        expect(screen.getByText("subtitle test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-create-button")).toBeInTheDocument();
+        expect(screen.getByText("button test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-link")).toBeInTheDocument();
+        expect(screen.getByText("link test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+    });
+
+    test("when a title, subtitle, button, link and panel prop is passed in", () => {
+        pageHeadingProps = {
+            ...pageHeadingProps,
+            showPanel: true,
+            panelText: "panel test"
+        };
+        render(<PageHeading {...pageHeadingProps} />);
+
+        expect(screen.getByText("title test")).toBeInTheDocument();
+        expect(screen.getByText("subtitle test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-create-button")).toBeInTheDocument();
+        expect(screen.getByText("button test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-link")).toBeInTheDocument();
+        expect(screen.getByText("link test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-panel")).toBeInTheDocument();
+        expect(screen.getByText("panel test")).toBeInTheDocument();
+    });
+});
+
+describe("PageHeading", () => {
     it("onClick handlers gets called", () => {     
         const pageHeadingProps =  {
-            heading: "heading test",
-            title: "title test",
-            linkCreate: "/create",
-            createMessage: "create message test",
-            linkBack: "/back",
-            backToMessage: "back to message test"
+            title: 'title test',
+            subtitle: 'subtitle test',
+            buttonURL: '/button/url/test',
+            buttonText: 'button test',
+            linkURL: '/link/url/test',
+            linkText: 'link test'
         }
 
-        render(<PageHeading 
-            heading={pageHeadingProps.heading} 
-            title={pageHeadingProps.title}
-            linkCreate={pageHeadingProps.linkCreate}
-            createMessage={pageHeadingProps.createMessage} 
-            linkBack={pageHeadingProps.linkBack} 
-            backToMessage={pageHeadingProps.backToMessage}
-        />);
+        render(<PageHeading {...pageHeadingProps} />);
 
         const button = screen.getByTestId("page-heading-create-button");
 
         fireEvent.click(button)
         expect(useRouter().push.mock.calls).toHaveLength(1);
-        expect(useRouter().push.mock.calls[0][0]).toBe("/create")
+        expect(useRouter().push.mock.calls[0][0]).toBe("/button/url/test")
     });
 });
-

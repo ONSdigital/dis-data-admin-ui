@@ -47,7 +47,7 @@ export default function PageHeading(props){
     const renderLink = () => {
         if (props.linkText && props.linkURL) {
             return (
-                <Link data-testid="page-heading-back-link" href={props.linkURL} className="ons-u-fs-s ons-u-dib ons-u-mt-s ons-u-ml-s">{props.linkText}</Link>
+                <Link data-testid="page-heading-link" href={props.linkURL} className="ons-u-fs-s ons-u-dib ons-u-mt-s ons-u-ml-s">{props.linkText}</Link>
             );
         }
     };
