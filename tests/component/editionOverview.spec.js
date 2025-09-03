@@ -22,7 +22,7 @@ test.describe("Edition overview page", () => {
         await expect(page.getByTestId("release-date-field")).toContainText("26 January 2025");
     });
 
-    test("page heading create button routes to create new edition page", async ({ page, context }) => {
+    test("page heading create button routes to create new version page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");

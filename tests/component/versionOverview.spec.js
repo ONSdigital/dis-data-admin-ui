@@ -21,7 +21,7 @@ test.describe("version overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/create?edition_title=This%20is%20an%20edition%20title%20for%20version%201");
     });
 
-    test("page heading 'back to' link routes to series list page", async ({ page, context }) => {
+    test("page heading 'back to' link routes to edition overview page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
