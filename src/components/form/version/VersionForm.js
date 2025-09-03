@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { HyperLinksList } from "author-design-system-react";
 
-import Panel from "@/components/panel/Panel";
+import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from './VersionFields';
 
 export default function VersionForm({ datasetID, editionID, version, action }) {

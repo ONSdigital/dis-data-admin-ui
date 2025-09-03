@@ -6,13 +6,12 @@ test.describe("Edit series page", () => {
     test("Route from dataset series id page to edit page", async ({ page, context }) => {
         addValidAuthCookies(context);
 
-        await page.goto("./series")
-        await page.getByRole("link", { name: "Mock Dataset", exact: true}).click();
-        await page.waitForURL("**/series/mock-quarterly");
-        await page.getByRole("link", { name: "Edit Metadata" }).click();
-        await page.waitForURL("**/series/mock-quarterly/edit");
+        await page.goto("./series/mock-quarterly")
+        //await page.getByRole("link", { name: "Edit" }).click();
+        await page.getByTestId("edit-title").click();
+        await page.waitForURL("**/series/mock-quarterly/edit#dataset-series-title");
 
-        await expect(page.url().toString()).toContain("series/mock-quarterly/edit");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/edit#dataset-series-title");
     });
 
     test("Submit form successfully", async ({ page, context }) => {

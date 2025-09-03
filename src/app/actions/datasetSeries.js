@@ -28,7 +28,7 @@ const getFormData = (formData) => {
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
         id : formData.get("dataset-series-id"),
-        topics: JSON.parse(formData.get("dataset-series-topics")),
+        topics: JSON.parse(formData.get("dataset-series-topics-input")),
         description: formData.get("dataset-series-description"),
         contacts: JSON.parse(formData.get("dataset-series-contacts")),
         qmi: { 

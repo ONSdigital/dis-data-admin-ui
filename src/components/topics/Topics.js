@@ -103,13 +103,13 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
     return (
         <>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? {id:'dataset-series-topics-error', text: topicsError} : null}>
-                <input id="dataset-series-topics" type="hidden" name="dataset-series-topics" value={JSON.stringify(selectedTopics)} />
+                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(selectedTopics)} />
                 <div className='ons-container--wide'>
                     <div className="ons-grid ons-grid--spaced">                
                         <div className="ons-grid__col ons-col-4@m">
-                            <label className="ons-label" htmlFor="dataset-series-topic">Topics</label>
+                            <label className="ons-label" htmlFor="dataset-series-topics">Topics</label>
                             <select
-                                id="dataset-series-topic"
+                                id="dataset-series-topics"
                                 data-testid="dataset-series-topics-select"
                                 className="ons-input ons-input--select"
                                 defaultValue=""

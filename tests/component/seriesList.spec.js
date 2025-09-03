@@ -55,7 +55,7 @@ test.describe("Series list page", () => {
         await expect(page.getByText("Available editions")).toBeVisible();
         await page.waitForURL("**/series/mock-quarterly");
         await expect(page.url().toString()).toContain("series/mock-quarterly");
-        await expect(page.getByTestId("id-field")).toContainText("mock-quarterly");
+        await expect(page.locator("#series-id")).toContainText("mock-quarterly");
     });
 });
 

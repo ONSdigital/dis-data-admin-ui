@@ -3,7 +3,15 @@ export const datasetList = {
         {
             "title": "Consumer prices",
             "description": "Something about consumer prices",
-            "id": "cpih"
+            "id": "cpih",
+            "national_statistic": "false",
+            "next_release": "TBC",
+            "release_frequency": "Quarterly",
+            "state": "published",
+            "unit_of_measure": "Percentage",
+            "topics": ["id1", "id2"],
+            "last_updated": "2000-01-01T07:00:00.000Z",
+            "license": "My License",
         },
         {
             "title": "Weekly deaths",
@@ -40,7 +48,7 @@ export const datasetList = {
                 "name": "ONS"
             },
             "qmi": {
-                "href": "https://www.ons.gov.uk"
+                "href": "https://www.ons.gov.uk/qmi"
             },
             "type": "static",
             "next" : {
