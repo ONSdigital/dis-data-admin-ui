@@ -53,7 +53,6 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series");
     });
 
-
     test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {
         addValidAuthCookies(context);
 
