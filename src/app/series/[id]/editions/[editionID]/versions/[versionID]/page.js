@@ -32,7 +32,7 @@ export default async function Version({ params, searchParams }) {
                 title={`Version: ${versionID}`} 
                 buttonURL={`./create?edition_title=${metadata.edition_title}`}
                 buttonText="Create new version" 
-                linkURL="/series" 
+                linkURL="../"
                 linkText="Back to edition overview"
                 breadcrumbs={breadcrumbs}
             />  

@@ -74,7 +74,7 @@ export default async function Edition({ params, searchParams }) {
                         title={dataset.title + ": " + edition.edition_title} 
                         buttonURL={createURL} 
                         buttonText="Create new version" 
-                        linkURL={`../`}
+                        linkURL="../"
                         linkText="Back to dataset series list"
                         breadcrumbs={breadcrumbs}
                         showPanel={unpublishedVersion}
