@@ -1,9 +1,12 @@
 import { cookies } from "next/headers";
 import Link from 'next/link';
+import { pathname } from "next-extra/pathname";
+
+import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import List from "@/components/list/List";
 import { Panel } from "@/components/design-system/DesignSystem";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
@@ -44,25 +47,14 @@ export default async function Edition({ params, searchParams }) {
     });
 
     const renderVersionsList = () => {
-            return (
-                <>
-                { !versionsError ? 
-                    <>
-                        <h2 className="ons-u-mt-m@xxs@m">Available versions</h2>
-                        <List items={listItems} noResultsText="No editions found for dataset"></List>
-                    </>
-                : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel> }
-                </>
-            );
-    };
-
-    const renderHero = () => {
         return (
             <>
-            { unpublishedVersion ? 
-                    <Hero subtitle="Unpublished version exists, cannot add new dataset version." title={dataset.title + ": " + edition.edition_title} wide />  :
-                    <Hero hyperLink={{ text: "Add new dataset version", url: createURL }} title={dataset.title + ": " + edition.edition_title} wide />
-            }
+            { !versionsError ? 
+                <>
+                    <h2 className="ons-u-mt-m@xxs@m">Available versions</h2>
+                    <List items={listItems} noResultsText="No editions found for dataset"></List>
+                </>
+            : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel> }
             </>
         );
     };
@@ -71,11 +63,24 @@ export default async function Edition({ params, searchParams }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     const editURL = `/series/${id}/editions/${editionID}/edit`;
+    const currentURL = await pathname();
+    const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
     return (
         <>
             { !datasetError && !editionError ? 
                 <>
-                    { renderHero() }
+                    <PageHeading 
+                        subtitle="Edition"
+                        title={dataset.title + ": " + edition.edition_title} 
+                        buttonURL={createURL} 
+                        buttonText="Create new version" 
+                        linkURL={`../`}
+                        linkText="Back to dataset list"
+                        breadcrumbs={breadcrumbs}
+                        showPanel={unpublishedVersion}
+                        panelText="An unpublished version exists so cannot add new dataset version."
+                        disbaleButton={!unpublishedVersion}
+                    /> 
                     <div className="ons-grid ons-u-mt-xl">
                         <CreateEditSuccess query={query} message="Dataset edition saved" />
                         <div className="ons-grid__col ons-col-6@m">

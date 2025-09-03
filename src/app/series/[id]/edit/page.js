@@ -3,7 +3,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import { updateDatasetSeries } from "@/app/actions/datasetSeries";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
 
@@ -51,7 +51,9 @@ export default async function createPage({params}) {
     const datasetTitle = dataset?.title || id;
     return (
         <>
-            <Hero hyperLink={{ text: `Back to ${datasetTitle} overview`, url: "./"}} title={`Edit ${datasetTitle}`} wide/>
+            <PageHeading 
+                title="Edit dataset series"
+            /> 
             { !datasetError && !topicsError ? 
                 <> 
                     <SeriesForm 
