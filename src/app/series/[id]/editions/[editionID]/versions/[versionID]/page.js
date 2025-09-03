@@ -30,7 +30,7 @@ export default async function Version({ params, searchParams }) {
             <PageHeading 
                 subtitle="Version"
                 title={`Version: ${versionID}`} 
-                buttonURL={`${currentURL}/edit`}
+                buttonURL={`./create?edition_title=${metadata.edition_title}`}
                 buttonText="Create new version" 
                 linkURL="/series" 
                 linkText="Back to edition overview"
