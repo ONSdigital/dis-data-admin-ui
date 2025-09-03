@@ -1,6 +1,6 @@
 import { createDatasetVersion } from "@/app/actions/datasetVersion";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import VersionForm from "@/components/form/version/VersionForm";
 
 export default async function CreateVersion({ params }) {
@@ -8,7 +8,10 @@ export default async function CreateVersion({ params }) {
 
     return (
         <>
-            <Hero hyperLink={{ text: `Back to ${editionID} dataset edition overview`, url: "../" }} title={`Create a new dataset version for ${id}`} wide /> 
+            <PageHeading 
+                title="Create new version"
+                subtitle={`${id}: ${editionID}`}
+            /> 
             <VersionForm datasetID={id} editionID={editionID} action={createDatasetVersion} />
         </>
     );

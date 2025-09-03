@@ -3,7 +3,7 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import { updateDatasetVersion } from "@/app/actions/datasetVersion";
 
-import Hero from "@/components/hero/Hero";
+import PageHeading from "@/components/page-heading/PageHeading";
 import VersionForm from "@/components/form/version/VersionForm";
 import { Panel } from "@/components/design-system/DesignSystem";
 
@@ -19,12 +19,13 @@ export default async function EditVersion({ params }) {
         versionError = true;
     }
 
-    const heroLink = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}`;
     return (
         <>
             { !versionError ?
                 <>
-                    <Hero hyperLink={{ text: `Back to dataset version overview`, url: heroLink }} title={`Edit version ${versionID}`} wide /> 
+                    <PageHeading 
+                        title={`Edit version ${versionID}`}
+                    /> 
                     <VersionForm datasetID={id} editionID={editionID} version={version} action={updateDatasetVersion} />
                 </>
             : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
