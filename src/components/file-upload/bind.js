@@ -6,7 +6,6 @@ const RESUMABLE_OPTIONS = {
     isPublishable: true,
     licence: "Open Government Licence v3.0",
     licenceUrl: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-    collectionId: "FAKE-COLLECTION-ID", // hardcoded for POC - needs fixing
     path: "dataset-upload", // hardcoded for POC - needs fixing
 };
 
