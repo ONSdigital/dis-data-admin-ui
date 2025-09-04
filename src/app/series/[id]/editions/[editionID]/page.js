@@ -69,6 +69,7 @@ export default async function Edition({ params, searchParams }) {
         <>
             { !datasetError && !editionError ? 
                 <>
+                    <CreateEditSuccess query={query} message="Dataset edition saved" />
                     <PageHeading 
                         subtitle="Edition"
                         title={dataset.title + ": " + edition.edition_title} 
@@ -82,7 +83,7 @@ export default async function Edition({ params, searchParams }) {
                         disbaleButton={!unpublishedVersion}
                     /> 
                     <div className="ons-grid ons-u-mt-xl">
-                        <CreateEditSuccess query={query} message="Dataset edition saved" />
+                        
                         <div className="ons-grid__col ons-col-6@m">
                             { renderVersionsList() }
                         </div>
