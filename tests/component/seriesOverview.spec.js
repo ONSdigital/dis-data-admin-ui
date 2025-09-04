@@ -12,7 +12,7 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-title")).toContainText("Mock Dataset");
         await expect(page.getByTestId("page-heading-subtitle")).toContainText("Series");
         await expect(page.getByTestId("page-heading-create-button")).toContainText("Create new edition");
-        await expect(page.getByTestId("page-heading-back-link")).toContainText("Back to dataset series list");
+        await expect(page.getByTestId("page-heading-link")).toContainText("Back to dataset series list");
 
         // editions list
         await expect(page.getByRole("link", { name: "Timeseries" })).toBeVisible();
@@ -48,7 +48,7 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
-        await page.getByTestId("page-heading-back-link").click();
+        await page.getByTestId("page-heading-link").click();
         await page.waitForURL("**/series");
         await expect(page.url().toString()).toContain("series");
     });

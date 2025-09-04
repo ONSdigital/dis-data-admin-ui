@@ -25,7 +25,7 @@ test.describe("version overview page", () => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
-        await page.getByTestId("page-heading-back-link").click();
+        await page.getByTestId("page-heading-link").click();
         await page.waitForURL("**/series/mock-quarterly/editions/time-series");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
@@ -38,7 +38,7 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId("page-heading-title")).toContainText("Version: 1");
         await expect(page.getByTestId("page-heading-subtitle")).toContainText("Version");
         await expect(page.getByTestId("page-heading-create-button")).toContainText("Create new version");
-        await expect(page.getByTestId("page-heading-back-link")).toContainText("Back to edition overview");
+        await expect(page.getByTestId("page-heading-link")).toContainText("Back to edition overview");
 
         // page content
         await expect(page.getByTestId('id-field')).toContainText('mock-quarterly');

@@ -11,7 +11,7 @@ test.describe("Edition overview page", () => {
         await expect(page.getByTestId("page-heading-title")).toContainText("Mock Dataset: Timeseries");
         await expect(page.getByTestId("page-heading-subtitle")).toContainText("Edition");
         await expect(page.getByTestId("page-heading-create-button")).toContainText("Create new version");
-        await expect(page.getByTestId("page-heading-back-link")).toContainText("Back to dataset series list");
+        await expect(page.getByTestId("page-heading-link")).toContainText("Back to dataset series list");
 
         // version list
         await expect(page.getByRole("link", { name: "Version: 1" })).toBeVisible();
@@ -35,7 +35,7 @@ test.describe("Edition overview page", () => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");
-        await page.getByTestId("page-heading-back-link").click();
+        await page.getByTestId("page-heading-link").click();
         await page.waitForURL("**/series/mock-quarterly");
         await expect(page.url().toString()).toContain("series/mock-quarterly");
     });

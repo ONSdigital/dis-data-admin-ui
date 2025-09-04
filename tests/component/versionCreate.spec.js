@@ -7,7 +7,7 @@ test.describe("Create version page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create a new dataset version for mock-quarterly");
+        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create new version");
 
         
         await expect(page.getByTestId("select-quality-designation")).toBeVisible();
@@ -17,15 +17,6 @@ test.describe("Create version page", () => {
         await expect(page.getByTestId("alerts-textarea-0")).toBeVisible();
         await expect(page.getByTestId("dataset-upload-input")).toBeVisible();
     });
-
-    // test("Route back to dataset overview page works", async ({ page, context }) => {
-    //     addValidAuthCookies(context);
-
-    //     await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
-    //     await page.getByRole("link", { name: "Back to time-series dataset edition overview" }).click();
-    //     await page.waitForURL("**/series/mock-quarterly/editions/time-series");
-    //     await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
-    // });
 
     test("Submits form successfully", async ({ page, context }) => {
         addValidAuthCookies(context);
