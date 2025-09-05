@@ -59,8 +59,25 @@ const onFileProgress = (file, handleFileProgress) => {
     handleFileProgress(progressPercentage);
 };
 
-const onFileError = (message, handleError) => {
-    handleError(message);
+const onFileError = (uploadError, handleError) => {
+    const parsedError = JSON.parse(uploadError);
+    let error = {
+        id: "upload-error"
+    };
+    switch (parsedError.errors[0].code) {
+        case "DuplicateFile":
+            error.text = "A file with this name already exists"
+            break;
+        case "ChunkTooSmall":
+            error.text = "A chunk of this file was too small"
+            break;
+        case "Unauthorised":
+            error.text = "You are unauthorised to upload this file or to this location"
+            break;
+        default:
+            error.text = parsedError.errors[0].description  
+    }
+    handleError(error);
 };
 
 const onFileSuccess = (resumable, file, handleFileComplete) => {
