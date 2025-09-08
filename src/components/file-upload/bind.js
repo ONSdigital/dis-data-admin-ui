@@ -1,4 +1,5 @@
 import Resumable from "resumablejs";
+import { logError } from "@/utils/log/log";
 
 const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
@@ -61,10 +62,19 @@ const onFileProgress = (file, handleFileProgress) => {
 };
 
 const onFileError = (uploadError, handleError) => {
-    const parsedError = JSON.parse(uploadError);
     let error = {
         id: "upload-error"
     };
+    
+    let parsedError;
+    try {
+        parsedError = JSON.parse(uploadError);
+    } catch (err) {
+        logError("failed to parse upload error message", null, null, err)
+        error.text = uploadError;
+        return error;
+    }
+    
     switch (parsedError.errors[0].code) {
         case "DuplicateFile":
             error.text = "A file with this name already exists"
