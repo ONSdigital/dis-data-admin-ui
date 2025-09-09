@@ -62,7 +62,6 @@ const onFileProgress = (file, handleFileProgress) => {
 };
 
 const onFileError = (uploadError, handleError) => {
-    console.log(uploadError)
     let error = {
         id: "upload-error"
     };
