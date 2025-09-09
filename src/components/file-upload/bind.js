@@ -62,6 +62,7 @@ const onFileProgress = (file, handleFileProgress) => {
 };
 
 const onFileError = (uploadError, handleError) => {
+    console.log(uploadError)
     let error = {
         id: "upload-error"
     };
@@ -72,7 +73,8 @@ const onFileError = (uploadError, handleError) => {
     } catch (err) {
         logError("failed to parse upload error message", null, null, err);
         error.text = uploadError;
-        return error;
+        handleError(error);
+        return;
     }
     
     switch (parsedError.errors[0].code) {
