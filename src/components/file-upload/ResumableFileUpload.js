@@ -15,7 +15,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
-    const [error, setError] = useState();
+    const [error, setError] = useState(validationError || "");
     const [file, setFile] = useState(uploadedFile || {});
 
     const handleFileStart = () => {
@@ -68,8 +68,14 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
     }, [id, uploadBaseURL, validationError, showFileUpload]);
 
+    useEffect(() => {
+        if (validationError) {
+            setError(validationError);
+        }
+    }, [validationError]);
+
     const renderFileInput = () => {
-        return <TextInput id={id} dataTestId={`${id}-input`} label={{text: label, description: description}} type="file" value="" error={validationError}/>;
+        return <TextInput id={id} dataTestId={`${id}-input`} label={{text: label, description: description}} type="file" value="" error={error}/>;
     };
 
     const renderFileProgressBar = () => {
@@ -93,7 +99,6 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     return (
         <>
             <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
-            { error ? <p style={{color: "red"}}>{ error }</p> : null}
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
             { showIsComplete ? renderCompleteFile() : null }

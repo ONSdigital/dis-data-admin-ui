@@ -36,14 +36,36 @@ test("onFileProgress sets the correct state ", () => {
     expect(updateState.mock.calls[0][0]).toBe(50);
 });
 
-test("onFileError sets the correct state ", () => {
-    const msg = "Test error";
-    const onError = jest.fn();
-    expect(onError.mock.calls).toHaveLength(0);
+describe("onFileError sets the correct state ", () => {
+    it("when JSON is returned from upload service", () => {
+        const msg = `{"errors":[{"code":"DuplicateFile","description":"resource conflict: file already registered"}]}`;
+        const onError = jest.fn();
+        expect(onError.mock.calls).toHaveLength(0);
 
-    onFileError(msg, onError);
-    expect(onError.mock.calls).toHaveLength(1);
-    expect(onError.mock.calls[0][0]).toBe("Test error");
+        onFileError(msg, onError);
+        expect(onError.mock.calls).toHaveLength(1);
+        expect(onError.mock.calls[0][0]).toMatchObject({id: "upload-error", text:"A file with this name already exists"})
+    });
+
+    it("when non JSON or broken JSON is returned from upload service", () => {
+        const msg = "resource conflict: file already registered";
+        const onError = jest.fn();
+        expect(onError.mock.calls).toHaveLength(0);
+
+        onFileError(msg, onError);
+        expect(onError.mock.calls).toHaveLength(1);
+        expect(onError.mock.calls[0][0]).toMatchObject({id: "upload-error", text:"resource conflict: file already registered"})
+    });
+
+    it("when an unrecoginised code is returned from upload service", () => {
+        const msg = `{"errors":[{"code":"TestError","description":"test error"}]}`;
+        const onError = jest.fn();
+        expect(onError.mock.calls).toHaveLength(0);
+
+        onFileError(msg, onError);
+        expect(onError.mock.calls).toHaveLength(1);
+        expect(onError.mock.calls[0][0]).toMatchObject({id: "upload-error", text:"test error"})
+    });
 });
 
 test("onFileSuccess sets the correct state ", () => {

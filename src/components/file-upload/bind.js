@@ -1,4 +1,5 @@
 import Resumable from "resumablejs";
+import { logError } from "@/utils/log/log";
 
 const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
@@ -27,6 +28,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
         },
         forceChunkSize: true,
         simultaneousUploads: 1,
+        permanentErrors: [400, 404, 409, 415, 500, 501],
     });
     r.assignBrowse(input);
     r.assignDrop(input);
@@ -59,8 +61,35 @@ const onFileProgress = (file, handleFileProgress) => {
     handleFileProgress(progressPercentage);
 };
 
-const onFileError = (message, handleError) => {
-    handleError(message);
+const onFileError = (uploadError, handleError) => {
+    let error = {
+        id: "upload-error"
+    };
+
+    let parsedError;
+    try {
+        parsedError = JSON.parse(uploadError);
+    } catch (err) {
+        logError("failed to parse upload error message", null, null, err);
+        error.text = uploadError;
+        handleError(error);
+        return;
+    }
+    
+    switch (parsedError.errors[0].code) {
+        case "DuplicateFile":
+            error.text = "A file with this name already exists";
+            break;
+        case "ChunkTooSmall":
+            error.text = "A chunk of this file was too small";
+            break;
+        case "Unauthorised":
+            error.text = "You are unauthorised to upload this file or to this location";
+            break;
+        default:
+            error.text = parsedError.errors[0].description;
+    }
+    handleError(error);
 };
 
 const onFileSuccess = (resumable, file, handleFileComplete) => {
