@@ -40,7 +40,7 @@ export default async function Dataset({ params, searchParams }) {
                     <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
                     <List items={listItems} noResultsText="There are no available editions for this series"></List>
                 </>
-            )
+            );
         }
 
         return (
@@ -56,30 +56,32 @@ export default async function Dataset({ params, searchParams }) {
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
 
+    if (datasetError) {
+        return (
+            <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel>
+        );
+    }
+
     return (
         <>
-            { !datasetError ? 
-                <>
-                    <CreateEditSuccess query={query} message="Dataset series saved" />
-                    <PageHeading 
-                        subtitle="Series"
-                        title={dataset.title} 
-                        buttonURL={createURL} 
-                        buttonText="Create new edition" 
-                        linkURL="/series" 
-                        linkText="Back to dataset series list"
-                        breadcrumbs={breadcrumbs}
-                    />        
-                    <div className="ons-grid ons-u-mt-xl">
-                        <div className="ons-grid__col ons-col-4@m">
-                            { renderEditionsList() }
-                        </div>
-                        <div className="ons-grid__col ons-col-7@m ons-push-1@m">
-                            <Summary summaries={contentItems} />
-                        </div>
-                    </div>
-                </>
-            : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
+            <CreateEditSuccess query={query} message="Dataset series saved" />
+            <PageHeading 
+                subtitle="Series"
+                title={dataset.title} 
+                buttonURL={createURL} 
+                buttonText="Create new edition" 
+                linkURL="/series" 
+                linkText="Back to dataset series list"
+                breadcrumbs={breadcrumbs}
+            />        
+            <div className="ons-grid ons-u-mt-xl">
+                <div className="ons-grid__col ons-col-4@m">
+                    { renderEditionsList() }
+                </div>
+                <div className="ons-grid__col ons-col-7@m ons-push-1@m">
+                    <Summary summaries={contentItems} />
+                </div>
+            </div>
         </>
     );
 }
