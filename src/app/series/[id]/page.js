@@ -58,7 +58,9 @@ export default async function Dataset({ params, searchParams }) {
 
     if (datasetError) {
         return (
-            <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel>
+            <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
+                <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
+            </Panel>
         );
     }
 
