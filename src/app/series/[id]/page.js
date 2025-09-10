@@ -9,7 +9,7 @@ import { Panel, Summary } from "@/components/design-system/DesignSystem";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 import PageHeading from "@/components/page-heading/PageHeading";
 
-import { mapListItems, mapContentItems } from './mapper';
+import { mapListItems, mapContentItems } from "./mapper";
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
 export default async function Dataset({ params, searchParams }) {
