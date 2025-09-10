@@ -33,15 +33,18 @@ export default async function Dataset({ params, searchParams }) {
     }
 
     const renderEditionsList = () => {
-        return (
-            <>
-            { !editionsError ? 
+        // if no error, or 404 error because we assume 404 means no editions exist yet
+        if (!editionsError || (editionsError && editions.status === 404)) {
+            return (
                 <>
                     <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
-                    <List items={listItems} noResultsText="No editions found for dataset"></List>
+                    <List items={listItems} noResultsText="There are no available editions for this series"></List>
                 </>
-            : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p></Panel> }
-            </>
+            )
+        }
+
+        return (
+            <Panel title="Error" variant="error"><p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p></Panel>
         );
     };
 
