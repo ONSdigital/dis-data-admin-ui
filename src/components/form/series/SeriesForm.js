@@ -137,7 +137,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-cancel"
                     id="dataset-series-cancel"
                     text="Cancel"
-                    link="/series"          
+                    link="/series"
                     variants="secondary"
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
