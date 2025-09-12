@@ -3,6 +3,7 @@
 import { useState, useActionState } from "react";
 
 import { TextInput, Panel, HyperLinksList} from "author-design-system-react";
+import LinkButton from "@/components/link-button/LinkButton";
 
 import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
