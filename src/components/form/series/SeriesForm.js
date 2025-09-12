@@ -98,6 +98,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId={"dataset-series-description"}
                     name={"dataset-series-description"}
                     label={{text: "Description"}} 
+                    fieldClasses={"ons-u-dib"} 
                     value={description} 
                     onChange={e => setDescription(e.target.value)}
                     error={(formState.errors && formState.errors.description) ? {id:"dataset-series-description-error", text: formState.errors.description} : null}
