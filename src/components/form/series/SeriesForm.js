@@ -119,7 +119,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     dataTestId="dataset-series-keywords"
                     name="dataset-series-keywords"
                     label={{
-                        text: "Keywords (optional)",
+                        text: "Keywords",
                         description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
                     }}
                     error={(formState.errors && formState.errors.keywords) ? {id:"dataset-series-keywords-error", text: formState.errors.keywords} : null}
