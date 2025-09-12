@@ -55,8 +55,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     return (
         <>
             {renderFailure()}
-            <h2 className="ons-u-mt-m">Series details</h2>
-            <p>The information in these fields is unique to a series.</p>
             <form action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
