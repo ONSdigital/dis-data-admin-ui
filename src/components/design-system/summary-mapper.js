@@ -4,6 +4,7 @@ import slugify from "slugify";
 
 import { formatDate } from "@/utils/datetime/datetime";
 
+// return <Summary> component basic model
 const getBaseSummaryModel = (groupID) => {
     return [{
         groups: [{   
@@ -13,6 +14,7 @@ const getBaseSummaryModel = (groupID) => {
     }];
 }
 
+// map a <Summary> component row
 const mapRow = (itemName, value, multiValue, hasAction, actionURL, rows) => {
     const slugifyLowerCase = (string) => {
         return slugify(string, {lower: true});

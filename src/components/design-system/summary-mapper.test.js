@@ -1,9 +1,9 @@
-import { mapContentItems } from "./mapper";
-import { datasetList } from "../../../../tests/mocks/datasets.mjs";
+import { mapSeriesSummary } from "./summary-mapper";
+import { datasetList } from "../../../tests/mocks/datasets.mjs";
 
-describe("mapContentItems", () => {
+describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
-        const mapped = mapContentItems(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(10);
         // expect "Series ID" to have single value and not have "edit" action
@@ -73,7 +73,7 @@ describe("mapContentItems", () => {
     });
 
     test("returns expected object of mapped content items when no topics are passed in", () => {
-        const mapped = mapContentItems(datasetList.items[2], "test/foo/edit", []);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", []);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(9);
         mappedItems.forEach(item => {
@@ -82,7 +82,7 @@ describe("mapContentItems", () => {
     });
 
     test("returns expected object of mapped content items when no keywords are present", () => {
-        const mapped = mapContentItems(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(9);
         mappedItems.forEach(item => {
