@@ -47,14 +47,15 @@ export default async function Edition({ params, searchParams }) {
     });
 
     const renderVersionsList = () => {
+        if (versionsError) {
+            return (
+                <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel>
+            );
+        }
         return (
             <>
-            { !versionsError ? 
-                <>
-                    <h2 className="ons-u-mt-m@xxs@m">Available versions</h2>
-                    <List items={listItems} noResultsText="No editions found for dataset"></List>
-                </>
-            : <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel> }
+                <h2 className="ons-u-mt-m@xxs@m">Available versions</h2>
+                <List items={listItems} noResultsText="No editions found for dataset"></List>
             </>
         );
     };
@@ -65,42 +66,45 @@ export default async function Edition({ params, searchParams }) {
     const editURL = `/series/${id}/editions/${editionID}/edit`;
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
+
+    if (datasetError || editionError) {
+        return (
+            <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel>
+        );
+    }
+
     return (
         <>
-            { !datasetError && !editionError ? 
-                <>
-                    <CreateEditSuccess query={query} message="Dataset edition saved" />
-                    <PageHeading 
-                        subtitle="Edition"
-                        title={dataset.title + ": " + edition.edition_title} 
-                        buttonURL={createURL} 
-                        buttonText="Create new version" 
-                        linkURL="../"
-                        linkText="Back to dataset series list"
-                        breadcrumbs={breadcrumbs}
-                        showPanel={unpublishedVersion}
-                        panelText="An unpublished version exists so cannot add new dataset version."
-                        disbaleButton={!unpublishedVersion}
-                    /> 
-                    <div className="ons-grid ons-u-mt-xl">
-                        
-                        <div className="ons-grid__col ons-col-6@m">
-                            { renderVersionsList() }
-                        </div>
-                        <div className="ons-grid__col ons-col-6@m ">
-                            <Link href={editURL}>Edit metadata</Link>
-                            <h2 className="ons-u-mt-m@xxs@m">Edition ID</h2>
-                            <p data-testid="id-field">{edition.edition}</p>
+            <CreateEditSuccess query={query} message="Dataset edition saved" />
+            <PageHeading 
+                subtitle="Edition"
+                title={dataset.title + ": " + edition.edition_title} 
+                buttonURL={createURL} 
+                buttonText="Create new version" 
+                linkURL="../"
+                linkText="Back to dataset series list"
+                breadcrumbs={breadcrumbs}
+                showPanel={unpublishedVersion}
+                panelText="An unpublished version exists so cannot add new dataset version."
+                disbaleButton={!unpublishedVersion}
+            /> 
+            <div className="ons-grid ons-u-mt-xl">
+                
+                <div className="ons-grid__col ons-col-6@m">
+                    { renderVersionsList() }
+                </div>
+                <div className="ons-grid__col ons-col-6@m ">
+                    <Link href={editURL}>Edit metadata</Link>
+                    <h2 className="ons-u-mt-m@xxs@m">Edition ID</h2>
+                    <p data-testid="id-field">{edition.edition}</p>
 
-                            <h2 className="ons-u-mt-m@xxs@m">Title</h2>
-                            <p data-testid="title-field">{edition.edition_title}</p>
+                    <h2 className="ons-u-mt-m@xxs@m">Title</h2>
+                    <p data-testid="title-field">{edition.edition_title}</p>
 
-                            <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
-                            <p data-testid="release-date-field">{formatDate(edition.release_date)}</p>
-                        </div>
-                    </div>
-                </>
-            : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
+                    <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
+                    <p data-testid="release-date-field">{formatDate(edition.release_date)}</p>
+                </div>
+            </div>
         </>
     );
 }
