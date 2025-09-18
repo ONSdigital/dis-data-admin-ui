@@ -12,7 +12,7 @@ const getBaseSummaryModel = (groupID) => {
             rows: []
         }]
     }];
-}
+};
 
 // map a <Summary> component row
 const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorIDPrefix, rows) => {
