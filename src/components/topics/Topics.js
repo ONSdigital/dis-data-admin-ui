@@ -11,6 +11,7 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
 
         if (topicId && topicTitle) {
             checkboxOptions.push({
+                dataTestId: 'checkbox-' + topicId,
                 id: 'checkbox-' + topicId,
                 label: {
                     text: topicTitle
@@ -42,7 +43,7 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                 <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(selectedTopics)} />
                 <Checkbox
                     id="dataset-series-topics"
-                    data-testid="dataset-series-topics-checkbox"
+                    dataTestId="dataset-series-topics-checkbox"
                     items={{
                         itemsList: checkboxOptions
                     }}

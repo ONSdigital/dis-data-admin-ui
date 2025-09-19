@@ -30,8 +30,8 @@ describe("Topics", () => {
 
         render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
 
-        const select = screen.getByTestId('dataset-series-topics-select');
-        expect(select).toBeInTheDocument();
+        const checkbox = screen.getByTestId('dataset-series-topics-checkbox');
+        expect(checkbox).toBeInTheDocument();
 
         const list = screen.getAllByTestId("dataset-series-topics-list-item")
         expect(list.length).toBe(1)

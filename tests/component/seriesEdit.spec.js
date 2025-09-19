@@ -20,8 +20,7 @@ test.describe("Edit series page", () => {
         await page.goto("./series/mock-quarterly/edit")
 
         await page.getByTestId("dataset-series-title").fill("test edit title");
-        await page.getByLabel("Topics").selectOption("1001");
-        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test edit description");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");

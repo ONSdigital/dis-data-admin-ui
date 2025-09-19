@@ -7,10 +7,10 @@ test.describe("Create series page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/create")
-        await expect(page.getByTestId("page-heading-title")).toContainText("Create a new dataset series");
+        await expect(page.getByTestId("page-heading-title")).toContainText("Create new dataset series");
         await expect(page.getByTestId("dataset-series-id")).toBeVisible();
         await expect(page.getByTestId("dataset-series-title")).toBeVisible();
-        await expect(page.getByTestId("dataset-series-topics-select")).toBeVisible();
+        await expect(page.getByTestId("fieldset-dataset-series-topics-checkbox")).toBeVisible();
         await expect(page.getByTestId("dataset-series-description")).toBeVisible();
         await expect(page.getByTestId("dataset-series-qmi")).toBeVisible();
         await expect(page.getByTestId("dataset-series-keywords")).toBeVisible();
@@ -24,8 +24,7 @@ test.describe("Create series page", () => {
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
         await page.getByLabel("Series ID", {exact: true}).fill("mock-quarterly");
-        await page.getByLabel("Topics").selectOption("1000");
-        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
@@ -75,8 +74,7 @@ test.describe("Create series page", () => {
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
         await page.getByLabel("Series ID", {exact: true}).fill("duplicate-id");
-        await page.getByLabel("Topics").selectOption("1000");
-        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
@@ -94,8 +92,7 @@ test.describe("Create series page", () => {
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("duplicate-title");
         await page.getByLabel("Series ID", {exact: true}).fill("test ID");
-        await page.getByLabel("Topics").selectOption("1000");
-        await page.getByRole("button", { name: /Add Topic/i }).click();
+        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
