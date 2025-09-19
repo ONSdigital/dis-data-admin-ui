@@ -1,9 +1,10 @@
-import { mapContentItems } from "./mapper";
-import { datasetList } from "../../../../tests/mocks/datasets.mjs";
+import { mapSeriesSummary, mapEditionSummary } from "./summary-mapper";
+import { datasetList } from "../../../tests/mocks/datasets.mjs";
+import { versions } from "../../../tests/mocks/versions.mjs";
 
-describe("mapContentItems", () => {
+describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
-        const mapped = mapContentItems(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(10);
         // expect "Series ID" to have single value and not have "edit" action
@@ -73,7 +74,7 @@ describe("mapContentItems", () => {
     });
 
     test("returns expected object of mapped content items when no topics are passed in", () => {
-        const mapped = mapContentItems(datasetList.items[2], "test/foo/edit", []);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", []);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(9);
         mappedItems.forEach(item => {
@@ -82,7 +83,7 @@ describe("mapContentItems", () => {
     });
 
     test("returns expected object of mapped content items when no keywords are present", () => {
-        const mapped = mapContentItems(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(9);
         mappedItems.forEach(item => {
@@ -91,3 +92,28 @@ describe("mapContentItems", () => {
     });
 });
 
+test("mapEditionSummary returns expected object of mapped content items", () => {
+    const mapped = mapEditionSummary(versions.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+    const mappedItems = mapped[0].groups[0].rows;
+    expect(mappedItems).toHaveLength(3);
+    // expect "Edition ID" to have single value and have "edit" action
+    expect(mappedItems[0].rowTitle).toBe("Edition ID");
+    expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
+    expect(mappedItems[0].rowItems[0].actions[0]).toMatchObject({
+        id: "edit-edition-id",
+        visuallyHiddenText: "Edit Edition ID",
+        url: "test/foo/edit#edition-id"
+    });
+    // expect "Edition title" to have single value and have "edit" action
+    expect(mappedItems[1].rowTitle).toBe("Edition title");
+    expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
+    expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
+        id: "edit-edition-title",
+        visuallyHiddenText: "Edit Edition title",
+        url: "test/foo/edit#edition-title"
+    });
+    // expect "Release date" to have single value and not have "edit" action
+    expect(mappedItems[2].rowTitle).toBe("Release date");
+    expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
+    expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+});

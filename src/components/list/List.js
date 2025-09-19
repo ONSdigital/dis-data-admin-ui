@@ -28,6 +28,12 @@ export default function List({ items, type, noResultsText = "No results" }) {
                                 </>
                                     : null
                                 }
+                                { item.release_date ? 
+                                    <li className="ons-document-list__item-attribute">
+                                        <span className="ons-u-fw-b" data-testid={`list-item-${index}-state`}>Released: </span>{item.release_date}
+                                    </li>
+                                    : null
+                                }
                                 { item.state ? 
                                     <li className="ons-document-list__item-attribute">
                                         <span className="ons-u-fw-b" data-testid={`list-item-${index}-state`}>State: </span>{item.state}
