@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import Link from 'next/link';
 import { pathname } from "next-extra/pathname";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
@@ -8,11 +7,11 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
 import PageHeading from "@/components/page-heading/PageHeading";
 import List from "@/components/list/List";
-import { Panel } from "@/components/design-system/DesignSystem";
+import { Panel, Summary } from "@/components/design-system/DesignSystem";
+import { mapEditionSummary } from "@/components/design-system/summary-mapper";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 
 import { mapListItems } from "./mapper";
-import { formatDate } from "@/utils/datetime/datetime";
 
 export default async function Edition({ params, searchParams }) {
     const reqCfg = await SSRequestConfig(cookies);
@@ -66,6 +65,7 @@ export default async function Edition({ params, searchParams }) {
     const editURL = `/series/${id}/editions/${editionID}/edit`;
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
+    const contentItems = mapEditionSummary(edition, editURL);
 
     if (datasetError || editionError) {
         return (
@@ -89,20 +89,11 @@ export default async function Edition({ params, searchParams }) {
                 disbaleButton={!unpublishedVersion}
             /> 
             <div className="ons-grid ons-u-mt-xl">
-                
-                <div className="ons-grid__col ons-col-6@m">
+                <div className="ons-grid__col ons-col-4@m">
                     { renderVersionsList() }
                 </div>
-                <div className="ons-grid__col ons-col-6@m ">
-                    <Link href={editURL}>Edit metadata</Link>
-                    <h2 className="ons-u-mt-m@xxs@m">Edition ID</h2>
-                    <p data-testid="id-field">{edition.edition}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Title</h2>
-                    <p data-testid="title-field">{edition.edition_title}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
-                    <p data-testid="release-date-field">{formatDate(edition.release_date)}</p>
+                <div className="ons-grid__col ons-col-7@m ons-push-1@m">
+                    <Summary summaries={contentItems} />
                 </div>
             </div>
         </>
