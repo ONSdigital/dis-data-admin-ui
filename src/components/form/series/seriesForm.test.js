@@ -31,7 +31,7 @@ describe("Series Form", () => {
 
         expect(screen.getByTestId("dataset-series-id")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-topics-checkbox")).toBeInTheDocument();
+        expect(screen.getByTestId("fieldset-dataset-series-topics-checkbox")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-description")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-qmi")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-keywords")).toBeInTheDocument();
