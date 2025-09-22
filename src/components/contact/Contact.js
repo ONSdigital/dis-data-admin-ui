@@ -26,7 +26,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                                         <div className="ons-grid__col ons-col-3@m ons-push-1@m">
                                             <span className="ons-u-fw">{contact.email}</span>
                                         </div>
-                                        <div className="ons-grid__col ons-col-2@m ons-push-2@m">
+                                        <div className="ons-grid__col ons-col-2@m ons-push-5@m">
                                             <p>
                                                 <a
                                                     data-testid="dataset-contact-remove"
@@ -59,62 +59,6 @@ export default function Contact({contacts, setContacts, contactsError}) {
         <>
             <Field dataTestId="field-dataset-series-contacts" error={contactsError ? { id: "dataset-series-contacts-error", text: contactsError } : null}>
                 <h2>Add Contacts</h2>
-                {/* <div className="ons-container--wide">
-                    <div className="ons-grid ons-grid--spaced">                
-                        <div className="ons-grid__col ons-col-5@m">
-                            <TextInput
-                                id="dataset-series-contact-name"
-                                dataTestId="dataset-series-contact-name"
-                                name="dataset-series-contact-name"
-                                label={{
-                                    text: "Name: ",
-                                    inline: true,
-                                }}
-                                value={contactName}
-                                onChange={e => setContactName(e.target.value)}
-                            />
-                        </div>
-                        <div className="ons-grid__col ons-col-5@m ">
-                            <TextInput
-                                id="dataset-series-contact-email"
-                                dataTestId="dataset-series-contact-email"
-                                name="dataset-series-contact-email"
-                                label={{
-                                    text: "Email: ",
-                                    inline: true
-                                }}
-                                value={contactEmail}
-                                onChange={e => setContactEmail(e.target.value)}
-                                error={ (contactEmailError) ? {id:"dataSeriesEmailError", text: "Invalid email"} : null}
-                            />
-                        </div>
-                        <div className="ons-grid__col ons-col-2@m ">
-                            <Button
-                                dataTestId="dataset-series-add-contact-button"
-                                id="dataset-series-add-contact-button"
-                                text="Add contact"
-                                variants={[
-                                    "secondary",
-                                    "small"
-                                ]}
-                                onClick={() => {
-                                    if(!isEmail(contactEmail)){
-                                        setContactEmailError(true);
-                                    } else {
-                                        setContacts([
-                                        ...contacts,
-                                        { name: contactName, email: contactEmail }
-                                        ]);
-
-                                        setContactName("");
-                                        setContactEmail("");
-                                        setContactEmailError("");
-                                    }
-                                }}
-                            />
-                        </div>
-                    </div>
-                </div> */}
                 <TextInput
                     id="dataset-series-contact-name"
                     dataTestId="dataset-series-contact-name"
