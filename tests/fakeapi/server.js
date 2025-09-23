@@ -66,7 +66,12 @@ app.put("/datasets/:id", (req, res) => {
 });
 
 app.get("/datasets/:id", (req, res) => {
-    res.send(datasetList.items.find(item => item.id === req.params.id));
+    const dataset = datasetList.items.find(item => item.id === req.params.id);
+    if (!dataset) {
+        res.send(404);
+        return;
+    }
+    res.send(dataset);
 });
 
 app.get("/datasets/:id/editions", (req, res) => {

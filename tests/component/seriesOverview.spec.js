@@ -35,6 +35,13 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#qmi")).toContainText("https://www.ons.gov.uk");
     });
 
+    test("handles a dataset series response error", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/test-series-that-doesnt-exist");
+        await expect(page.getByTestId("dataset-series-response-error")).toContainText("There was an issue retrieving the data for this page. Try refreshing the page.");
+    })
+
     test("page heading create button routes to create new edition page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
