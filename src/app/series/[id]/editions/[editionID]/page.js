@@ -65,7 +65,7 @@ export default async function Edition({ params, searchParams }) {
     const editURL = `/series/${id}/editions/${editionID}/edit`;
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
-    const contentItems = mapEditionSummary(edition, editURL);
+    const editionSummaryItems = mapEditionSummary(edition, editURL);
 
     if (datasetError || editionError) {
         return (
@@ -93,7 +93,7 @@ export default async function Edition({ params, searchParams }) {
                     { renderVersionsList() }
                 </div>
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
-                    <Summary summaries={contentItems} />
+                    <Summary summaries={editionSummaryItems} />
                 </div>
             </div>
         </>
