@@ -53,7 +53,7 @@ export default async function Dataset({ params, searchParams }) {
     const editURL = `/data-admin/series/${id}/edit`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const contentItems = mapSeriesSummary(dataset, editURL, topicTitles);
+    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
 
@@ -82,7 +82,7 @@ export default async function Dataset({ params, searchParams }) {
                     { renderEditionsList() }
                 </div>
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
-                    <Summary summaries={contentItems} />
+                    <Summary summaries={seriesSummaryItems} />
                 </div>
             </div>
         </>
