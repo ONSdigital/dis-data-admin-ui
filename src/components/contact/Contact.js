@@ -26,7 +26,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
     }
 
     const renderContactList = () => {
-        if (contacts) {
+        if (contacts.length != 0) {
             return (
                 <div className="ons-u-mt-l">
                     <h3>Contacts</h3>
