@@ -37,6 +37,8 @@ describe("Series Form", () => {
         expect(screen.getByTestId("dataset-series-keywords")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-contact-name")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-contact-email")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-save")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-cancel")).toBeInTheDocument();
     });
 
     test("Series form renders props correctly", () => {

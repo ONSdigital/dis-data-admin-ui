@@ -10,49 +10,62 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
 
+    const addContact = () => {
+        if (!isEmail(contactEmail)) {
+            setContactEmailError(true);
+        } else {
+            setContacts([
+                ...contacts,
+                { name: contactName, email: contactEmail }
+            ]);
+
+            setContactName("");
+            setContactEmail("");
+            setContactEmailError("");
+        }
+    }
+
     const renderContactList = () => {
-        return (
-            <>
-                { contacts ?  
-                    <div className="ons-u-mt-l">
-                        <h3>Contacts</h3>
-                        <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
-                            {contacts.map((contact) => (
-                                <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
-                                    <div className="ons-document-list__item-content">
-                                        <div className="ons-grid__col ons-col-3@m">
-                                            <span className="ons-u-fw">{contact.name}</span>
-                                        </div>
-                                        <div className="ons-grid__col ons-col-3@m ons-push-1@m">
-                                            <span className="ons-u-fw">{contact.email}</span>
-                                        </div>
-                                        <div className="ons-grid__col ons-col-2@m ons-push-5@m">
-                                            <p>
-                                                <a
-                                                    data-testid="dataset-contact-remove"
-                                                    id="datasetRemoveContact"
-                                                    href="#"
-                                                    onClick={(e) => {
-                                                        e.preventDefault()
-                                                        setContacts(
-                                                            contacts.filter(c =>
-                                                                c.email !== contact.email
-                                                            )
-                                                        );
-                                                    }}
-                                                >
-                                                    Remove
-                                                </a>
-                                            </p>
-                                        </div>
+        if (contacts) {
+            return (
+                <div className="ons-u-mt-l">
+                    <h3>Contacts</h3>
+                    <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
+                        {contacts.map((contact) => (
+                            <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
+                                <div className="ons-document-list__item-content">
+                                    <div className="ons-grid__col ons-col-3@m">
+                                        <span className="ons-u-fw">{contact.name}</span>
                                     </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    : null}
-            </>
-        );
+                                    <div className="ons-grid__col ons-col-3@m ons-push-1@m">
+                                        <span className="ons-u-fw">{contact.email}</span>
+                                    </div>
+                                    <div className="ons-grid__col ons-col-2@m ons-push-5@m">
+                                        <p>
+                                            <a
+                                                data-testid="dataset-contact-remove"
+                                                id="datasetRemoveContact"
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    setContacts(
+                                                        contacts.filter(c =>
+                                                            c.email !== contact.email
+                                                        )
+                                                    );
+                                                }}
+                                            >
+                                                Remove
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )
+        }
     };
 
     return (
@@ -90,20 +103,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     variants={[
                         "small"
                     ]}
-                    onClick={() => {
-                        if (!isEmail(contactEmail)) {
-                            setContactEmailError(true);
-                        } else {
-                            setContacts([
-                                ...contacts,
-                                { name: contactName, email: contactEmail }
-                            ]);
-
-                            setContactName("");
-                            setContactEmail("");
-                            setContactEmailError("");
-                        }
-                    }}
+                    onClick={() => { addContact() }}
                 />
                 {renderContactList()}
                 <input id="dataset-series-contacts" type="hidden" name="dataset-series-contacts" value={JSON.stringify(contacts)} />

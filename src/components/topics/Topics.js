@@ -9,6 +9,21 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
         const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
         const selected = selectedTopics.includes(topicId)
 
+        const topicOnChange = () => {
+            if (!selectedTopics.includes(topicId)) {
+                setSelectedTopics([
+                    ...selectedTopics,
+                    topicId
+                ]);
+            } else {
+                setSelectedTopics(
+                    selectedTopics.filter(t =>
+                        t !== topicId
+                    )
+                );
+            }
+        }
+
         if (topicId && topicTitle) {
             checkboxOptions.push({
                 dataTestId: 'checkbox-' + topicId,
@@ -16,21 +31,7 @@ export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopi
                 label: {
                     text: topicTitle
                 },
-                onClick: () => { },
-                onChange: () => {
-                    if (!selectedTopics.includes(topicId)) {
-                        setSelectedTopics([
-                            ...selectedTopics,
-                            topicId
-                        ]);
-                    } else {
-                        setSelectedTopics(
-                            selectedTopics.filter(t =>
-                                t !== topicId
-                            )
-                        );
-                    }
-                },
+                onChange: () => { topicOnChange() },
                 value: topicId,
                 checked: selected
             });

@@ -25,6 +25,12 @@ describe("Contact", () => {
         const heading = screen.getByRole('heading', { level: 2, name: /Add Contacts/i });
         expect(heading).toBeInTheDocument();
 
+        const contactName = screen.getByTestId("dataset-series-contact-name");
+        expect(contactName).toBeInTheDocument();
+
+        const contactEmail = screen.getByTestId("dataset-series-contact-email");
+        expect(contactEmail).toBeInTheDocument();
+
         const headingTwo = screen.getByRole('heading', { level: 3, name: /Contacts/i });
         expect(headingTwo).toBeInTheDocument();
 
