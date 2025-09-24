@@ -9,7 +9,8 @@ import { Panel, Summary } from "@/components/design-system/DesignSystem";
 import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
 import PageHeading from "@/components/page-heading/PageHeading";
 
-import { mapListItems, mapContentItems } from "./mapper";
+import { mapListItems } from "./mapper";
+import { mapSeriesSummary } from "@/components/design-system/summary-mapper";
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
 export default async function Dataset({ params, searchParams }) {
@@ -52,7 +53,7 @@ export default async function Dataset({ params, searchParams }) {
     const editURL = `/data-admin/series/${id}/edit`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const contentItems = mapContentItems(dataset, editURL, topicTitles);
+    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
 
@@ -81,7 +82,7 @@ export default async function Dataset({ params, searchParams }) {
                     { renderEditionsList() }
                 </div>
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
-                    <Summary summaries={contentItems} />
+                    <Summary summaries={seriesSummaryItems} />
                 </div>
             </div>
         </>

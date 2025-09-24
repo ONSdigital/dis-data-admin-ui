@@ -1,3 +1,5 @@
+import { formatDate } from "@/utils/datetime/datetime";
+
 const mapStateToUserFriendlyString = (state) => {
     switch (state) {
         case "associated":
@@ -17,7 +19,8 @@ const mapListItems = (items, datasetID, editionID) => {
             id: index + 1,
             url: `/series/${datasetID}/editions/${editionID}/versions/${index + 1}`,
             title: `Version: ${index + 1}`,
-            state: mapStateToUserFriendlyString(item.state)
+            state: mapStateToUserFriendlyString(item.state), 
+            release_date: formatDate(item.release_date),
         };
     });
 };
