@@ -4,25 +4,26 @@ import { Field, Button, Checkbox } from "author-design-system-react";
 
 export default function Topics({listOfAllTopics, selectedTopics, setSelectedTopics, topicsError}) {
     const checkboxOptions = []
+
+    const topicOnChange = () => {
+        if (!selectedTopics.includes(topicId)) {
+            setSelectedTopics([
+                ...selectedTopics,
+                topicId
+            ]);
+        } else {
+            setSelectedTopics(
+                selectedTopics.filter(t =>
+                    t !== topicId
+                )
+            );
+        }
+    }
+
     listOfAllTopics.forEach(topic => {
         const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
         const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
         const selected = selectedTopics.includes(topicId)
-
-        const topicOnChange = () => {
-            if (!selectedTopics.includes(topicId)) {
-                setSelectedTopics([
-                    ...selectedTopics,
-                    topicId
-                ]);
-            } else {
-                setSelectedTopics(
-                    selectedTopics.filter(t =>
-                        t !== topicId
-                    )
-                );
-            }
-        }
 
         if (topicId && topicTitle) {
             checkboxOptions.push({
