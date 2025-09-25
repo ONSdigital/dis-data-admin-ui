@@ -27,6 +27,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
     const renderContactList = () => {
         if (contacts.length != 0) {
+            let i = 0
             return (
                 <div className="ons-u-mt-l">
                     <h3>Contacts</h3>
@@ -43,8 +44,8 @@ export default function Contact({contacts, setContacts, contactsError}) {
                                     <div className="ons-grid__col ons-col-2@m ons-push-5@m">
                                         <p>
                                             <a
-                                                data-testid="dataset-contact-remove"
-                                                id="datasetRemoveContact"
+                                                data-testid={"dataset-remove-contact-" + i++}
+                                                id={"dataset-remove-contact-" + i++}
                                                 href="#"
                                                 onClick={(e) => {
                                                     e.preventDefault()
