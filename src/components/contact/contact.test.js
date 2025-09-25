@@ -1,28 +1,26 @@
-import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import Contact from './Contact'
+import "@testing-library/jest-dom"
+import { render, screen, fireEvent } from "@testing-library/react"
+import Contact from "./Contact"
 
 describe("Contact", () => {
     test("Contact renders props correctly", () => {
-        let contacts =
-            [
-                {
-                    "name": "Test Name",
-                    "email": "test@email.com",
-                },
-                {
-                    "name": "Test Name Two",
-                    "email": "testTwo@email.com",
-                }
-            ]
+        let contacts = [
+            {
+                "name": "Test Name",
+                "email": "test@email.com",
+            },
+            {
+                "name": "Test Name Two",
+                "email": "testTwo@email.com",
+            }
+        ];
 
-        let setContacts = jest.fn()
-
-        let contactsError = ''
+        let setContacts = jest.fn();
+        let contactsError = "";
 
         render(<Contact contacts={contacts} setContacts={setContacts} contactsError={contactsError} />);
 
-        const heading = screen.getByRole('heading', { level: 2, name: /Add Contacts/i });
+        const heading = screen.getByRole("heading", { level: 2, name: /Add Contacts/i });
         expect(heading).toBeInTheDocument();
 
         const contactName = screen.getByTestId("dataset-series-contact-name");
@@ -31,11 +29,11 @@ describe("Contact", () => {
         const contactEmail = screen.getByTestId("dataset-series-contact-email");
         expect(contactEmail).toBeInTheDocument();
 
-        const headingTwo = screen.getByRole('heading', { level: 3, name: /Contacts/i });
+        const headingTwo = screen.getByRole("heading", { level: 3, name: /Contacts/i });
         expect(headingTwo).toBeInTheDocument();
 
-        const list = screen.getAllByRole("listitem")
-        expect(list.length).toBe(2)
+        const list = screen.getAllByRole("listitem");
+        expect(list.length).toBe(2);
     })
 
     it("onChange handler updates text input state", () => {
@@ -52,14 +50,14 @@ describe("Contact", () => {
         render(<Contact contacts={[]} setContacts={handleClick} />);
 
         const contactName = screen.getByTestId("dataset-series-contact-name");
-        const contactEmail = screen.getByTestId("dataset-series-contact-email")
+        const contactEmail = screen.getByTestId("dataset-series-contact-email");
         const button = screen.getByTestId("dataset-series-add-contact-button");
 
         fireEvent.change(contactName, { target: { value: "test name" } });
         fireEvent.change(contactEmail, { target: { value: "testemail@test.com" } });
-        fireEvent.click(button)
+        fireEvent.click(button);
 
-        expect(handleClick).toHaveBeenCalledTimes(1)
+        expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("Remove contact onClick handler gets called", () => {
@@ -68,19 +66,19 @@ describe("Contact", () => {
         render(<Contact contacts={[]} setContacts={handleClick} />);
 
         const contactName = screen.getByTestId("dataset-series-contact-name");
-        const contactEmail = screen.getByTestId("dataset-series-contact-email")
+        const contactEmail = screen.getByTestId("dataset-series-contact-email");
         const addButton = screen.getByTestId("dataset-series-add-contact-button");
 
         fireEvent.change(contactName, { target: { value: "test name" } });
         fireEvent.change(contactEmail, { target: { value: "testemail@test.com" } });
-        fireEvent.click(addButton)
+        fireEvent.click(addButton);
 
-        const list = screen.getAllByRole("listitem")
-        expect(list.length).toBe(1)
+        const list = screen.getAllByRole("listitem");
+        expect(list.length).toBe(1);
 
         const removeContact = screen.getByTestId("dataset-contact-remove");
-        fireEvent.click(removeContact)
+        fireEvent.click(removeContact);
 
-        expect(list.length).toBe(1)
+        expect(list.length).toBe(1);
     });
 });
