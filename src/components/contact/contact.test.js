@@ -62,7 +62,7 @@ describe("Contact", () => {
         expect(handleClick).toHaveBeenCalledTimes(1)
     });
 
-    it("Remove onClick handler gets called", () => {
+    it("Remove contact onClick handler gets called", () => {
         const handleClick = jest.fn();
 
         render(<Contact contacts={[]} setContacts={handleClick} />);
