@@ -33,7 +33,18 @@ describe("Contact", () => {
 
         const list = screen.getAllByRole("listitem");
         expect(list.length).toBe(2);
-    })
+    });
+
+    test("Contact renders errors correctly", () => {
+        let contactsError = "";
+
+        render(<Contact contactsList={[]} contactsError={"Test error"} />);
+
+        const heading = screen.getByRole("heading", { level: 2, name: /Add Contacts/i });
+        expect(heading).toBeInTheDocument();
+        expect(screen.getByTestId("field-dataset-series-contacts-error")).toBeInTheDocument();
+        expect(screen.getByText("Test error")).toBeInTheDocument();
+    });
 
     it("onChange handler updates text input state", () => {
         render(<Contact />);
