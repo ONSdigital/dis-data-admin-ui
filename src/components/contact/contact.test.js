@@ -3,18 +3,19 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import Contact from "./Contact"
 
 describe("Contact", () => {
-    test("Contact renders props correctly", () => {
-        let contacts = [
-            {
-                "name": "Test Name",
-                "email": "test@email.com",
-            },
-            {
-                "name": "Test Name Two",
-                "email": "testTwo@email.com",
-            }
-        ];
+    let contacts = [
+        {
+            "name": "Test Name",
+            "email": "test@email.com",
+        },
+        {
+            "name": "Test Name Two",
+            "email": "testTwo@email.com",
+        }
+    ];
 
+    test("Contact renders props correctly", () => {
+        
         let setContacts = jest.fn();
         let contactsError = "";
 
@@ -62,23 +63,13 @@ describe("Contact", () => {
 
     it("Remove contact onClick handler gets called", () => {
         const handleClick = jest.fn();
+        expect(handleClick.mock.calls).toHaveLength(0);
 
-        render(<Contact contacts={[]} setContacts={handleClick} />);
+        render(<Contact contacts={contacts} setContacts={handleClick}/>);
 
-        const contactName = screen.getByTestId("dataset-series-contact-name");
-        const contactEmail = screen.getByTestId("dataset-series-contact-email");
-        const addButton = screen.getByTestId("dataset-series-add-contact-button");
-
-        fireEvent.change(contactName, { target: { value: "test name" } });
-        fireEvent.change(contactEmail, { target: { value: "testemail@test.com" } });
-        fireEvent.click(addButton);
-
-        const list = screen.getAllByRole("listitem");
-        expect(list.length).toBe(1);
-
-        const removeContact = screen.getByTestId("dataset-contact-remove");
+        const removeContact = screen.getByTestId("dataset-remove-contact-0");
         fireEvent.click(removeContact);
 
-        expect(list.length).toBe(1);
+        expect(handleClick).toHaveBeenCalledTimes(1);
     });
 });
