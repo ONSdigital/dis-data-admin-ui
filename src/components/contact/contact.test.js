@@ -45,7 +45,7 @@ describe("Contact", () => {
         expect(contactName.value).toBe("test name");
     });
 
-    it("onClick handler gets called", () => {
+    it("Add contact onClick handler gets called", () => {
         const handleClick = jest.fn();
         expect(handleClick.mock.calls).toHaveLength(0);
 
@@ -60,5 +60,27 @@ describe("Contact", () => {
         fireEvent.click(button)
 
         expect(handleClick).toHaveBeenCalledTimes(1)
+    });
+
+    it("Remove onClick handler gets called", () => {
+        const handleClick = jest.fn();
+
+        render(<Contact contacts={[]} setContacts={handleClick} />);
+
+        const contactName = screen.getByTestId("dataset-series-contact-name");
+        const contactEmail = screen.getByTestId("dataset-series-contact-email")
+        const addButton = screen.getByTestId("dataset-series-add-contact-button");
+
+        fireEvent.change(contactName, { target: { value: "test name" } });
+        fireEvent.change(contactEmail, { target: { value: "testemail@test.com" } });
+        fireEvent.click(addButton)
+
+        const list = screen.getAllByRole("listitem")
+        expect(list.length).toBe(1)
+
+        const removeContact = screen.getByTestId("dataset-contact-remove");
+        fireEvent.click(removeContact)
+
+        expect(list.length).toBe(1)
     });
 });

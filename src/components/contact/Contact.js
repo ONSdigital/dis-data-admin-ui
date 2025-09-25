@@ -8,11 +8,19 @@ import { TextInput, Field, Button } from "author-design-system-react";
 export default function Contact({contacts, setContacts, contactsError}) {
     const [contactName, setContactName] = useState("");
     const [contactEmail, setContactEmail] = useState("");
-    const [contactEmailError, setContactEmailError] = useState("");
+
+    const [fieldContactError, setFieldContactError] = useState(false);
+    const [fieldContactErrorText, setFieldContactErrorText] = useState("");
+
+    if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" || )) {
+        setFieldContactError(true)
+        setFieldContactErrorText(contactsError)
+    }
 
     const addContact = () => {
         if (!isEmail(contactEmail)) {
-            setContactEmailError(true);
+            setFieldContactError(true)
+            setFieldContactErrorText("Invalid Email")
         } else {
             setContacts([
                 ...contacts,
@@ -21,7 +29,8 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
             setContactName("");
             setContactEmail("");
-            setContactEmailError("");
+            setFieldContactError(false);
+            setFieldContactErrorText("");
         }
     }
 
@@ -71,7 +80,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
     return (
         <>
-            <Field dataTestId="field-dataset-series-contacts" error={contactsError ? { id: "dataset-series-contacts-error", text: contactsError } : null}>
+            <Field dataTestId="field-dataset-series-contacts" error={fieldContactError ? { id: "dataset-series-contacts-error", text: fieldContactErrorText } : null}>
                 <h2>Add Contacts</h2>
                 <TextInput
                     id="dataset-series-contact-name"
@@ -93,7 +102,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     }}
                     value={contactEmail}
                     onChange={e => setContactEmail(e.target.value)}
-                    error={(contactEmailError) ? { id: "dataSeriesEmailError", text: "Invalid email" } : null}
+                    // error={(contactEmailError) ? { id: "dataSeriesEmailError", text: "Invalid email" } : null}
                     fieldClasses="ons-u-dib ons-u-ml-xs"
                 />
                 <Button
