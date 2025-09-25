@@ -11,6 +11,8 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
 
+    console.log(contacts)
+
     const addContact = () => {
         if (!contactName.length && !contactEmail.length) {
             setContactNameError("Name is required");
@@ -49,7 +51,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
             <h3>Contacts</h3>
             <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
                 {contacts.map((contact, index) => (
-                    <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
+                    <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" data-testid={"contact-item-" + index} key={contact.email}>
                         <div className="ons-document-list__item-content">
                             <div className="ons-grid__col ons-col-3@m">
                                 <span className="ons-u-fw">{contact.name}</span>
