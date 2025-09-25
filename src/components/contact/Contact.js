@@ -40,47 +40,48 @@ export default function Contact({contacts, setContacts, contactsError}) {
     }
 
     const renderContactList = () => {
-        if (contacts?.length != 0) {
-            let i = 0
-            return (
-                <div className="ons-u-mt-l">
-                    <h3>Contacts</h3>
-                    <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
-                        {contacts.map((contact) => (
-                            <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
-                                <div className="ons-document-list__item-content">
-                                    <div className="ons-grid__col ons-col-3@m">
-                                        <span className="ons-u-fw">{contact.name}</span>
-                                    </div>
-                                    <div className="ons-grid__col ons-col-3@m ons-push-1@m">
-                                        <span className="ons-u-fw">{contact.email}</span>
-                                    </div>
-                                    <div className="ons-grid__col ons-col-2@m ons-push-5@m">
-                                        <p>
-                                            <a
-                                                data-testid={"dataset-remove-contact-" + i++}
-                                                id={"dataset-remove-contact-" + i++}
-                                                href="#"
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    setContacts(
-                                                        contacts.filter(c =>
-                                                            c.email !== contact.email
-                                                        )
-                                                    );
-                                                }}
-                                            >
-                                                Remove
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )
+        if (!contacts?.length) {
+            return;
         }
+
+    return (
+        <div className="ons-u-mt-l">
+            <h3>Contacts</h3>
+            <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
+                {contacts.map((contact) => (
+                    <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
+                        <div className="ons-document-list__item-content">
+                            <div className="ons-grid__col ons-col-3@m">
+                                <span className="ons-u-fw">{contact.name}</span>
+                            </div>
+                            <div className="ons-grid__col ons-col-3@m ons-push-1@m">
+                                <span className="ons-u-fw">{contact.email}</span>
+                            </div>
+                            <div className="ons-grid__col ons-col-2@m ons-push-5@m">
+                                <p>
+                                    <a
+                                        data-testid={"dataset-remove-contact-" + i++}
+                                        id={"dataset-remove-contact-" + i++}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            setContacts(
+                                                contacts.filter(c =>
+                                                    c.email !== contact.email
+                                                )
+                                            );
+                                        }}
+                                    >
+                                        Remove
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
     };
 
     return (
