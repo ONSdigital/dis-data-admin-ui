@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import isEmail from 'validator/lib/isEmail';
+import { useState } from "react";
+import isEmail from "validator/lib/isEmail";
 
 import { TextInput, Field, Button } from "author-design-system-react";
 
@@ -10,14 +10,6 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [contactNameError, setContactNameError] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
-
-    // const [fieldContactError, setFieldContactError] = useState(false);
-    // const [fieldContactErrorText, setFieldContactErrorText] = useState("");
-
-    // if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" )) {
-    //     setFieldContactError(true)
-    //     setFieldContactErrorText(contactsError)
-    // }
 
     const addContact = () => {
         if (!contactName.length && !contactEmail.length) {
@@ -105,7 +97,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     value={contactName}
                     onChange={e => setContactName(e.target.value)}
                     fieldClasses="ons-u-dib"
-                    error={ contactNameError ? {id:'contact-name-error', text: contactNameError} : null}
+                    error={ contactNameError ? {id:"contact-name-error", text: contactNameError} : null}
                 />
                 <TextInput
                     id="dataset-series-contact-email"
@@ -116,7 +108,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     }}
                     value={contactEmail}
                     onChange={e => setContactEmail(e.target.value)}
-                    error={ contactEmailError ? {id:'contact-email-error', text: contactEmailError} : null}
+                    error={ contactEmailError ? {id:"contact-email-error", text: contactEmailError} : null}
                     fieldClasses="ons-u-dib ons-u-ml-xs"
                 />
                 <Button
