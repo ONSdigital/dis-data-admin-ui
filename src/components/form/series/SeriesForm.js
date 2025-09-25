@@ -16,7 +16,6 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
     const [description, setDescription] = useState(currentDescription);
     const [qmi, setQMI] = useState(currentQMI);
     const [keywords, setKeywords] = useState(currentKeywords);
-    const [contacts, setContacts] = useState(currentContacts);
 
     const [formState, formAction, isPending] = useActionState(action, {});
 
@@ -126,8 +125,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     onChange={e => setKeywords(e.target.value)}
                 />
                 <Contact 
-                    contacts={contacts} 
-                    setContacts={setContacts} 
+                    contactsList={currentContacts} 
                     contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : null}
                 />
                 <button data-testid="dataset-series-save" type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
