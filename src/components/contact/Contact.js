@@ -11,8 +11,6 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
 
-    console.log(contacts)
-
     const addContact = () => {
         if (!contactName.length && !contactEmail.length) {
             setContactNameError("Name is required");
