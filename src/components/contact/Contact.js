@@ -7,35 +7,48 @@ import { TextInput, Field, Button } from "author-design-system-react";
 
 export default function Contact({contacts, setContacts, contactsError}) {
     const [contactName, setContactName] = useState("");
+    const [contactNameError, setContactNameError] = useState("");
     const [contactEmail, setContactEmail] = useState("");
+    const [contactEmailError, setContactEmailError] = useState("");
 
-    const [fieldContactError, setFieldContactError] = useState(false);
-    const [fieldContactErrorText, setFieldContactErrorText] = useState("");
+    // const [fieldContactError, setFieldContactError] = useState(false);
+    // const [fieldContactErrorText, setFieldContactErrorText] = useState("");
 
-    if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" )) {
-        setFieldContactError(true)
-        setFieldContactErrorText(contactsError)
-    }
+    // if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" )) {
+    //     setFieldContactError(true)
+    //     setFieldContactErrorText(contactsError)
+    // }
 
     const addContact = () => {
-        if (!isEmail(contactEmail)) {
-            setFieldContactError(true)
-            setFieldContactErrorText("Invalid Email")
-        } else {
-            setContacts([
-                ...contacts,
-                { name: contactName, email: contactEmail }
-            ]);
-
-            setContactName("");
-            setContactEmail("");
-            setFieldContactError(false);
-            setFieldContactErrorText("");
+        if (!contactName.length && !contactEmail.length) {
+            setContactNameError("Name is required");
+            setContactEmailError("Email is required");
+            return;
         }
+        if (!contactName.length && isEmail(contactEmail)) {
+            setContactNameError("Name is required");
+            setContactEmailError("");
+            return;
+        }
+        if (contactName.length && !isEmail(contactEmail)) {
+            setContactNameError("");
+            setContactEmailError("Email is invalid");
+            return;
+        }
+
+        setContacts([
+            ...contacts,
+            { name: contactName, email: contactEmail }
+        ]);
+
+        setContactName("");
+        setContactEmail("");
+        setContactNameError("");
+        setContactEmailError("");
     }
 
     const renderContactList = () => {
-        if (contacts.length != 0) {
+        if (contacts?.length != 0) {
             let i = 0
             return (
                 <div className="ons-u-mt-l">
@@ -80,7 +93,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
     return (
         <>
-            <Field dataTestId="field-dataset-series-contacts" error={fieldContactError ? { id: "dataset-series-contacts-error", text: fieldContactErrorText } : null}>
+            <Field dataTestId="field-dataset-series-contacts">
                 <h2>Add Contacts</h2>
                 <TextInput
                     id="dataset-series-contact-name"
@@ -92,6 +105,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     value={contactName}
                     onChange={e => setContactName(e.target.value)}
                     fieldClasses="ons-u-dib"
+                    error={ contactNameError ? {id:'contact-name-error', text: contactNameError} : null}
                 />
                 <TextInput
                     id="dataset-series-contact-email"
@@ -102,7 +116,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
                     }}
                     value={contactEmail}
                     onChange={e => setContactEmail(e.target.value)}
-                    // error={(contactEmailError) ? { id: "dataSeriesEmailError", text: "Invalid email" } : null}
+                    error={ contactEmailError ? {id:'contact-email-error', text: contactEmailError} : null}
                     fieldClasses="ons-u-dib ons-u-ml-xs"
                 />
                 <Button
