@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render, screen, fireEvent } from "@testing-library/react"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import Contact from "./Contact"
 
 describe("Contact", () => {
@@ -10,16 +10,14 @@ describe("Contact", () => {
         },
         {
             "name": "Test Name Two",
-            "email": "testTwo@email.com",
+            "email": "test.two@email.com",
         }
     ];
 
     test("Contact renders props correctly", () => {
-        
-        let setContacts = jest.fn();
         let contactsError = "";
 
-        render(<Contact contacts={contacts} setContacts={setContacts} contactsError={contactsError} />);
+        render(<Contact contactsList={contacts} contactsError={contactsError} />);
 
         const heading = screen.getByRole("heading", { level: 2, name: /Add Contacts/i });
         expect(heading).toBeInTheDocument();
@@ -45,31 +43,32 @@ describe("Contact", () => {
     });
 
     it("Add contact onClick handler gets called", () => {
-        const handleClick = jest.fn();
-        expect(handleClick.mock.calls).toHaveLength(0);
+        render(<Contact contactsList={[]}  />);
 
-        render(<Contact contacts={[]} setContacts={handleClick} />);
-
+        expect(screen.queryByTestId("contact-item-test@email.com")).not.toBeInTheDocument();
         const contactName = screen.getByTestId("dataset-series-contact-name");
         const contactEmail = screen.getByTestId("dataset-series-contact-email");
         const button = screen.getByTestId("dataset-series-add-contact-button");
 
         fireEvent.change(contactName, { target: { value: "test name" } });
-        fireEvent.change(contactEmail, { target: { value: "testemail@test.com" } });
+        fireEvent.change(contactEmail, { target: { value: "test@email.com" } });
         fireEvent.click(button);
 
-        expect(handleClick).toHaveBeenCalledTimes(1);
+        expect(screen.getByTestId("contact-item-test@email.com")).toBeInTheDocument();
     });
 
-    it("Remove contact onClick handler gets called", () => {
-        const handleClick = jest.fn();
-        expect(handleClick.mock.calls).toHaveLength(0);
+    it("Remove contact onClick handler gets called", async () => {
+        render(<Contact contactsList={contacts} />);
 
-        render(<Contact contacts={contacts} setContacts={handleClick}/>);
+        expect(screen.getByTestId("contact-item-test@email.com")).toBeInTheDocument();
+        expect(screen.getByTestId("contact-item-test.two@email.com")).toBeInTheDocument();
 
         const removeContact = screen.getByTestId("dataset-remove-contact-0");
         fireEvent.click(removeContact);
 
-        expect(handleClick).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(screen.queryByTestId("contact-item-test@email.com")).not.toBeInTheDocument();
+            expect(screen.getByTestId("contact-item-test.two@email.com")).toBeInTheDocument();
+        });
     });
 });
