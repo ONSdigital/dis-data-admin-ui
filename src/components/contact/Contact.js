@@ -12,7 +12,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
     const [fieldContactError, setFieldContactError] = useState(false);
     const [fieldContactErrorText, setFieldContactErrorText] = useState("");
 
-    if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" || )) {
+    if (contactsError && (!fieldContactError || fieldContactError == "Invalid Email" )) {
         setFieldContactError(true)
         setFieldContactErrorText(contactsError)
     }
