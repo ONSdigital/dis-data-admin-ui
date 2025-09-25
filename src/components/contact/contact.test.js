@@ -36,8 +36,6 @@ describe("Contact", () => {
     });
 
     test("Contact renders errors correctly", () => {
-        let contactsError = "";
-
         render(<Contact contactsList={[]} contactsError={"Test error"} />);
 
         const heading = screen.getByRole("heading", { level: 2, name: /Add Contacts/i });
