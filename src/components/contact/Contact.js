@@ -85,7 +85,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
 
     return (
         <>
-            <Field dataTestId="field-dataset-series-contacts">
+            <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:"dataset-series-contacts-error", text: contactsError} : null}>
                 <h2>Add Contacts</h2>
                 <TextInput
                     id="dataset-series-contact-name"
