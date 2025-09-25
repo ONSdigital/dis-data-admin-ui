@@ -48,7 +48,7 @@ export default function Contact({contacts, setContacts, contactsError}) {
         <div className="ons-u-mt-l">
             <h3>Contacts</h3>
             <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
-                {contacts.map((contact) => (
+                {contacts.map((contact, index) => (
                     <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" key={contact.email}>
                         <div className="ons-document-list__item-content">
                             <div className="ons-grid__col ons-col-3@m">
@@ -60,8 +60,8 @@ export default function Contact({contacts, setContacts, contactsError}) {
                             <div className="ons-grid__col ons-col-2@m ons-push-5@m">
                                 <p>
                                     <a
-                                        data-testid={"dataset-remove-contact-" + i++}
-                                        id={"dataset-remove-contact-" + i++}
+                                        data-testid={"dataset-remove-contact-" + index}
+                                        id={"dataset-remove-contact-" + index}
                                         href="#"
                                         onClick={(e) => {
                                             e.preventDefault()
