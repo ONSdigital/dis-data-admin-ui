@@ -86,7 +86,7 @@ export default async function Edition({ params, searchParams }) {
                 breadcrumbs={breadcrumbs}
                 showPanel={unpublishedVersion}
                 panelText="An unpublished version exists so cannot add new dataset version."
-                disbaleButton={!unpublishedVersion}
+                disableButton={unpublishedVersion}
             /> 
             <div className="ons-grid ons-u-mt-xl">
                 <div className="ons-grid__col ons-col-4@m">
