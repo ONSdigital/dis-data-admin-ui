@@ -12,7 +12,6 @@ import TextArea from "@/components/textarea/Textarea";
 export default function SeriesForm({currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, action}) {
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
-    const [selectedTopics, setSelectedTopics] = useState(currentTopics);
     const [description, setDescription] = useState(currentDescription);
     const [qmi, setQMI] = useState(currentQMI);
     const [keywords, setKeywords] = useState(currentKeywords);
@@ -86,8 +85,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 />
                 <Topics 
                     listOfAllTopics={listOfAllTopics} 
-                    selectedTopics={selectedTopics} 
-                    setSelectedTopics={setSelectedTopics} 
+                    preSelectedTopics={currentTopics}
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
                 <TextArea 
