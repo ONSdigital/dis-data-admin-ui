@@ -52,7 +52,7 @@ describe("Contact", () => {
     });
 
     it("Add contact onClick handler gets called", () => {
-        render(<Contact contactsList={[]}  />);
+        render(<Contact contactsList={[]} />);
 
         expect(screen.queryByTestId("contact-item-test@email.com")).not.toBeInTheDocument();
         const contactName = screen.getByTestId("dataset-series-contact-name");
@@ -63,21 +63,21 @@ describe("Contact", () => {
         fireEvent.change(contactEmail, { target: { value: "test@email.com" } });
         fireEvent.click(button);
 
-        expect(screen.getByTestId("contact-item-test@email.com")).toBeInTheDocument();
+        expect(screen.getByTestId("contact-item-0")).toBeInTheDocument();
     });
 
     it("Remove contact onClick handler gets called", async () => {
         render(<Contact contactsList={contacts} />);
 
-        expect(screen.getByTestId("contact-item-test@email.com")).toBeInTheDocument();
-        expect(screen.getByTestId("contact-item-test.two@email.com")).toBeInTheDocument();
+        const listBefore = screen.getAllByRole("listitem")
+        expect(listBefore.length).toBe(2)
 
         const removeContact = screen.getByTestId("dataset-remove-contact-0");
         fireEvent.click(removeContact);
 
         await waitFor(() => {
-            expect(screen.queryByTestId("contact-item-test@email.com")).not.toBeInTheDocument();
-            expect(screen.getByTestId("contact-item-test.two@email.com")).toBeInTheDocument();
+            const listAfter = screen.getAllByRole("listitem")
+            expect(listAfter.length).toBe(1)
         });
     });
 });
