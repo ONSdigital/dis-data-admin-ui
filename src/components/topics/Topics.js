@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from "react";
 import { Field, Button, Checkbox } from "author-design-system-react";
@@ -17,8 +17,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
             if (topicId && topicTitle) {
                 checkboxOptions.push({
-                    dataTestId: 'checkbox-' + topicId,
-                    id: 'checkbox-' + topicId,
+                    dataTestId: "checkbox-" + topicId,
+                    id: "checkbox-" + topicId,
                     label: {
                         text: topicTitle
                     },
@@ -48,7 +48,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
     return (
         <>
-            <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: 'dataset-series-topics-error', text: topicsError } : null}>
+            <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
                 <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(selectedTopics)} />
                 <Checkbox
                     id="dataset-series-topics"
@@ -56,36 +56,21 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                     items={checkboxOptionsItems}
                     legend="Topics"
                     borderless
-                    classes='ons-u-mb-m'
+                    classes="ons-u-mb-m"
                 />
                 <Button
                     id="dataset-series-clear-topic-selection-button"
                     dataTestId="dataset-series-clear-topic-selection-button"
                     text="Clear Selection"
                     variants={[
-                        'secondary',
-                        'small'
+                        "secondary",
+                        "small"
                     ]}
                     onClick={() => {
-                        const y = []
-                        listOfAllTopics.forEach(topic => {
-                            const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
-                            const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
-
-                            if (topicId && topicTitle) {
-                                y.push({
-                                    dataTestId: 'checkbox-' + topicId,
-                                    id: 'checkbox-' + topicId,
-                                    label: {
-                                        text: topicTitle
-                                    },
-                                    onChange: () => { topicOnChange },
-                                    value: topicId,
-                                });
-                            }
-                        });
-                        const x = {itemsList: y}
-                        setCheckboxOptionsItems(x)
+                        var inputs = document.querySelectorAll("input[type='checkbox']");
+                        for (var i = 0; i < inputs.length; i++) {
+                            inputs[i].checked = false;
+                        }
                         setSelectedTopics([])
                     }}
                 />
