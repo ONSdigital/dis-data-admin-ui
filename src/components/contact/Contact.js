@@ -40,6 +40,14 @@ export default function Contact({contactsList, contactsError}) {
         setContactEmailError("");
     }
 
+    const removeContact = (email) => {
+        setContacts(
+            contacts.filter(c =>
+                c.email !== email
+            )
+        );
+    }
+
     const renderContactList = () => {
         if (!contacts?.length) {
             return;
@@ -66,11 +74,7 @@ export default function Contact({contactsList, contactsError}) {
                                         href="#"
                                         onClick={(e) => {
                                             e.preventDefault()
-                                            setContacts(
-                                                contacts.filter(c =>
-                                                    c.email !== contact.email
-                                                )
-                                            );
+                                            removeContact(contact.email)
                                         }}
                                     >
                                         Remove
