@@ -25,7 +25,7 @@ export default function Contact({contactsList, contactsError}) {
         }
         if (contactName.length && !isEmail(contactEmail)) {
             setContactNameError("");
-            setContactEmailError("Email is invalid");
+            setContactEmailError("Invalid email");
             return;
         }
 

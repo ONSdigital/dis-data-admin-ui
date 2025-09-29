@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { Field, Button, Checkbox } from "author-design-system-react";
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
-    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || [])
-    const [checkboxOptionsItems, setCheckboxOptionsItems] = useState({ itemsList: [] })
+    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics)
+    const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
-    const checkboxOptions = []
+    console.log(selectedTopics)
 
-    useEffect(() => {
+    function createCheckboxes() {
+        const checkboxOptions = []
         listOfAllTopics.forEach(topic => {
             const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
             const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
@@ -22,21 +23,22 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                     label: {
                         text: topicTitle
                     },
-                    onChange: () => { topicOnChange },
+                    onChange: () => { topicOnChange(topicId) },
                     value: topicId,
                     checked: selected
                 });
             }
         });
-        setCheckboxOptionsItems({ itemsList: checkboxOptions })
-    }, []);
+        return ({ itemsList: checkboxOptions })
+    }
 
-    const topicOnChange = () => {
+    useEffect(() => {
+        setCheckboxOptionsItems(createCheckboxes)
+    }, [selectedTopics]);
+
+    const topicOnChange = (topicId) => {
         if (!selectedTopics.includes(topicId)) {
-            setSelectedTopics([
-                ...selectedTopics,
-                topicId
-            ]);
+            setSelectedTopics([...selectedTopics, topicId]);
         } else {
             setSelectedTopics(
                 selectedTopics.filter(t =>
