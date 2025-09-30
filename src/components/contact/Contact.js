@@ -13,20 +13,24 @@ export default function Contact({contactsList, contactsError}) {
     const [contactEmailError, setContactEmailError] = useState("");
 
     const addContact = () => {
-        if (!contactName.length && !contactEmail.length) {
+        setContactNameError("");
+        setContactEmailError("");
+        let error = false;
+
+        if (!contactName.length) {
             setContactNameError("Name is required");
+            error = true;
+        }
+        if (!contactEmail.length) {
             setContactEmailError("Email is required");
-            return;
+            error = true;
         }
-        if (!contactName.length && isEmail(contactEmail)) {
-            setContactNameError("Name is required");
-            setContactEmailError("");
-            return;
-        }
-        if (contactName.length && !isEmail(contactEmail)) {
-            setContactNameError("");
+        if (contactEmail.length && !isEmail(contactEmail)) {
             setContactEmailError("Invalid email");
-            return;
+            error = true;
+        }
+        if (error) {
+            return
         }
 
         setContacts([
@@ -36,8 +40,6 @@ export default function Contact({contactsList, contactsError}) {
 
         setContactName("");
         setContactEmail("");
-        setContactNameError("");
-        setContactEmailError("");
     }
 
     const removeContact = (email) => {
@@ -53,40 +55,40 @@ export default function Contact({contactsList, contactsError}) {
             return;
         }
 
-    return (
-        <div className="ons-u-mt-l">
-            <h3>Contacts</h3>
-            <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
-                {contacts.map((contact, index) => (
-                    <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" data-testid={"contact-item-" + index} key={index}>
-                        <div className="ons-document-list__item-content">
-                            <div className="ons-grid__col ons-col-3@m">
-                                <span className="ons-u-fw">{contact.name}</span>
+        return (
+            <div className="ons-u-mt-l">
+                <h3>Contacts</h3>
+                <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
+                    {contacts.map((contact, index) => (
+                        <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" data-testid={"contact-item-" + index} key={index}>
+                            <div className="ons-document-list__item-content">
+                                <div className="ons-grid__col ons-col-3@m">
+                                    <span className="ons-u-fw">{contact.name}</span>
+                                </div>
+                                <div className="ons-grid__col ons-col-3@m ons-push-1@m">
+                                    <span className="ons-u-fw">{contact.email}</span>
+                                </div>
+                                <div className="ons-grid__col ons-col-2@m ons-push-5@m">
+                                    <p>
+                                        <a
+                                            data-testid={"dataset-remove-contact-" + index}
+                                            id={"dataset-remove-contact-" + index}
+                                            href="#"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                removeContact(contact.email)
+                                            }}
+                                        >
+                                            Remove
+                                        </a>
+                                    </p>
+                                </div>
                             </div>
-                            <div className="ons-grid__col ons-col-3@m ons-push-1@m">
-                                <span className="ons-u-fw">{contact.email}</span>
-                            </div>
-                            <div className="ons-grid__col ons-col-2@m ons-push-5@m">
-                                <p>
-                                    <a
-                                        data-testid={"dataset-remove-contact-" + index}
-                                        id={"dataset-remove-contact-" + index}
-                                        href="#"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            removeContact(contact.email)
-                                        }}
-                                    >
-                                        Remove
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )
     };
 
     return (
