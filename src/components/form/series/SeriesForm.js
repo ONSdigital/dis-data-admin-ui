@@ -61,6 +61,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     <TextInput 
                         id="dataset-series-id"
                         dataTestId="dataset-series-id"
+                        classes="ons-input--block ons-input-number--w-50"
                         name="dataset-series-id"
                         label={{
                             text: "Series ID",
@@ -74,6 +75,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 <TextInput 
                     id="dataset-series-title"
                     dataTestId="dataset-series-title"
+                    classes="ons-input--block ons-input-number--w-50"
                     name="dataset-series-title"
                     label={{
                         text: "Title",
@@ -101,6 +103,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 <TextInput 
                     id="dataset-series-qmi"
                     dataTestId="dataset-series-qmi"
+                    classes="ons-input--block ons-input-number--w-50"
                     name="dataset-series-qmi"
                     label={{
                         text: "QMI (optional)",
@@ -113,6 +116,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                 <TextInput 
                     id="dataset-series-keywords"
                     dataTestId="dataset-series-keywords"
+                    classes="ons-input--block ons-input-number--w-50"
                     name="dataset-series-keywords"
                     label={{
                         text: "Keywords",
