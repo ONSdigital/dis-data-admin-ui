@@ -18,12 +18,6 @@ export default function VersionFields(props) {
 
     return (
         <>
-            <h2 className="ons-u-mt-xl">Dataset version details</h2>
-            <p>The information in these fields may be copied from the most recent version.</p>
-            <div className="ons-u-mb-l">
-                <Button variants="secondary" text="Copy from previous dataset"/>
-            </div>
-
             <DateTimePicker 
                 id="release-date" 
                 dataTestId="release-date" 

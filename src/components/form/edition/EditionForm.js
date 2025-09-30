@@ -50,8 +50,6 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
     return (
         <>    
             { renderFailure() }      
-            <h2>Edition details</h2>
-            <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <input id="current-edition-id" name="current-edition-id" type="hidden" value={edition?.edition} />
