@@ -7,7 +7,19 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics)
     const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
-    console.log(selectedTopics)
+    useEffect(() => {
+        setCheckboxOptionsItems(createCheckboxes)
+    }, [selectedTopics]);
+
+    useEffect(() => {
+        checkboxOptionsItems.itemsList.forEach(checkboxOption => {
+            const checkbox = document.getElementById(checkboxOption.id)
+            if (checkboxOption.checked === false) {
+                checkbox.defaultChecked = false
+            }
+        })
+    }, [checkboxOptionsItems]);
+
 
     function createCheckboxes() {
         const checkboxOptions = []
@@ -31,10 +43,6 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
         return ({ itemsList: checkboxOptions })
     }
-
-    useEffect(() => {
-        setCheckboxOptionsItems(createCheckboxes)
-    }, [selectedTopics]);
 
     const topicOnChange = (topicId) => {
         if (!selectedTopics.includes(topicId)) {
