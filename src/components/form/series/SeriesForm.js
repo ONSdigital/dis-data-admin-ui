@@ -131,7 +131,7 @@ export default function SeriesForm({currentTitle = "", currentID = "", currentDe
                     contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : null}
                 />
                 <button data-testid="dataset-series-save" type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset series</span></span>
+                    <span className="ons-btn__inner"><span className="ons-btn__text">Create dataset series</span></span>
                 </button>
                 <LinkButton
                     dataTestId="dataset-series-cancel"
