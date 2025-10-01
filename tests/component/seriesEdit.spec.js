@@ -27,7 +27,7 @@ test.describe("Edit series page", () => {
         await page.getByLabel("Name").fill("test edit name");
         await page.getByLabel("Email").fill("test-email-edit@test.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Save changes/i }).click();
 
         await expect(page.getByText("Dataset series saved")).toBeVisible();
     });
@@ -38,7 +38,7 @@ test.describe("Edit series page", () => {
         await page.goto("./series/mock-quarterly/edit")
 
         await page.getByTestId("dataset-series-title").fill("duplicate-title");
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Save changes/i }).click();
 
         await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
     });

@@ -31,7 +31,7 @@ test.describe("Create series page", () => {
         await page.getByLabel("Name").fill("test name");
         await page.getByLabel("Email").fill("test-email@test.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
         
         await page.waitForURL("**/series/mock-quarterly**");
 
@@ -44,7 +44,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
 
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
 
         await expect(page.getByText("There was a problem submitting your form")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Title is required")).toBeVisible();
@@ -81,7 +81,7 @@ test.describe("Create series page", () => {
         await page.getByLabel("Name").fill("test name");
         await page.getByLabel("Email").fill("tes-email@test.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
 
         await expect(page.getByText("A dataset series with an ID of duplicate-id already exists")).toBeVisible();
     });
@@ -99,7 +99,7 @@ test.describe("Create series page", () => {
         await page.getByLabel("Name").fill("test name");
         await page.getByLabel("Email").fill("test@email.com");
         await page.getByRole("button", { name: /Add contact/i }).click();
-        await page.getByRole("button", { name: /Save new dataset series/i }).click();
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
 
         await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
     });
