@@ -3,6 +3,14 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import SeriesForm from "./SeriesForm"
 import { datasetList } from "../../../../tests/mocks/datasets.mjs";
 
+import { useRouter } from "next/navigation";
+
+jest.mock("next/navigation", () => ({ 
+    useRouter: jest.fn().mockReturnValue({ 
+        push: jest.fn(), 
+    }), 
+}));
+
 describe("Series Form", () => {
     const listOfAllTopics = [
         {
@@ -14,20 +22,23 @@ describe("Series Form", () => {
             "title": "Census",
         }
     ]
+    
     const mockAction = jest.fn()
     const dataset = datasetList.items[2]
 
     test("Series form renders correctly", () => {
-        render(<SeriesForm listOfAllTopics={[]} action={mockAction}/>);
+        render(<SeriesForm listOfAllTopics={listOfAllTopics} action={mockAction}/>);
 
         expect(screen.getByTestId("dataset-series-id")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-topics-select")).toBeInTheDocument();
+        expect(screen.getByTestId("fieldset-dataset-series-topics-checkbox")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-description")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-qmi")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-keywords")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-contact-name")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-contact-email")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-save")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-cancel")).toBeInTheDocument();
     });
 
     test("Series form renders props correctly", () => {

@@ -26,58 +26,30 @@ describe("Topics", () => {
 
     test("Topics renders props correctly", () => {
         const selectedTopics = ['2945']
-        const setSelectedTopics = jest.fn()
 
-        render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
+        render(<Topics listOfAllTopics={listOfAllTopics} preSelectedTopics={selectedTopics}/>);
 
-        const select = screen.getByTestId('dataset-series-topics-select');
-        expect(select).toBeInTheDocument();
+        const checkboxes = screen.getByTestId('fieldset-dataset-series-topics-checkbox');
+        expect(checkboxes).toBeInTheDocument();
 
-        const list = screen.getAllByTestId("dataset-series-topics-list-item")
-        expect(list.length).toBe(1)
+        const checkbox = screen.getByTestId("dataset-series-topics-checkbox-item-business-industry-and-trade-input")
+        expect(checkbox).toBeChecked()
 
-        const options = screen.getAllByTestId("dataset-series-topics-option")
-        expect(options.length).toBe(4)
+        const options = screen.getAllByRole('checkbox')
+        expect(options.length).toBe(3)
     })
     
     it("onClick handler gets called", () => {
         const selectedTopics = ['2945']
-        const setSelectedTopics = jest.fn()
 
-        render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
+        render(<Topics listOfAllTopics={listOfAllTopics} preSelectedTopics={selectedTopics}/>);
 
-        let list = screen.getAllByTestId("dataset-series-topics-list-item")
-        expect(list.length).toBe(1)
+        const checkbox = screen.getByTestId("dataset-series-topics-checkbox-item-business-industry-and-trade-input")
+        expect(checkbox).toBeChecked()
 
-        const select = screen.getByTestId('dataset-series-topics-select');
-        const button = screen.getByTestId("dataset-series-add-topic-button");
-        fireEvent.change(select, { target: { value: 3161 } })
-
-        expect(setSelectedTopics.mock.calls).toHaveLength(0);
+        const button = screen.getByTestId("dataset-series-clear-topic-selection-button");
         fireEvent.click(button)
-        expect(setSelectedTopics).toHaveBeenCalledTimes(1)
 
-        list = screen.getAllByTestId("dataset-series-topics-list-item")
-        expect(list.length).toBe(2)
-    });
-
-    test("Dropdown list contains the expected titles", () => {
-        const selectedTopics = [];
-        const setSelectedTopics = jest.fn();
-    
-        render(<Topics listOfAllTopics={listOfAllTopics} selectedTopics={selectedTopics} setSelectedTopics={setSelectedTopics}/>);
-    
-        const options = screen.getAllByTestId("dataset-series-topics-option");
-    
-        const expectedTitles = [
-            "Select an option",
-            "Business, industry and trade",
-            "Census",
-            "Employment and labour market"
-        ];
-    
-        options.forEach((option, index) => {
-            expect(option.textContent).toBe(expectedTitles[index]);
-        });
+        expect(checkbox).not.toBeChecked()
     });
 })
