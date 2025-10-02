@@ -73,13 +73,13 @@ test.describe("Series overview page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal");
-        await expect(page.getByTestId("link-button")).toBeVisible();
+        await expect(page.getByTestId("delete-series-button")).toBeVisible();
     });
 
     test("does not show series delete button when dataset is published", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
-        await expect(page.getByTestId("link-button")).not.toBeVisible();
+        await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
 });

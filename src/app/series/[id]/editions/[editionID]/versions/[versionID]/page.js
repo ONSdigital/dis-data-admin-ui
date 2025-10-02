@@ -115,6 +115,7 @@ export default async function Version({ params, searchParams }) {
 
                             {metadata.state !== "published" && (
                                 <LinkButton
+                                    dataTestId="delete-version-button"
                                     text="Delete version"
                                     iconType="DeleteIcon"
                                     iconPosition="before"

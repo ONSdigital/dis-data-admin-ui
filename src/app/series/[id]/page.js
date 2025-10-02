@@ -87,6 +87,7 @@ export default async function Dataset({ params, searchParams }) {
 
                     {dataset.state !== "published" && (
                         <LinkButton
+                            dataTestId="delete-series-button"
                             text="Delete series"
                             iconType="DeleteIcon"
                             iconPosition="before"
