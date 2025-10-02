@@ -11,6 +11,8 @@ export default function LinkButton(props){
             id="link-button"
             dataTestId="link-button"
             text = {props.text}
+            iconType={props.iconType}
+            iconPosition={props.iconPosition}
             onClick={() => router.push(props.link)}            
         />
     );

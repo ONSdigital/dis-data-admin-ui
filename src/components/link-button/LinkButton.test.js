@@ -16,9 +16,11 @@ describe("LinkButton", () => {
         const buttonProps =  {
             text: "test",
             link: "/test",
+            iconType: "DeleteIcon",
+            iconPosition: "Before",
         }
 
-        render(<LinkButton text={buttonProps.text} link={buttonProps.link}/>);
+        render(<LinkButton text={buttonProps.text} link={buttonProps.link} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition}/>);
 
         const button = screen.getByTestId("link-button");
         expect(button).toHaveTextContent("test")
@@ -28,6 +30,8 @@ describe("LinkButton", () => {
         const buttonProps =  {
             text: "test",
             link: "/test",
+            iconType: "DeleteIcon",
+            iconPosition: "Before",
         }
 
         render(<LinkButton text={buttonProps.text} link={buttonProps.link}/>);
