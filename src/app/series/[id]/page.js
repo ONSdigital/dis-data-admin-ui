@@ -5,8 +5,9 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import List from "@/components/list/List";
+import LinkButton from "@/components/link-button/LinkButton";
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
-import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapListItems } from "./mapper";
@@ -67,7 +68,7 @@ export default async function Dataset({ params, searchParams }) {
 
     return (
         <>
-            <CreateEditSuccess query={query} message="Dataset series saved" />
+            <SuccessPanel query={query} message="Dataset series saved" />
             <PageHeading 
                 subtitle="Series"
                 title={dataset.title} 
@@ -83,6 +84,15 @@ export default async function Dataset({ params, searchParams }) {
                 </div>
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
                     <Summary summaries={seriesSummaryItems} />
+
+                    {dataset.state !== "published" && (
+                        <LinkButton
+                            text="Delete series"
+                            iconType="DeleteIcon"
+                            iconPosition="before"
+                            link={`/series/${id}/delete`}
+                        />
+                    )}
                 </div>
             </div>
         </>
