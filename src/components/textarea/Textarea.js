@@ -18,7 +18,7 @@ export default function TextArea(props) {
                 accessiblePlaceholder={props.accessiblePlaceholder}
                 dataTestId={sanitisedDataTestId}
                 />
-                <textarea id={sanitisedId} className="ons-input ons-input--textarea" name={props.name} value={props.value} rows="5" onChange={props.onChange} data-testid={sanitisedDataTestId}></textarea>
+                <textarea id={sanitisedId} className="ons-input ons-input--textarea" name={props.name} value={props.value} rows="3" cols="86" onChange={props.onChange} data-testid={sanitisedDataTestId}></textarea>
             </>
         );
     };

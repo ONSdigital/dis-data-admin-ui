@@ -24,8 +24,11 @@ export default async function createPage() {
         return (
             <>
                 <PageHeading 
-                    title="Create a new dataset series"
-                /> 
+                    title="Create new dataset series"
+                />
+                <Panel classes="ons-u-mb-l ons-u-dib">
+                    <p>You must fill in all fields unless marked optional</p>
+                </Panel>
                 <SeriesForm 
                     listOfAllTopics={listOfAllTopics} 
                     action={createDatasetSeries}

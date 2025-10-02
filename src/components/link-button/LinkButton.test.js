@@ -4,42 +4,36 @@ import LinkButton from "./LinkButton";
 
 import { useRouter } from "next/navigation";
 
-jest.mock("next/navigation", () => ({ 
-    useRouter: jest.fn().mockReturnValue({ 
-        push: jest.fn(), 
-    }), 
+jest.mock("next/navigation", () => ({
+    useRouter: jest.fn().mockReturnValue({
+        push: jest.fn(),
+    }),
 }));
 
+const buttonProps = {
+    id: "link-button",
+    dataTestId: "link-button",
+    iconType: "DeleteIcon",
+    iconPosition: "Before",
+    text: "test",
+    link: "/test",
+}
 
 describe("LinkButton", () => {
     test("LinkButton renders props correctly", () => {
-        const buttonProps =  {
-            text: "test",
-            link: "/test",
-            iconType: "DeleteIcon",
-            iconPosition: "Before",
-        }
-
-        render(<LinkButton text={buttonProps.text} link={buttonProps.link} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition}/>);
+        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition} text={buttonProps.text} link={buttonProps.link} />);
 
         const button = screen.getByTestId("link-button");
         expect(button).toHaveTextContent("test")
     })
 
-    it("onClick handler gets called", () => {     
-        const buttonProps =  {
-            text: "test",
-            link: "/test",
-            iconType: "DeleteIcon",
-            iconPosition: "Before",
-        }
-
-        render(<LinkButton text={buttonProps.text} link={buttonProps.link}/>);
+    it("onClick handler gets called", () => {
+        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition} text={buttonProps.text} link={buttonProps.link} />);
 
         const button = screen.getByTestId("link-button");
         fireEvent.click(button)
         expect(useRouter().push.mock.calls).toHaveLength(1);
-        expect(useRouter().push.mock.calls[0][0]).toBe("/test")    
+        expect(useRouter().push.mock.calls[0][0]).toBe("/test")
     });
 });
 
