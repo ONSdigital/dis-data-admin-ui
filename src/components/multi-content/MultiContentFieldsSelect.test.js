@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import MultiContentFieldsSelect from './MultiContentFieldsSelect';
+import "@testing-library/jest-dom"
+import { render, screen, fireEvent } from "@testing-library/react"
+import MultiContentFieldsSelect from "./MultiContentFieldsSelect";
 
 describe("MultiContentItemsSelect", () => {
     it("renders correctly when type=input", () => {

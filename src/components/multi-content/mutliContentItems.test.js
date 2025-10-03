@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import MultiContentItems from './MultiContentItems';
+import "@testing-library/jest-dom"
+import { render, screen, fireEvent } from "@testing-library/react"
+import MultiContentItems from "./MultiContentItems";
 
 describe("MultiContentItems", () => {
     it("renders correctly when type=input", () => {

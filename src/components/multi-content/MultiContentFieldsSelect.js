@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 import { Select } from "author-design-system-react";
-import TextArea from '../textarea/Textarea';
+import TextArea from "../textarea/Textarea";
 
 export default function MultiContentFieldsSelect(props) {
     const [contentType, setContentType] = useState(props.field?.type || "");

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 import { Button } from "author-design-system-react";
-import MultiContentFieldsInput from './MultiContentFieldsInput';
-import MultiContentFieldsSelect from './MultiContentFieldsSelect';
+import MultiContentFieldsInput from "./MultiContentFieldsInput";
+import MultiContentFieldsSelect from "./MultiContentFieldsSelect";
 
 export default function MultiContentItems(props) {
     const [itemsNumber, setItemsNumber] = useState(props.contentItems?.length ? props.contentItems?.length : 1);
@@ -20,7 +20,7 @@ export default function MultiContentItems(props) {
                     items.push(<MultiContentFieldsSelect key={i} field={props.contentItems?.length ? props.contentItems[i] : null} id={props.id} index={i}/>);
                     break;
                 default:
-                    console.warn("No 'fieldType' prop given");
+                    console.warn(`No "fieldType" prop given`);
             }
         }
         return <>{items}</>;
