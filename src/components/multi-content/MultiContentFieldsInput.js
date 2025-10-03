@@ -12,6 +12,11 @@ export default function MultiContentFieldsInput(props) {
     const inputID = props.id + "-input-" + props.index;
     const textareaID = props.id + "-textarea-" + props.index;
 
+    const handleInputChange = (setState, value) => {
+        setState(value);
+        props.onChange(contentTitle.length > 0 && contentBody.length > 0);
+    };
+
     return (
         <div className="ons-u-mb-m">
             <input id={props.id} name={props.id} type="hidden" value={JSON.stringify({title: contentTitle, note: contentBody})} />
@@ -24,7 +29,7 @@ export default function MultiContentFieldsInput(props) {
                     description: `Usage note title e.g. "Information on using this data"`,
                 }}
                 value={contentTitle}
-                onChange={e => setContentTitle(e.target.value)}
+                onChange={e => handleInputChange(setContentTitle, e.target.value)}
                 key={inputID}
             />
 
@@ -35,7 +40,7 @@ export default function MultiContentFieldsInput(props) {
                 label={{text: "Description"}} 
                 value={contentBody} 
                 key={textareaID} 
-                onChange={e => setContentBody(e.target.value)}
+                onChange={e => handleInputChange(setContentBody, e.target.value)}
             />
         </div>
     );
