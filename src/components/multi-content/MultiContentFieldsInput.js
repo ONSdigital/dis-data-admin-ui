@@ -32,7 +32,7 @@ export default function MultiContentFieldsInput(props) {
                 id={textareaID}
                 dataTestId={textareaID}
                 name={textareaID}
-                label={{text: 'Note'}} 
+                label={{text: "Description"}} 
                 value={contentBody} 
                 key={textareaID} 
                 onChange={e => setContentBody(e.target.value)}
