@@ -54,7 +54,7 @@ const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorI
     rows.push(item);
 };
 
-const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
+const mapSeriesSummary = (data, editBaseURL, topicTitles, contacts) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
     const actionAnchorIDPrefix = "dataset-series-";
@@ -77,6 +77,9 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
     }
 
     mapRow("QMI", data.qmi?.href, false, true, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Publisher", data.publisher.name, false, false, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Contacts", contacts, true, true, editBaseURL, actionAnchorIDPrefix, rows);
+
     return contentBody;
 };
 

@@ -33,6 +33,9 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#keywords")).toContainText("mock");
         await expect(page.locator("#keywords")).toContainText("test");
         await expect(page.locator("#qmi")).toContainText("https://www.ons.gov.uk");
+        await expect(page.locator("#publisher")).toContainText("ONS");
+        await expect(page.locator("#contacts")).toContainText("First Contact");
+        await expect(page.locator("#contacts")).toContainText("Second Contact");
     });
 
     test("handles a dataset series response error", async ({ page, context }) => {

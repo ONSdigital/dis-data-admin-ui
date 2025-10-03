@@ -4,9 +4,9 @@ import { versions } from "../../../tests/mocks/versions.mjs";
 
 describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
-        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"], ["First Contact", "Second Contact"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(10);
+        expect(mappedItems).toHaveLength(12);
         // expect "Series ID" to have single value and not have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Series ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "mock-quarterly"});
@@ -71,21 +71,35 @@ describe("mapSeriesSummary", () => {
             visuallyHiddenText: "Edit QMI",
             url: "test/foo/edit#dataset-series-qmi"
         });
+        // expect "Publisher" to have single value and not have "edit" action
+        expect(mappedItems[10].rowTitle).toBe("Publisher");
+        expect(mappedItems[10].rowItems[0].valueList[0]).toMatchObject({text: "ONS"});
+        expect(mappedItems[10].rowItems[0].actions).toBeFalsy();
+        // expect "Contacts" to have two values and have "edit" action
+        expect(mappedItems[11].rowTitle).toBe("Contacts");
+        expect(mappedItems[11].rowItems[0].valueList).toHaveLength(2)
+        expect(mappedItems[11].rowItems[0].valueList[0]).toMatchObject({text: "First Contact"});
+        expect(mappedItems[11].rowItems[0].valueList[1]).toMatchObject({text: "Second Contact"});
+        expect(mappedItems[11].rowItems[0].actions[0]).toMatchObject({
+            id: "edit-contacts",
+            visuallyHiddenText: "Edit Contacts",
+            url: "test/foo/edit#dataset-series-contacts"
+        });
     });
 
     test("returns expected object of mapped content items when no topics are passed in", () => {
-        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", []);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", [], ["First Contact", "Second Contact"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(9);
+        expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
             expect(item.rowTitle).not.toBe("Topics");
         });
     });
 
     test("returns expected object of mapped content items when no keywords are present", () => {
-        const mapped = mapSeriesSummary(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"], ["First Contact", "Second Contact"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(9);
+        expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
             expect(item.rowTitle).not.toBe("Keywords");
         });
