@@ -7,7 +7,9 @@ module.exports = {
       allowedOrigins: [
         "publishing.dp.aws.onsdigital.uk", // sandbox
         "publishing.dp-staging.aws.onsdigital.uk", // staging
-        "localhost:29500" // local when running in dataset-catalogue stack
+        "localhost:29500", // local when running in dataset-catalogue stack
+        "publishing.eks.dp.aws.onsdigital.uk", // EKS sandbox
+        "publishing.eks.dp-staging.aws.onsdigital.uk" // EKS staging
       ],
     },
   },
