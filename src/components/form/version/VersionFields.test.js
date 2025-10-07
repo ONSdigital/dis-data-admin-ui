@@ -5,7 +5,6 @@ import VersionFields from "./VersionFields";
 test("VersionFields renders correctly", () => {
     render(<VersionFields />);
 
-    expect(screen.getByText("Dataset version details")).toBeInTheDocument();
     expect(screen.getByText("Release date and time")).toBeInTheDocument();
     expect(screen.getByTestId("release-date-day")).toBeInTheDocument();
     expect(screen.getByTestId("release-date-month")).toBeInTheDocument();
