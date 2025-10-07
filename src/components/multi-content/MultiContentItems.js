@@ -27,7 +27,7 @@ export default function MultiContentItems(props) {
             switch (props.fieldType) {
                 case "input":
                     items.push(<MultiContentFieldsInput key={i}
-                        onChange={handleButtonStatus}
+                        onFieldsHaveContent={handleButtonStatus}
                         id={props.id} 
                         index={i} 
                         field={props.contentItems?.length ? props.contentItems[i] : null} 
@@ -35,7 +35,7 @@ export default function MultiContentItems(props) {
                     break;
                 case "select":
                     items.push(<MultiContentFieldsSelect key={i} 
-                        onChange={handleButtonStatus}
+                        onFieldsHaveContent={handleButtonStatus}
                         id={props.id} 
                         index={i}
                         field={props.contentItems?.length ? props.contentItems[i] : null}

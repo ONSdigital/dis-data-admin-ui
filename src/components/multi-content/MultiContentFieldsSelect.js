@@ -1,25 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { Select } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsSelect(props) {
-    const [contentType, setContentType] = useState(props.field?.type || "");
-    const [contentBody, setContentBody] = useState(props.field?.note || props.field?.description || "");
+export default function MultiContentFieldsSelect({ id, index, field, onFieldsHaveContent }) {
+    const [contentType, setContentType] = useState(field?.type || "");
+    const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 
-    const selectID = props.id + "-select-" + props.index;
-    const textareaID = props.id + "-textarea-" + props.index;
+    const selectID = id + "-select-" + index;
+    const textareaID = id + "-textarea-" + index;
+
+    const fieldsHaveContent = contentType.length > 0 && contentBody.length > 0;
+    
+    // Store latest onFieldsHaveContent in a ref so we can call it from effects without
+    // adding it to the dependency array (which could trigger an update loop)
+    const onFieldsHaveContentRef = useRef(onFieldsHaveContent);
+    useEffect(() => {
+        onFieldsHaveContentRef.current = onFieldsHaveContent;
+    }, [onFieldsHaveContent]);
+
+    useEffect(() => {
+        onFieldsHaveContentRef.current(fieldsHaveContent);
+    }, [fieldsHaveContent]);
 
     const handleInputChange = (setState, value) => {
         setState(value);
-        props.onChange(contentType.length > 0 && contentBody.length > 0);
     };
 
     return (
         <div className="ons-u-mb-m">
-            <input id={props.id} name={props.id} data-testid={props.id} type="hidden" value={JSON.stringify({type: contentType, description: contentBody})} />
+            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({type: contentType, description: contentBody})} />
             <Select id={selectID} dataTestId={selectID} name={selectID} label={{text: "Type"}} onChange={e => handleInputChange(setContentType, e)} value={contentType}
                 options={[
                     {
