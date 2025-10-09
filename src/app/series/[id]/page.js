@@ -61,13 +61,8 @@ export default async function Dataset({ params, searchParams }) {
     const editURL = `/data-admin/series/${id}/edit`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
 
-    const contacts = []
-    dataset.contacts.forEach(contact => {
-        contacts.push(contact.name)
-    });
-
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, contacts);
+    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
 

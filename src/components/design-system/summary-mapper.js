@@ -54,10 +54,14 @@ const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorI
     rows.push(item);
 };
 
-const mapSeriesSummary = (data, editBaseURL, topicTitles, contacts) => {
+const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
     const actionAnchorIDPrefix = "dataset-series-";
+    const contacts = []
+    data.contacts.forEach(contact => {
+        contacts.push(contact.name)
+    });
 
     mapRow("Series ID", data.id, false, false, editBaseURL, actionAnchorIDPrefix, rows);
     mapRow("Type", data.type, false, false, editBaseURL, actionAnchorIDPrefix, rows);
