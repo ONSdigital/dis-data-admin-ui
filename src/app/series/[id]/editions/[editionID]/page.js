@@ -62,7 +62,7 @@ export default async function Edition({ params, searchParams }) {
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
-    const editURL = `/series/${id}/editions/${editionID}/edit`;
+    const editURL = `/data-admin/series/${id}/editions/${editionID}/edit`;
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
     const editionSummaryItems = mapEditionSummary(edition, editURL);
