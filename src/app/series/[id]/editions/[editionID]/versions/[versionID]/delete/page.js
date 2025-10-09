@@ -5,15 +5,14 @@ import DeleteForm from "@/components/form/DeleteForm";
 
 export default async function DeleteVersion({ params }) {
     const { id, editionID, versionID } = await params;
-    const resource = `${id}: ${editionID} - Version ${versionID}`;
 
     return (
         <>
             <PageHeading
                 title="Delete version"
-                subtitle={resource}
+                subtitle={`${id}: ${editionID} - Version ${versionID}`}
             />
-            <DeleteForm datasetID={id} editionID={editionID} versionID={versionID} resource={resource} action={deleteDatasetOrVersion} />
+            <DeleteForm datasetID={id} editionID={editionID} versionID={versionID} action={deleteDatasetOrVersion} />
         </>
     );
 }

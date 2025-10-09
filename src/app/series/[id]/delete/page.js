@@ -5,15 +5,14 @@ import DeleteForm from "@/components/form/DeleteForm";
 
 export default async function DeleteSeries({ params }) {
     const { id } = await params;
-    const resource = `${id}`;
 
     return (
         <>
             <PageHeading
                 title="Delete series"
-                subtitle={resource}
+                subtitle={id}
             />
-            <DeleteForm datasetID={id} resource={resource} action={deleteDatasetOrVersion} />
+            <DeleteForm datasetID={id} action={deleteDatasetOrVersion} />
         </>
     );
 }
