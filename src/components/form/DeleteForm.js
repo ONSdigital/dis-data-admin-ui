@@ -4,8 +4,13 @@ import { useActionState } from "react";
 
 import { Panel, Checkbox } from "author-design-system-react";
 
-export default function DeleteForm({ datasetID, editionID = "", versionID = "", resource, action }) {
+export default function DeleteForm({ datasetID, editionID = "", versionID = "", action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
+
+    let resource = datasetID;
+    if (editionID && versionID) {
+        resource += `: ${editionID} - Version ${versionID}`;
+    }
 
     if(isPending){
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -13,10 +18,10 @@ export default function DeleteForm({ datasetID, editionID = "", versionID = "", 
 
     return (
         <form action={formAction}>
-            <input type="hidden" name="dataset-id" value={datasetID} />
-            <input type="hidden" name="edition-id" value={editionID} />
-            <input type="hidden" name="version-id" value={versionID} />
-            <input type="hidden" name="resource" value={resource} />
+            <input type="hidden" name="dataset-id" value={datasetID} data-testid="hidden-dataset-id" />
+            <input type="hidden" name="edition-id" value={editionID} data-testid="hidden-edition-id" />
+            <input type="hidden" name="version-id" value={versionID} data-testid="hidden-version-id" />
+            <input type="hidden" name="resource" value={resource} data-testid="hidden-resource" />
 
             {formState?.errors?.api && (
                 <Panel
