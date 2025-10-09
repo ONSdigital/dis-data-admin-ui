@@ -22,11 +22,9 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
 
     const reqCfg = await SSRequestConfig(cookies);
     
-    let url = "";
-    if (versionID) {
-        url = `/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`;
-    } else {
-        url = `/datasets/${datasetID}`;
+    let url = `/datasets/${datasetID}`;
+    if (editionID && versionID) {
+        url += `/editions/${editionID}/versions/${versionID}`;
     }
 
     try {
