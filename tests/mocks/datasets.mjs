@@ -16,6 +16,18 @@ export const datasetList = {
                 "href": "https://www.ons.gov.uk",
                 "name": "ONS"
             },
+            "contacts": [
+                {
+                    "email": "contactOne@ons.gov.uk",
+                    "name": "First Contact",
+                    "telephone": "+44 1234 567891"
+                },
+                {
+                    "email": "contactTwo@ons.gov.uk",
+                    "name": "Second Contact",
+                    "telephone": "+44 1234 567892"
+                }
+            ],
         },
         {
             "title": "Weekly deaths",
