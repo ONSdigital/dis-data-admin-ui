@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 
-import { Radios, Select } from "author-design-system-react";
+import { Radios } from "author-design-system-react";
 
 import { ConfigContext } from "@/context/context";
 
@@ -17,9 +17,6 @@ export default function VersionFields(props) {
     const appConfig = useContext(ConfigContext);
 
     const isChecked = (fieldID) => {
-        // console.log("fieldID", fieldID)
-        // console.log("quality designation", qualityDesignation)
-        // console.log(fieldID === qualityDesignation)
         if (fieldID === qualityDesignation) { return true; }
         return false;
     }
