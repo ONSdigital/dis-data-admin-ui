@@ -19,12 +19,7 @@ export default function VersionFields(props) {
     const isChecked = (fieldID) => {
         if (fieldID === qualityDesignation) { return true; }
         return false;
-    }
-
-    const handleClick = (e) => {
-        console.log(e.target.value)
-        setQualityDesignation(e.target.value)
-    }
+    };
 
     return (
         <>
@@ -51,7 +46,7 @@ export default function VersionFields(props) {
                                 text: "National Statistic"
                             },
                             value: "accredited-official",
-                            onChange: e => handleClick(e),
+                            onChange: e => setQualityDesignation(e.target.value),
                             checked: isChecked("accredited-official")
                         },
                         {
@@ -60,7 +55,7 @@ export default function VersionFields(props) {
                                 text: "Official Statistic"
                             },
                             value: "official",
-                            onChange: e => handleClick(e),
+                            onChange: e => setQualityDesignation(e.target.value),
                             checked: isChecked("official")
                         },
                         {
@@ -69,7 +64,7 @@ export default function VersionFields(props) {
                                 text: "Official Statistic in Development"
                             },
                             value: "official-in-development",
-                            onChange: e => handleClick(e),
+                            onChange: e => setQualityDesignation(e.target.value),
                             checked: isChecked("official-in-development")
                         },
                         {
@@ -78,7 +73,7 @@ export default function VersionFields(props) {
                                 text: "No accreditation"
                             },
                             value: "no-accreditation",
-                            onChange: e => handleClick(e),
+                            onChange: e => setQualityDesignation(e.target.value),
                             checked: isChecked("no-accreditation")
                         }
                     ]
