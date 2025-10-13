@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react"
 import MultiContentItems from "./MultiContentItems";
 import { expect } from "@playwright/test";
 
@@ -17,16 +17,27 @@ describe("MultiContentItems", () => {
         expect(button.disabled).toBeTruthy();
     });
 
-    it("renders correctly when type=select", () => {
-        render(<MultiContentItems id="multi-content-test" fieldType="select" buttonLabel="Add new test item"/>);
-        const select = screen.getByTestId("select-multi-content-test-select-0");
-        expect(select).toBeInTheDocument();
+    describe("renders correctly when type=radios", () => {
+        it("and doesn't contain data e.g. 'create' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="radios" buttonLabel="Add new test item"/>);
+            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-correction-input")).not.toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-notice-input")).not.toBeInTheDocument();
 
-        const textarea = screen.getByTestId("multi-content-test-textarea-0");
-        expect(textarea).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-textarea-0")).toBeInTheDocument();
 
-        const button = screen.getByTestId("multi-content-test-add-button");
-        expect(button).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-add-button")).toBeInTheDocument();
+        });
+
+        it("and does contain data e.g. 'edit' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="radios" buttonLabel="Add new test item" contentItems={[{type: "alert", note: "test"}]}/>);
+            expect(screen.getByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-correction-input")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-notice-input")).toBeInTheDocument();
+
+            expect(screen.getByTestId("multi-content-test-textarea-0")).toBeInTheDocument();
+
+            const button = screen.getByTestId("multi-content-test-add-button");
+            expect(button).toBeInTheDocument();
+        });
     });
 
     it("clicking button adds new item", async () => {

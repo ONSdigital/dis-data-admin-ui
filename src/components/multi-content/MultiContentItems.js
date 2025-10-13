@@ -33,7 +33,7 @@ export default function MultiContentItems(props) {
                         field={props.contentItems?.length ? props.contentItems[i] : null} 
                     />);
                     break;
-                case "select":
+                case "radios":
                     items.push(<MultiContentFieldsRadios key={i} 
                         onFieldsHaveContent={handleButtonStatus}
                         showTypeOptions={props.contentItems?.length ? true : false}
