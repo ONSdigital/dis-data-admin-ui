@@ -4,11 +4,7 @@
  * @return {string} - API Router value or null
  */
 const getAPIRouterURL = (envVars) => {
-    const apiRouterURL = envVars.API_ROUTER_URL;
-    if (apiRouterURL.includes("dp-api-router:23200")) {
-        return "http://localhost:23200/v1";
-    }
-    return apiRouterURL || null;
+    return envVars.API_ROUTER_URL ? envVars.API_ROUTER_URL : null;
 };
 
 /**
