@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { Select, Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsSelect({ id, index, field, onFieldsHaveContent }) {
+export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent }) {
     const [contentType, setContentType] = useState(field?.type || "");
     const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 

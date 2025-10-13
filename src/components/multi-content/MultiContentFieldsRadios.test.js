@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
-import MultiContentFieldsSelect from "./MultiContentFieldsSelect";
+import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
 
 let onChangeHandler;
 beforeEach(() => {
@@ -9,7 +9,7 @@ beforeEach(() => {
 
 describe("MultiContentItemsSelect", () => {
     it("renders correctly when type=input", () => {
-        render(<MultiContentFieldsSelect id="multi-content-test" index={1} onChange={onChangeHandler}/>);
+        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
         const select = screen.getByTestId("multi-content-test-select-1");
         expect(select).toBeInTheDocument();
 
@@ -18,7 +18,7 @@ describe("MultiContentItemsSelect", () => {
     });
 
     it("onChange handler updates select state", () => {
-        render(<MultiContentFieldsSelect id="multi-content-test" index={1} onChange={onChangeHandler}/>);
+        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
         expect(onChangeHandler.mock.calls).toHaveLength(0);
         const select = screen.getByTestId("select-multi-content-test-select-1");
         const selectValue = screen.getByTestId("multi-content-test");
@@ -28,7 +28,7 @@ describe("MultiContentItemsSelect", () => {
     });
 
     it("onChange handler updates text area state", () => {
-        render(<MultiContentFieldsSelect id="multi-content-test" index={1} onChange={onChangeHandler}/>);
+        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
         expect(onChangeHandler.mock.calls).toHaveLength(0);
         const textarea = screen.getByTestId("multi-content-test-textarea-1");
         fireEvent.change(textarea, {target: {value: "test value"}});

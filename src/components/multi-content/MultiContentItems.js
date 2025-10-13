@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Button } from "author-design-system-react";
 import MultiContentFieldsInput from "./MultiContentFieldsInput";
-import MultiContentFieldsSelect from "./MultiContentFieldsSelect";
+import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
 
 export default function MultiContentItems(props) {
     const [itemsNumber, setItemsNumber] = useState(props.contentItems?.length ? props.contentItems?.length : 1);
@@ -34,7 +34,7 @@ export default function MultiContentItems(props) {
                     />);
                     break;
                 case "select":
-                    items.push(<MultiContentFieldsSelect key={i} 
+                    items.push(<MultiContentFieldsRadios key={i} 
                         onFieldsHaveContent={handleButtonStatus}
                         id={props.id} 
                         index={i}
