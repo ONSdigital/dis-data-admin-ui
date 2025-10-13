@@ -2,37 +2,45 @@ import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
 
-let onChangeHandler;
+let onFieldsHaveContentHandler;
 beforeEach(() => {
-    onChangeHandler = jest.fn();
+    onFieldsHaveContentHandler = jest.fn();
 });
 
 describe("MultiContentItemsSelect", () => {
-    it("renders correctly when type=input", () => {
-        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
-        const select = screen.getByTestId("multi-content-test-select-1");
-        expect(select).toBeInTheDocument();
+    describe("renders correctly", () => {
+        it("when show showTypeOptions is false", () => {
+            render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={false}/>);
 
-        const textarea = screen.getByTestId("multi-content-test-textarea-1");
-        expect(textarea).toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).not.toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).not.toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
+        });
+        it("when show showTypeOptions is true", () => {
+            render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={true}/>);
+
+            expect(screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
+        });
     });
 
-    it("onChange handler updates select state", () => {
-        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
-        expect(onChangeHandler.mock.calls).toHaveLength(0);
-        const select = screen.getByTestId("select-multi-content-test-select-1");
-        const selectValue = screen.getByTestId("multi-content-test");
-        fireEvent.change(select, {target: {value: "alert"}});
-        expect(JSON.parse(selectValue.value).type).toBe("alert");
-        expect(onChangeHandler.mock.calls).toHaveLength(1);
-    });
+    it("onFieldsHaveContent handler returns the correct value", () => {
+        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={true}/>);
+        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
+        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
 
-    it("onChange handler updates text area state", () => {
-        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onChange={onChangeHandler}/>);
-        expect(onChangeHandler.mock.calls).toHaveLength(0);
+        const radio = screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input");
+        fireEvent.click(radio);
+        expect(radio.value).toBe("correction");
+        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
+        console.log(onFieldsHaveContentHandler.mock.calls[0])
+        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+
         const textarea = screen.getByTestId("multi-content-test-textarea-1");
         fireEvent.change(textarea, {target: {value: "test value"}});
         expect(textarea.value).toBe("test value");
-        expect(onChangeHandler.mock.calls).toHaveLength(1);
+        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(2);
+        expect(onFieldsHaveContentHandler.mock.calls[1][0]).toBeTruthy();
     });
 });
