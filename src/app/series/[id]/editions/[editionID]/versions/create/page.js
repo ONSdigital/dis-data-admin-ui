@@ -9,7 +9,7 @@ export default async function CreateVersion({ params }) {
     return (
         <>
             <PageHeading 
-                title="Create new version"
+                title="Create new dataset version"
                 subtitle={`${id}: ${editionID}`}
             /> 
             <VersionForm datasetID={id} editionID={editionID} action={createDatasetVersion} />

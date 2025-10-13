@@ -9,7 +9,7 @@ export default async function CreateEditionPage({ params }) {
     return (
         <>
             <PageHeading 
-                title={`Create a new dataset edition for ${id}`}
+                title={`Create new dataset edition`}
                 subtitle={id}
             /> 
             <EditionForm datasetID={id} isNewEdition={true} action={createDatasetEdition}/>
