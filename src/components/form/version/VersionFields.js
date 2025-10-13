@@ -84,10 +84,9 @@ export default function VersionFields(props) {
             <MultiContentItems id="usage-notes" fieldType="input" buttonLabel="Add new usage note" contentItems={props.fieldValues?.usage_notes || []}></MultiContentItems>
 
             <h3 className="ons-u-mt-xl">Alerts (optional)</h3>
-            <MultiContentItems id="alerts" fieldType="select" buttonLabel="Add new alert" contentItems={props.fieldValues?.alerts || []}></MultiContentItems>
+            <MultiContentItems id="alerts" fieldType="radios" buttonLabel="Add new alert" contentItems={props.fieldValues?.alerts || []}></MultiContentItems>
 
             <h2 className="ons-u-mt-xl">Dataset file</h2>
-            <p>Select a dataset file from your local machine to upload to the Dataset Catalogue.</p>
             <ResumableFileUpload id="dataset-upload"
                 label="File upload"
                 description="Click browse or drag file here"

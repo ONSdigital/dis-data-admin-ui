@@ -12,12 +12,14 @@ test("VersionFields renders correctly", () => {
     expect(screen.getByTestId("release-date-hour")).toBeInTheDocument();
     expect(screen.getByTestId("release-date-minutes")).toBeInTheDocument();
     expect(screen.getByText("Quality designation")).toBeInTheDocument();
-    expect(screen.getByTestId("select-quality-designation")).toBeInTheDocument();
+    expect(screen.getByTestId("quality-designation-radios-item-accredited-official-input")).toBeInTheDocument();
+    expect(screen.getByTestId("quality-designation-radios-item-official-input")).toBeInTheDocument();
+    expect(screen.getByTestId("quality-designation-radios-item-official-in-development-input")).toBeInTheDocument();
+    expect(screen.getByTestId("quality-designation-radios-item-no-accreditation-input")).toBeInTheDocument();
     expect(screen.getByText("Usage notes (optional)")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-input-0")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-textarea-0")).toBeInTheDocument();
     expect(screen.getByText("Alerts (optional)")).toBeInTheDocument();
-    expect(screen.getByTestId("select-alerts-select-0")).toBeInTheDocument();
     expect(screen.getByTestId("alerts-textarea-0")).toBeInTheDocument();
     expect(screen.getByText("Dataset file")).toBeInTheDocument();
     expect(screen.getByTestId("dataset-upload-input")).toBeInTheDocument();
@@ -28,6 +30,6 @@ test("Quality designation handler works as expected", () => {
 
     const input = screen.getByTestId("quality-designation-value-input");
     expect(input.value).toBe("");
-    fireEvent.change(screen.getByTestId("select-quality-designation"), { target: { value: "official" } });
+    fireEvent.click(screen.getByTestId("quality-designation-radios-item-official-input"));
     expect(input.value).toBe("official");
 });
