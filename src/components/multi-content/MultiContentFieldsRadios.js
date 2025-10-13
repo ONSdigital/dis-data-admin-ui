@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 
-import { Select, Radios } from "author-design-system-react";
+import { Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
-import { render } from "@testing-library/react";
 
 export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent, showTypeOptions }) {
+    // set to "alert" as default option when showTypeOptions is false because we assume we are in 
+    // create mode and only alerts (not corrections) can be set when creating
     const [contentType, setContentType] = useState(field?.type || !showTypeOptions ? "alert" : "");
     const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 
@@ -33,7 +34,7 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
     const isChecked = (fieldValue) => {
         if (fieldValue === contentType) { return true; }
         return false;
-    }
+    };
 
     const renderRadioOptions = () => {
         if (!showTypeOptions) return;
@@ -67,8 +68,8 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
                     ]
                 }}
             />
-        )
-    }
+        );
+    };
 
     return (
         <div className="ons-u-mb-m">
