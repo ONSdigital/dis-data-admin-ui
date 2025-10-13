@@ -4,9 +4,10 @@ import { useState, useEffect, useRef } from "react";
 
 import { Select, Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
+import { render } from "@testing-library/react";
 
-export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent }) {
-    const [contentType, setContentType] = useState(field?.type || "");
+export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent, showTypeOptions }) {
+    const [contentType, setContentType] = useState(field?.type || !showTypeOptions ? "alert" : "");
     const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 
     const radiosID = id + "-radios-" + index;
@@ -34,9 +35,10 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
         return false;
     }
 
-    return (
-        <div className="ons-u-mb-m">
-            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: contentType, description: contentBody })} />
+    const renderRadioOptions = () => {
+        if (!showTypeOptions) return;
+
+        return (
             <Radios
                 dataTestId={radiosID}
                 legend="Alert type"
@@ -65,7 +67,13 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
                     ]
                 }}
             />
+        )
+    }
 
+    return (
+        <div className="ons-u-mb-m">
+            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: contentType, description: contentBody })} />
+            { renderRadioOptions() }
             <TextArea
                 id={textareaID}
                 dataTestId={textareaID}
