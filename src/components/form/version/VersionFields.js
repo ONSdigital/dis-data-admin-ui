@@ -38,6 +38,7 @@ export default function VersionFields(props) {
                 legend="Quality designation"
                 name="quality-designation-radios"
                 error={(props.errors && props.errors.quality_designation) ? { id: "quality-designation-error", text: props.errors.quality_designation } : null}
+                borderless={true}
                 radios={{
                     radioList: [
                         {
