@@ -27,6 +27,14 @@ export default async function Dataset({ params, searchParams }) {
         datasetError = true;
     }
 
+    if (datasetError) {
+        return (
+            <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
+                <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
+            </Panel>
+        );
+    }
+
     if (editions.ok != null && !editions.ok) {
         editionsError = true;
     } else {
@@ -52,18 +60,11 @@ export default async function Dataset({ params, searchParams }) {
     const createURL = `${id}/editions/create`;
     const editURL = `/data-admin/series/${id}/edit`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURL = await pathname();
     const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
-
-    if (datasetError) {
-        return (
-            <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
-                <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
-            </Panel>
-        );
-    }
 
     return (
         <>

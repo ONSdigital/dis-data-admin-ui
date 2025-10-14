@@ -12,6 +12,22 @@ export const datasetList = {
             "topics": ["id1", "id2"],
             "last_updated": "2000-01-01T07:00:00.000Z",
             "license": "My License",
+            "publisher": {
+                "href": "https://www.ons.gov.uk",
+                "name": "ONS"
+            },
+            "contacts": [
+                {
+                    "email": "contactOne@ons.gov.uk",
+                    "name": "First Contact",
+                    "telephone": "+44 1234 567891"
+                },
+                {
+                    "email": "contactTwo@ons.gov.uk",
+                    "name": "Second Contact",
+                    "telephone": "+44 1234 567892"
+                }
+            ],
         },
         {
             "title": "Weekly deaths",
