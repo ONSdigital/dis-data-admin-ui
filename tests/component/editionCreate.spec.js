@@ -7,8 +7,8 @@ test.describe("Create edition page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/create");
-        await expect(page.getByRole("heading", { level: 1 })).toContainText("Create new dataset edition");
-
+        await expect(page.getByTestId("page-heading-title")).toContainText("Create new dataset edition");
+        await expect(page.getByTestId("mandatory-fields-panel")).toContainText("You must fill in all fields unless marked optional");
         await expect(page.getByTestId("edition-id")).toBeVisible();
         await expect(page.getByTestId("fieldset-quality-designation-radios")).toBeVisible();
         await expect(page.getByTestId("usage-notes-input-0")).toBeVisible();

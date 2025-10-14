@@ -13,7 +13,7 @@ export default async function CreateEditionPage({ params }) {
                 title={`Create new dataset edition`}
                 subtitle={id}
             /> 
-            <Panel classes="ons-u-mb-l ons-u-dib">
+            <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
                 <p>You must fill in all fields unless marked optional</p>
             </Panel>
             <EditionForm datasetID={id} isNewEdition={true} action={createDatasetEdition}/>

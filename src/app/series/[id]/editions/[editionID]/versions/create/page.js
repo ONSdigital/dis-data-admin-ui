@@ -13,7 +13,7 @@ export default async function CreateVersion({ params }) {
                 title="Create new dataset version"
                 subtitle={`${id}: ${editionID}`}
             /> 
-            <Panel classes="ons-u-mb-l ons-u-dib">
+            <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
                 <p>You must fill in all fields unless marked optional</p>
             </Panel>
             <VersionForm datasetID={id} editionID={editionID} action={createDatasetVersion} />
