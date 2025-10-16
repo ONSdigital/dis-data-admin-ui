@@ -74,6 +74,14 @@ app.get("/datasets/:id", (req, res) => {
     res.send(dataset);
 });
 
+app.delete("/datasets/:id", (req, res) => {
+    if (req.params.id === "return-internal-server-error") {
+        res.sendStatus(500);
+        return;
+    }
+    res.sendStatus(204);
+});
+
 app.get("/datasets/:id/editions", (req, res) => {
     res.send(editions);
 });
@@ -113,6 +121,14 @@ app.put("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
                 item.version === req.params.versionID
         )
     );
+});
+
+app.delete("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
+    if (req.params.versionID === "return-internal-server-error") {
+        res.sendStatus(500);
+        return;
+    }
+    res.sendStatus(204);
 });
 
 app.get("/datasets/:id/editions/:editionID/versions/:versionID/metadata", (req, res) => {

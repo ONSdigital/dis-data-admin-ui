@@ -89,6 +89,7 @@ export const metadataList = {
                 "href": "https://www.ons.gov.uk",
                 "name": "ONS"
             },
+            "state": "published",
             "type": "static",
             "version": "1"
         },
@@ -102,12 +103,13 @@ export const metadataList = {
                     "byte_size": 4300000
                 }
             ],
+            "state": "approved",
             "last_updated": "2025-02-26T16:17:24.451Z",
             "release_date": "2025-01-26T07:00:00.000Z",
             "edition": "time-series",
-            "edition_title": "This is an edition title for version 1",
+            "edition_title": "This is an edition title for version 2",
             "id": "mock-minimal",
-            "version": "1"
+            "version": "2"
         }
     ]
 };

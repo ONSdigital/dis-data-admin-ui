@@ -71,4 +71,18 @@ test.describe("Series overview page", () => {
         await page.waitForURL("**/series/mock-quarterly/editions/time-series");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
+
+    test("shows series delete button when dataset is unpublished", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/mock-minimal");
+        await expect(page.getByTestId("delete-series-button")).toBeVisible();
+    });
+
+    test("does not show series delete button when dataset is published", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly");
+        await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
+    });
 });

@@ -13,20 +13,22 @@ jest.mock("next/navigation", () => ({
 const buttonProps = {
     id: "link-button",
     dataTestId: "link-button",
+    iconType: "DeleteIcon",
+    iconPosition: "Before",
     text: "test",
     link: "/test",
 }
 
 describe("LinkButton", () => {
     test("LinkButton renders props correctly", () => {
-        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} text={buttonProps.text} link={buttonProps.link} />);
+        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition} text={buttonProps.text} link={buttonProps.link} />);
 
         const button = screen.getByTestId("link-button");
         expect(button).toHaveTextContent("test")
     })
 
     it("onClick handler gets called", () => {
-        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} text={buttonProps.text} link={buttonProps.link} />);
+        render(<LinkButton id={buttonProps.id} dataTestId={buttonProps.dataTestId} iconType={buttonProps.iconType} iconPosition={buttonProps.iconPosition} text={buttonProps.text} link={buttonProps.link} />);
 
         const button = screen.getByTestId("link-button");
         fireEvent.click(button)

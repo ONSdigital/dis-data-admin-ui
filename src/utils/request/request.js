@@ -41,6 +41,14 @@ const request = async (cfg, url, method, body) => {
         response.errorMessage = await response.text();
         return response;
     }
+
+    if (response.status === 204) {
+        const endedAt = new Date(Date.now()).toISOString();
+        logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+        return response;
+    }
+
+    // Assuming all other responses have JSON body
     const json = await response.json();
 
     const endedAt = new Date(Date.now()).toISOString();

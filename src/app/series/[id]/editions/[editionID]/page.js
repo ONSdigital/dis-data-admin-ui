@@ -9,7 +9,7 @@ import PageHeading from "@/components/page-heading/PageHeading";
 import List from "@/components/list/List";
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
 import { mapEditionSummary } from "@/components/design-system/summary-mapper";
-import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+import SuccessPanel from "@/components/success-panel/SuccessPanel";
 
 import { mapListItems } from "./mapper";
 
@@ -75,7 +75,7 @@ export default async function Edition({ params, searchParams }) {
 
     return (
         <>
-            <CreateEditSuccess query={query} message="Dataset edition saved" />
+            <SuccessPanel query={query} message="Dataset edition saved" />
             <PageHeading 
                 subtitle="Edition"
                 title={dataset.title + ": " + edition.edition_title} 

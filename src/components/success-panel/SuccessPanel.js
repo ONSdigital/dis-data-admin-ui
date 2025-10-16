@@ -2,14 +2,14 @@
 
 import { Panel } from "@/components/design-system/DesignSystem";
 
-export default function CreateEditSuccess({query, message}) {
+export default function SuccessPanel({query, message}) {
     if (query?.display_success !== "true") {
         return;
     }
 
     return (
         <div className="ons-u-mb-l">
-            <Panel variant="success" dataTestId="create-edit-success-panel">{message}</Panel>
+            <Panel variant="success" dataTestId="success-panel">{message}</Panel>
         </div>
     );
 }

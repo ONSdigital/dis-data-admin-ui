@@ -1,11 +1,14 @@
 import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
+
+import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import List from "@/components/list/List";
 import Pagination from "@/components/pagination/Pagination";
 import SeriesListForm from "@/components/form/series-list/SeriesListForm";
 import LinkButton from "@/components/link-button/LinkButton";
 import { Panel, Select } from "@/components/design-system/DesignSystem";
+
 import { mapListItems } from "./mapper";
 
 export default async function Series({ searchParams }) {
@@ -88,6 +91,7 @@ export default async function Series({ searchParams }) {
         <>
             {!datasetFetchError ?
                 <>
+                    <SuccessPanel query={pageParams} message="Item deleted" />
                     <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                         <div className="ons-grid__col ons-col-4@m ons-u-pr-s">
                             <SeriesListForm datasetID={pageParams.id} />
