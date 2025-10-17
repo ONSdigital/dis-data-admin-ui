@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import isEmail from "validator/lib/isEmail";
+import { isEmailValid } from "@hapi/address";
 
 import { TextInput, Field, Button } from "author-design-system-react";
 
@@ -25,7 +25,7 @@ export default function Contact({contactsList, contactsError}) {
             setContactEmailError("Email is required");
             error = true;
         }
-        if (contactEmail.length && !isEmail(contactEmail)) {
+        if (contactEmail.length && !isEmailValid(contactEmail)) {
             setContactEmailError("Invalid email");
             error = true;
         }
