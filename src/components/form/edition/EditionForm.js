@@ -7,7 +7,7 @@ import { TextInput, HyperLinksList } from "author-design-system-react";
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from "@/components/form/version/VersionFields";
 
-export default function EditionForm({ datasetID, edition, isNewEdition, action }) {
+export default function EditionForm({ datasetID, edition, isNewEdition, showEditionIDField, action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
     const [editionID, setEditionID] = useState(edition?.edition || "");
     const [editionTitle, setEditionTitle] = useState(edition?.edition_title || "");
@@ -53,15 +53,17 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <input id="current-edition-id" name="current-edition-id" type="hidden" value={edition?.edition} />
-                <TextInput id="edition-id" 
-                    name="edition-id" 
-                    label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
-                    dataTestId="edition-id"
-                    value={editionID}
-                    classes="ons-input--block ons-input-number--w-50"
-                    onChange={e => setEditionID(e.target.value)}
-                    error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
-                />
+                { !showEditionIDField ? 
+                    <TextInput id="edition-id" 
+                        name="edition-id" 
+                        label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
+                        dataTestId="edition-id"
+                        value={editionID}
+                        classes="ons-input--block ons-input-number--w-50"
+                        onChange={e => setEditionID(e.target.value)}
+                        error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
+                    />
+                : null }
 
                 <TextInput id="edition-title" 
                     name="edition-title" 
