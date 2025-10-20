@@ -58,9 +58,9 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
     const actionAnchorIDPrefix = "dataset-series-";
-    const contacts = []
+    const contacts = [];
     data.contacts.forEach(contact => {
-        contacts.push(contact.name)
+        contacts.push(contact.name);
     });
 
     mapRow("Series ID", data.id, false, false, editBaseURL, actionAnchorIDPrefix, rows);
