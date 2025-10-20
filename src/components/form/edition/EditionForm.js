@@ -63,7 +63,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                         onChange={e => setEditionID(e.target.value)}
                         error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
                     />
-                : null }
+                :  <input id="edition-id" name="edition-id" type="hidden" value={edition?.edition} /> }
 
                 <TextInput id="edition-title" 
                     name="edition-title" 

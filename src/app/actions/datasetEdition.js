@@ -96,10 +96,10 @@ const updateDatasetEdition = async (currentstate, formData) => {
     }
 
     // if there's no edition value assume we're in edit mode and take the current edition id value
-    if(!datasetEditionSubmission.edition) {
-        datasetEditionSubmission.edition = datasetEditionSubmission.edition_id
-    }
-    
+    // if(!datasetEditionSubmission.edition) {
+    //     datasetEditionSubmission.edition = datasetEditionSubmission.edition_id
+    // }
+
     return doSubmission(datasetEditionSubmission, httpPut);
 };
 
