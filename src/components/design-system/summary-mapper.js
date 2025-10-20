@@ -82,7 +82,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
 
     mapRow("QMI", data.qmi?.href, false, true, editBaseURL, actionAnchorIDPrefix, rows);
 
-    if (data.publisher && data.publisher.name > 0) {
+    if (data.publisher?.name) {
         mapRow("Publisher", data.publisher.name, false, false, editBaseURL, actionAnchorIDPrefix, rows);
     }
     mapRow("Contacts", contacts, true, true, editBaseURL, actionAnchorIDPrefix, rows);
