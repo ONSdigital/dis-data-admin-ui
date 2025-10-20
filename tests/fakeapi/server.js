@@ -79,6 +79,11 @@ app.get("/datasets/:id/editions", (req, res) => {
 });
 
 app.get("/datasets/:id/editions/:editionID", (req, res) => {
+    const edition = editions.items.find(item => item.edition === req.params.editionID);
+    if (!edition) {
+        res.send(404);
+        return;
+    }
     res.send(edition);
 });
 
@@ -105,14 +110,13 @@ app.get("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
 });
 
 app.put("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
-    res.send(
-        metadataList.items.find(
-            (item) =>
-                item.id === req.params.id &&
-                item.edition === req.params.editionID &&
-                item.version === req.params.versionID
-        )
+    const result = metadataList.items.find(
+        (item) =>
+            item.id === req.params.id &&
+            item.edition === req.params.editionID &&
+            item.version === req.params.versionID
     );
+    res.send( result || {status: 200} );
 });
 
 app.get("/datasets/:id/editions/:editionID/versions/:versionID/metadata", (req, res) => {
