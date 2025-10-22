@@ -9,7 +9,7 @@
     "start": "next start -p 29400",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:component": "playwright test"
+    "test:component": "playwright test --config=playwright.config.mjs"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.10.1",
