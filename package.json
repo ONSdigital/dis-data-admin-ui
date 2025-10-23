@@ -9,7 +9,7 @@
     "start": "next start -p 29400",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:component": "playwright test"
+    "test:component": "playwright test --config=playwright.config.mjs"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.10.1",
@@ -41,6 +41,7 @@
     "eslint-plugin-testing-library": "^7.1.1",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-fixed-jsdom": "^0.0.10",
     "ts-node": "^10.9.2"
   },
   "overrides": {
