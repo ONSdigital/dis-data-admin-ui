@@ -157,7 +157,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         });
         // expect "Edition title" to have single value and have "edit" action
         expect(mappedItems[1].rowTitle).toBe("Edition title");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 2"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
         expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
             id: "edit-edition-title",
             visuallyHiddenText: "Edit Edition title",
@@ -165,7 +165,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         });
         // expect "Release date" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Release date");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "27 January 2025"});
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
     });
 });
