@@ -16,10 +16,10 @@ test("VersionFields renders correctly", () => {
     expect(screen.getByTestId("quality-designation-radios-item-official-input")).toBeInTheDocument();
     expect(screen.getByTestId("quality-designation-radios-item-official-in-development-input")).toBeInTheDocument();
     expect(screen.getByTestId("quality-designation-radios-item-no-accreditation-input")).toBeInTheDocument();
-    expect(screen.getByText("Usage notes (optional)")).toBeInTheDocument();
+    expect(screen.getByText("Usage notes")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-input-0")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-textarea-0")).toBeInTheDocument();
-    expect(screen.getByText("Alerts (optional)")).toBeInTheDocument();
+    expect(screen.getByText("Alerts")).toBeInTheDocument();
     expect(screen.getByTestId("alerts-textarea-0")).toBeInTheDocument();
     expect(screen.getByText("Dataset file")).toBeInTheDocument();
     expect(screen.getByTestId("dataset-upload-input")).toBeInTheDocument();
