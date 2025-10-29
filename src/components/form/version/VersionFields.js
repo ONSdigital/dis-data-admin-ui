@@ -89,7 +89,7 @@ export default function VersionFields(props) {
             <h2 className="ons-u-mt-xl">Dataset file</h2>
             <ResumableFileUpload id="dataset-upload"
                 label="File upload"
-                description="Click browse or drag file here"
+                description="File types accepted are XLS and XLSX or PDF"
                 uploadBaseURL={appConfig?.uploadBaseURL}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFile={props.fieldValues?.distributions[0]}
