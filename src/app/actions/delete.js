@@ -12,7 +12,7 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
     const datasetID = formData.get("dataset-id");
     const editionID = formData.get("edition-id");
     const versionID = formData.get("version-id");
-    const resource = formData.get("resource");
+    const titleOfContentToDelete = formData.get("title-of-content-to-delete");
 
     if (!confirmed) {
         actionResponse.success = false;
@@ -38,7 +38,7 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
             };
         }
         actionResponse.success = true;
-        logInfo(`successfully deleted ${resource}`, null, null);
+        logInfo(`successfully deleted ${titleOfContentToDelete}`, null, null);
     } catch (err) {
         logError("failed to make delete request", null, null, err);
         actionResponse.success = false;
