@@ -26,7 +26,7 @@ export default async function createPage() {
                 <PageHeading 
                     title="Create new dataset series"
                 />
-                <Panel classes="ons-u-mb-l ons-u-dib">
+                <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
                     <p>You must fill in all fields unless marked optional</p>
                 </Panel>
                 <SeriesForm 

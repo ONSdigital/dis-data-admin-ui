@@ -50,8 +50,6 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
     return (
         <>    
             { renderFailure() }      
-            <h2>Edition details</h2>
-            <p>The information in these fields is unique to this edition.</p>
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <input id="current-edition-id" name="current-edition-id" type="hidden" value={edition?.edition} />
@@ -60,6 +58,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
                     label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 
                     dataTestId="edition-id"
                     value={editionID}
+                    classes="ons-input--block ons-input-number--w-50"
                     onChange={e => setEditionID(e.target.value)}
                     error={ (formState.errors && formState.errors.edition) ? {id:'edition-id-error', text: formState.errors.edition} : null}
                 />
@@ -68,6 +67,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, action }
                     name="edition-title" 
                     label={{text: `Edition title`, description: `E.g "January 2025" or "Time series"`}} 
                     dataTestId="edition-title"
+                    classes={`ons-input--block ons-input-number--w-50 ${isNewEdition ? "ons-u-mb-l" : ""}`}
                     value={editionTitle}
                     onChange={e => setEditionTitle(e.target.value)}
                     error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}

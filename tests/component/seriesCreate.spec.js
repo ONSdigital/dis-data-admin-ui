@@ -8,6 +8,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await expect(page.getByTestId("page-heading-title")).toContainText("Create new dataset series");
+        await expect(page.getByTestId("mandatory-fields-panel")).toContainText("You must fill in all fields unless marked optional");
         await expect(page.getByTestId("dataset-series-id")).toBeVisible();
         await expect(page.getByTestId("dataset-series-title")).toBeVisible();
         await expect(page.getByTestId("fieldset-dataset-series-topics-checkbox")).toBeVisible();

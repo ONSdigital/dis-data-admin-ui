@@ -13,6 +13,10 @@ describe("Edition form", () => {
         //version fields
         expect(screen.queryByTestId("fieldset-release-date")).not.toBeInTheDocument();
         expect(screen.queryByTestId("select-quality-designation")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("quality-designation-radios-item-accredited-official-input")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("quality-designation-radios-item-official-input")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("quality-designation-radios-item-official-in-development-input")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("quality-designation-radios-item-no-accreditation-input")).not.toBeInTheDocument();
         expect(screen.queryByTestId("dataset-upload-input")).not.toBeInTheDocument();
     });
 
@@ -25,7 +29,10 @@ describe("Edition form", () => {
 
         //version fields
         expect(screen.getByTestId("fieldset-release-date")).toBeInTheDocument();
-        expect(screen.getByTestId("select-quality-designation")).toBeInTheDocument();
+        expect(screen.getByTestId("quality-designation-radios-item-accredited-official-input")).toBeInTheDocument();
+        expect(screen.getByTestId("quality-designation-radios-item-official-input")).toBeInTheDocument();
+        expect(screen.getByTestId("quality-designation-radios-item-official-in-development-input")).toBeInTheDocument();
+        expect(screen.getByTestId("quality-designation-radios-item-no-accreditation-input")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-upload-input")).toBeInTheDocument();
     });
 
