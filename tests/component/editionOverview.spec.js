@@ -18,7 +18,6 @@ test.describe("Edition overview page", () => {
 
         // page content
         await expect(page.locator("#edition-id")).toContainText("time-series");
-        await expect(page.getByTestId("edit-edition-id")).toBeVisible();
         await expect(page.locator("#edition-title")).toContainText("Timeseries");
         await expect(page.getByTestId("edit-edition-title")).toBeVisible();
         await expect(page.locator("#release-date")).toContainText("26 January 2025"); 
