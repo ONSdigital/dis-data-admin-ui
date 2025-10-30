@@ -1,3 +1,12 @@
+/**
+ * @jest-environment jsdom
+ *
+ * NOTE: These tests require the standard jsdom environment.
+ * React Testing Library and React Server Actions do not work correctly with jest-fixed-jsdom,
+ * so tests will fail unless jsdom is explicitly set here.
+ * See: https://jestjs.io/docs/configuration#testenvironment-string
+ */
+
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import DeleteForm from "./DeleteForm";
@@ -8,8 +17,8 @@ describe("Delete Form", () => {
     const mockDatasetID = "Mock Dataset"
     const mockEditionID = "Mock Edition"
     const mockVersionID = "1"
-    const mockResourceDataset = mockDatasetID
-    const mockResourceVersion = `${mockDatasetID}: ${mockEditionID} - Version ${mockVersionID}`
+    const mockDatasetDeleteTitle = mockDatasetID
+    const mockVersionDeleteTitle = `${mockDatasetID}: ${mockEditionID} - Version ${mockVersionID}`
 
     test("renders correctly with all params", () => {
         render(<DeleteForm datasetID={mockDatasetID} editionID={mockEditionID} versionID={mockVersionID} action={mockAction}/>);
@@ -17,7 +26,7 @@ describe("Delete Form", () => {
         expect(screen.getByTestId("hidden-dataset-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-edition-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-version-id")).toHaveAttribute("type", "hidden");
-        expect(screen.getByTestId("hidden-resource")).toHaveAttribute("type", "hidden");
+        expect(screen.getByTestId("hidden-title-of-content-to-delete")).toHaveAttribute("type", "hidden");
 
         expect(screen.queryByTestId("delete-error")).not.toBeInTheDocument();
 
@@ -25,7 +34,7 @@ describe("Delete Form", () => {
         expect(checkbox).toBeInTheDocument();
 
         const checkboxLegend = screen.getByTestId("fieldset-confirm-delete-legend");
-        expect(checkboxLegend).toHaveTextContent(`Are you sure you want to delete this item? (${mockResourceVersion})`);
+        expect(checkboxLegend).toHaveTextContent(`Are you sure you want to delete this item? (${mockVersionDeleteTitle})`);
 
         const checkboxInput = screen.getByTestId("confirm-delete-item-yes-input");
         expect(checkboxInput).not.toBeChecked();
@@ -41,7 +50,7 @@ describe("Delete Form", () => {
         expect(screen.getByTestId("hidden-dataset-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-edition-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-version-id")).toHaveAttribute("type", "hidden");
-        expect(screen.getByTestId("hidden-resource")).toHaveAttribute("type", "hidden");
+        expect(screen.getByTestId("hidden-title-of-content-to-delete")).toHaveAttribute("type", "hidden");
 
         expect(screen.queryByTestId("delete-error")).not.toBeInTheDocument();
 
@@ -49,7 +58,7 @@ describe("Delete Form", () => {
         expect(checkbox).toBeInTheDocument();
 
         const checkboxLegend = screen.getByTestId("fieldset-confirm-delete-legend");
-        expect(checkboxLegend).toHaveTextContent(`Are you sure you want to delete this item? (${mockResourceDataset})`);
+        expect(checkboxLegend).toHaveTextContent(`Are you sure you want to delete this item? (${mockDatasetDeleteTitle})`);
 
         const checkboxInput = screen.getByTestId("confirm-delete-item-yes-input");
         expect(checkboxInput).not.toBeChecked();

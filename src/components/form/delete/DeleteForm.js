@@ -7,9 +7,9 @@ import { Panel, Checkbox } from "author-design-system-react";
 export default function DeleteForm({ datasetID, editionID = "", versionID = "", action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
 
-    let resource = datasetID;
+    let titleOfContentToDelete = datasetID;
     if (editionID && versionID) {
-        resource += `: ${editionID} - Version ${versionID}`;
+        titleOfContentToDelete += `: ${editionID} - Version ${versionID}`;
     }
 
     if(isPending){
@@ -21,7 +21,7 @@ export default function DeleteForm({ datasetID, editionID = "", versionID = "", 
             <input type="hidden" name="dataset-id" value={datasetID} data-testid="hidden-dataset-id" />
             <input type="hidden" name="edition-id" value={editionID} data-testid="hidden-edition-id" />
             <input type="hidden" name="version-id" value={versionID} data-testid="hidden-version-id" />
-            <input type="hidden" name="resource" value={resource} data-testid="hidden-resource" />
+            <input type="hidden" name="title-of-content-to-delete" value={titleOfContentToDelete} data-testid="hidden-title-of-content-to-delete" />
 
             {formState?.errors?.api && (
                 <Panel
@@ -38,7 +38,7 @@ export default function DeleteForm({ datasetID, editionID = "", versionID = "", 
                 dataTestId="confirm-delete"
                 id="confirm-delete"
                 name="confirm-delete"
-                legend={`Are you sure you want to delete this item? (${resource})`}
+                legend={`Are you sure you want to delete this item? (${titleOfContentToDelete})`}
                 legendIsQuestionTitle
                 items={{
                     itemsList: [
@@ -62,9 +62,9 @@ export default function DeleteForm({ datasetID, editionID = "", versionID = "", 
             />
 
             <button
-                 type="submit"
-                 className={isPending ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"}
-                 disabled={isPending}>
+                type="submit"
+                className={isPending ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"}
+                disabled={isPending}>
                 <span className="ons-btn__inner"><span className="ons-btn__text">Delete</span></span>
             </button>
         </form>
