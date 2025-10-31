@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 import bindFileUploadInput from "./bind";
 
-import { TextInput } from "author-design-system-react";
+import { TextInput, Summary } from "author-design-system-react";
+import { mapUploadedFiles } from "@/components/design-system/summary-mapper";
 
 const progressBarStyle = {
     width: "20rem",
@@ -17,6 +18,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
     const [error, setError] = useState(validationError || "");
     const [file, setFile] = useState(uploadedFile || {});
+    const [files, setFiles] = useState([uploadedFile] || []);
 
     const handleFileStart = () => {
         setShowFileUpload(false);
@@ -64,6 +66,12 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFile({download_url: ""});
     };
 
+    const handleDeleteClick = (e, deletedFile) => {
+        e.preventDefault();
+        const filteredFiles = files.filter(file => file.title !== deletedFile)
+        setFiles(filteredFiles)
+    };
+
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
     }, [id, uploadBaseURL, validationError, showFileUpload]);
@@ -95,6 +103,17 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
             </>
         );
     };
+
+    const renderFilesList = () => {
+        if (!files.length) {
+            return;
+        }
+
+        const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick)
+        return (
+            <Summary summaries={mappedUploadedFiles} />
+        )
+    };
     
     return (
         <>
@@ -102,6 +121,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
             { showFileUpload ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
             { showIsComplete ? renderCompleteFile() : null }
+            { renderFilesList() }
         </>
     );
 }
