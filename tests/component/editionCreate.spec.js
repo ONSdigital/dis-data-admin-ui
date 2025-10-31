@@ -21,7 +21,7 @@ test.describe("Create edition page", () => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/create");
-        await page.getByTestId("edition-id").fill("test-id");
+        await page.getByTestId("edition-id").fill("test-edition");
         await page.getByTestId("edition-title").fill("Test title");
         await page.getByTestId("release-date-day").fill("1");
         await page.getByTestId("release-date-month").fill("1");
@@ -41,8 +41,8 @@ test.describe("Create edition page", () => {
 
         await page.getByRole("button", { name: /Save dataset edition/i }).click();
 
-        await page.waitForURL("**/series/mock-quarterly/editions/test-id**");
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-id");
+        await page.waitForURL("**/series/mock-quarterly/editions/test-edition**");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-edition");
 
         await expect(page.getByText("Dataset edition saved")).toBeVisible();
     });

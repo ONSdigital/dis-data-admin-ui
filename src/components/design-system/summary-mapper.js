@@ -58,9 +58,9 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
     const actionAnchorIDPrefix = "dataset-series-";
-    const contacts = []
+    const contacts = [];
     data.contacts.forEach(contact => {
-        contacts.push(contact.name)
+        contacts.push(contact.name);
     });
 
     mapRow("Series ID", data.id, false, false, editBaseURL, actionAnchorIDPrefix, rows);
@@ -82,7 +82,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
 
     mapRow("QMI", data.qmi?.href, false, true, editBaseURL, actionAnchorIDPrefix, rows);
 
-    if (data.publisher && data.publisher.name > 0) {
+    if (data.publisher?.name) {
         mapRow("Publisher", data.publisher.name, false, false, editBaseURL, actionAnchorIDPrefix, rows);
     }
     mapRow("Contacts", contacts, true, true, editBaseURL, actionAnchorIDPrefix, rows);
@@ -94,8 +94,9 @@ const mapEditionSummary = (edition, editBaseURL) => {
     const contentBody = getBaseSummaryModel("edition-metadata");
     const rows = contentBody[0].groups[0].rows;
     const actionAnchorIDPrefix = "";
+    const isPublished = edition?.state === "published";
 
-    mapRow("Edition ID", edition.edition, false, true, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Edition ID", edition.edition, false, !isPublished, editBaseURL, actionAnchorIDPrefix, rows);
     mapRow("Edition title", edition.edition_title, false, true, editBaseURL, actionAnchorIDPrefix, rows);
     mapRow("Release date", formatDate(edition.release_date), false, false, editBaseURL, actionAnchorIDPrefix, rows);
     return contentBody;
