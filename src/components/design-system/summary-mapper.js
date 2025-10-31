@@ -69,27 +69,27 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
         contacts.push(contact.name);
     });
 
-    mapRow("Series ID", data.id, false, action, rows);
-    mapRow("Type", data.type, false, action, rows);
-    mapRow("Title", data.title, false, action, rows);
-    mapRow("Description", data.description, false, action, rows);
+    mapRow("Series ID", data.id, null, null, rows);
+    mapRow("Type", data.type, null, null, rows);
+    mapRow("Title", data.title, null, action, rows);
+    mapRow("Description", data.description, null, action, rows);
 
     if (topicTitles && topicTitles.length > 0) {
         mapRow("Topics", topicTitles, true, action, rows);
     }
 
-    mapRow("Last updated", formatDate(data.last_updated), false, action, rows);
-    mapRow("Licence", data.license, false, action, rows);
-    mapRow("Next release", data.next_release, false, action, rows);
+    mapRow("Last updated", formatDate(data.last_updated), null, null, rows);
+    mapRow("Licence", data.license, null, null, rows);
+    mapRow("Next release", data.next_release, null, null, rows);
 
     if (data.keywords && data.keywords.length > 0) {
         mapRow("Keywords", data.keywords, true, action, rows);
     }
 
-    mapRow("QMI", data.qmi?.href, false, action, rows);
+    mapRow("QMI", data.qmi?.href, null, action, rows);
 
     if (data.publisher?.name) {
-        mapRow("Publisher", data.publisher.name, false, action, rows);
+        mapRow("Publisher", data.publisher.name, null, null, rows);
     }
     mapRow("Contacts", contacts, true, action, rows);
     return contentBody;
@@ -106,9 +106,9 @@ const mapEditionSummary = (edition, editBaseURL) => {
     }
     const isPublished = edition?.state === "published";
 
-    mapRow("Edition ID", edition.edition, false, !isPublished ? action : null, rows);
-    mapRow("Edition title", edition.edition_title, false, action, rows);
-    mapRow("Release date", formatDate(edition.release_date), false, null, rows);
+    mapRow("Edition ID", edition.edition, null, !isPublished ? action : null, rows);
+    mapRow("Edition title", edition.edition_title, null, action, rows);
+    mapRow("Release date", formatDate(edition.release_date), null, null, rows);
     return contentBody;
 };
 
@@ -122,7 +122,7 @@ const mapUploadedFiles = (files, actionOnClick) => {
         text: "Delete file"
     }
     files.forEach(file => {
-        mapRow(file.title, " ", false, action, rows)
+        mapRow(file.title, " ", null, action, rows)
     });
     return contentBody;
 }
