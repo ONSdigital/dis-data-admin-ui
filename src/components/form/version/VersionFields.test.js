@@ -19,7 +19,7 @@ test("VersionFields renders correctly", () => {
     expect(screen.getByText("Usage notes (optional)")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-input-0")).toBeInTheDocument();
     expect(screen.getByTestId("usage-notes-textarea-0")).toBeInTheDocument();
-    expect(screen.getByText("Alerts (optionnal)")).toBeInTheDocument();
+    expect(screen.getByText("Alerts (optional)")).toBeInTheDocument();
     expect(screen.getByTestId("alerts-textarea-0")).toBeInTheDocument();
     expect(screen.getByText("Dataset file")).toBeInTheDocument();
     expect(screen.getByTestId("dataset-upload-input")).toBeInTheDocument();
