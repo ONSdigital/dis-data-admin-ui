@@ -7,7 +7,8 @@ import { formatDate } from "@/utils/datetime/datetime";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel } from "@/components/design-system/DesignSystem";
-import CreateEditSuccess from "@/components/create-edit-success/CreateEditSuccess";
+import SuccessPanel from "@/components/success-panel/SuccessPanel";
+import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
 export default async function Version({ params, searchParams }) {
@@ -26,7 +27,7 @@ export default async function Version({ params, searchParams }) {
 
     return (
         <>
-            <CreateEditSuccess query={query} message="Dataset version saved" />
+            <SuccessPanel query={query} message="Dataset version saved" />
             <PageHeading 
                 subtitle="Version"
                 title={`Version: ${versionID}`} 
@@ -110,6 +111,16 @@ export default async function Version({ params, searchParams }) {
                                         </div>
                                     ))}
                                 </>
+                            )}
+
+                            {metadata.state !== "published" && (
+                                <LinkButton
+                                    dataTestId="delete-version-button"
+                                    text="Delete version"
+                                    iconType="DeleteIcon"
+                                    iconPosition="before"
+                                    link={`/series/${id}/editions/${editionID}/versions/${versionID}/delete`}
+                                />
                             )}
                         </div>
                     </div>
