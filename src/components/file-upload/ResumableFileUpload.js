@@ -11,47 +11,41 @@ const progressBarStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile }) {
-    const [showFileUpload, setShowFileUpload] = useState(uploadedFile ? false : true);
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
     const [error, setError] = useState(validationError || "");
     const [file, setFile] = useState(uploadedFile || {});
-    const [files, setFiles] = useState([uploadedFile] || []);
+    const [files, setFiles] = useState(uploadedFiles || []);
 
     const handleFileStart = () => {
-        setShowFileUpload(false);
+        console.log("handleFileStart")
         setShowProgressBar(true);
         setProgress(0);
-        setShowIsComplete(false);
         setError(null);
-        setFile({});
     };
 
     const handleFileProgress = (progress) => {
-        setShowFileUpload(false);
+        console.log("handleFileProgress")
         setShowProgressBar(true);
         setProgress(progress);
-        setShowIsComplete(false);
         setError(null);
-        setFile({});
     };
 
     const handleFileComplete = (file) => {
-        setShowFileUpload(false);
+        console.log("handleFileComplete", file)
         setShowProgressBar(false);
         setProgress(100);
-        setShowIsComplete(true);
         setError(null);
         setFile(file);
+        setFiles([...files, file])
     };
 
     const handleError = (msg) => {
-        setShowFileUpload(true);
+        console.log("handleError")
         setShowProgressBar(false);
         setProgress(0);
-        setShowIsComplete(false);
         setError(msg);
         setFile({});
     };
@@ -66,6 +60,10 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFile({download_url: ""});
     };
 
+    const handleAddUploadedFile = (file) => {
+        setFiles([...files, file])
+    }
+
     const handleDeleteClick = (e, deletedFile) => {
         e.preventDefault();
         const filteredFiles = files.filter(file => file.title !== deletedFile)
@@ -74,7 +72,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL, validationError, showFileUpload]);
+    }, [id, uploadBaseURL, validationError]);
 
     useEffect(() => {
         if (validationError) {
@@ -95,15 +93,6 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         );
     };
 
-    const renderCompleteFile = () => {
-        return (
-            <>
-                <p>File has been uploaded: {file.download_url}</p>
-                <p><a data-testid="dataset-upload-remove" href="#" onClick={e => handleRemoveOnClick(e)}>Remove file</a></p>
-            </>
-        );
-    };
-
     const renderFilesList = () => {
         if (!files.length) {
             return;
@@ -111,17 +100,18 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
         const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick)
         return (
-            <Summary summaries={mappedUploadedFiles} />
+            <div className="ons-u-mt-s">
+                <Summary summaries={mappedUploadedFiles} />
+            </div>
         )
     };
     
     return (
-        <>
+        <div className="ons-col-8@m ons-grid--gutterless">
             <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
-            { showFileUpload ? renderFileInput() : null }
+            { !showProgressBar ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
-            { showIsComplete ? renderCompleteFile() : null }
             { renderFilesList() }
-        </>
+        </div>
     );
 }
