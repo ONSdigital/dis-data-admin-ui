@@ -94,6 +94,7 @@ const onFileError = (uploadError, handleError) => {
 
 const onFileSuccess = (resumable, file, handleFileComplete) => {
     const fileInfo = {
+        title: file.fileName,
         download_url: `${resumable.opts.query.path}/${file.relativePath}`,
         byte_size: file.size,
         media_type: file.file.type
