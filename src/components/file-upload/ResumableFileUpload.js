@@ -14,55 +14,34 @@ const progressBarStyle = {
 export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
     const [error, setError] = useState(validationError || "");
     const [file, setFile] = useState(uploadedFile || {});
     const [files, setFiles] = useState(uploadedFiles || []);
 
     const handleFileStart = () => {
-        console.log("handleFileStart")
         setShowProgressBar(true);
         setProgress(0);
         setError(null);
     };
 
     const handleFileProgress = (progress) => {
-        console.log("handleFileProgress")
         setShowProgressBar(true);
         setProgress(progress);
         setError(null);
     };
 
     const handleFileComplete = (file) => {
-        console.log("handleFileComplete", file)
         setShowProgressBar(false);
         setProgress(100);
         setError(null);
-        setFile(file);
         setFiles([...files, file])
     };
 
     const handleError = (msg) => {
-        console.log("handleError")
         setShowProgressBar(false);
         setProgress(0);
         setError(msg);
-        setFile({});
     };
-
-    const handleRemoveOnClick = (e) => {
-        e.preventDefault();
-        setShowFileUpload(true);
-        setShowProgressBar(false);
-        setProgress(0);
-        setShowIsComplete(false);
-        setError(null);
-        setFile({download_url: ""});
-    };
-
-    const handleAddUploadedFile = (file) => {
-        setFiles([...files, file])
-    }
 
     const handleDeleteClick = (e, deletedFile) => {
         e.preventDefault();
