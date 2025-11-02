@@ -93,6 +93,7 @@ export default function VersionFields(props) {
                 uploadBaseURL={appConfig?.uploadBaseURL}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFile={props.fieldValues?.distributions[0]}
+                uploadedFiles={props.fieldValues?.distributions}
             />
         </>
     );
