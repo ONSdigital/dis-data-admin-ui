@@ -72,7 +72,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     };
 
     const renderFilesList = () => {
-        let content = <p className="ons-u-fs-s" data-testid="no-files-uploaded-text">No files uploaded</p>;
+        let content = <p className="ons-u-fs-s" data-testid="dataset-upload-no-files-uploaded-text">No files uploaded</p>;
         if (files.length) {
             const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick);
             content = <Summary classes="ons-u-fs-s" summaries={mappedUploadedFiles} />;
@@ -80,7 +80,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
         return (
             <div className="ons-u-mt-s">
-                <label className="ons-label ons-label--with-description" data-testid="files-added-label">Files added</label>
+                <label className="ons-label ons-label--with-description" data-testid="dataset-upload-files-added-label">Files added</label>
                 { content }
             </div>
         );
