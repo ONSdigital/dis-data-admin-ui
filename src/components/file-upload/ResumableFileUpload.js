@@ -11,11 +11,10 @@ const progressBarStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile, uploadedFiles }) {
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(validationError || "");
-    const [file, setFile] = useState(uploadedFile || {});
     const [files, setFiles] = useState(uploadedFiles || []);
 
     const handleFileStart = () => {
@@ -34,7 +33,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setShowProgressBar(false);
         setProgress(100);
         setError(null);
-        setFiles([...files, file])
+        setFiles([...files, file]);
     };
 
     const handleError = (msg) => {
@@ -45,13 +44,13 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
     const handleDeleteClick = (e, deletedFile) => {
         e.preventDefault();
-        const filteredFiles = files.filter(file => file.title !== deletedFile)
-        setFiles(filteredFiles)
+        const filteredFiles = files.filter(file => file.title !== deletedFile);
+        setFiles(filteredFiles);
     };
 
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL, validationError]);
+    }, [id, uploadBaseURL, validationError, files]);
 
     useEffect(() => {
         if (validationError) {
@@ -73,21 +72,23 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     };
 
     const renderFilesList = () => {
-        if (!files.length) {
-            return;
+        let content = <p className="ons-u-fs-s" data-testid="no-files-uploaded-text">No files uploaded</p>;
+        if (files.length) {
+            const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick);
+            content = <Summary classes="ons-u-fs-s" summaries={mappedUploadedFiles} />;
         }
 
-        const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick)
         return (
             <div className="ons-u-mt-s">
-                <Summary summaries={mappedUploadedFiles} />
+                <label className="ons-label ons-label--with-description" data-testid="files-added-label">Files added</label>
+                { content }
             </div>
-        )
+        );
     };
     
     return (
         <div className="ons-col-8@m ons-grid--gutterless">
-            <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
+            <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(files)} />
             { !showProgressBar ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
             { renderFilesList() }
