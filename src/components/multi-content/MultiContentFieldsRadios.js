@@ -82,6 +82,7 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
                 label={{ text: "Description" }}
                 value={contentBody}
                 key={textareaID}
+                fieldClasses={"ons-u-dib"}
                 onChange={e => handleInputChange(setContentBody, e.target.value)}
             />
         </div>

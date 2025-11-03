@@ -38,8 +38,7 @@ export default function MultiContentFieldsInput({ id, index, field, onFieldsHave
                 name={inputID}
                 classes="ons-input--block ons-input-number--w-50"
                 label={{
-                    text: "Title",
-                    description: `Usage note title e.g. "Information on using this data"`,
+                    text: "Note title",
                 }}
                 value={contentTitle}
                 onChange={e => handleInputChange(setContentTitle, e.target.value)}
@@ -53,7 +52,7 @@ export default function MultiContentFieldsInput({ id, index, field, onFieldsHave
                 label={{text: "Description"}} 
                 value={contentBody} 
                 key={textareaID} 
-                classes="ons-input--block ons-input-number--w-50"
+                fieldClasses={"ons-u-dib"}
                 onChange={e => handleInputChange(setContentBody, e.target.value)}
             />
         </div>
