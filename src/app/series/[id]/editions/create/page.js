@@ -10,7 +10,7 @@ export default async function CreateEditionPage({ params }) {
     return (
         <>
             <PageHeading 
-                title={`Create new dataset edition`}
+                title={`Create new edition`}
                 subtitle={id}
             /> 
             <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
