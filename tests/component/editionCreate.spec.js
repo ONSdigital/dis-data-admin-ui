@@ -39,7 +39,7 @@ test.describe("Create edition page", () => {
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
         await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify([{download_url: "test/file.csv"}]); });
 
-        await page.getByRole("button", { name: /Save dataset edition/i }).click();
+        await page.getByRole("button", { name: /Create edition/i }).click();
 
         await page.waitForURL("**/series/mock-quarterly/editions/test-edition**");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-edition");
@@ -52,7 +52,7 @@ test.describe("Create edition page", () => {
 
         await page.goto("./series/mock-quarterly/editions/create");
 
-        await page.getByRole("button", { name: /Save dataset edition/i }).click();
+        await page.getByRole("button", { name: /Create edition/i }).click();
 
         await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Edition ID is required")).toBeVisible();

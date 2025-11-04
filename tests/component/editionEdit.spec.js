@@ -23,7 +23,7 @@ test.describe("Edit edition page", () => {
             await page.getByTestId("edition-title").fill("Test title");
 
 
-            await page.getByRole("button", { name: /Save dataset edition/i }).click();
+            await page.getByRole("button", { name: /Save edition/i }).click();
 
             await page.waitForURL("**/series/mock-quarterly/editions/test-id**");
             await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-id");
@@ -39,7 +39,7 @@ test.describe("Edit edition page", () => {
             await page.getByTestId("edition-id").fill("");
             await page.getByTestId("edition-title").fill("");
 
-            await page.getByRole("button", { name: /Save dataset edition/i }).click();
+            await page.getByRole("button", { name: /Save edition/i }).click();
 
             await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
             await expect(page.getByLabel("There was a problem").getByText("Edition ID is required")).toBeVisible();
@@ -66,7 +66,7 @@ test.describe("Edit edition page", () => {
             await page.getByTestId("edition-title").fill("Test title");
 
 
-            await page.getByRole("button", { name: /Save dataset edition/i }).click();
+            await page.getByRole("button", { name: /Save edition/i }).click();
 
             await page.waitForURL("**/series/mock-quarterly/editions/time-series**");
             await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
@@ -81,7 +81,7 @@ test.describe("Edit edition page", () => {
 
             await page.getByTestId("edition-title").fill("");
 
-            await page.getByRole("button", { name: /Save dataset edition/i }).click();
+            await page.getByRole("button", { name: /Save edition/i }).click();
 
             await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
             await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
