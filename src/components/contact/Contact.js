@@ -57,7 +57,7 @@ export default function Contact({contactsList, contactsError}) {
 
         return (
             <div className="ons-u-mt-l">
-                <h3>Contacts</h3>
+                <h3 id="dataset-series-contacts">Contacts</h3>
                 <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
                     {contacts.map((contact, index) => (
                         <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-col-8@m" data-testid={"contact-item-" + index} key={index}>
