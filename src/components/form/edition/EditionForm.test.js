@@ -18,7 +18,6 @@ describe("Edition form", () => {
         expect(screen.queryByTestId("quality-designation-radios-item-official-in-development-input")).not.toBeInTheDocument();
         expect(screen.queryByTestId("quality-designation-radios-item-no-accreditation-input")).not.toBeInTheDocument();
         expect(screen.queryByTestId("dataset-upload-input")).not.toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-cancel")).toBeInTheDocument();
     });
 
     test("renders correctly when isNewEdition is true", () => {
@@ -35,7 +34,6 @@ describe("Edition form", () => {
         expect(screen.getByTestId("quality-designation-radios-item-official-in-development-input")).toBeInTheDocument();
         expect(screen.getByTestId("quality-designation-radios-item-no-accreditation-input")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-upload-input")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-cancel")).toBeInTheDocument();
     });
 
     test("renders correctly when edition data is passed in", () => {
@@ -44,5 +42,6 @@ describe("Edition form", () => {
         expect(screen.getByTestId("edition-id").value).toBe("test-edition");
         expect(screen.getByTestId("edition-title").value).toBe("Test Edition");
         expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
+        expect(screen.getByTestId("edition-cancel-button")).toBeInTheDocument();
     });
 });

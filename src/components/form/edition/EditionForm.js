@@ -82,7 +82,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                     <span className="ons-btn__inner"><span className="ons-btn__text">Create edition</span></span>
                 </button>
                 <LinkButton
-                    dataTestId="edition-cancel"
+                    dataTestId="edition-cancel-button"
                     id="edition-cancel"
                     text="Cancel"
                     link={"/series/" + datasetID}
