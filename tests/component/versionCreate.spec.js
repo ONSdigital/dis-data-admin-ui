@@ -34,7 +34,7 @@ test.describe("Create version page", () => {
         await page.getByTestId("alerts-textarea-0").fill("Something about a correction");
         await page.getByTestId("alerts-add-button").click();
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
-        await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify({download_url: "test/file.csv"}); });
+        await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify([{download_url: "test/file.csv"}]); });
 
         await page.getByRole("button", { name: /Save new dataset version/i }).click();
 
