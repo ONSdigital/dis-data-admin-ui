@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import bindFileUploadInput from "./bind";
 
@@ -17,30 +17,37 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     const [error, setError] = useState(validationError || "");
     const [files, setFiles] = useState(uploadedFiles || []);
 
-    const handleFileStart = () => {
+    const handleFileStart = useCallback(() => {
         setShowProgressBar(true);
         setProgress(0);
         setError(null);
-    };
+    }, []);
 
-    const handleFileProgress = (progress) => {
+    const handleFileProgress = useCallback((progress) => {
         setShowProgressBar(true);
         setProgress(progress);
         setError(null);
-    };
+    }, []);
 
-    const handleFileComplete = (file) => {
+    const handleFileComplete = useCallback((file) => {
         setShowProgressBar(false);
         setProgress(100);
         setError(null);
-        setFiles([...files, file]);
-    };
+        // use functional update to avoid race conditions from rapid successive calls
+        setFiles((prevFiles) => {
+            // prevent duplicate entries when events fire multiple times
+            if (prevFiles.some((f) => f.title === file.title)) {
+                return prevFiles;
+            }
+            return [...prevFiles, file];
+        });
+    }, []);
 
-    const handleError = (msg) => {
+    const handleError = useCallback((msg) => {
         setShowProgressBar(false);
         setProgress(0);
         setError(msg);
-    };
+    }, []);
 
     const handleDeleteClick = (e, deletedFile) => {
         e.preventDefault();
@@ -50,7 +57,8 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
 
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL, validationError, files]);
+        // We intentionally bind when id/uploadBaseURL or handler identities change
+    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError]);
 
     useEffect(() => {
         if (validationError) {
