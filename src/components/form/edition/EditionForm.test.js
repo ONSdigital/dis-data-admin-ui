@@ -2,6 +2,14 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import EditionForm from "./EditionForm";
 
+import { useRouter } from "next/navigation";
+
+jest.mock("next/navigation", () => ({ 
+    useRouter: jest.fn().mockReturnValue({ 
+        push: jest.fn(), 
+    }), 
+}));
+
 describe("Edition form", () => {
     test("renders correctly when isNewEdition is false", () => {
         render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ false }  />);
