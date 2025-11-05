@@ -1,20 +1,18 @@
-import express, { text } from "express";
+import express from "express";
 
 import { datasetList } from "../mocks/datasets.mjs";
 import { editions } from "../mocks/editions.mjs";
-import { edition } from "../mocks/edition.mjs";
-import { topicList } from "../mocks/topics.mjs";
 import { versions } from "../mocks/versions.mjs";
 import { metadataList } from "../mocks/metadata.mjs";
-
+import { topicList } from "../mocks/topics.mjs";
 
 const app = express();
 const PORT = 29401;
 
-app.use(express.json())
+app.use(express.json());
 
 app.get("/datasets", (req, res) => {
-    // check 'id' param for search filter
+    // check "id" param for search filter
     const datasetID = req.query?.id;
     if (datasetID) {
         const foundDatasets = datasetList.items.filter((item) => item.id === req.query.id);
@@ -26,22 +24,23 @@ app.get("/datasets", (req, res) => {
         res.send(result);
         return;
     }
-    const offset = req.query.offset ? req.query.offset : 0
-    const paginatedDatasetList = {}
-    paginatedDatasetList.items = datasetList.items.slice(offset, (+req.query.limit + +offset))
-    paginatedDatasetList.total_count = datasetList.total_count
-    paginatedDatasetList.count = datasetList.count    
-    paginatedDatasetList.offset = offset
+    const offset = req.query?.offset || 0;
+    const limit = req.query?.limit || 20;
+    const paginatedDatasetList = {};
+    paginatedDatasetList.items = datasetList.items.slice(offset, (+limit + +offset));
+    paginatedDatasetList.total_count = datasetList.total_count;
+    paginatedDatasetList.count = datasetList.count;
+    paginatedDatasetList.offset = offset;
     res.send(paginatedDatasetList);
 });
 
 app.post("/datasets", (req, res) => {
-    if (req.body.id == 'duplicate-id') {
+    if (req.body.id == "duplicate-id") {
         res.status(409).send("dataset already exists");
         return;
     }
 
-    if (req.body.title == 'duplicate-title') {
+    if (req.body.title == "duplicate-title") {
         res.status(409).send("dataset title already exists");
         return;
     }
@@ -52,7 +51,7 @@ app.post("/datasets", (req, res) => {
 });
 
 app.put("/datasets/:id", (req, res) => {
-    if (req.body.title == 'duplicate-title') {
+    if (req.body.title == "duplicate-title") {
         res.status(409).send("dataset title already exists");
         return;
     }
@@ -68,7 +67,7 @@ app.put("/datasets/:id", (req, res) => {
 app.get("/datasets/:id", (req, res) => {
     const dataset = datasetList.items.find(item => item.id === req.params.id);
     if (!dataset) {
-        res.send(404);
+        res.status(404).send("dataset not found");
         return;
     }
     res.send(dataset);
@@ -89,7 +88,7 @@ app.get("/datasets/:id/editions", (req, res) => {
 app.get("/datasets/:id/editions/:editionID", (req, res) => {
     const edition = editions.items.find(item => item.edition === req.params.editionID);
     if (!edition) {
-        res.send(404);
+        res.status(404).send("edition not found");
         return;
     }
     res.send(edition);
@@ -107,14 +106,17 @@ app.post("/datasets/:id/editions/:editionID/versions", (req, res) => {
 });
 
 app.get("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
-    res.send(
-        metadataList.items.find(
+    const version = metadataList.items.find(
             (item) =>
                 item.id === req.params.id &&
                 item.edition === req.params.editionID &&
                 item.version === req.params.versionID
-        )
     );
+    if (!version) {
+        res.status(404).send("version not found");
+        return;
+    }
+    res.send(version);
 });
 
 app.put("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) => {
@@ -136,14 +138,17 @@ app.delete("/datasets/:id/editions/:editionID/versions/:versionID", (req, res) =
 });
 
 app.get("/datasets/:id/editions/:editionID/versions/:versionID/metadata", (req, res) => {
-    res.send(
-        metadataList.items.find(
+    const metadata = metadataList.items.find(
             (item) =>
                 item.id === req.params.id &&
                 item.edition === req.params.editionID &&
                 item.version === req.params.versionID
-        )
     );
+    if (!metadata) {
+        res.status(404).send("metadata not found");
+        return;
+    }
+    res.send(metadata);
 });
 
 app.get("/topics/:id", (req, res) => {
@@ -155,5 +160,5 @@ app.get("/topics", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Express server running at http://localhost:${PORT}/`);
+    console.log(`Fake API test server running at http://localhost:${PORT}/`);
 });
