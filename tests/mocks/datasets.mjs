@@ -1,15 +1,15 @@
 const automatedDatasetList = () => {
-  const list = [];
-  for (let i = 0; i < 120; i++) {
-    list.push(
-      {
-        "title": `Lorem ipsum dolor sit amet ${i}`,
-        "description": `Consectetur adipiscing elit ${i}`,
-        "id": `Pagination ${i}`
-      },
-    )
-  }
-  return list;
+    const list = [];
+    for (let i = 0; i < 120; i++) {
+        list.push(
+            {
+                "title": `Lorem ipsum dolor sit amet ${i}`,
+                "description": `Consectetur adipiscing elit ${i}`,
+                "id": `Pagination ${i}`
+            },
+        )
+    }
+    return list;
 }
 
 export const datasetList = {
@@ -81,7 +81,7 @@ export const datasetList = {
                 "href": "https://www.ons.gov.uk/qmi"
             },
             "type": "static",
-            "next" : {
+            "next": {
                 "description": "This is a mock dataset test description",
                 "id": "mock-quarterly",
                 "keywords": ["mock", "test"],
@@ -132,11 +132,11 @@ export const datasetList = {
             "type": "static"
         },
         ...automatedDatasetList(),
-          {
+        {
             "title": "Foobar test dataset",
             "description": "A test dataset",
             "id": "foo-bar"
-          }
+        }
     ],
     "count": 20,
     "total_count": 125
