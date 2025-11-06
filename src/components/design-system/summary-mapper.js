@@ -112,7 +112,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
     return contentBody;
 };
 
-const mapUploadedFiles = (files, actionOnClick) => {
+const mapUploadedFilesSummary = (files, actionOnClick) => {
     const contentBody = getBaseSummaryModel("uploaded-files-list");
     const rows = contentBody[0].groups[0].rows;
     const action = {
@@ -127,4 +127,4 @@ const mapUploadedFiles = (files, actionOnClick) => {
     return contentBody;
 }
 
-export { mapSeriesSummary, mapEditionSummary, mapUploadedFiles };
+export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary };

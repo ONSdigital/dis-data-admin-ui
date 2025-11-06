@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import bindFileUploadInput from "./bind";
 
 import { TextInput, Summary } from "author-design-system-react";
-import { mapUploadedFiles } from "@/components/design-system/summary-mapper";
+import { mapUploadedFilesSummary } from "@/components/design-system/summary-mapper";
 
 const progressBarStyle = {
     width: "20rem",
@@ -82,7 +82,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     const renderFilesList = () => {
         let content = <p className="ons-u-fs-s" data-testid="dataset-upload-no-files-uploaded-text">No files uploaded</p>;
         if (files.length) {
-            const mappedUploadedFiles = mapUploadedFiles(files, handleDeleteClick);
+            const mappedUploadedFiles = mapUploadedFilesSummary(files, handleDeleteClick);
             content = <Summary classes="ons-u-fs-s" summaries={mappedUploadedFiles} />;
         }
 
