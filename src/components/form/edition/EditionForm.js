@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 
 import { TextInput, HyperLinksList } from "author-design-system-react";
+import LinkButton from "@/components/link-button/LinkButton";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from "@/components/form/version/VersionFields";
@@ -78,8 +79,20 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                 { isNewEdition ? <VersionFields errors={formState.errors} /> : null }
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="edition-save-button">
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save dataset edition</span></span>
+                    <span className="ons-btn__inner">
+                        <span className="ons-btn__text">
+                            { isNewEdition ? "Create edition" : "Save edition" }
+                        </span>
+                    </span>
                 </button>
+                <LinkButton
+                    dataTestId="edition-cancel-button"
+                    id="edition-cancel"
+                    text="Cancel"
+                    link={"/series/" + datasetID}
+                    variants="secondary"
+                    classes="ons-u-mt-l ons-u-ml-l"
+                />
             </form>
         </>
     );
