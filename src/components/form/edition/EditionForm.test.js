@@ -2,6 +2,14 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import EditionForm from "./EditionForm";
 
+import { useRouter } from "next/navigation";
+
+jest.mock("next/navigation", () => ({ 
+    useRouter: jest.fn().mockReturnValue({ 
+        push: jest.fn(), 
+    }), 
+}));
+
 describe("Edition form", () => {
     test("renders correctly when isNewEdition is false", () => {
         render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ false }  />);
@@ -42,5 +50,6 @@ describe("Edition form", () => {
         expect(screen.getByTestId("edition-id").value).toBe("test-edition");
         expect(screen.getByTestId("edition-title").value).toBe("Test Edition");
         expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
+        expect(screen.getByTestId("edition-cancel-button")).toBeInTheDocument();
     });
 });

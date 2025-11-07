@@ -93,6 +93,8 @@ export default async function Dataset({ params, searchParams }) {
                             iconType="DeleteIcon"
                             iconPosition="before"
                             link={`/series/${id}/delete`}
+                            variants={["secondary"]}
+                            classes="ons-u-mt-l"
                         />
                     )}
                 </div>

@@ -15,7 +15,7 @@ const getBaseSummaryModel = (groupID) => {
 };
 
 // map a <Summary> component row
-const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorIDPrefix, rows) => {
+const mapRow = (itemName, value, multiValue, action, rows) => {
     const slugifyLowerCase = (string) => {
         return slugify(string, {lower: true});
     };
@@ -40,14 +40,15 @@ const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorI
         ]
     };
 
-    if (hasAction) {
+    if (action) {
         item.rowItems[0].actions = [
             {
-                id: `edit-${slugifyLowerCase(itemName)}`,
-                dataTestId: `edit-${slugifyLowerCase(itemName)}`,
-                text: "Edit",
-                visuallyHiddenText: `Edit ${itemName}`,
-                url: `${actionURL}#${actionAnchorIDPrefix}${slugifyLowerCase(itemName)}`
+                id: `action-link-${slugifyLowerCase(itemName)}`,
+                dataTestId: `action-link-${slugifyLowerCase(itemName)}`,
+                text: action.text,
+                visuallyHiddenText: `${action.text} ${itemName}`,
+                url: action.url ? `${action.url}#${action.anchorIDPrefix}${slugifyLowerCase(itemName)}` : "#",
+                onClick: action.onClick ? (e) => { action.onClick(e, itemName); } : null
             }
         ];
     }
@@ -57,49 +58,73 @@ const mapRow = (itemName, value, multiValue, hasAction, actionURL, actionAnchorI
 const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
-    const actionAnchorIDPrefix = "dataset-series-";
+    const action = {
+        url: editBaseURL,
+        onClick: null,
+        anchorIDPrefix: "dataset-series-",
+        text: "Edit"
+    }
     const contacts = [];
     data.contacts.forEach(contact => {
         contacts.push(contact.name);
     });
 
-    mapRow("Series ID", data.id, false, false, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Type", data.type, false, false, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Title", data.title, false, true, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Description", data.description, false, true, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Series ID", data.id, null, null, rows);
+    mapRow("Type", data.type, null, null, rows);
+    mapRow("Title", data.title, null, action, rows);
+    mapRow("Description", data.description, null, action, rows);
 
     if (topicTitles && topicTitles.length > 0) {
-        mapRow("Topics", topicTitles, true, true, editBaseURL, actionAnchorIDPrefix, rows);
+        mapRow("Topics", topicTitles, true, action, rows);
     }
 
-    mapRow("Last updated", formatDate(data.last_updated), false, false, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Licence", data.license, false, false, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Next release", data.next_release, false, false, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Last updated", formatDate(data.last_updated), null, null, rows);
+    mapRow("Licence", data.license, null, null, rows);
+    mapRow("Next release", data.next_release, null, null, rows);
 
     if (data.keywords && data.keywords.length > 0) {
-        mapRow("Keywords", data.keywords, true, true, editBaseURL, actionAnchorIDPrefix, rows);
+        mapRow("Keywords", data.keywords, true, action, rows);
     }
 
-    mapRow("QMI", data.qmi?.href, false, true, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("QMI", data.qmi?.href, null, action, rows);
 
     if (data.publisher?.name) {
-        mapRow("Publisher", data.publisher.name, false, false, editBaseURL, actionAnchorIDPrefix, rows);
+        mapRow("Publisher", data.publisher.name, null, null, rows);
     }
-    mapRow("Contacts", contacts, true, true, editBaseURL, actionAnchorIDPrefix, rows);
-
+    mapRow("Contacts", contacts, true, action, rows);
     return contentBody;
 };
 
 const mapEditionSummary = (edition, editBaseURL) => {
     const contentBody = getBaseSummaryModel("edition-metadata");
     const rows = contentBody[0].groups[0].rows;
-    const actionAnchorIDPrefix = "";
+    const action = {
+        url: editBaseURL,
+        onClick: null,
+        anchorIDPrefix: "",
+        text: "Edit"
+    }
     const isPublished = edition?.state === "published";
 
-    mapRow("Edition ID", edition.edition, false, !isPublished, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Edition title", edition.edition_title, false, true, editBaseURL, actionAnchorIDPrefix, rows);
-    mapRow("Release date", formatDate(edition.release_date), false, false, editBaseURL, actionAnchorIDPrefix, rows);
+    mapRow("Edition ID", edition.edition, null, !isPublished ? action : null, rows);
+    mapRow("Edition title", edition.edition_title, null, action, rows);
+    mapRow("Release date", formatDate(edition.release_date), null, null, rows);
     return contentBody;
 };
 
-export { mapSeriesSummary, mapEditionSummary };
+const mapUploadedFilesSummary = (files, actionOnClick) => {
+    const contentBody = getBaseSummaryModel("uploaded-files-list");
+    const rows = contentBody[0].groups[0].rows;
+    const action = {
+        url: null,
+        onClick: actionOnClick,
+        anchorIDPrefix: null,
+        text: "Delete file"
+    }
+    files.forEach(file => {
+        mapRow(file.title, " ", null, action, rows)
+    });
+    return contentBody;
+}
+
+export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary };
