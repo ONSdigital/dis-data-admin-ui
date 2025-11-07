@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { HyperLinksList } from "author-design-system-react";
+import LinkButton from "@/components/link-button/LinkButton";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from './VersionFields';
@@ -66,9 +67,21 @@ export default function VersionForm({ datasetID, editionID, version, action }) {
 
                 <VersionFields fieldValues={version} errors={formState.errors} />
 
-                <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
-                    <span className="ons-btn__inner"><span className="ons-btn__text">Save new dataset version</span></span>
+                <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="version-save-button">
+                    <span className="ons-btn__inner">
+                        <span className="ons-btn__text">
+                            Create version
+                        </span>
+                    </span>
                 </button>
+                <LinkButton
+                    dataTestId="version-cancel-button"
+                    id="version-cancel"
+                    text="Cancel"
+                    link={"/series/" + datasetID + "/editions/" + editionID}
+                    variants="secondary"
+                    classes="ons-u-mt-l ons-u-ml-l"
+                />
             </form>
         </>
     );

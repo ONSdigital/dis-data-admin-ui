@@ -38,7 +38,7 @@ test.describe("Create version page", () => {
         await page.getByTestId("alerts-radios-1-item-alerts-radios-1-notice-input").click();
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
 
-        await page.getByRole("button", { name: /Save new dataset version/i }).click();
+        await page.getByRole("button", { name: /Create version/i }).click();
 
         await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1**");
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/1");
