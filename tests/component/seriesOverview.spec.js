@@ -21,12 +21,12 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#series-id")).toContainText("mock-quarterly");
         await expect(page.locator("#type")).toContainText("static");
         await expect(page.locator("#title")).toContainText("Mock Dataset");
-        await expect(page.getByTestId("edit-title")).toBeVisible();
+        await expect(page.getByTestId("action-link-title")).toBeVisible();
         await expect(page.locator("#description")).toContainText("This is a mock dataset test description");
-        await expect(page.getByTestId("edit-description")).toBeVisible();
+        await expect(page.getByTestId("action-link-description")).toBeVisible();
         await expect(page.locator("#topics")).toContainText("Business, industry and trade");
         await expect(page.locator("#topics")).toContainText("Census");
-        await expect(page.getByTestId("edit-topics")).toBeVisible();
+        await expect(page.getByTestId("action-link-topics")).toBeVisible();
         await expect(page.locator("#last-updated")).toContainText("1 January 2000");
         await expect(page.locator("#licence")).toContainText("My License");
         await expect(page.locator("#next-release")).toContainText("TBC");

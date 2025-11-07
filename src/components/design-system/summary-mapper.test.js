@@ -20,7 +20,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[2].rowTitle).toBe("Title");
         expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
         expect(mappedItems[2].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-title",
+            id: "action-link-title",
             visuallyHiddenText: "Edit Title",
             url: "test/foo/edit#dataset-series-title"
         });
@@ -28,7 +28,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[3].rowTitle).toBe("Description");
         expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "This is a mock dataset test description"});
         expect(mappedItems[3].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-description",
+            id: "action-link-description",
             visuallyHiddenText: "Edit Description",
             url: "test/foo/edit#dataset-series-description"
         });
@@ -38,7 +38,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "Topic Foo"});
         expect(mappedItems[4].rowItems[0].valueList[1]).toMatchObject({text: "Topic Bar"});
         expect(mappedItems[4].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-topics",
+            id: "action-link-topics",
             visuallyHiddenText: "Edit Topics",
             url: "test/foo/edit#dataset-series-topics"
         });
@@ -60,7 +60,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "mock"});
         expect(mappedItems[8].rowItems[0].valueList[1]).toMatchObject({text: "test"});
         expect(mappedItems[8].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-keywords",
+            id: "action-link-keywords",
             visuallyHiddenText: "Edit Keywords",
             url: "test/foo/edit#dataset-series-keywords"
         });
@@ -68,7 +68,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[9].rowTitle).toBe("QMI");
         expect(mappedItems[9].rowItems[0].valueList[0]).toMatchObject({text: "https://www.ons.gov.uk/qmi"});
         expect(mappedItems[9].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-qmi",
+            id: "action-link-qmi",
             visuallyHiddenText: "Edit QMI",
             url: "test/foo/edit#dataset-series-qmi"
         });
@@ -82,7 +82,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[11].rowItems[0].valueList[0]).toMatchObject({text: "First Contact"});
         expect(mappedItems[11].rowItems[0].valueList[1]).toMatchObject({text: "Second Contact"});
         expect(mappedItems[11].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-contacts",
+            id: "action-link-contacts",
             visuallyHiddenText: "Edit Contacts",
             url: "test/foo/edit#dataset-series-contacts"
         });
@@ -131,7 +131,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[1].rowTitle).toBe("Edition title");
         expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
         expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-edition-title",
+            id: "action-link-edition-title",
             visuallyHiddenText: "Edit Edition title",
             url: "test/foo/edit#edition-title"
         });
@@ -151,7 +151,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
         expect(mappedItems[0].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-edition-id",
+            id: "action-link-edition-id",
             visuallyHiddenText: "Edit Edition ID",
             url: "test/foo/edit#edition-id"
         });
@@ -159,7 +159,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[1].rowTitle).toBe("Edition title");
         expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
         expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
-            id: "edit-edition-title",
+            id: "action-link-edition-title",
             visuallyHiddenText: "Edit Edition title",
             url: "test/foo/edit#edition-title"
         });
