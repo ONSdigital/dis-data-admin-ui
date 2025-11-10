@@ -120,6 +120,8 @@ export default async function Version({ params, searchParams }) {
                                     iconType="DeleteIcon"
                                     iconPosition="before"
                                     link={`/series/${id}/editions/${editionID}/versions/${versionID}/delete`}
+                                    variants={["secondary"]}
+                                    classes="ons-u-mt-l"
                                 />
                             )}
                         </div>

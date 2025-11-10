@@ -1,72 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import bindFileUploadInput from "./bind";
 
-import { TextInput } from "author-design-system-react";
+import { TextInput, Summary } from "author-design-system-react";
+import { mapUploadedFilesSummary } from "@/components/design-system/summary-mapper";
 
 const progressBarStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFile }) {
-    const [showFileUpload, setShowFileUpload] = useState(uploadedFile ? false : true);
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [showIsComplete, setShowIsComplete] = useState(uploadedFile ? true : false);
     const [error, setError] = useState(validationError || "");
-    const [file, setFile] = useState(uploadedFile || {});
+    const [files, setFiles] = useState(uploadedFiles || []);
 
-    const handleFileStart = () => {
-        setShowFileUpload(false);
+    const handleFileStart = useCallback(() => {
         setShowProgressBar(true);
         setProgress(0);
-        setShowIsComplete(false);
         setError(null);
-        setFile({});
-    };
+    }, []);
 
-    const handleFileProgress = (progress) => {
-        setShowFileUpload(false);
+    const handleFileProgress = useCallback((progress) => {
         setShowProgressBar(true);
         setProgress(progress);
-        setShowIsComplete(false);
         setError(null);
-        setFile({});
-    };
+    }, []);
 
-    const handleFileComplete = (file) => {
-        setShowFileUpload(false);
+    const handleFileComplete = useCallback((file) => {
         setShowProgressBar(false);
         setProgress(100);
-        setShowIsComplete(true);
         setError(null);
-        setFile(file);
-    };
+        // use functional update to avoid race conditions from rapid successive calls
+        setFiles((prevFiles) => {
+            // prevent duplicate entries when events fire multiple times
+            if (prevFiles.some((f) => f.title === file.title)) {
+                return prevFiles;
+            }
+            return [...prevFiles, file];
+        });
+    }, []);
 
-    const handleError = (msg) => {
-        setShowFileUpload(true);
+    const handleError = useCallback((msg) => {
         setShowProgressBar(false);
         setProgress(0);
-        setShowIsComplete(false);
         setError(msg);
-        setFile({});
-    };
+    }, []);
 
-    const handleRemoveOnClick = (e) => {
+    const handleDeleteClick = (e, deletedFile) => {
         e.preventDefault();
-        setShowFileUpload(true);
-        setShowProgressBar(false);
-        setProgress(0);
-        setShowIsComplete(false);
-        setError(null);
-        setFile({download_url: ""});
+        const filteredFiles = files.filter(file => file.title !== deletedFile);
+        setFiles(filteredFiles);
     };
 
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-    }, [id, uploadBaseURL, validationError, showFileUpload]);
+        // We intentionally bind when id/uploadBaseURL or handler identities change
+    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError]);
 
     useEffect(() => {
         if (validationError) {
@@ -87,21 +79,27 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         );
     };
 
-    const renderCompleteFile = () => {
+    const renderFilesList = () => {
+        let content = <p className="ons-u-fs-s" data-testid="dataset-upload-no-files-uploaded-text">No files uploaded</p>;
+        if (files.length) {
+            const mappedUploadedFiles = mapUploadedFilesSummary(files, handleDeleteClick);
+            content = <Summary classes="ons-u-fs-s" summaries={mappedUploadedFiles} />;
+        }
+
         return (
-            <>
-                <p>File has been uploaded: {file.download_url}</p>
-                <p><a data-testid="dataset-upload-remove" href="#" onClick={e => handleRemoveOnClick(e)}>Remove file</a></p>
-            </>
+            <div className="ons-u-mt-s">
+                <label className="ons-label ons-label--with-description" data-testid="dataset-upload-files-added-label">Files added</label>
+                { content }
+            </div>
         );
     };
     
     return (
-        <>
-            <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(file)} />
-            { showFileUpload ? renderFileInput() : null }
+        <div className="ons-col-8@m ons-grid--gutterless">
+            <input id={`${id}-value`} data-testid={`${id}-value`} name={`${id}-value`} type="hidden" value={JSON.stringify(files)} />
+            { !showProgressBar ? renderFileInput() : null }
             { showProgressBar ? renderFileProgressBar() : null }
-            { showIsComplete ? renderCompleteFile() : null }
-        </>
+            { renderFilesList() }
+        </div>
     );
 }
