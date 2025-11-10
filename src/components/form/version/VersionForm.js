@@ -9,7 +9,7 @@ import LinkButton from "@/components/link-button/LinkButton";
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from './VersionFields';
 
-export default function VersionForm({ datasetID, editionID, version, action }) {
+export default function VersionForm({ datasetID, editionID, version, isNewVersion, action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
 
     const params = useSearchParams();
@@ -70,7 +70,7 @@ export default function VersionForm({ datasetID, editionID, version, action }) {
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="version-save-button">
                     <span className="ons-btn__inner">
                         <span className="ons-btn__text">
-                            Create version
+                            { isNewVersion ? "Create version" : "Save version" }
                         </span>
                     </span>
                 </button>
