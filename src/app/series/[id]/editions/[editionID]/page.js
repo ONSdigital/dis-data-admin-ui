@@ -39,13 +39,11 @@ export default async function Edition({ params, searchParams }) {
     }
 
     let unpublishedVersion = false;
-    if (versions?.items) {
-        versions.items.forEach(item => {
-            if (item.state != "published") {
-                unpublishedVersion = true;
-            }
-        });
-    }
+    versions?.items?.forEach(item => {
+        if (item.state !== "published") {
+            unpublishedVersion = true;
+        }
+    });
 
     const renderVersionsList = () => {
         if (versionsError) {
