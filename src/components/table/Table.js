@@ -6,27 +6,44 @@ export default function Table({ query, message }) {
     const headers = [
         { label: "Job ID", isSortable: false },
         { label: "Last update", isSortable: false },
-        { label: "Series name", isSortable: false },
+        { label: "Series name", isSortable: true },
         { label: "State", isSortable: true }
     ];
 
     const body = {
         rows: [
-            { columns: [{ content: "1" }, { content: "12 October 2025" }, { content: "CPIH01" }, { content: [<span className="ons-status ons-status--pending">Submitted</span>], sortValue: "submitted" }] },
-            { columns: [{ content: "2" }, { content: "24 October 2025" }, { content: "LMS" }, { content: [<span className="ons-status ons-status--pending">In review</span>], sortValue: "review" }] },
-            { columns: [{ content: "3" }, { content: "05 October 2025" }, { content: "THINGS" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] },
-            { columns: [{ content: "4" }, { content: "13 October 2025" }, { content: "FOO" }, { content: [<span className="ons-status ons-status--dead">Reverted</span>], sortValue: "reverted" }] },
-            { columns: [{ content: "5" }, { content: "28 October 2025" }, { content: "BAR" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] }
+            { columns: [{ content: "1" }, { content: "12 October 2025" }, { content: "CPIH01", sortValue: "c" }, { content: [<span className="ons-status ons-status--pending">Submitted</span>], sortValue: "submitted" }] },
+            { columns: [{ content: "2" }, { content: "24 October 2025" }, { content: "LMS", sortValue: "l" }, { content: [<span className="ons-status ons-status--pending">In review</span>], sortValue: "review" }] },
+            { columns: [{ content: "3" }, { content: "05 October 2025" }, { content: "THINGS", sortValue: "t" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] },
+            { columns: [{ content: "4" }, { content: "13 October 2025" }, { content: "FOO", sortValue: "f" }, { content: [<span className="ons-status ons-status--dead">Reverted</span>], sortValue: "reverted" }] },
+            { columns: [{ content: "5" }, { content: "28 October 2025" }, { content: "BAR", sortValue: "b" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] }
         ]
     };
 
     const [rows, setRows] = useState(body.rows || []);
+    const [sorted, setSorted] = useState()
 
     const handleSort = (rowIndex) => {
-        const sorted = body.rows.sort((a, b) => {
-            return a.columns[rowIndex].sortValue.localeCompare(b.columns[rowIndex].sortValue);
+        const isSameColumn = sorted?.rowIndex === rowIndex;
+        const isAscending = sorted?.order === "ascending";
+        const shouldSortDescending = isSameColumn && isAscending;
+        
+        const sortedRows = [...rows].sort((a, b) => {
+            const sortValueA = a.columns[rowIndex]?.sortValue || "";
+            const sortValueB = b.columns[rowIndex]?.sortValue || "";
+            
+            if (shouldSortDescending) {
+                return sortValueB.localeCompare(sortValueA);
+            } else {
+                return sortValueA.localeCompare(sortValueB);
+            }
         });
-        setRows(sorted);
+        
+        setRows(sortedRows);
+        setSorted({ 
+            rowIndex, 
+            order: shouldSortDescending ? "descending" : "ascending" 
+        });
     }
 
     const renderTableHeader = () => {
