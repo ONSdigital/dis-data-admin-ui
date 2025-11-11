@@ -1,8 +1,8 @@
 export const migrationJobsList = {
-    "count": 0,
+    "count": 5,
     "limit": 0,
     "offset": 0,
-    "total_count": 0,
+    "total_count": 5,
     "items": [
         {
             "id": "1",
@@ -21,7 +21,8 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "submitted",
-            "type": "static_dataset"
+            "type": "static_dataset", 
+            "series_title": "CPIH"
         },
         {
             "id": "2",
@@ -40,7 +41,8 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "review",
-            "type": "static_dataset"
+            "type": "static_dataset",
+            "series_title": "Consumer price inflation"
         },
         {
             "id": "3",
@@ -59,7 +61,8 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "submitted",
-            "type": "static_dataset"
+            "type": "static_dataset",
+            "series_title": "Labour market"
         },
         {
             "id": "4",
@@ -78,7 +81,8 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "reverted",
-            "type": "static_dataset"
+            "type": "static_dataset",
+            "series_title": "Population estimates"
         },
         {
             "id": "5",
@@ -97,7 +101,8 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "approved",
-            "type": "static_dataset"
+            "type": "static_dataset",
+            "series_title": "Crime statistics"
         }
     ]
 }
