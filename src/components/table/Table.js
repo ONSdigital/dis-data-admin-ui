@@ -1,22 +1,33 @@
 "use client";
 
+import { useState } from "react";
+
 export default function Table({ query, message }) {
     const headers = [
-        { label: "Job ID", sortable: false },
-        { label: "Last update", sortable: false },
-        { label: "Series name", sortable: false },
-        { label: "State", sortable: false }
+        { label: "Job ID", isSortable: false },
+        { label: "Last update", isSortable: false },
+        { label: "Series name", isSortable: false },
+        { label: "State", isSortable: true }
     ];
 
     const body = {
         rows: [
-            {columns: [{ content: "1" }, { content: "12 October 2025" }, { content: "CPIH01" }, { content: [<span className="ons-status ons-status--pending">Submitted</span>] }]},
-            {columns: [{content: "2" }, { content: "24 October 2025" }, { content: "LMS" }, { content: [<span className="ons-status ons-status--pending">In review</span>] }]},
-            {columns: [{content: "3" }, { content: "05 October 2025" }, { content: "THINGS" }, { content: [<span className="ons-status ons-status--success">Approved</span>] }]},
-            {columns: [{content: "4" }, { content: "13 October 2025" }, { content: "FOO" }, { content: [<span className="ons-status ons-status--dead">Reverted</span>] }]},
-            {columns: [{content: "5" }, { content: "28 October 2025" }, { content: "BAR" }, { content: [<span className="ons-status ons-status--success">Approved" </span>]} ]}
+            { columns: [{ content: "1" }, { content: "12 October 2025" }, { content: "CPIH01" }, { content: [<span className="ons-status ons-status--pending">Submitted</span>], sortValue: "submitted" }] },
+            { columns: [{ content: "2" }, { content: "24 October 2025" }, { content: "LMS" }, { content: [<span className="ons-status ons-status--pending">In review</span>], sortValue: "review" }] },
+            { columns: [{ content: "3" }, { content: "05 October 2025" }, { content: "THINGS" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] },
+            { columns: [{ content: "4" }, { content: "13 October 2025" }, { content: "FOO" }, { content: [<span className="ons-status ons-status--dead">Reverted</span>], sortValue: "reverted" }] },
+            { columns: [{ content: "5" }, { content: "28 October 2025" }, { content: "BAR" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] }
         ]
     };
+
+    const [rows, setRows] = useState(body.rows || []);
+
+    const handleSort = (rowIndex) => {
+        const sorted = body.rows.sort((a, b) => {
+            return a.columns[rowIndex].sortValue.localeCompare(b.columns[rowIndex].sortValue);
+        });
+        setRows(sorted);
+    }
 
     const renderTableHeader = () => {
         return (
@@ -25,12 +36,17 @@ export default function Table({ query, message }) {
                     {headers.map((header, index) => {
                         return (
                             <th scope="col" className="ons-table__header" aria-sort="none" key={header.label + index}>
-                                <span className="ons-table__header-text">{header.label}</span>
-                                <svg id="sort-sprite-id" className="ons-icon ons-u-d-no" viewBox="0 0 12 19" xmlns="http://www.w3.org/2000/svg"
-                                    focusable="false" fill="black" role="img" aria-hidden="true">
-                                    <path className="ons-topTriangle" d="M6 0l6 7.2H0L6 0zm0 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z" />
-                                    <path className="ons-bottomTriangle" d="M6 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z" />
-                                </svg>
+                                {header.isSortable ?
+                                    <button aria-label="Sort by Legal basis" type="button" data-index="3" className="ons-table__sort-button" onClick={() => {handleSort(index)}}>
+                                        {header.label}
+                                        <svg id="sort-sprite-legal-basis-0" className="ons-icon" viewBox="0 0 12 19" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor" role="img" aria-hidden="true">
+                                            <path className="ons-topTriangle" d="M6 0l6 7.2H0L6 0zm0 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"></path>
+                                            <path className="ons-bottomTriangle" d="M6 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"></path>
+                                        </svg>
+                                    </button>
+                                    :
+                                    <span className="ons-table__header-text">{header.label}</span>
+                                }
                             </th>
                         )
                     })}
@@ -42,7 +58,7 @@ export default function Table({ query, message }) {
     const renderTableBody = () => {
         return (
             <tbody className="ons-table__body">
-                {body.rows.map((row, index) => {
+                {rows.map((row, index) => {
                     return (
                         <tr className="ons-table__row" key={`row-${index}`}>
                             {row.columns.map((cell, i) => {
