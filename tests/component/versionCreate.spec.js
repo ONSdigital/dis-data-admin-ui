@@ -36,7 +36,7 @@ test.describe("Create version page", () => {
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
         await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify([{download_url: "test/file.csv"}]); });
 
-        await page.getByRole("button", { name: /Save new dataset version/i }).click();
+        await page.getByRole("button", { name: /Create version/i }).click();
 
         await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1**");
 
@@ -49,7 +49,7 @@ test.describe("Create version page", () => {
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
 
-        await page.getByRole("button", { name: /Save new dataset version/i }).click();
+        await page.getByRole("button", { name: /Create version/i }).click();
 
         await expect(page.getByText("There was a problem creating this dataset version")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Quality designation is required")).toBeVisible();
