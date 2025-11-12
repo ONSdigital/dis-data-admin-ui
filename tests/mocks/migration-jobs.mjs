@@ -26,7 +26,7 @@ export const migrationJobsList = {
         },
         {
             "id": "2",
-            "last_updated": "2020-06-11T12:49:20+01:00",
+            "last_updated": "2020-04-20T12:49:20+01:00",
             "links": {
                 "events": {
                     "href": "https://api.beta.ons.gov.uk/v1/migration-jobs/1/events"
@@ -40,7 +40,7 @@ export const migrationJobsList = {
                 }
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
-            "state": "review",
+            "state": "in_review",
             "type": "static_dataset",
             "series_title": "Consumer price inflation"
         },
@@ -60,7 +60,7 @@ export const migrationJobsList = {
                 }
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
-            "state": "submitted",
+            "state": "approved",
             "type": "static_dataset",
             "series_title": "Labour market"
         },
@@ -86,7 +86,7 @@ export const migrationJobsList = {
         },
         {
             "id": "5",
-            "last_updated": "2020-06-11T12:49:20+01:00",
+            "last_updated": "2024-05-13T12:49:20+01:00",
             "links": {
                 "events": {
                     "href": "https://api.beta.ons.gov.uk/v1/migration-jobs/1/events"
@@ -100,7 +100,7 @@ export const migrationJobsList = {
                 }
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
-            "state": "approved",
+            "state": "submitted",
             "type": "static_dataset",
             "series_title": "Crime statistics"
         }
