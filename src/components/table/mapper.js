@@ -2,16 +2,16 @@ import Link from "next/link";
 
 import { formatDate, ISOToYYYYMMDD } from "@/utils/datetime/datetime";
 
-const mapMigrationJobState = (state) => {
+const mapMigrationJobState = (state, key) => {
     switch(state) {
         case "approved":
-            return [<span className="ons-status ons-status--success">Approved</span>];
+            return [<span key={key} className="ons-status ons-status--success">Approved</span>];
         case "in_review":
-            return [<span className="ons-status ons-status--pending">In review</span>];
+            return [<span key={key} className="ons-status ons-status--pending">In review</span>];
         case "submitted":
-            return [<span className="ons-status ons-status--pending">Submitted</span>];
+            return [<span key={key} className="ons-status ons-status--pending">Submitted</span>];
         case "reverted":
-            return [<span className="ons-status ons-status--dead">Reverted</span>];
+            return [<span key={key} className="ons-status ons-status--dead">Reverted</span>];
         default:
             return "No state"
     }
@@ -29,14 +29,14 @@ const mapMigrationListTable = (data) => {
         rows: []
     };
 
-    data?.forEach(item => {
+    data?.forEach((item, index) => {
         body.rows.push(
             { 
                 columns: [
-                    { content: [<Link href={`/data-admin/migration/${item.id}`}>{item.id}</Link>], sortValue: item.id },
+                    { content: [<Link key={`migration-list-table-link-${index}`} href={`/data-admin/migration/${item.id}`}>{item.id}</Link>], sortValue: item.id },
                     { content: formatDate(item.last_updated), sortValue: ISOToYYYYMMDD(item.last_updated) },
                     { content: item.series_title, sortValue: item.series_title },
-                    { content: mapMigrationJobState(item.state), sortValue: item.state }
+                    { content: mapMigrationJobState(item.state, `migration-list-table-state-${index}`), sortValue: item.state }
                 ]
             }
         );
