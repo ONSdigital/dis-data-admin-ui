@@ -2,26 +2,9 @@
 
 import { useState } from "react";
 
-export default function Table({ query, message }) {
-    const headers = [
-        { label: "Job ID", isSortable: false },
-        { label: "Last update", isSortable: false },
-        { label: "Series name", isSortable: true },
-        { label: "State", isSortable: true }
-    ];
-
-    const body = {
-        rows: [
-            { columns: [{ content: "1" }, { content: "12 October 2025" }, { content: "CPIH01", sortValue: "c" }, { content: [<span className="ons-status ons-status--pending">Submitted</span>], sortValue: "submitted" }] },
-            { columns: [{ content: "2" }, { content: "24 October 2025" }, { content: "LMS", sortValue: "l" }, { content: [<span className="ons-status ons-status--pending">In review</span>], sortValue: "review" }] },
-            { columns: [{ content: "3" }, { content: "05 October 2025" }, { content: "THINGS", sortValue: "t" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] },
-            { columns: [{ content: "4" }, { content: "13 October 2025" }, { content: "FOO", sortValue: "f" }, { content: [<span className="ons-status ons-status--dead">Reverted</span>], sortValue: "reverted" }] },
-            { columns: [{ content: "5" }, { content: "28 October 2025" }, { content: "BAR", sortValue: "b" }, { content: [<span className="ons-status ons-status--success">Approved</span>], sortValue: "approved" }] }
-        ]
-    };
-
-    const [rows, setRows] = useState(body.rows || []);
-    const [sorted, setSorted] = useState()
+export default function Table({ contents, caption, classes  }) {
+    const [rows, setRows] = useState(contents?.body?.rows || []);
+    const [sorted, setSorted] = useState();
 
     const handleSort = (rowIndex) => {
         const isSameColumn = sorted?.rowIndex === rowIndex;
@@ -50,7 +33,7 @@ export default function Table({ query, message }) {
         return (
             <thead className="ons-table__head">
                 <tr className="ons-table__row">
-                    {headers.map((header, index) => {
+                    {contents?.headers.map((header, index) => {
                         return (
                             <th scope="col" className="ons-table__header" aria-sort="none" key={header.label + index}>
                                 {header.isSortable ?
@@ -91,12 +74,12 @@ export default function Table({ query, message }) {
     };
 
     return (
-        <div className="ons-table-scrollable ons-table-scrollable--on">
+        <div className={"ons-table-scrollable ons-table-scrollable--on " + classes}>
             <div className="ons-table-scrollable__content" tabIndex="0" role="region" aria-label="JavaScript enhanced sortable table. Scrollable table">
                 <table className="ons-table ons-table--sortable" data-aria-sort="Sort by" data-aria-asc="ascending" data-aria-desc="descending">
-                    <caption className="ons-table__caption"> JavaScript enhanced sortable table </caption>
-                    {renderTableHeader()}
-                    {renderTableBody()}
+                    { caption && <caption className="ons-table__caption"> {caption} </caption>}
+                    { renderTableHeader() }
+                    { renderTableBody() }
                 </table>
             </div>
         </div>
