@@ -56,6 +56,11 @@ export default function Table({ contents, caption, classes  }) {
     };
 
     const renderTableBody = () => {
+        if (!rows.length) {
+            return (
+                <tbody className="ons-table__body"><tr><td>No data available</td></tr></tbody>
+            )
+        }
         return (
             <tbody className="ons-table__body">
                 {rows.map((row, index) => {
