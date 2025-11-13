@@ -17,6 +17,7 @@ const getBaseSummaryModel = (groupID) => {
 // map a <Summary> component row
 const mapRow = (itemName, value, multiValue, action, rows) => {
     const slugifyLowerCase = (string) => {
+        if (!string) return "no-value"
         return slugify(string, {lower: true});
     };
 
