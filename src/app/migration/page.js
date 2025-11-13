@@ -6,7 +6,7 @@ import { migrationJobsList } from "../../../tests/mocks/migration-jobs.mjs";
 import { mapMigrationListTable } from "@/components/table/mapper";
 
 export default function MigrationList() {
-    const mappedTable = mapMigrationListTable(migrationJobsList.items)
+    const mappedTable = mapMigrationListTable(migrationJobsList.items);
     const renderListArea = () => {
         return (
             <>
@@ -18,7 +18,7 @@ export default function MigrationList() {
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
                                 text="Create migration job"
-                                link="series/create"
+                                link="migration/create"
                             />
                         </div>
                     </div>
