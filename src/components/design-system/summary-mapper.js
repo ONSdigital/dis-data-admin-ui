@@ -122,7 +122,7 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
         text: "Delete file"
     }
     files.forEach(file => {
-        mapRow(file.title, " ", null, action, rows)
+        mapRow(file.title  || file.download_url, " ", null, action, rows)
     });
     return contentBody;
 }
