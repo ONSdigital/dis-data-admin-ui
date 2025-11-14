@@ -9,7 +9,25 @@ import { topicList } from "../mocks/topics.mjs";
 const app = express();
 const PORT = 29401;
 
-app.use(express.json());
+const handleMockError = (res, paramID) => {
+    if (!paramID || typeof paramID !== "string") {
+        return false;
+    }
+
+    const errorMap = {
+        "400": { status: 400, message: "Bad request" },
+        "404": { status: 404, message: "Not found" },
+        "500": { status: 500, message: "Internal server error" },
+    };
+
+    const error = errorMap[paramID];
+    if (error) {
+        res.status(error.status).send(error.message);
+        return true;
+    }
+
+    return false;
+};
 
 app.get("/datasets", (req, res) => {
     // check "id" param for search filter
@@ -74,8 +92,7 @@ app.get("/datasets/:id", (req, res) => {
 });
 
 app.delete("/datasets/:id", (req, res) => {
-    if (req.params.id === "return-internal-server-error") {
-        res.sendStatus(500);
+    if (handleMockError(res, req.params.id)) {
         return;
     }
     res.sendStatus(204);
@@ -159,6 +176,7 @@ app.get("/topics", (req, res) => {
     res.send(topicList);
 });
 
+app.use(express.json());
 app.listen(PORT, () => {
     console.log(`Fake API test server running at http://localhost:${PORT}/`);
 });
