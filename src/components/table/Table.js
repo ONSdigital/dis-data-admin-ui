@@ -30,7 +30,7 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
             rowIndex, 
             order: shouldSortDescending ? "descending" : "ascending" 
         });
-    }
+    };
 
     const renderTableHeader = () => {
         return (
@@ -41,7 +41,7 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                         return (
                             <th scope="col" className="ons-table__header" aria-sort="none" key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}>
                                 {header.isSortable ?
-                                    <button aria-label="Sort by Legal basis" type="button" data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} className="ons-table__sort-button" onClick={() => {handleSort(index)}}>
+                                    <button aria-label="Sort by Legal basis" type="button" data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} className="ons-table__sort-button" onClick={() => {handleSort(index);}}>
                                         {header.label}
                                         <svg id="sort-sprite-legal-basis-0" className="ons-icon" viewBox="0 0 12 19" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor" role="img" aria-hidden="true">
                                             <path className="ons-topTriangle" d="M6 0l6 7.2H0L6 0zm0 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"></path>
@@ -52,18 +52,18 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                                     <span data-testid={`${sanitisedDataTestId}-header-label-${sanitisedHeaderLabel}`} className="ons-table__header-text">{header.label}</span>
                                 }
                             </th>
-                        )
-                    })}
+                        );
+                    })};
                 </tr>
             </thead>
-        )
+        );
     };
 
     const renderTableBody = () => {
         if (!rows.length) {
             return (
                 <tbody className="ons-table__body"><tr><td data-testid={`${sanitisedDataTestId}-no-data`}>No data available</td></tr></tbody>
-            )
+            );
         }
         return (
             <tbody className="ons-table__body">
@@ -73,13 +73,13 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                             {row.columns.map((cell, i) => {
                                 return (
                                     <td className="ons-table__cell" key={`row-${index}cell-${i}`} data-testid={`${sanitisedDataTestId}-cell-${index}-${i}`}>{cell.content}</td>
-                                )
+                                );
                             })}
                         </tr>
-                    )
+                    );
                 })}
             </tbody>
-        )
+        );
     };
 
     return (
