@@ -17,13 +17,14 @@ export default function MigrationList() {
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
+                                dataTestId="create-migration-job-button"
                                 text="Create migration job"
                                 link="migration/create"
                             />
                         </div>
                     </div>
                 </div>
-                <Table contents={mappedTable} classes="ons-u-mt-m" />
+                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" />
             </>
         );
     };
