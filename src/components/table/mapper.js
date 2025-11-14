@@ -13,9 +13,9 @@ const mapMigrationJobState = (state, key) => {
         case "reverted":
             return [<span key={key} className="ons-status ons-status--dead">Reverted</span>];
         default:
-            return "No state"
+            return "No state";
     }
-}
+};
 
 const mapMigrationListTable = (data) => {
     const headers = [
@@ -40,7 +40,7 @@ const mapMigrationListTable = (data) => {
                 ]
             }
         );
-    })
+    });
 
     return { headers, body };
 };
