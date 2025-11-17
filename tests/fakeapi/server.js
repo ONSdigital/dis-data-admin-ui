@@ -12,6 +12,7 @@ const PORT = 29401;
 app.use(express.json());
 
 const log = (msg, url, status) => {
+    if (!process.env.ENABLE_LOGGING) return;
     const log = { 
         message: msg, 
         url: url,
