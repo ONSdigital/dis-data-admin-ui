@@ -27,6 +27,7 @@ const handleMockError = (req, res, paramID) => {
 
     const errorMap = {
         "400": { status: 400, message: "Bad request" },
+        "401": { status: 400, message: "Unauthorised" },
         "404": { status: 404, message: "Not found" },
         "500": { status: 500, message: "Internal server error" },
     };
@@ -241,7 +242,6 @@ app.get("/topics/:id", (req, res) => {
     log("Returning success", req.url, 200);
     res.send(topicList.items.find(item => item.id === req.params.id));
 });
-
 
 app.listen(PORT, () => {
     console.log(`Fake API test server running at http://localhost:${PORT}/`);
