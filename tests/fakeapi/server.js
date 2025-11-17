@@ -142,6 +142,7 @@ app.get("/datasets/:id/editions", (req, res) => {
 
 app.get("/datasets/:id/editions/:editionID", (req, res) => {
     log("Handling GET '/datasets/:id/editions/:editionID'", req.url, null);
+    if (handleMockError(req, res, req.params.editionID)) return;
 
     const edition = editions.items.find(item => item.edition === req.params.editionID);
     if (!edition) {
