@@ -37,7 +37,7 @@ test.describe("Series delete page", () => {
     test("shows API error when API request fails", async ({ page, context }) => {
         addValidAuthCookies(context);
 
-        await page.goto("./series/return-internal-server-error/delete");
+        await page.goto("./series/500/delete");
         await page.getByTestId("confirm-delete-item-yes-input").click();
         await page.getByRole("button", { name: "Delete" }).click();
 
