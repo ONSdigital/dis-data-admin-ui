@@ -53,7 +53,7 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                                 }
                             </th>
                         );
-                    })};
+                    })}
                 </tr>
             </thead>
         );
