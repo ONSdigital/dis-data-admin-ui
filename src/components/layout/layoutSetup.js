@@ -10,6 +10,10 @@ const NAVIGATION_OPTIONS = [
         text: "Dataset catalogue",
         url: "/data-admin/series"
     },
+    {
+        text: "Migration",
+        url: "/data-admin/migration"
+    },
 ];
 
 /**
