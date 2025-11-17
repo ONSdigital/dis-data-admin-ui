@@ -29,7 +29,13 @@ test.describe("Edit series page", () => {
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save changes/i }).click();
 
+         // check success message is shown
         await expect(page.getByText("Dataset series saved")).toBeVisible();
+
+        // check body content loads correctly
+        await expect(page.locator("#series-id")).toContainText("mock-quarterly");
+        await expect(page.locator("#type")).toContainText("static");
+        await expect(page.locator("#title")).toContainText("Mock Dataset");
     });
 
     test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
