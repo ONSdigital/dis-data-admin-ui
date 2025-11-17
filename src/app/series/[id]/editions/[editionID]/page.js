@@ -39,8 +39,8 @@ export default async function Edition({ params, searchParams }) {
     }
 
     let unpublishedVersion = false;
-    versions.items.forEach(item => {
-        if (item.state != "published") {
+    versions?.items?.forEach(item => {
+        if (item.state !== "published") {
             unpublishedVersion = true;
         }
     });
