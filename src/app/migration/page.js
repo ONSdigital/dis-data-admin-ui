@@ -36,7 +36,7 @@ export default function MigrationList() {
                     <BoxContainer
                         borderColor="ons-color-grey-15"
                         borderWidth={1}
-                        classes="ons-grid__col ons-col-4@m ons-u-pl-no"
+                        classes="ons-grid__col ons-u-pl-no"
                         id="box-container"
                         title="Search and filter"
                     >
