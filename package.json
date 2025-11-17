@@ -47,6 +47,7 @@
   "overrides": {
     "author-design-system-react": {
       "react": "19.2.0"
-    }
+    },
+    "js-yaml": "4.1.1"
   }
 }

@@ -17,6 +17,7 @@ const getBaseSummaryModel = (groupID) => {
 // map a <Summary> component row
 const mapRow = (itemName, value, multiValue, action, rows) => {
     const slugifyLowerCase = (string) => {
+        if (!string) return "no-value"
         return slugify(string, {lower: true});
     };
 
@@ -122,7 +123,7 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
         text: "Delete file"
     }
     files.forEach(file => {
-        mapRow(file.title, " ", null, action, rows)
+        mapRow(file.title  || file.download_url, " ", null, action, rows)
     });
     return contentBody;
 }
