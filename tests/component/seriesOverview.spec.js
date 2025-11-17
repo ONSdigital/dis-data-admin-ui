@@ -85,4 +85,19 @@ test.describe("Series overview page", () => {
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
+
+    test.describe("handles API error", () => {
+        test("when 404 is returned", async ({ page, context }) => {
+            addValidAuthCookies(context);
+            await page.goto("./series/404");
+            expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
+        });
+
+         test("when 500 is returned", async ({ page, context }) => {
+            addValidAuthCookies(context);
+            await page.goto("./series/500");
+            expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
+        });
+    });
 });
+

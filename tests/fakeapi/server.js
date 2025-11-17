@@ -112,6 +112,7 @@ app.put("/datasets/:id", (req, res) => {
 
 app.get("/datasets/:id", (req, res) => {
     log("Handling GET '/datasets/:id'", req.url, null);
+    if (handleMockError(req, res, req.params.id)) return;
 
     const dataset = datasetList.items.find(item => item.id === req.params.id);
     if (!dataset) {
