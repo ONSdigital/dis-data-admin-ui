@@ -15,8 +15,8 @@ export function formatDate(dateString) {
 
 /**
  * Convert ISO date to day, month, year, minutes, hours values 
- * @param {string} dateString - ISO date string
- * @return {object} - day, month, year, minutes and hours values
+ * @param {string} dateString - ISO date string (e.g., "2025-10-12T00:00:00Z")
+ * @return {object} - Day, month, year, minutes and hours values
  */
 export function ISOToDMYMHValues(dateString) {
     if (!dateString) {
@@ -37,6 +37,35 @@ export function ISOToDMYMHValues(dateString) {
         return {day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear(), minutes: minutes, hour: date.getHours()};
     } catch (error) {
         logError("error converting ISO date to day, month, year, minutes, hours values", null, null, error);
+        return null;
+    }
+}
+
+/**
+ * Convert ISO date format to YYYYMMDD format
+ * @param {string} dateString - ISO date string (e.g., "2025-10-12T00:00:00Z")
+ * @return {string} - Date in YYYYMMDD format (e.g., "20251012") or null if invalid
+ */
+export function ISOToYYYYMMDD(dateString) {
+    if (!dateString) {
+        return null;
+    }
+    try {
+        const date = new Date(dateString);
+
+        if (isNaN(date.getTime())) {
+            const err = new Error("invalid date");
+            logError("invalid ISO date string received", null, null, err);
+            return null;
+        }
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}${month}${day}`;
+    } catch (error) {
+        logError("error converting ISO date to YYYYMMDD format", null, null, error);
         return null;
     }
 }
