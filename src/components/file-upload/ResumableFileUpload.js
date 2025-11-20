@@ -58,7 +58,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
         // We intentionally bind when id/uploadBaseURL or handler identities change
-    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError]);
+    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
 
     useEffect(() => {
         if (validationError) {
