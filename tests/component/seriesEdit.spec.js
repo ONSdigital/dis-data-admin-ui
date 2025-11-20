@@ -8,7 +8,7 @@ test.describe("Edit series page", () => {
 
         await page.goto("./series/mock-quarterly")
         //await page.getByRole("link", { name: "Edit" }).click();
-        await page.getByTestId("edit-title").click();
+        await page.getByTestId("action-link-title").click();
         await page.waitForURL("**/series/mock-quarterly/edit#dataset-series-title");
 
         await expect(page.url().toString()).toContain("series/mock-quarterly/edit#dataset-series-title");
