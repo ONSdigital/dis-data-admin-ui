@@ -92,7 +92,6 @@ export default function VersionFields(props) {
                 description="File types accepted are XLS and XLSX or PDF"
                 uploadBaseURL={appConfig?.uploadBaseURL}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
-                uploadedFile={props.fieldValues?.distributions[0]}
                 uploadedFiles={props.fieldValues?.distributions}
             />
         </>
