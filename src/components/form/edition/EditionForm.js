@@ -76,7 +76,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                     error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
                 />
 
-                { isNewEdition ? <VersionFields errors={formState.errors} /> : null }
+                { isNewEdition ? <VersionFields datasetID={datasetID} editionID={editionID} errors={formState.errors} /> : null }
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="edition-save-button">
                     <span className="ons-btn__inner">

@@ -11,7 +11,7 @@ const progressBarStyle = {
     width: "20rem",
 };
 
-export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles }) {
+export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles, datasetID, editionID, versionID }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(validationError || "");
@@ -56,9 +56,9 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     };
 
     useEffect(() => {
-        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
+        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, datasetID, editionID, versionID);
         // We intentionally bind when id/uploadBaseURL or handler identities change
-    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
+    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error, datasetID, editionID, versionID]);
 
     useEffect(() => {
         if (validationError) {
