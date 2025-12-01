@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 import bindFileUploadInput from "./bind";
 
@@ -55,9 +55,62 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFiles(filteredFiles);
     };
 
+    const resumableInstanceRef = useRef(null);
+
     useEffect(() => {
-        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, datasetID, editionID, versionID);
-        // We intentionally bind when id/uploadBaseURL or handler identities change
+        console.log("useEffect running with editionID:", editionID);
+        
+        // Bind new Resumable instance - this will run every time editionID or other key params change
+        // bindFileUploadInput will clean up any existing instance before creating a new one
+        const instance = bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, datasetID, editionID, versionID);
+        resumableInstanceRef.current = instance;
+        
+        // Also store config on the input element directly so handlers can always read latest values
+        const input = document.getElementById(id.toLowerCase());
+        if (input && instance) {
+            input._resumableConfig = {
+                datasetID,
+                editionID,
+                versionID,
+                uploadBaseURL
+            };
+            console.log("Stored config on input element:", input._resumableConfig);
+        }
+
+        // Cleanup function to remove Resumable instance when component unmounts or dependencies change
+        return () => {
+            if (resumableInstanceRef.current) {
+                try {
+                    const input = document.getElementById(id.toLowerCase());
+                    if (input && input._resumableInstance) {
+                        const instance = input._resumableInstance;
+                        // Remove event handlers
+                        if (instance._handlers) {
+                            if (instance.off) {
+                                instance.off("fileAdded", instance._handlers.fileAdded);
+                                instance.off("fileProgress", instance._handlers.fileProgress);
+                                instance.off("fileError", instance._handlers.fileError);
+                                instance.off("fileSuccess", instance._handlers.fileSuccess);
+                            }
+                            delete instance._handlers;
+                        }
+                        // Unassign browse/drop if methods exist
+                        if (instance.unassignBrowse) {
+                            instance.unassignBrowse();
+                        }
+                        if (instance.unassignDrop) {
+                            instance.unassignDrop();
+                        }
+                        instance.cancel();
+                        input._resumableInstance = null;
+                    }
+                } catch (e) {
+                    // Ignore cleanup errors
+                }
+                resumableInstanceRef.current = null;
+            }
+        };
+        // Include files and error in dependencies so bind runs when files are completed or errors occur
     }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error, datasetID, editionID, versionID]);
 
     useEffect(() => {
