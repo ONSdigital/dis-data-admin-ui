@@ -26,6 +26,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
         query: {
             aliasName: "",
         },
+        fileType: ["csdb", "csv", "csvw", "sdmx", "xls", "xlsx"],
         forceChunkSize: true,
         simultaneousUploads: 1,
         permanentErrors: [400, 404, 409, 415, 500, 501],
