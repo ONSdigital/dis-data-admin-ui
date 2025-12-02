@@ -45,7 +45,6 @@ test.describe("Create series page", () => {
         await expect(page.locator("#series-id")).toContainText("mock-quarterly");
         await expect(page.locator("#type")).toContainText("static");
         await expect(page.locator("#title")).toContainText("Mock Dataset");
-        await page.waitForTimeout(5000)
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
