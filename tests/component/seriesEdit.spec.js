@@ -29,7 +29,7 @@ test.describe("Edit series page", () => {
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save changes/i }).click();
 
-         // check success message is shown
+        // check success message is shown
         await expect(page.getByText("Dataset series saved")).toBeVisible();
 
         // check body content loads correctly

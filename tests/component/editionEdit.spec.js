@@ -28,7 +28,12 @@ test.describe("Edit edition page", () => {
             await page.waitForURL("**/series/mock-quarterly/editions/test-id**");
             await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-id");
 
+            // check success message is shown
             await expect(page.getByText("Dataset edition saved")).toBeVisible();
+
+            // check body content loads correctly
+            await expect(page.locator("#edition-id")).toContainText("test-id");
+            await expect(page.locator("#edition-title")).toContainText("Test edition");
         });
 
         test("Show errors on mandatory fields", async ({ page, context }) => {
