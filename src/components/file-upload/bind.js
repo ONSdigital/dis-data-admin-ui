@@ -104,7 +104,6 @@ const onFileSuccess = (resumable, file, handleFileComplete) => {
         media_type: file.file.type,
         format: formatFromFilename(file.fileName),
     };
-    console.log(fileInfo)
     handleFileComplete(fileInfo);
 };
 
