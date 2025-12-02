@@ -101,7 +101,6 @@ const onFileSuccess = (resumable, file, handleFileComplete) => {
         title: file.fileName,
         download_url: `${resumable.opts.query.path}/${file.relativePath}`,
         byte_size: file.size,
-        media_type: file.file.type,
         format: formatFromFilename(file.fileName),
     };
     handleFileComplete(fileInfo);
