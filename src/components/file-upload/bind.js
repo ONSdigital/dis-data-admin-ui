@@ -14,6 +14,8 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
     // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
     // by the <TextInput /> component from eq-author and there will be errors when trying to bind
     const elID = elementID.toLowerCase();
+
+    console.log("BIND 6")
     
     const input = document.getElementById(elID);
     if (!input) {
@@ -47,6 +49,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
         onFileError(message, handleError);
     });
     r.on("fileSuccess", file => {
+        console.log("FILE DONE!!")
         onFileSuccess(r, file, handleFileComplete);
     });
 };
@@ -98,10 +101,16 @@ const onFileSuccess = (resumable, file, handleFileComplete) => {
         title: file.fileName,
         download_url: `${resumable.opts.query.path}/${file.relativePath}`,
         byte_size: file.size,
-        media_type: file.file.type
+        media_type: file.file.type,
+        format: formatFromFilename(file.fileName),
     };
+    console.log(fileInfo)
     handleFileComplete(fileInfo);
 };
+
+const formatFromFilename = (filename) => {
+    return filename.split(".").pop();
+}
 
 export default bindFileUploadInput;
 export { onFileAdded, onFileProgress, onFileError, onFileSuccess };
