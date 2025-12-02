@@ -82,7 +82,7 @@ export default async function Edition({ params, searchParams }) {
                 buttonURL={createURL} 
                 buttonText="Create new version" 
                 linkURL="../"
-                linkText="Back to dataset series list"
+                linkText="Back to series overview"
                 breadcrumbs={breadcrumbs}
                 showPanel={unpublishedVersion}
                 panelText="An unpublished version exists so cannot add new dataset version."

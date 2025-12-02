@@ -11,7 +11,7 @@ test.describe("Edition overview page", () => {
         await expect(page.getByTestId("page-heading-title")).toContainText("Mock Dataset: Timeseries");
         await expect(page.getByTestId("page-heading-subtitle")).toContainText("Edition");
         await expect(page.getByTestId("page-heading-create-button")).toContainText("Create new version");
-        await expect(page.getByTestId("page-heading-link")).toContainText("Back to dataset series list");
+        await expect(page.getByTestId("page-heading-link")).toContainText("Back to series overview");
 
         // version list
         await expect(page.getByRole("link", { name: "Version: 1" })).toBeVisible();
