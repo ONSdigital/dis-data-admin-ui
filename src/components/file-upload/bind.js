@@ -13,8 +13,6 @@ const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, handleFil
     // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
     // by the <TextInput /> component from eq-author and there will be errors when trying to bind
     const elID = elementID.toLowerCase();
-
-    console.log("Upload file path will be:", uploadFilePath)
     
     const input = document.getElementById(elID);
     if (!input) {
