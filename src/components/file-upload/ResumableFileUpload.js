@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import bindFileUploadInput from "./bind";
 
@@ -55,8 +56,17 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFiles(filteredFiles);
     };
 
+    const getFileUploadPath = () => {
+        if (uploadedFiles?.length) {
+            const uuid = /((\w{4,12}-?)){5}/.exec(uploadedFiles[0].download_url)[0];
+            return uuid;
+        }
+        return uuidv4();
+    }
+
     useEffect(() => {
-        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
+        const uploadFilePath = getFileUploadPath();
+        bindFileUploadInput(id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError);
         // We intentionally bind when id/uploadBaseURL or handler identities change
     }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
 
