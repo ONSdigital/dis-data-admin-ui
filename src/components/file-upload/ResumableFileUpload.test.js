@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 
+// mock uuid before importing components that use it
 jest.mock("uuid", () => ({
     v4: () => "12345678-1234-1234-1234-123456789012",
 }));
