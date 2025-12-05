@@ -1,5 +1,10 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
+
+jest.mock('uuid', () => ({
+  v4: () => '12345678-1234-1234-1234-123456789012',
+}));
+
 import ResumableFileUpload from "./ResumableFileUpload";
 
 const uploadedFile = [{title: "Test dataset title", format: "csv", download_url: "test/file/download.csv"}];
