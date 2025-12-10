@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import bindFileUploadInput from "./bind";
 
 import { TextInput, Summary } from "author-design-system-react";
 import { mapUploadedFilesSummary } from "@/components/design-system/summary-mapper";
 
-const progressBarStyle = {
+const UUID_EXTRACT_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+const PROGRESS_BAR_STYLE = {
     width: "20rem",
 };
 
@@ -55,10 +58,18 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFiles(filteredFiles);
     };
 
+    const uploadFilePath = useMemo(() => {
+        if (uploadedFiles?.length) {
+            const match = UUID_EXTRACT_PATTERN.exec(uploadedFiles[0].download_url);
+            return match ? match[0] : uuidv4();
+        }
+        return uuidv4();
+    }, [uploadedFiles]);
+
     useEffect(() => {
-        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
+        bindFileUploadInput(id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError);
         // We intentionally bind when id/uploadBaseURL or handler identities change
-    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
+    }, [id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
 
     useEffect(() => {
         if (validationError) {
@@ -74,7 +85,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         return (
             <>
                 <label htmlFor="file-progress" className="ons-label ons-label--with-description">File upload in progress:</label>
-                <progress id="file-progress" max="100" style={progressBarStyle} value={progress}>{progress}%</progress>
+                <progress id="file-progress" max="100" style={PROGRESS_BAR_STYLE} value={progress}>{progress}%</progress>
             </>
         );
     };
