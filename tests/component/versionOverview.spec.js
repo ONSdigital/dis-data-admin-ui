@@ -47,7 +47,7 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId('release-date-field')).toContainText('26 January 2025');
         await expect(page.getByTestId('version-field')).toContainText('1');
         await expect(page.getByTestId('last-updated-field')).toContainText('26 February 2025');
-        await expect(page.getByTestId('quality-designation-field')).toContainText('accredited-official');
+        await expect(page.getByTestId('quality-designation-field')).toContainText('National Statistic');
         await expect(page.getByTestId("usage-note-title-0")).toContainText("Usage Note 1");
         await expect(page.getByTestId("usage-note-text-0")).toContainText("This is a usage note for version 1");
         await expect(page.getByTestId("usage-note-title-1")).toContainText("Usage Note 2");
