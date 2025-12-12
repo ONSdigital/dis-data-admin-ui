@@ -44,6 +44,13 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
         if (data.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = data.status;
+
+            const errorMessage = JSON.parse(data.errorMessage);
+            if (errorMessage.errors[0].code === "ErrVersionAlreadyExists") {
+                actionResponse.httpError = `A edition with this ID already exists within this series`;
+            } else if (errorMessage.errors[0].code === "ErrEditionTitleAlreadyExists") {
+                actionResponse.httpError = `A edition with this Title already exists within this series`;
+            }
             return actionResponse;
         }
         logInfo("saved dataset edition successfully", null, null);
