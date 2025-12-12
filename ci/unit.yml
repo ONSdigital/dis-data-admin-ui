@@ -6,7 +6,7 @@ image_resource:
   type: docker-image
   source:
     repository: node
-    tag: 20.13.1
+    tag: 22.21.1
 
 inputs:
   - name: dis-data-admin-ui
