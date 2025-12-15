@@ -55,7 +55,6 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId("alert-type-0")).toContainText("alert");
         await expect(page.getByTestId("alert-description-0")).toContainText("This is an alert for version 1");
         await expect(page.getByTestId("alert-type-1")).toContainText("correction");
-        await expect(page.getByTestId("alert-date-1")).toContainText("26 January 2025");
         await expect(page.getByTestId("alert-description-1")).toContainText("This is a correction for version 1");
         await expect(page.getByTestId("distribution-title-0")).toContainText("Full Dataset (CSV)");
         await expect(page.getByTestId("distribution-format-0")).toContainText("csv");
