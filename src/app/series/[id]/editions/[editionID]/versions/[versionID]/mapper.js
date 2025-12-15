@@ -8,6 +8,8 @@ const mapQualityDesignationToUserFriendlyString = (qualityDesignation) => {
             return "Official Statistic in Development";
         case "no-accreditation":
             return "No accreditation";
+        default: 
+            return qualityDesignation; 
     }
 };
 
