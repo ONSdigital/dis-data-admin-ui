@@ -1,6 +1,5 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import Link from "next/link";
-import { pathname } from "next-extra/pathname";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
@@ -22,8 +21,8 @@ export default async function Version({ params, searchParams }) {
         metadataError = true;
     }
 
-    const currentURL = await pathname();
-    const breadcrumbs = generateBreadcrumb(currentURL, metadata.title, metadata.edition_title);
+    const currentURLPath = (await headers()).get("x-pathname") || "";
+    const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.title, metadata.edition_title);
 
     return (
         <>

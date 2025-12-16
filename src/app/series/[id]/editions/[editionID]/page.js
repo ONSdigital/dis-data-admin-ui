@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { pathname } from "next-extra/pathname";
+import { cookies, headers } from "next/headers";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
@@ -63,8 +62,8 @@ export default async function Edition({ params, searchParams }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     const editURL = `/data-admin/series/${id}/editions/${editionID}/edit`;
-    const currentURL = await pathname();
-    const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
+    const currentURLPath = (await headers()).get("x-pathname") || "";
+    const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, edition.edition_title);
     const editionSummaryItems = mapEditionSummary(edition, editURL);
 
     if (datasetError || editionError) {

@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { pathname } from "next-extra/pathname";
+import { cookies, headers } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
@@ -64,8 +63,8 @@ export default async function Dataset({ params, searchParams }) {
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
-    const currentURL = await pathname();
-    const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, null);
+    const currentURLPath = (await headers()).get("x-pathname") || "";
+    const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
 
     return (
         <>
