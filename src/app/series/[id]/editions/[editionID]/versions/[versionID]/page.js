@@ -88,7 +88,7 @@ export default async function Version({ params, searchParams }) {
                                     <h2 className="ons-u-mt-m@xxs@m">Alerts</h2>
                                     {metadata.alerts.map((alert, index) => (
                                         <div key={index}>
-                                            <h3 data-testid={`alert-type-${index}`}>{alert.type}</h3>
+                                            <h3 data-testid={`alert-type-${index}`}>{alert.type == "alert" ? "notice" : alert.type}</h3>
                                             <p data-testid={`alert-date-${index}`}>{formatDate(alert.date)}</p>
                                             <p data-testid={`alert-description-${index}`}>{alert.description}</p>
                                         </div>
