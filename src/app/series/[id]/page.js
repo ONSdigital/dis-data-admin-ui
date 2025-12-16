@@ -63,7 +63,7 @@ export default async function Dataset({ params, searchParams }) {
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
-    const currentURLPath = (await headers()).get("x-pathname") || "";
+    const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
 
     return (

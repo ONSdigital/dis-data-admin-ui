@@ -21,7 +21,7 @@ export default async function Version({ params, searchParams }) {
         metadataError = true;
     }
 
-    const currentURLPath = (await headers()).get("x-pathname") || "";
+    const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.title, metadata.edition_title);
 
     return (
