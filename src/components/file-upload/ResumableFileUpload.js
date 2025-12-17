@@ -17,7 +17,7 @@ const PROGRESS_BAR_STYLE = {
 export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [error, setError] = useState(validationError || "");
+    const [error, setError] = useState(validationError || null);
     const [files, setFiles] = useState(uploadedFiles || []);
 
     const handleFileStart = useCallback(() => {
@@ -67,15 +67,14 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     }, [uploadedFiles]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setError(validationError || null);
+    }, [validationError]);
+
+    useEffect(() => {
         bindFileUploadInput(id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError);
         // We intentionally bind when id/uploadBaseURL or handler identities change
     }, [id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
-
-    useEffect(() => {
-        if (validationError) {
-            setError(validationError);
-        }
-    }, [validationError]);
 
     const renderFileInput = () => {
         return <TextInput id={id} dataTestId={`${id}-input`} classes="ons-input ons-input--text ons-input-type__input ons-input--upload" label={{text: label, description: description}} type="file" value="" error={error}/>;
