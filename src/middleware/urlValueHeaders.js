@@ -14,7 +14,7 @@ const HEADER_PATHNAME = "x-request-pathname";
 * @returns {NextResponse}
 */
 export async function urlValueHeaders(req) {
-    if (!request?.url) {
+    if (!req?.url) {
         return NextResponse.next();
     }
 
@@ -27,7 +27,7 @@ export async function urlValueHeaders(req) {
     requestHeaders.set(HEADER_PATHNAME, pathname);
 
     return NextResponse.next({
-        req: {
+        request: {
             headers: requestHeaders,
         }
     });
