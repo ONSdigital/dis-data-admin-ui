@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 // see: https://stackoverflow.com/questions/75362636/how-can-i-get-the-url-pathname-on-a-server-component-next-js-13
 // see: https://nextjs.org/docs/app/api-reference/functions/use-pathname
 
-const HEADER_URL = 'x-request-url';
-const HEADER_ORIGIN = 'x-request-origin';
-const HEADER_PATHNAME = 'x-request-pathname';
+const HEADER_URL = "x-request-url";
+const HEADER_ORIGIN = "x-request-origin";
+const HEADER_PATHNAME = "x-request-pathname";
 
 /**
 * @param {Request} request - The incoming request object
