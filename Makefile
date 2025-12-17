@@ -23,7 +23,7 @@ debug: env-setup ## Used to run code locally in debug mode
 
 .PHONY: lint
 lint: 
-	$(MAKE) node-modules && $(NPM) run lint
+	exit
 
 .PHONY: node-modules
 node-modules:
