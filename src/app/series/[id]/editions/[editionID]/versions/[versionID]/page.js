@@ -10,6 +10,8 @@ import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
+import { mapQualityDesignationToUserFriendlyString } from "./mapper";
+
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const query = await searchParams;
@@ -66,7 +68,7 @@ export default async function Version({ params, searchParams }) {
                             {metadata.quality_designation && (
                                 <>
                                     <h2 className="ons-u-mt-m@xxs@m">Quality designation</h2>
-                                    <p data-testid="quality-designation-field">{metadata.quality_designation}</p>
+                                    <p data-testid="quality-designation-field">{mapQualityDesignationToUserFriendlyString(metadata.quality_designation)}</p>
                                 </>
                             )}
 
@@ -87,8 +89,10 @@ export default async function Version({ params, searchParams }) {
                                     <h2 className="ons-u-mt-m@xxs@m">Alerts</h2>
                                     {metadata.alerts.map((alert, index) => (
                                         <div key={index}>
-                                            <h3 data-testid={`alert-type-${index}`}>{alert.type}</h3>
-                                            <p data-testid={`alert-date-${index}`}>{formatDate(alert.date)}</p>
+                                            <h3 data-testid={`alert-type-${index}`}>
+                                                {alert.type === "alert" && "Notice"}
+                                                {alert.type === "correction" && "Correction"}
+                                            </h3>
                                             <p data-testid={`alert-description-${index}`}>{alert.description}</p>
                                         </div>
                                     ))}
