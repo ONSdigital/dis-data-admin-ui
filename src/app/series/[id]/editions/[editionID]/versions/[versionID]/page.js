@@ -16,7 +16,7 @@ export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const query = await searchParams;
     const reqCfg = await SSRequestConfig(cookies);
-    let metadata = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}/metadata`);
+    const metadata = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}/metadata`);
 
     let metadataError = false;
     if (metadata.ok != null && !metadata.ok) {

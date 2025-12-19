@@ -17,9 +17,9 @@ export default async function Edition({ params, searchParams }) {
 
     const { id, editionID } = await params;
     const query = await searchParams;
-    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-    let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
-    let versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
+    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
+    const versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
 
     let datasetError, editionError, versionsError = false;
     const listItems = [];

@@ -11,7 +11,7 @@ export default async function CreateVersion({ params }) {
     const { id, editionID } = await params;
     
     const reqCfg = await SSRequestConfig(cookies);
-    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
         
     let datasetError = false;
     if (datasetResp.ok != null && !datasetResp.ok) {
@@ -20,11 +20,11 @@ export default async function CreateVersion({ params }) {
     
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
 
-    let datasetTitle
+    let datasetTitle;
     if (datasetError) {
-        datasetTitle = "Error retrieving name of dataset"
+        datasetTitle = "Error retrieving name of dataset";
     } else {
-        datasetTitle = dataset.title
+        datasetTitle = dataset.title;
     }
     
 

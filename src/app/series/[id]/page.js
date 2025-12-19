@@ -18,8 +18,8 @@ export default async function Dataset({ params, searchParams }) {
     const query = await searchParams;
 
     const reqCfg = await SSRequestConfig(cookies);
-    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-    let editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
+    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
 
     let datasetError, editionsError = false;
     const listItems = [];
