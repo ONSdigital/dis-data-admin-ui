@@ -17,7 +17,7 @@ const getBaseSummaryModel = (groupID) => {
 // map a <Summary> component row
 const mapRow = (itemName, value, multiValue, action, rows) => {
     const slugifyLowerCase = (string) => {
-        if (!string) return "no-value"
+        if (!string) return "no-value";
         return slugify(string, {lower: true});
     };
 
@@ -64,7 +64,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
         onClick: null,
         anchorIDPrefix: "dataset-series-",
         text: "Edit"
-    }
+    };
     const contacts = [];
     data.contacts.forEach(contact => {
         contacts.push(contact.name);
@@ -104,7 +104,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
         onClick: null,
         anchorIDPrefix: "",
         text: "Edit"
-    }
+    };
     const isPublished = edition?.state === "published";
 
     mapRow("Edition ID", edition.edition, null, !isPublished ? action : null, rows);
@@ -121,11 +121,11 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
         onClick: actionOnClick,
         anchorIDPrefix: null,
         text: "Delete file"
-    }
+    };
     files.forEach(file => {
-        mapRow(file.title  || file.download_url, " ", null, action, rows)
+        mapRow(file.title  || file.download_url, " ", null, action, rows);
     });
     return contentBody;
-}
+};
 
 export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary };

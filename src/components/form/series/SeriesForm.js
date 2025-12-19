@@ -52,11 +52,11 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
 
     const renderButtonText = () => {
         if (currentID) {
-            return "Save changes"
+            return "Save changes";
         } else {
-            return "Create dataset series"
+            return "Create dataset series";
         }
-    }
+    };
 
     return (
         <>

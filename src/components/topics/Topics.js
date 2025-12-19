@@ -4,29 +4,29 @@ import { useState, useEffect } from "react";
 import { Field, Button, Checkbox } from "author-design-system-react";
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
-    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics)
+    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
     const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
     useEffect(() => {
-        setCheckboxOptionsItems(createCheckboxes)
+        setCheckboxOptionsItems(createCheckboxes);
     }, [selectedTopics]);
 
     useEffect(() => {
         checkboxOptionsItems.itemsList.forEach(checkboxOption => {
-            const checkbox = document.getElementById(checkboxOption.id)
+            const checkbox = document.getElementById(checkboxOption.id);
             if (checkboxOption.checked === false) {
-                checkbox.defaultChecked = false
+                checkbox.defaultChecked = false;
             }
-        })
+        });
     }, [checkboxOptionsItems]);
 
 
     function createCheckboxes() {
-        const checkboxOptions = []
+        const checkboxOptions = [];
         listOfAllTopics.forEach(topic => {
             const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
             const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
-            const selected = selectedTopics.includes(topicId)
+            const selected = selectedTopics.includes(topicId);
 
             if (topicId && topicTitle) {
                 checkboxOptions.push({
@@ -35,13 +35,13 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                     label: {
                         text: topicTitle
                     },
-                    onChange: () => { topicOnChange(topicId) },
+                    onChange: () => { topicOnChange(topicId); },
                     value: topicId,
                     checked: selected
                 });
             }
         });
-        return ({ itemsList: checkboxOptions })
+        return ({ itemsList: checkboxOptions });
     }
 
     const topicOnChange = (topicId) => {
@@ -54,7 +54,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 )
             );
         }
-    }
+    };
 
     return (
         <>
@@ -81,7 +81,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                         for (var i = 0; i < inputs.length; i++) {
                             inputs[i].checked = false;
                         }
-                        setSelectedTopics([])
+                        setSelectedTopics([]);
                     }}
                 />
             </Field>
