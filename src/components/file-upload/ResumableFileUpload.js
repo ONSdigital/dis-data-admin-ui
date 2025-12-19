@@ -67,7 +67,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
     }, [uploadedFiles]);
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
         setError(validationError || null);
     }, [validationError]);
 

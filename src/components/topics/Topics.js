@@ -8,6 +8,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
     useEffect(() => {
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
         setCheckboxOptionsItems(createCheckboxes);
     }, [selectedTopics]);
 
@@ -77,8 +78,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                         "small"
                     ]}
                     onClick={() => {
-                        var inputs = document.querySelectorAll("input[type='checkbox']");
-                        for (var i = 0; i < inputs.length; i++) {
+                        const inputs = document.querySelectorAll("input[type='checkbox']");
+                        for (let i = 0; i < inputs.length; i++) {
                             inputs[i].checked = false;
                         }
                         setSelectedTopics([]);

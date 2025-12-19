@@ -18,7 +18,6 @@ export default function MultiContentItems(props) {
         
         const updatedButtonVariants = buttonVariants.filter(buttonVariant => buttonVariant !== "disabled");
         setButtonVariants(updatedButtonVariants);
-        return;
     };
 
     const renderItemFields = () => {
