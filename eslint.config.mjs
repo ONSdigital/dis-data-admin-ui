@@ -27,7 +27,7 @@ const eslintConfig = defineConfig([
             }],
             "prefer-const": "warn",
             "no-var": "error",
-            "prefer-arrow-callback": "warn", //
+            "prefer-arrow-callback": "warn",
             "no-duplicate-imports": "error",
             "no-useless-return": "warn",
         },
