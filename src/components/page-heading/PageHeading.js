@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button, Breadcrumb, Panel } from "author-design-system-react";
 import { useRouter } from "next/navigation";
+import LinkButton from "../link-button/LinkButton";
 
 export default function PageHeading(props){
     const router = useRouter();
@@ -11,6 +12,18 @@ export default function PageHeading(props){
         if (props.breadcrumbs) {
             return (
                 <Breadcrumb itemsList={props.breadcrumbs} classes="ons-u-mb-xs"/>
+            );
+        }
+    };
+
+    const renderApproveChangesMessage = () => {
+        if (props.showApproveChangesMessage) {
+            return (
+                <div className="ons-u-mt-l ons-u-mb-xl">
+                    <Panel variant="warn" dataTestId="page-heading-panel">There have been changes to this series. Please check them before publishing.</Panel>
+                    <LinkButton variants={["secondary", "small"]} link={props.approvalLink} text="Approve changes" iconType="ArrowIcon" iconPosition="after"/>
+                </div>
+                
             );
         }
     };
@@ -55,6 +68,7 @@ export default function PageHeading(props){
     return (
         <>
             { renderBreadcrumb() }
+            { renderApproveChangesMessage() }
             { renderSubtitle() }
             <h1 data-testid="page-heading-title" className="ons-u-fs-xl ons-u-mb-m">{props.title}</h1>
             { renderPanel() }
