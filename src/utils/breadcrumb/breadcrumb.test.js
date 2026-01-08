@@ -28,7 +28,6 @@ describe("generateBreadcrumb", () => {
     it("returns expected breadcrumb object when url length is greater than or equal to 8 ", () => {
         const url = "/data-admin/series/test-dataset/editions/test-edition/versions/1/foo/bar";
         const breadcrumb = generateBreadcrumb(url, "Test dataset", "Test edition")
-        console.log(breadcrumb)
         expect(breadcrumb).toHaveLength(4);
         expect(breadcrumb[3].url).toBe("/data-admin/series/test-dataset/editions/test-edition/versions/1");
         expect(breadcrumb[3].text).toBe("1");
