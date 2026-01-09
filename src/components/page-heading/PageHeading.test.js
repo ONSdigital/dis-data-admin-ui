@@ -74,7 +74,7 @@ describe("PageHeading renders correctly", () => {
         expect(screen.getByText("panel test")).toBeInTheDocument();
     });
 
-    test("when a title, subtitle, button, link and panel prop is passed in", () => {
+    test("when a title, subtitle, button, link, panel and show approval message prop is passed in", () => {
         pageHeadingProps = {
             ...pageHeadingProps,
             showApproveChangesMessage: true,
