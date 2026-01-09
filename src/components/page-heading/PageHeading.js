@@ -20,8 +20,8 @@ export default function PageHeading(props){
         if (props.showApproveChangesMessage) {
             return (
                 <div className="ons-u-mt-l ons-u-mb-xl">
-                    <Panel variant="warn" dataTestId="page-heading-panel">There have been changes to this series. Please check them before publishing.</Panel>
-                    <LinkButton variants={["secondary", "small"]} link={props.approvalLink} text="Approve changes" iconType="ArrowIcon" iconPosition="after"/>
+                    <Panel variant="warn" dataTestId="page-heading-approval-panel">There have been changes to this series. Please check them before publishing.</Panel>
+                    <LinkButton variants={["secondary", "small"]} link={props.approvalLink} text="Approve changes" iconType="ArrowIcon" iconPosition="after" dataTestId="page-heading-approval-button"/>
                 </div>
                 
             );
