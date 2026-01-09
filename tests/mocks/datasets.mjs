@@ -726,6 +726,20 @@ export const datasetList = {
             "title": "Foobar test dataset",
             "description": "A test dataset",
             "id": "foo-bar"
+          },
+          {
+            "next": {
+              "title": "Test associated",
+              "description": "A test dataset",
+              "id": "test-approval-message-dataset",
+              "state": "associated"
+            },
+            "current": {
+              "title": "Test published",
+              "description": "A test dataset",
+              "id": "test-approval-message-dataset",
+              "state": "published"
+            }
           }
     ],
     "count": 20,
