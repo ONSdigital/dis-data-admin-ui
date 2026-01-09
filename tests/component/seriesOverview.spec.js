@@ -85,4 +85,20 @@ test.describe("Series overview page", () => {
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
+
+    test("doesn't show approval message when no difference between current and next", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly");
+        await expect(page.getByTestId("page-heading-approval-button")).not.toBeVisible();
+        await expect(page.getByTestId("page-heading-approval-panel")).not.toBeVisible();
+    });
+
+    test("shows approval message when no difference between current and next", async ({ page, context }) => {
+        addValidAuthCookies(context);
+
+        await page.goto("./series/test-approval-message-dataset");
+        await expect(page.getByTestId("page-heading-approval-button")).toBeVisible();
+        await expect(page.getByTestId("page-heading-approval-panel")).toBeVisible();
+    });
 });
