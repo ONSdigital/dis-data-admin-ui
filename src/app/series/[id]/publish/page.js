@@ -47,7 +47,7 @@ export default async function PublishDataset({ params }) {
             />        
             <div className="ons-grid ons-u-mt-xl">
                 <div className="ons-grid__col ons-col-12@m">
-                    <h1 className="ons-u-fs-xl ons-u-mb-m">{`Are you sure you want to publish '${dataset.title}'?`}</h1>
+                    <h1 className="ons-u-fs-xl ons-u-mb-m">{`Are you sure you want to publish "${dataset.title}"?`}</h1>
                     <p>Publishing this series will push any changes to the live website.</p>
 
                 </div>
