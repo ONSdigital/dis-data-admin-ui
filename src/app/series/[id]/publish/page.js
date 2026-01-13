@@ -53,14 +53,14 @@ export default async function PublishDataset({ params }) {
                     <form className="ons-u-mt-m" action="">
                         <h1 className="ons-u-fs-xl ons-u-mb-no">{`Are you sure you want to publish "${dataset.title}"?`}</h1>
                         <p className="ons-u-mb-l">Approving this action will make the dataset visible to the public.</p>
-                        <button data-testid="dataset-series-publish" type="submit" className={`ons-btn ons-u-mr-m ${isPending === true &&  "ons-btn--disabled"}`} disabled={isPending}>
+                        <button data-testid="dataset-series-publish-button" type="submit" className={`ons-btn ons-u-mr-m ${isPending === true &&  "ons-btn--disabled"}`} disabled={isPending}>
                             <span className="ons-btn__inner jon">
                                 <span className="ons-btn__text">
                                     Publish
                                 </span>
                             </span>
                         </button>
-                        <Link href="./" className="ons-u-dib ons-u-mt-xs">Cancel</Link>
+                        <Link href="./" className="ons-u-dib ons-u-mt-xs" data-testid="dataset-series-cancel-link">Cancel</Link>
                     </form>
                 </div>
             </div>
