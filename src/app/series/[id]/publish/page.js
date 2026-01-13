@@ -5,10 +5,13 @@ import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
+import Link from "next/link";
 
 
 export default async function PublishDataset({ params }) {
     const { id } = await params;
+
+    const isPending = false;
 
     const reqCfg = await SSRequestConfig(cookies);
     const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
@@ -45,11 +48,20 @@ export default async function PublishDataset({ params }) {
             <PageHeading 
                 breadcrumbs={breadcrumbs}
             />        
-            <div className="ons-grid ons-u-mt-xl">
+            <div className="ons-grid ons-u-mt-l">
                 <div className="ons-grid__col ons-col-12@m">
-                    <h1 className="ons-u-fs-xl ons-u-mb-m">{`Are you sure you want to publish "${dataset.title}"?`}</h1>
-                    <p>Publishing this series will push any changes to the live website.</p>
-
+                    <form className="ons-u-mt-m" action="">
+                        <h1 className="ons-u-fs-xl ons-u-mb-no">{`Are you sure you want to publish "${dataset.title}"?`}</h1>
+                        <p className="ons-u-mb-l">Approving this action will make the dataset visible to the public.</p>
+                        <button data-testid="dataset-series-publish" type="submit" className={`ons-btn ons-u-mr-m ${isPending === true &&  "ons-btn--disabled"}`} disabled={isPending}>
+                            <span className="ons-btn__inner jon">
+                                <span className="ons-btn__text">
+                                    Publish
+                                </span>
+                            </span>
+                        </button>
+                        <Link href="./" className="ons-u-dib ons-u-mt-xs">Cancel</Link>
+                    </form>
                 </div>
             </div>
         </>
