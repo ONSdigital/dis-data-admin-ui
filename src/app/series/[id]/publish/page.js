@@ -3,15 +3,15 @@ import { cookies, headers } from "next/headers";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
+import { deleteDatasetOrVersion } from "@/app/actions/delete";
+
 import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
-import Link from "next/link";
+import PublishForm from "@/components/form/publish/PublishForm";
 
 
 export default async function PublishDataset({ params }) {
     const { id } = await params;
-
-    const isPending = false;
 
     const reqCfg = await SSRequestConfig(cookies);
     const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
@@ -21,9 +21,6 @@ export default async function PublishDataset({ params }) {
         datasetError = true;
     }
 
-    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
-    const seriesIsPublishable = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
-
     if (datasetError) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
@@ -31,6 +28,9 @@ export default async function PublishDataset({ params }) {
             </Panel>
         );
     }
+
+    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const seriesIsPublishable = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
 
     if (!seriesIsPublishable) {
         return (
@@ -50,18 +50,7 @@ export default async function PublishDataset({ params }) {
             />        
             <div className="ons-grid ons-u-mt-l">
                 <div className="ons-grid__col ons-col-12@m">
-                    <form className="ons-u-mt-m" action="">
-                        <h1 className="ons-u-fs-xl ons-u-mb-no">{`Are you sure you want to publish "${dataset.title}"?`}</h1>
-                        <p className="ons-u-mb-l">Approving this action will make the dataset visible to the public.</p>
-                        <button data-testid="dataset-series-publish-button" type="submit" className={`ons-btn ons-u-mr-m ${isPending === true &&  "ons-btn--disabled"}`} disabled={isPending}>
-                            <span className="ons-btn__inner jon">
-                                <span className="ons-btn__text">
-                                    Publish
-                                </span>
-                            </span>
-                        </button>
-                        <Link href="./" className="ons-u-dib ons-u-mt-xs" data-testid="dataset-series-cancel-link">Cancel</Link>
-                    </form>
+                    <PublishForm action={deleteDatasetOrVersion} datasetID={dataset.id} datasetTitle={dataset.title} cancelLink="./"/>
                 </div>
             </div>
         </>
