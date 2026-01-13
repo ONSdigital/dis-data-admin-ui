@@ -59,7 +59,7 @@ export default async function Dataset({ params, searchParams }) {
 
     const createURL = `${id}/editions/create`;
     const editURL = `/data-admin/series/${id}/edit`;
-    const approvalLink = `${id}/approve`;
+    const approvalLink = `${id}/publish`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
