@@ -35,7 +35,7 @@ export const publishAction = async (currentState, formData) => {
         if (request.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = request.status;
-            actionResponse.errors = { api: [err.message || err.toString()] };
+            actionResponse.errors = { api: [err?.message || err.toString()] };
             return actionResponse;
         }
         actionResponse.success = true;
@@ -43,8 +43,7 @@ export const publishAction = async (currentState, formData) => {
     } catch (err) {
         logError("failed to make publish request", null, null, err);
         actionResponse.success = false;
-        actionResponse.code = request.status;
-        actionResponse.errors = { api: [err.message || err.toString()] };
+        actionResponse.errors = { api: [err?.message || err.toString()] };
     }
 
     if (actionResponse.success) {
