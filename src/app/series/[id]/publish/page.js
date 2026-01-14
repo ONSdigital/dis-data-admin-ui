@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import { deleteDatasetOrVersion } from "@/app/actions/delete";
+import { publishAction } from "@/app/actions/publish";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
@@ -50,7 +50,7 @@ export default async function PublishDataset({ params }) {
             />        
             <div className="ons-grid ons-u-mt-l">
                 <div className="ons-grid__col ons-col-12@m">
-                    <PublishForm action={deleteDatasetOrVersion} datasetID={dataset.id} datasetTitle={dataset.title} cancelLink="./"/>
+                    <PublishForm action={publishAction} datasetID={dataset.id} datasetTitle={dataset.title} cancelLink="./"/>
                 </div>
             </div>
         </>
