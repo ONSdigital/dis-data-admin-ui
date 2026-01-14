@@ -50,7 +50,7 @@ const parseMutliContentField = (multiItem) => {
     const parsedItems = [];
     multiItem.forEach(item => {
         const parsed = JSON.parse(item);
-        if (parsed.type || parsed.title) {
+        if (parsed.type && parsed.description || parsed.title) {
             parsedItems.push(parsed);
         }
     });
