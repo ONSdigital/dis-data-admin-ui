@@ -50,7 +50,7 @@ export default async function PublishDataset({ params }) {
             />        
             <div className="ons-grid ons-u-mt-l">
                 <div className="ons-grid__col ons-col-12@m">
-                    <PublishForm action={publishAction} datasetID={dataset.id} datasetTitle={dataset.title} cancelLink="./"/>
+                    <PublishForm action={publishAction} dataset={dataset} cancelLink="./"/>
                 </div>
             </div>
         </>
