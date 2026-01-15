@@ -26,8 +26,8 @@ export default function PublishForm({ action, dataset, cancelLink}) {
     return (
         <form action={formAction}>
             { renderError() }
-            <h1 className="ons-u-fs-xl ons-u-mb-no">{`Are you sure you want to publish "${dataset?.title}"?`}</h1>
-            <p className="ons-u-mb-l">Approving this action will make the dataset series visible to the public.</p>
+            <h1 data-testid="dataset-series-publish-heading" className="ons-u-fs-xl ons-u-mb-no">{`Are you sure you want to publish "${dataset?.title}"?`}</h1>
+            <p data-testid="dataset-series-publish-p" className="ons-u-mb-l">Approving this action will make the dataset series visible to the public.</p>
             {/* we pass the entire dataset to the form action so this can be sent in the PUT request.
             this is due to the PUT endpoint having mandatory fields so we can't just update the state value */}
             <input type="hidden" name="dataset" value={JSON.stringify(dataset)} data-testid="hidden-dataset" readOnly />
@@ -38,7 +38,7 @@ export default function PublishForm({ action, dataset, cancelLink}) {
                     </span>
                 </span>
             </button>
-            <Link href={cancelLink} className="ons-u-dib ons-u-mt-xs" data-testid="dataset-series-cancel-link">Cancel</Link>
+            <Link href={cancelLink} className="ons-u-dib ons-u-mt-xs" data-testid="dataset-series-publish-cancel-link">Cancel</Link>
         </form>
     );
 }
