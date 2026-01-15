@@ -16,7 +16,7 @@ export default function PageHeading(props){
         }
     };
 
-    const renderApproveChangesMessage = () => {
+    const renderPublishChangesMessage = () => {
         if (props.showPublishChangesMessage) {
             return (
                 <div className="ons-u-mt-l ons-u-mb-xl">
@@ -68,7 +68,7 @@ export default function PageHeading(props){
     return (
         <>
             { renderBreadcrumb() }
-            { renderApproveChangesMessage() }
+            { renderPublishChangesMessage() }
             { renderSubtitle() }
             <h1 data-testid="page-heading-title" className="ons-u-fs-xl ons-u-mb-m">{props.title}</h1>
             { renderPanel() }
