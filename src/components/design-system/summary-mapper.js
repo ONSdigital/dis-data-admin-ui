@@ -66,7 +66,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
         text: "Edit"
     };
     const contacts = [];
-    data.contacts.forEach(contact => {
+    data?.contacts?.forEach(contact => {
         contacts.push(contact.name);
     });
 

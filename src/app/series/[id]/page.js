@@ -59,12 +59,18 @@ export default async function Dataset({ params, searchParams }) {
 
     const createURL = `${id}/editions/create`;
     const editURL = `/data-admin/series/${id}/edit`;
+    const publishLink = `${id}/publish`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
+
+    // if current is "published" and next is "associated" infer that they are unpublished changes to a series
+    // if version ID's in links.latest_version are the same infer that this is only series metadata updates
+    // and this needs to be published seperately and not as/with a new version which would get published via a bundle 
+    const showPublishChangesMessage = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
 
     return (
         <>
@@ -77,7 +83,9 @@ export default async function Dataset({ params, searchParams }) {
                 linkURL="/series" 
                 linkText="Back to dataset series list"
                 breadcrumbs={breadcrumbs}
-            />        
+                showPublishChangesMessage={showPublishChangesMessage}
+                publishLink={publishLink}
+            />
             <div className="ons-grid ons-u-mt-xl">
                 <div className="ons-grid__col ons-col-4@m">
                     { renderEditionsList() }
