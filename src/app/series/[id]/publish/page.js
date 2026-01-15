@@ -35,7 +35,7 @@ export default async function PublishDataset({ params }) {
     if (!seriesIsPublishable) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-series-not-publishable">
-                <p>There doesn't appear to be any changes to this series that are publishable.</p>
+                <p>{"There doesn't appear to be any changes to this series that are publishable."}</p>
             </Panel>
         );
     }
