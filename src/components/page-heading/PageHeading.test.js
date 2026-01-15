@@ -74,11 +74,11 @@ describe("PageHeading renders correctly", () => {
         expect(screen.getByText("panel test")).toBeInTheDocument();
     });
 
-    test("when a title, subtitle, button, link, panel and show approval message prop is passed in", () => {
+    test("when a title, subtitle, button, link, panel and show publish message prop is passed in", () => {
         pageHeadingProps = {
             ...pageHeadingProps,
-            showApproveChangesMessage: true,
-            approvalLink: "/approve"
+            showPublishChangesMessage: true,
+            publishLink: "/publish"
         };
         render(<PageHeading {...pageHeadingProps} />);
 
@@ -90,8 +90,8 @@ describe("PageHeading renders correctly", () => {
         expect(screen.getByText("link test")).toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-panel")).toBeInTheDocument();
         expect(screen.getByText("panel test")).toBeInTheDocument();
-        expect(screen.queryByTestId("page-heading-approval-panel")).toBeInTheDocument();
-        expect(screen.queryByTestId("page-heading-approval-button")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).toBeInTheDocument();
     });
 });
 
