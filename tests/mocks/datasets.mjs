@@ -731,13 +731,13 @@ export const datasetList = {
             "next": {
               "title": "Test associated",
               "description": "A test dataset",
-              "id": "test-approval-message-dataset",
+              "id": "test-publish-message-dataset",
               "state": "associated"
             },
             "current": {
               "title": "Test published",
               "description": "A test dataset",
-              "id": "test-approval-message-dataset",
+              "id": "test-publish-message-dataset",
               "state": "published"
             }
           }
