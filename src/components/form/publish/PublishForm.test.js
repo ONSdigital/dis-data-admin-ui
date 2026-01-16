@@ -18,6 +18,6 @@ describe("Publish form", () => {
         expect(screen.getByText(/Approving this action will make the dataset series visible to the public./i)).toBeInTheDocument();
         expect(screen.getByTestId("hidden-dataset")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-publish-button")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-cancel-link")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-publish-cancel-link")).toBeInTheDocument();
     });
 });
