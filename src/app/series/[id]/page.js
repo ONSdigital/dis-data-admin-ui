@@ -58,7 +58,7 @@ export default async function Dataset({ params, searchParams }) {
     };
 
     const createURL = `${id}/editions/create`;
-    const editURL = `/data-admin/series/${id}/edit`;
+    const editURL = `${id}/edit`;
     const publishLink = `${id}/publish`;
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
 
