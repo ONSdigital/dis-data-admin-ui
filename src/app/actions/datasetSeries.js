@@ -93,6 +93,9 @@ export async function updateDatasetSeries(currentstate, formData) {
 
     const datasetSeriesSubmission = getFormData(formData);
     const validation = editSchema.safeParse(datasetSeriesSubmission);
+    // editing a series without explicity setting the state to 
+    // "associated" will mean the state returns to "created" 
+    datasetSeriesSubmission.state = "associated";
 
     return createResponse(datasetSeriesSubmission, validation, url, httpPut);
 }
