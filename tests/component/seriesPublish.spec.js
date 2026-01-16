@@ -43,7 +43,7 @@ test.describe("Series publish page", () => {
         await page.waitForURL("**/series/test-publish-message-dataset**");
 
         await expect(page.url().toString()).toContain("/series/test-publish-message-dataset");
-        await expect(page.getByText("Dataset series saved")).toBeVisible();
+        await expect(page.getByText("Dataset series published.")).toBeVisible();
     });
 
     test("Cancel link returns user to series overview page", async ({ page, context }) => {
