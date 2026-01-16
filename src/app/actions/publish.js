@@ -47,7 +47,7 @@ export const publishAction = async (currentState, formData) => {
     }
 
     if (actionResponse.success) {
-        redirect(`/series/${dataset.id}?display_success=true`);
+        redirect(`/series/${dataset.id}?display_publish_success=true`);
     }
 
     return actionResponse;
