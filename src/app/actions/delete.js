@@ -46,7 +46,7 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
     }
 
     if (actionResponse.success) {
-        redirect(`/series/?display_success=true`);
+        redirect(`/series/?display_delete_success=true`);
     }
 
     return actionResponse;
