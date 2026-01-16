@@ -37,4 +37,11 @@ describe("SuccessPanel", () => {
         expect(screen.getByTestId("success-panel")).toBeInTheDocument();
         expect(screen.getByText("Foobar contentType published.")).toBeInTheDocument();
     });
+    
+    test("renders success panel when display_delete_success query param is true", () => {
+        render(<SuccessPanel query={{display_delete_success: "true" }} contentType={"Barfoo contentType"} />);
+
+        expect(screen.getByTestId("success-panel")).toBeInTheDocument();
+        expect(screen.getByText("Barfoo contentType deleted.")).toBeInTheDocument();
+    });
 });

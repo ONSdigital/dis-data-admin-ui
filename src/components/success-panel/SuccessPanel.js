@@ -8,18 +8,22 @@ export default function SuccessPanel({query, contentType = "Item"}) {
 
     const showSuccessPanel = 
         query?.display_success === "true" || 
-        query?.display_publish_success === "true";
+        query?.display_publish_success === "true" ||
+        query?.display_delete_success === "true";
 
     if (!showSuccessPanel) {
         return null;
     }
 
     const getSuccessMessage = () => {
+        if (query?.display_success === "true") {
+            return `${contentType} saved.`;
+        }
         if (query?.display_publish_success === "true") {
             return `${contentType} published.`;
         }
-        if (query?.display_success === "true") {
-            return `${contentType} saved.`;
+        if (query?.display_delete_success === "true") {
+            return `${contentType} deleted.`;
         }
         return null;
     };
