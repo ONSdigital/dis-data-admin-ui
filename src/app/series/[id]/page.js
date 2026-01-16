@@ -74,7 +74,7 @@ export default async function Dataset({ params, searchParams }) {
 
     return (
         <>
-            <SuccessPanel query={query} message="Dataset series saved" />
+            <SuccessPanel query={query} contentType={"Dataset series"}/>
             <PageHeading 
                 subtitle="Series"
                 title={dataset.title} 
