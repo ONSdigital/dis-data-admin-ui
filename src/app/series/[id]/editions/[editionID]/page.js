@@ -74,7 +74,7 @@ export default async function Edition({ params, searchParams }) {
 
     return (
         <>
-            <SuccessPanel query={query} message="Dataset edition saved" />
+            <SuccessPanel query={query} contentType="Dataset edition" />
             <PageHeading 
                 subtitle="Edition"
                 title={dataset.title + ": " + edition.edition_title} 

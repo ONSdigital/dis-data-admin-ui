@@ -28,7 +28,7 @@ export default async function Version({ params, searchParams }) {
 
     return (
         <>
-            <SuccessPanel query={query} message="Dataset version saved" />
+            <SuccessPanel query={query} contentType="Dataset version" />
             <PageHeading 
                 subtitle="Version"
                 title={`Version: ${versionID}`} 

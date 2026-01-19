@@ -21,7 +21,7 @@ test.describe("Series delete page", () => {
         await page.getByTestId("confirm-delete-item-yes-input").click();
         await page.getByRole("button", { name: "Delete" }).click();
 
-        await page.waitForURL("**/series?display_success=true");
+        await page.waitForURL("**/series?display_delete_success=true");
         await expect(page.getByTestId("success-panel")).toContainText("Item deleted");
     });
 
