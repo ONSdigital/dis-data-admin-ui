@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { addValidAuthCookies } from "../utils/utils";
 
 test.describe("Series overview page", () => {
-    test("renders as expected", async ({ page, context }) => {
+    test("Renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
@@ -38,14 +38,14 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#contacts")).toContainText("Second Contact");
     });
 
-    test("handles a dataset series response error", async ({ page, context }) => {
+    test("Handles a dataset series response error", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/test-series-that-doesnt-exist");
         await expect(page.getByTestId("dataset-series-response-error")).toContainText("There was an issue retrieving the data for this page. Try refreshing the page.");
     })
 
-    test("page heading create button routes to create new edition page", async ({ page, context }) => {
+    test("Page heading create button routes to create new edition page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
@@ -54,7 +54,7 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/create");
     });
 
-    test("page heading 'back to' link routes to series list page", async ({ page, context }) => {
+    test("Page heading 'back to' link routes to series list page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
@@ -63,7 +63,7 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series");
     });
 
-    test("routes to edition overview page when selecting edition from list", async ({ page, context }) => {
+    test("Routes to edition overview page when selecting edition from list", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
@@ -72,21 +72,21 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
 
-    test("shows series delete button when dataset is unpublished", async ({ page, context }) => {
+    test("Dhows series delete button when dataset is unpublished", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal");
         await expect(page.getByTestId("delete-series-button")).toBeVisible();
     });
 
-    test("does not show series delete button when dataset is published", async ({ page, context }) => {
+    test("Does not show series delete button when dataset is published", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
 
-    test("doesn't show publish message when no difference between current and next", async ({ page, context }) => {
+    test("Does not show publish message when no difference between current and next", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
@@ -94,7 +94,7 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-publish-panel")).not.toBeVisible();
     });
 
-    test("shows publish message when no difference between current and next", async ({ page, context }) => {
+    test("Shows publish message when no difference between current and next", async ({ page, context }) => {
         addValidAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset");

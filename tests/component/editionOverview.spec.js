@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { addValidAuthCookies } from "../utils/utils";
 
 test.describe("Edition overview page", () => {
-    test("renders as expected", async ({ page, context }) => {
+    test("Renders as expected", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series");
 
@@ -22,7 +22,7 @@ test.describe("Edition overview page", () => {
         await expect(page.locator("#release-date")).toContainText("26 January 2025"); 
     });
 
-    test("page heading create button routes to create new version page", async ({ page, context }) => {
+    test("Page heading create button routes to create new version page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");
@@ -31,7 +31,7 @@ test.describe("Edition overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/create?edition_title=Timeseries");
     });
 
-    test("page heading 'back to' link routes to series list page", async ({ page, context }) => {
+    test("Page heading 'back to' link routes to series list page", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");
@@ -40,14 +40,14 @@ test.describe("Edition overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly");
     });
 
-    test("page heading displays panel stating 'cannot create new dataset' because of unpublished dataset version", async ({ page, context }) => {
+    test("Page heading displays panel stating 'cannot create new dataset' because of unpublished dataset version", async ({ page, context }) => {
         addValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
         await expect(page.getByTestId("page-heading-panel")).toContainText("An unpublished version exists so cannot add new dataset version.");
     });
 
-    test("routes to version overview page when selecting version from list", async ({ page, context }) => {
+    test("Routes to version overview page when selecting version from list", async ({ page, context }) => {
         addValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series");
         await page.getByRole("link", { name: "Version: 1" }).click();
