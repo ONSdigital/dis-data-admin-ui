@@ -85,7 +85,7 @@ test("onFileSuccess sets the correct state ", () => {
     expect(onSuccess.mock.calls[0][0]).toStrictEqual({
         byte_size: 1024, 
         download_url: "test-path/test-directory/test-file-01.csv", 
-        media_type: "csv",
+        format: "csv",
         title: "test.csv"
     });
 });

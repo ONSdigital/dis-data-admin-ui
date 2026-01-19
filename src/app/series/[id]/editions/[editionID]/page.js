@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { pathname } from "next-extra/pathname";
+import { cookies, headers } from "next/headers";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
@@ -18,9 +17,9 @@ export default async function Edition({ params, searchParams }) {
 
     const { id, editionID } = await params;
     const query = await searchParams;
-    let datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-    let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
-    let versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
+    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
+    const versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
 
     let datasetError, editionError, versionsError = false;
     const listItems = [];
@@ -63,8 +62,8 @@ export default async function Edition({ params, searchParams }) {
     const edition = editionResp?.current || editionResp?.next || editionResp;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     const editURL = `/data-admin/series/${id}/editions/${editionID}/edit`;
-    const currentURL = await pathname();
-    const breadcrumbs = generateBreadcrumb(currentURL, dataset.title, edition.edition_title);
+    const currentURLPath = (await headers()).get("x-request-pathname") || "";
+    const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, edition.edition_title);
     const editionSummaryItems = mapEditionSummary(edition, editURL);
 
     if (datasetError || editionError) {
@@ -82,7 +81,7 @@ export default async function Edition({ params, searchParams }) {
                 buttonURL={createURL} 
                 buttonText="Create new version" 
                 linkURL="../"
-                linkText="Back to dataset series list"
+                linkText="Back to series overview"
                 breadcrumbs={breadcrumbs}
                 showPanel={unpublishedVersion}
                 panelText="An unpublished version exists so cannot add new dataset version."

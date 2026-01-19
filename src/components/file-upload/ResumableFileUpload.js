@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 import bindFileUploadInput from "./bind";
 
 import { TextInput, Summary } from "author-design-system-react";
 import { mapUploadedFilesSummary } from "@/components/design-system/summary-mapper";
 
-const progressBarStyle = {
+const UUID_EXTRACT_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+const PROGRESS_BAR_STYLE = {
     width: "20rem",
 };
 
 export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [error, setError] = useState(validationError || "");
+    const [error, setError] = useState(validationError || null);
     const [files, setFiles] = useState(uploadedFiles || []);
 
     const handleFileStart = useCallback(() => {
@@ -55,16 +58,23 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         setFiles(filteredFiles);
     };
 
-    useEffect(() => {
-        bindFileUploadInput(id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError);
-        // We intentionally bind when id/uploadBaseURL or handler identities change
-    }, [id, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError]);
+    const uploadFilePath = useMemo(() => {
+        if (uploadedFiles?.length) {
+            const match = UUID_EXTRACT_PATTERN.exec(uploadedFiles[0].download_url);
+            return match ? match[0] : uuidv4();
+        }
+        return uuidv4();
+    }, [uploadedFiles]);
 
     useEffect(() => {
-        if (validationError) {
-            setError(validationError);
-        }
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
+        setError(validationError || null);
     }, [validationError]);
+
+    useEffect(() => {
+        bindFileUploadInput(id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError);
+        // We intentionally bind when id/uploadBaseURL or handler identities change
+    }, [id, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError, files, error]);
 
     const renderFileInput = () => {
         return <TextInput id={id} dataTestId={`${id}-input`} classes="ons-input ons-input--text ons-input-type__input ons-input--upload" label={{text: label, description: description}} type="file" value="" error={error}/>;
@@ -74,7 +84,7 @@ export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseU
         return (
             <>
                 <label htmlFor="file-progress" className="ons-label ons-label--with-description">File upload in progress:</label>
-                <progress id="file-progress" max="100" style={progressBarStyle} value={progress}>{progress}%</progress>
+                <progress id="file-progress" max="100" style={PROGRESS_BAR_STYLE} value={progress}>{progress}%</progress>
             </>
         );
     };

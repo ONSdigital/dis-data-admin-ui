@@ -114,7 +114,7 @@ app.get("/datasets/:id", (req, res) => {
     log("Handling GET '/datasets/:id'", req.url, null);
     if (handleMockError(req, res, req.params.id)) return;
 
-    const dataset = datasetList.items.find(item => item.id === req.params.id);
+    const dataset = datasetList.items.find(item => item.id === req.params.id || item.next?.id === req.params.id || item.current?.id === req.params.id);
     if (!dataset) {
         log("Dataset not found", req.url, 404);
         res.status(404).send("Dataset not found");

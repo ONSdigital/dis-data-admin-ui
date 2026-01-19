@@ -1,3 +1,5 @@
+/* eslint-disable no-console */ 
+
 const NAMESPACE = "dis-data-admin-ui"; 
 
 const severity = {
@@ -25,7 +27,7 @@ const mapHTTPEvent = ({method, path, statusCode, startedAt, endedAt}) => {
     // TODO: we should probably find a better solution
     const url = new URL(path, "https://www.ons.gov.uk");
 
-    let httpEvent = {
+    const httpEvent = {
         method: method,
         path: url.pathname || null,
         query: url.search || null,
@@ -78,7 +80,7 @@ const mapErrorEvent = (error) => {
  * @param {Error} error - optional - to add error information to log  
  */
 const createLog = (severity, event, data = null, http = null, error = null) => {
-    let log = {
+    const log = {
         "created_at": new Date().toISOString(),
         "event": event,
         "namespace": NAMESPACE,

@@ -7,10 +7,9 @@ const RESUMABLE_OPTIONS = {
     isPublishable: true,
     licence: "Open Government Licence v3.0",
     licenceUrl: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-    path: "dataset-upload", // hardcoded for POC - needs fixing
 };
 
-const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
+const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
     // by the <TextInput /> component from eq-author and there will be errors when trying to bind
     const elID = elementID.toLowerCase();
@@ -26,6 +25,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
         query: {
             aliasName: "",
         },
+        fileType: ["csdb", "csv", "csvw", "sdmx", "xls", "xlsx"],
         forceChunkSize: true,
         simultaneousUploads: 1,
         permanentErrors: [400, 404, 409, 415, 500, 501],
@@ -35,6 +35,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, handleFileStart, handleFi
     r.on("fileAdded", file => {
         const options = {
             ...RESUMABLE_OPTIONS,
+            path: uploadFilePath,
             aliasName: file.container.name,
         };
         onFileAdded(r, options, file, handleFileStart);
@@ -62,7 +63,7 @@ const onFileProgress = (file, handleFileProgress) => {
 };
 
 const onFileError = (uploadError, handleError) => {
-    let error = {
+    const error = {
         id: "upload-error"
     };
 
@@ -97,9 +98,13 @@ const onFileSuccess = (resumable, file, handleFileComplete) => {
         title: file.fileName,
         download_url: `${resumable.opts.query.path}/${file.relativePath}`,
         byte_size: file.size,
-        media_type: file.file.type
+        format: formatFromFilename(file.fileName),
     };
     handleFileComplete(fileInfo);
+};
+
+const formatFromFilename = (filename) => {
+    return filename.split(".").pop();
 };
 
 export default bindFileUploadInput;

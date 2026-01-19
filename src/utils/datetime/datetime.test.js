@@ -1,4 +1,4 @@
-import { formatDate, ISOToDMYMHValues } from './datetime';
+import { formatDate, ISOToDMYMHValues, ISOToYYYYMMDD } from './datetime';
 
 describe('formatDate', () => {
     test('should format a valid date string correctly', () => {
@@ -49,6 +49,28 @@ describe('ISOToDMYMHValues', () => {
 
     test('should return null when called with non date string', () => {
         const result = ISOToDMYMHValues('foobar');
+        expect(result).toBeNull();
+    });
+});
+
+describe('ISOToYYYYMMDD', () => {
+    test('should convert a valid ISO date to YYYYMMDD format', () => {
+        const result = ISOToYYYYMMDD('2025-10-12T00:00:00Z');
+        expect(result).toBe('20251012');
+    });
+
+    test('should pad single digit month and day with leading zero', () => {
+        const result = ISOToYYYYMMDD('2025-01-05T12:30:00Z');
+        expect(result).toBe('20250105');
+    });
+
+    test('should return null when called with no arguments', () => {
+        const result = ISOToYYYYMMDD();
+        expect(result).toBeNull();
+    });
+
+    test('should return null when called with an invalid date string', () => {
+        const result = ISOToYYYYMMDD('invalid-date');
         expect(result).toBeNull();
     });
 });

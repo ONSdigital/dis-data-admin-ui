@@ -1,38 +1,42 @@
-const baseURL = "/data-admin/series";
+const BASE_URL = "/data-admin/series";
 
-const baseBreadcrumb = {
-    url: baseURL,
+const BASE_BREADCRUMB = {
+    url: BASE_URL,
     text: "Dataset catalogue",
     dataTestId: "breadcrumb-catalogue"
 };
 
+const SERIES_ID_URL_INDEX = 3;
+const EDITION_ID_URL_INDEX = 5;
+const VERSION_ID_URL_INDEX = 7;
+
 const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
     const urlSplit = currentURL.split("/");
-    const breadcrumbs = [ baseBreadcrumb ];
+    const breadcrumbs = [ BASE_BREADCRUMB ];
 
     // add dataset series
-    if (urlSplit.length >= 4) {
+    if (urlSplit.length >= 5) {
         breadcrumbs.push({
-            url: `${baseURL}/${urlSplit[2]}`,
-            text: datasetTitle || urlSplit[2],
+            url: `${BASE_URL}/${urlSplit[SERIES_ID_URL_INDEX]}`,
+            text: datasetTitle || urlSplit[SERIES_ID_URL_INDEX],
             dataTestId: "breadcrumb-series"
         });
     }
     
     // add dataset edition
-    if (urlSplit.length >= 6) {
+    if (urlSplit.length >= 7) {
         breadcrumbs.push({
-            url: `${baseURL}/${urlSplit[2]}/editions/${urlSplit[4]}`,
-            text: editionTitle || urlSplit[4],
+            url: `${BASE_URL}/${urlSplit[SERIES_ID_URL_INDEX]}/editions/${urlSplit[EDITION_ID_URL_INDEX]}`,
+            text: editionTitle || urlSplit[EDITION_ID_URL_INDEX],
             dataTestId: "breadcrumb-edition"
         });
     }
 
     // add dataset version
-    if (urlSplit.length >= 8) {
+    if (urlSplit.length >= 9) {
         breadcrumbs.push({
-            url: `${baseURL}/${urlSplit[2]}/editions/${urlSplit[4]}/versions/${urlSplit[6]}`,
-            text: urlSplit[6],
+            url: `${BASE_URL}/${urlSplit[SERIES_ID_URL_INDEX]}/editions/${urlSplit[EDITION_ID_URL_INDEX]}/versions/${urlSplit[VERSION_ID_URL_INDEX]}`,
+            text: urlSplit[VERSION_ID_URL_INDEX],
             dataTestId: "breadcrumb-version"
         });
     }

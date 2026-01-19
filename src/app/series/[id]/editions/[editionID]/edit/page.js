@@ -12,7 +12,7 @@ export default async function EditEdition({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
 
     const { id, editionID } = await params;
-    let editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
+    const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
 
     let editionError = false;
     if (editionResp.ok != null && !editionResp.ok) {

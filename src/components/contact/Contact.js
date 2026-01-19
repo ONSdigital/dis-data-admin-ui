@@ -30,7 +30,7 @@ export default function Contact({contactsList, contactsError}) {
             error = true;
         }
         if (error) {
-            return
+            return;
         }
 
         setContacts([
@@ -40,7 +40,7 @@ export default function Contact({contactsList, contactsError}) {
 
         setContactName("");
         setContactEmail("");
-    }
+    };
 
     const removeContact = (email) => {
         setContacts(
@@ -48,7 +48,7 @@ export default function Contact({contactsList, contactsError}) {
                 c.email !== email
             )
         );
-    }
+    };
 
     const renderContactList = () => {
         if (!contacts?.length) {
@@ -75,8 +75,8 @@ export default function Contact({contactsList, contactsError}) {
                                             id={"dataset-remove-contact-" + index}
                                             href="#"
                                             onClick={(e) => {
-                                                e.preventDefault()
-                                                removeContact(contact.email)
+                                                e.preventDefault();
+                                                removeContact(contact.email);
                                             }}
                                         >
                                             Remove
@@ -88,7 +88,7 @@ export default function Contact({contactsList, contactsError}) {
                     ))}
                 </ul>
             </div>
-        )
+        );
     };
 
     return (
@@ -127,7 +127,7 @@ export default function Contact({contactsList, contactsError}) {
                     variants={[
                         "small"
                     ]}
-                    onClick={() => { addContact() }}
+                    onClick={() => { addContact(); }}
                 />
                 {renderContactList()}
                 <input id="dataset-series-contacts" type="hidden" name="dataset-series-contacts" value={JSON.stringify(contacts)} />

@@ -41,7 +41,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                 {
                     formState.success == false && formState.code ?    
                         <Panel classes="ons-u-mb-xl" title="There was a problem creating this dataset edition" variant="error">
-                            <p>An error occured when trying to create this dataset edition.</p>
+                            <p>{formState.httpError || "An error occured when trying to create this dataset edition."}</p>
                         </Panel> : null
                 }
             </>

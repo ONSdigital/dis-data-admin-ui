@@ -50,7 +50,7 @@ const parseMutliContentField = (multiItem) => {
     const parsedItems = [];
     multiItem.forEach(item => {
         const parsed = JSON.parse(item);
-        if (parsed.type || parsed.title) {
+        if (parsed.type && parsed.description || parsed.title) {
             parsedItems.push(parsed);
         }
     });
@@ -78,7 +78,8 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return err.toString();
     }
     if (actionResponse.success == true) {
-        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + data.version + "?display_success=true");
+        const versionID = data.version || datasetVersionSubmission.version_id;
+        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + versionID + "?display_success=true");
     }
     return actionResponse;
 };

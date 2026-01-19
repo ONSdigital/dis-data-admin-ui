@@ -1,10 +1,9 @@
-const nextJest = require('next/jest')
+const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
     // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
-    dir: './',
-})
-
+    dir: "./",
+});
 
 /**
  * For a detailed explanation regarding each configuration property, visit:
@@ -74,8 +73,8 @@ const config = {
 
     // A set of global variables that need to be available in all test environments
     globals: {
-      TextEncoder: require('util').TextEncoder,
-      TextDecoder: require('util').TextDecoder,
+      TextEncoder: require("util").TextEncoder,
+      TextDecoder: require("util").TextDecoder,
     },
 
     // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
@@ -99,7 +98,9 @@ const config = {
     // ],
 
     // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-    // moduleNameMapper: {},
+    moduleNameMapper: {
+      "^@/(.*)$": "<rootDir>/src/$1",
+    },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
     // modulePathIgnorePatterns: [],

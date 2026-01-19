@@ -1,28 +1,37 @@
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
+import { defineConfig } from "eslint/config";
+import js from "@eslint/js";
+import nextVitals from "eslint-config-next/core-web-vitals";
 
-const compat = new FlatCompat({
-    // import.meta.dirname is available after Node.js v20.11.0
-    baseDirectory: import.meta.dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
-
-const eslintConfig = [
-    ...compat.config({
-        extends: ['next', 'eslint:recommended'],
-        rules: {
-            semi: [1, "always"],
-            '@next/next/no-html-link-for-pages': 'off', // prevent Next error message claiming can't find "pages" dir
-        },
-        plugins: [
-            "@typescript-eslint",
-            "react-hooks",
-            "react",
-            "testing-library",
+const eslintConfig = defineConfig([
+    js.configs.recommended,
+    ...nextVitals,
+    {
+        ignores: [
+            ".next/**",
+            "out/**",
+            "build/**",
+            "next-env.d.ts",
+            "tests/**",
+            "**/**.test.**",
+            "coverage/**",
         ],
-        ignorePatterns: ["**/**.test.**"]
-    }),
-];
+    },
+    {
+        files: ["**/*.{js,jsx,mjs,cjs}"],
+        rules: {
+            semi: ["warn", "always"],
+            "no-console": ["warn", { allow: ["warn", "error"] }],
+            "no-unused-vars": ["warn", { 
+                argsIgnorePattern: "^_",
+                varsIgnorePattern: "^_"
+            }],
+            "prefer-const": "warn",
+            "no-var": "error",
+            "prefer-arrow-callback": "warn",
+            "no-duplicate-imports": "error",
+            "no-useless-return": "warn",
+        },
+    },
+]);
 
 export default eslintConfig;
