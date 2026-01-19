@@ -48,7 +48,7 @@ test.describe("Create edition page", () => {
         await expect(page.getByText("Dataset edition saved")).toBeVisible();
 
         // check body content loads correctly
-        await expect(page.locator("#edition-id")).toContainText("test-id");
+        await expect(page.locator("#edition-id")).toContainText("test-edition");
         await expect(page.locator("#edition-title")).toContainText("Test edition");
     });
 

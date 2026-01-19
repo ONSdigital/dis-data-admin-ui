@@ -101,17 +101,17 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId("delete-version-button")).not.toBeVisible();
     });
 
-    test.describe("handles API error", () => {
-        test("when 404 is returned", async ({ page, context }) => {
+    test.describe("Handles API error", () => {
+        test("When 404 is returned", async ({ page, context }) => {
             addValidAuthCookies(context);
-            await page.goto("./series/404");
-            expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
+            await page.goto("./series/mock-quarterly/editions/time-series/versions/404");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
-         test("when 500 is returned", async ({ page, context }) => {
+         test("When 500 is returned", async ({ page, context }) => {
             addValidAuthCookies(context);
-            await page.goto("./series/500");
-            expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
+            await page.goto("./series/mock-quarterly/editions/time-series/versions/500");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
     });
 });

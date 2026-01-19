@@ -101,18 +101,20 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
         await expect(page.getByTestId("page-heading-publish-panel")).toBeVisible();
     });
+
+    test.describe("Handles API error", () => {
+        test("When 404 is returned", async ({ page, context }) => {
+            addValidAuthCookies(context);
+            await page.goto("./series/404");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
+        });
+
+            test("When 500 is returned", async ({ page, context }) => {
+            addValidAuthCookies(context);
+            await page.goto("./series/500");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
+        });
+    });
 });
 
-test.describe("handles API error", () => {
-    test("when 404 is returned", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto("./series/404");
-        expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
-    });
 
-        test("when 500 is returned", async ({ page, context }) => {
-        addValidAuthCookies(context);
-        await page.goto("./series/500");
-        expect(page.getByText("There was an issue retrieving the list of dataset series. Refresh the page to try again."));
-    });
-});
