@@ -28,7 +28,7 @@ const handleMockError = (req, res, paramID) => {
 
     const errorMap = {
         "400": { status: 400, message: "Bad request" },
-        "401": { status: 400, message: "Unauthorised" },
+        "401": { status: 401, message: "Unauthorised" },
         "404": { status: 404, message: "Not found" },
         "500": { status: 500, message: "Internal server error" },
     };
