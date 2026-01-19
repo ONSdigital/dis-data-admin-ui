@@ -7,18 +7,18 @@ import { metadataList } from "../mocks/metadata.mjs";
 import { topicList } from "../mocks/topics.mjs";
 
 const app = express();
-const PORT = 29401;
+const PORT = process.env.FAKE_API_PORT || 29401;
 
 app.use(express.json());
 
 const log = (msg, url, status) => {
     if (!process.env.ENABLE_LOGGING) return;
-    const log = { 
+    const logEntry = { 
         message: msg, 
         url: url,
         status: status || 0
     };
-    console.log(JSON.stringify(log));
+    console.log(JSON.stringify(logEntry));
 };
 
 const handleMockError = (req, res, paramID) => {
@@ -74,13 +74,13 @@ app.get("/datasets", (req, res) => {
 app.post("/datasets", (req, res) => {
     log("Handling POST '/datasets'", req.url, null);
 
-    if (req.body.id == "duplicate-id") {
+    if (req.body.id === "duplicate-id") {
         log("Returning success", req.url, 409);
         res.status(409).send("dataset already exists");
         return;
     }
 
-    if (req.body.title == "duplicate-title") {
+    if (req.body.title === "duplicate-title") {
         log("Dataset title already exists", req.url, 409);
         res.status(409).send("dataset title already exists");
         return;
@@ -95,7 +95,7 @@ app.post("/datasets", (req, res) => {
 app.put("/datasets/:id", (req, res) => {
     log("Handling PUT '/datasets'", req.url, null);
 
-    if (req.body.title == "duplicate-title") {
+    if (req.body.title === "duplicate-title") {
         log("Dataset title already exists", req.url, 409);
         res.status(409).send("dataset title already exists");
         return;
@@ -242,8 +242,19 @@ app.get("/topics", (req, res) => {
 app.get("/topics/:id", (req, res) => {
     log("Handling GET '/topics/:id'", req.url, null);
 
+    const topic = topicList.items.find(item => item.id === req.params.id);
+    if (!topic) {
+        log("Topic not found", req.url, 404);
+        res.status(404).send("Topic not found");
+        return;
+    }
     log("Returning success", req.url, 200);
-    res.send(topicList.items.find(item => item.id === req.params.id));
+    res.send(topic);
+});
+
+app.use((req, res) => {
+    log("Route not found", req.url, 404);
+    res.status(404).send("Route not found");
 });
 
 app.listen(PORT, () => {
