@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { logInfo } from "@/utils/log/log";
-import { getLoginURLWithRedirect, validateCookie } from "@/utils/auth/auth";
+import { HEADER_USER_ROLES, getLoginURLWithRedirect, validateCookie, getUserRoles } from "@/utils/auth/auth";
 
 const publicRoutes = ["/florence/login", "florence/logout"];
 
@@ -24,6 +24,14 @@ export async function authenticationMiddleware(req) {
         return NextResponse.redirect(new URL(logoutPath, req.nextUrl));
     }
 
+    const userRoles = getUserRoles(cookie);
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set(HEADER_USER_ROLES, userRoles.toString());
+
     logInfo("authentication middleware: cookie found and validated", logData, null);
-    return NextResponse.next();
+    return NextResponse.next({
+        request: {
+            headers: requestHeaders,
+        }
+    });
 };
