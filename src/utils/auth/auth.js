@@ -6,11 +6,14 @@ const HEADER_USER_ROLES = "x-user-roles";
 const ROLE_ADMIN = "role-admin";
 const ROLE_PUBLISHER = "role-publisher";
 
-const logoutURL = "/florence/logout";
-const loginURL = "/florence/login";
+const LOGOUT_URL = "/florence/logout";
+const LOGIN_URL = "/florence/login";
+
+// property name in the JWT where we can find user roles
+const COGNITO_GROUPS_CLAIM = "cognito:groups";
 
 // convert unix timestamp to milliseconds rather than seconds
-const millisecondsMultiplier = 1000;
+const MILLISECONDS_MULTIPLIER = 1000;
 
 /**
  * Redirect to logout endpoint in Florence
@@ -18,7 +21,7 @@ const millisecondsMultiplier = 1000;
  */
 const logout = () => {
     logInfo("user clicked logout", null, null, null);
-    return window.location.href = logoutURL;
+    return window.location.href = LOGOUT_URL;
 };
 
 /**
@@ -30,7 +33,7 @@ const getLoginURLWithRedirect = (redirectPath) => {
     const basePath = "/data-admin/";
     const redirect = redirectPath || "";
     const redirectTo = encodeURIComponent(basePath + redirect);
-    return `${loginURL}?redirect=${redirectTo}`;
+    return `${LOGIN_URL}?redirect=${redirectTo}`;
 };
 
 /**
@@ -53,7 +56,7 @@ const validateCookie = (token) => {
     }
     try {
         const cookie = decodeToken(token);
-        if (cookie?.exp * millisecondsMultiplier < Date.now()) {
+        if (cookie?.exp * MILLISECONDS_MULTIPLIER < Date.now()) {
             return false;
         }
         return true;
@@ -86,7 +89,7 @@ const getUserName = (token) => {
 const getUserRoles = (token) => {
     try {
         const cookie = decodeToken(token);
-        return cookie["cognito:groups"] || [];
+        return cookie[COGNITO_GROUPS_CLAIM] || [];
     } catch (error) {
         logError("error getting user role from token", null, null, error);
         return null;
