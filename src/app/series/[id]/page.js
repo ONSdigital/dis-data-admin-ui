@@ -12,6 +12,7 @@ import PageHeading from "@/components/page-heading/PageHeading";
 import { mapListItems } from "./mapper";
 import { mapSeriesSummary } from "@/components/design-system/summary-mapper";
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
+import { HEADER_USER_ROLES, userIsAdmin } from "@/utils/auth/auth"
 
 export default async function Dataset({ params, searchParams }) {
     const { id } = await params;
@@ -66,11 +67,13 @@ export default async function Dataset({ params, searchParams }) {
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
+    const userRoles = (await headers()).get(HEADER_USER_ROLES)
+    const isAdmin = userIsAdmin(userRoles)
 
     // if current is "published" and next is "associated" infer that they are unpublished changes to a series
     // if version ID's in links.latest_version are the same infer that this is only series metadata updates
     // and this needs to be published seperately and not as/with a new version which would get published via a bundle 
-    const showPublishChangesMessage = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
+    const showPublishChangesMessage = isAdmin && datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
 
     return (
         <>
