@@ -2,6 +2,10 @@ import { jwtDecode } from "jwt-decode";
 
 import { logInfo, logError } from "../log/log";
 
+const HEADER_USER_ROLES = "x-user-roles";
+const ROLE_ADMIN = "role-admin";
+const ROLE_PUBLISHER = "role-publisher";
+
 const logoutURL = "/florence/logout";
 const loginURL = "/florence/login";
 
@@ -70,5 +74,34 @@ const getUserName = (token) => {
     }
 };
 
+/**
+ * Decodes user given and family name from token
+ * @param  {JWT} jwt - JWT cookie value
+ * @return {string} - Formatted user name
+ */
+const getUserRoles = (token) => {
+    try {
+        const cookie = decodeToken(token);
+        return cookie["cognito:groups"];
+    } catch (error) {
+        logError("error getting user role from token", null, null, error);
+        return null;
+    }
+};
 
-export { logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName };
+const userIsAdmin = (roleHeader) => {
+    if (!roleHeader) return false;
+    const roles = roleHeader.split(",");
+    if (roles.includes(ROLE_ADMIN)) return true;
+    return false;
+}
+
+const userIsPublisher = (roleHeader) => {
+    if (!roleHeader) return false;
+    const roles = roleHeader.split(",");
+    if (roles.includes(ROLE_PUBLISHER)) return true;
+    return false;
+}
+
+
+export { HEADER_USER_ROLES, logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName, getUserRoles, userIsAdmin, userIsPublisher };
