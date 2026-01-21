@@ -84,7 +84,7 @@ const getUserName = (token) => {
 /**
  * Decodes user roles from token
  * @param  {string} token - JWT cookie value
- * @return {Array<string>|null} - Array of user roles from cognito:groups, or null if error
+ * @return {Array<string>} - Array of user roles from cognito:groups, or an empty array if error
  */
 const getUserRoles = (token) => {
     try {
@@ -92,7 +92,7 @@ const getUserRoles = (token) => {
         return cookie[COGNITO_GROUPS_CLAIM] || [];
     } catch (error) {
         logError("error getting user role from token", null, null, error);
-        return null;
+        return [];
     }
 };
 
