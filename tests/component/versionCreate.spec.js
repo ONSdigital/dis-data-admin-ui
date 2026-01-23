@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Create version page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
         await expect(page.getByTestId("page-heading-title")).toContainText("Create new version");
@@ -17,7 +17,7 @@ test.describe("Create version page", () => {
     });
 
     test("Submits form successfully", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
         await page.getByTestId("release-date-day").fill("1");
@@ -45,7 +45,7 @@ test.describe("Create version page", () => {
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
 

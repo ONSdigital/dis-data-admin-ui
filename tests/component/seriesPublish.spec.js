@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Series publish page", () => {
     test.describe("renders as expected when", () => {
         test("A series is publishable", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/test-publish-message-dataset/publish");
 
@@ -16,7 +16,7 @@ test.describe("Series publish page", () => {
         });
 
         test("A series is not publishable", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/publish");
 
@@ -25,7 +25,7 @@ test.describe("Series publish page", () => {
         });
 
         test("GET request to series end point fails", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/404/publish");
 
@@ -35,7 +35,7 @@ test.describe("Series publish page", () => {
     });
 
     test("Submits form, publishes series and redirects user to series overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset/publish");
         await page.getByTestId("dataset-series-publish-button").click();
@@ -47,7 +47,7 @@ test.describe("Series publish page", () => {
     });
 
     test("Cancel link returns user to series overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset/publish");
         await page.getByTestId("dataset-series-publish-cancel-link").click();

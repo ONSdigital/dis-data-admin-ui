@@ -1,11 +1,11 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Edit edition page", () => {
     test.describe("When editing a unpublished edition", () => {
         test("Renders as expected", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/test-edition/edit");
             await expect(page.getByTestId("page-heading-title")).toContainText("Edit edition: Test edition");
@@ -16,7 +16,7 @@ test.describe("Edit edition page", () => {
         });
 
         test("Submits form successfully", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/test-edition/edit");
             await page.getByTestId("edition-id").fill("test-id");
@@ -32,7 +32,7 @@ test.describe("Edit edition page", () => {
         });
 
         test("Show errors on mandatory fields", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/test-edition/edit");
 
@@ -49,7 +49,7 @@ test.describe("Edit edition page", () => {
 
     test.describe("When editing a published edition", () => {
         test("Renders as expected", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/time-series/edit");
             await expect(page.getByTestId("page-heading-title")).toContainText("Edit edition: Timeseries");
@@ -60,7 +60,7 @@ test.describe("Edit edition page", () => {
         });
 
         test("Submits form successfully", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/time-series/edit");
             await page.getByTestId("edition-title").fill("Test title");
@@ -75,7 +75,7 @@ test.describe("Edit edition page", () => {
         });
 
         test("Show errors on mandatory fields", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/time-series/edit");
 

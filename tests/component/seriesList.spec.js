@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Series list page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series")
         await expect(page.getByText("Showing 1 to 20 of 125 series")).toBeVisible();
@@ -16,7 +16,7 @@ test.describe("Series list page", () => {
     });
 
     // test("Route from Series page to Create Dataset page", async ({ page, context }) => {
-    //     addValidAuthCookies(context);
+    //     setValidAuthCookies(context);
 
     //     await page.goto("./series")
     //     await page.getByRole("link", { name: "Add new dataset series" }).click();
@@ -25,7 +25,7 @@ test.describe("Series list page", () => {
     // });
 
     test("Traverse through pagination", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series")
         await expect(page.getByRole("link", { name: "Consumer prices" })).toBeVisible();
@@ -47,7 +47,7 @@ test.describe("Series list page", () => {
     });
 
     test("Choose a fully populated dataset from a list of datasets and route to chosen dataset page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series")
         await page.getByRole("link", { name: "Mock Dataset", exact: true }).click();
@@ -61,7 +61,7 @@ test.describe("Series list page", () => {
 
 test.describe("Filtering on series list page", () => {
     test ("Filtering by a valid ID returns correct results", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series");
         await page.getByTestId("series-list-search-by-id").fill("foo-bar");
@@ -71,7 +71,7 @@ test.describe("Filtering on series list page", () => {
     });
 
     test ("Filtering by non existent ID handles returned 404", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series");
         await page.getByTestId("series-list-search-by-id").fill("bar-foo");

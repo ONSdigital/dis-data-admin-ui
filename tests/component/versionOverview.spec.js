@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("version overview page", () => {
     test("route from list of version to version overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto('./series/mock-quarterly/editions/time-series');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
         await page.getByRole('link', { name: 'Version: 1' }).click();
@@ -13,7 +13,7 @@ test.describe("version overview page", () => {
     });
 
     test("page heading create button routes to create new version page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await page.getByTestId("page-heading-create-button").click();
@@ -22,7 +22,7 @@ test.describe("version overview page", () => {
     });
 
     test("page heading 'back to' link routes to edition overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await page.getByTestId("page-heading-link").click();
@@ -31,7 +31,7 @@ test.describe("version overview page", () => {
     });
 
     test("fully populated version page renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
 
         // page heading
@@ -69,7 +69,7 @@ test.describe("version overview page", () => {
     });
 
     test("minimally populated version page renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId('id-field')).toContainText('mock-minimal');
         await expect(page.getByTestId('edition-field')).toContainText('time-series');
@@ -88,14 +88,14 @@ test.describe("version overview page", () => {
     });
 
     test("shows version delete button when version is unpublished", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId("delete-version-button")).toBeVisible();
     });
 
     test("does not show version delete button when dataset is published", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await expect(page.getByTestId("delete-version-button")).not.toBeVisible();
