@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-import { setValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies, setValidAdminAuthCookies } from "../utils/utils";
 
 test.describe("Series overview page", () => {
     test("renders as expected", async ({ page, context }) => {
@@ -86,7 +86,7 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
 
-    test("doesn't show publish message when no difference between current and next", async ({ page, context }) => {
+    test("does not show publish message when no difference between current and next", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
@@ -94,8 +94,16 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-publish-panel")).not.toBeVisible();
     });
 
-    test("shows publish message when no difference between current and next", async ({ page, context }) => {
+    test("does not show publish message when user is not admin", async ({ page, context }) => {
         setValidAuthCookies(context);
+
+        await page.goto("./series/test-publish-message-dataset");
+        await expect(page.getByTestId("page-heading-publish-button")).not.toBeVisible();
+        await expect(page.getByTestId("page-heading-publish-panel")).not.toBeVisible();
+    });
+
+    test("shows publish message when user is admin", async ({ page, context }) => {
+        setValidAdminAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset");
         await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
