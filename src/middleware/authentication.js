@@ -26,18 +26,19 @@ export async function authenticationMiddleware(req) {
     if (!cookie) {
         logInfo("authentication middleware: no auth cookie found. redirecting to login", logData, null);
         const loginPath = getLoginURLWithRedirect(path);
-        return NextResponse.redirect(new URL(loginPath, req.nextUrl));
+        return NextResponse.redirect(new URL(loginPath, req.url));
     }
     
     if (!validateCookie(cookie)) {
         logInfo("authentication middleware: invalid cookie. redirecting to login", logData, null);
         const loginPath = getLoginURLWithRedirect(path);
-        return NextResponse.redirect(new URL(loginPath, req.nextUrl));
+        return NextResponse.redirect(new URL(loginPath, req.url));
     }
 
     const userRoles = getUserRoles(cookie);
     const requestHeaders = new Headers(req.headers);
-    requestHeaders.set(HEADER_USER_ROLES, userRoles.toString());
+    const rolesString = Array.isArray(userRoles) ? userRoles.join(",") : (userRoles || "");
+    requestHeaders.set(HEADER_USER_ROLES, rolesString);
 
     logInfo("authentication middleware: cookie found and validated", logData, null);
     return NextResponse.next({
