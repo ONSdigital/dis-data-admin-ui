@@ -32,16 +32,16 @@ const setAuthCookies = async (browserContext, expiry, givenName, familyName, rol
     ]);
 };
 
-const setAdminValidAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
+const setValidAdminAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
     setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-admin"]);
 };
 
-const setPublisherValidAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
+const setValidPublisherAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
     setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
 };
 
 const setValidAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
-    setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-admin", "role-publisher"]);
+    setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
 };
 
 const setExpiredAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
@@ -52,8 +52,8 @@ export {
     createExpiredJWTCookieValue, 
     createValidJWTCookieValue, 
     createValidJWTCookieValueWithUserDetails, 
-    setAdminValidAuthCookies, 
-    setPublisherValidAuthCookies, 
+    setValidAdminAuthCookies, 
+    setValidPublisherAuthCookies, 
     setValidAuthCookies, 
     setExpiredAuthCookies 
 }
