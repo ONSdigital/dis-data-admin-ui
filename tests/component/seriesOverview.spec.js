@@ -94,19 +94,19 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-publish-panel")).not.toBeVisible();
     });
 
-    test("does not show publish message when user is not admin", async ({ page, context }) => {
+    test("does not show publish button when user is not admin", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset");
+        await expect(page.getByTestId("page-heading-publish-panel")).toBeVisible();
         await expect(page.getByTestId("page-heading-publish-button")).not.toBeVisible();
-        await expect(page.getByTestId("page-heading-publish-panel")).not.toBeVisible();
     });
 
-    test("shows publish message when user is admin", async ({ page, context }) => {
+    test("shows publish message and button when user is admin", async ({ page, context }) => {
         setValidAdminAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset");
-        await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
         await expect(page.getByTestId("page-heading-publish-panel")).toBeVisible();
+        await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
     });
 });
