@@ -85,11 +85,11 @@ const handleFailedValidation = (validation, datasetEditionSubmission) => {
 };
 
 const createDatasetEdition = async (currentstate, formData) => {
-    const datasetEditionSubmission = getEditionWithVersionFormData(formData);
+    const datasetEditionSubmission = await getEditionWithVersionFormData(formData);
     const validation = editionWithVersionSchema.safeParse(datasetEditionSubmission);
 
     if (!validation.success) {
-        return handleWithVersionFailedValidation(validation, datasetEditionSubmission);
+        return await handleWithVersionFailedValidation(validation, datasetEditionSubmission);
     }
     return doSubmission(datasetEditionSubmission, httpPost);
 };
