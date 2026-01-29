@@ -84,7 +84,7 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     return actionResponse;
 };
 
-const getFormData = (formData) => {
+const getFormData = async (formData) => {
     const usageNotes = formData.getAll("usage-notes");
     const parsedUsageNotes = parseMutliContentField(usageNotes);
     const alerts = formData.getAll("alerts");
@@ -111,7 +111,7 @@ const getFormData = (formData) => {
     return datasetVersion;
 };
 
-const handleFailedValidation = (validation, datasetVersionSubmission) => {
+const handleFailedValidation = async (validation, datasetVersionSubmission) => {
     const actionResponse = {};
     actionResponse.success = validation.success;
     actionResponse.errors = validation.error.flatten().fieldErrors;
@@ -123,21 +123,21 @@ const handleFailedValidation = (validation, datasetVersionSubmission) => {
 };
 
 const createDatasetVersion = async (currentstate, formData) => {
-    const datasetVersionSubmission = getFormData(formData);
+    const datasetVersionSubmission = await getFormData(formData);
     const validation = versionSchema.safeParse(datasetVersionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetVersionSubmission);
+        return await handleFailedValidation(validation, datasetVersionSubmission);
     }
     return doSubmission(datasetVersionSubmission, httpPost);
 };
 
 const updateDatasetVersion = async (currentstate, formData) => {
-    const datasetVersionSubmission = getFormData(formData);
+    const datasetVersionSubmission = await getFormData(formData);
     const validation = versionSchema.safeParse(datasetVersionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetVersionSubmission);
+        return await handleFailedValidation(validation, datasetVersionSubmission);
     }
     return doSubmission(datasetVersionSubmission, httpPut);
 };
