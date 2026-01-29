@@ -8,7 +8,7 @@ import TextArea from "../textarea/Textarea";
 export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent, showTypeOptions }) {
     // set to "alert" as default option when showTypeOptions is false because we assume we are in 
     // create mode and only alerts (not corrections) can be set when creating
-    const [contentType, setContentType] = useState(field?.type || !showTypeOptions ? "alert" : "");
+    const [contentType, setContentType] = useState(field?.type || (!showTypeOptions ? "alert" : ""));
     const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 
     const radiosID = id + "-radios-" + index;
