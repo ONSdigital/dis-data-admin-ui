@@ -24,6 +24,8 @@ describe("PageHeading renders correctly", () => {
         expect(screen.queryByTestId("page-heading-create-button")).not.toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-link")).not.toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).not.toBeInTheDocument();
     });
 
     test("when only a title and subtitle prop is passed in", () => {
@@ -35,6 +37,8 @@ describe("PageHeading renders correctly", () => {
         expect(screen.queryByTestId("page-heading-create-button")).not.toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-link")).not.toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).not.toBeInTheDocument();
     });
 
     test("when a title, subtitle, button and link prop is passed in", () => {
@@ -54,6 +58,8 @@ describe("PageHeading renders correctly", () => {
         expect(screen.queryByTestId("page-heading-link")).toBeInTheDocument();
         expect(screen.getByText("link test")).toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).not.toBeInTheDocument();
     });
 
     test("when a title, subtitle, button, link and panel prop is passed in", () => {
@@ -72,12 +78,35 @@ describe("PageHeading renders correctly", () => {
         expect(screen.getByText("link test")).toBeInTheDocument();
         expect(screen.queryByTestId("page-heading-panel")).toBeInTheDocument();
         expect(screen.getByText("panel test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).not.toBeInTheDocument();
     });
 
     test("when a title, subtitle, button, link, panel and show publish message prop is passed in", () => {
         pageHeadingProps = {
             ...pageHeadingProps,
             showPublishChangesMessage: true,
+            publishLink: "/publish"
+        };
+        render(<PageHeading {...pageHeadingProps} />);
+
+        expect(screen.getByText("title test")).toBeInTheDocument();
+        expect(screen.getByText("subtitle test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-create-button")).toBeInTheDocument();
+        expect(screen.getByText("button test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-link")).toBeInTheDocument();
+        expect(screen.getByText("link test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-panel")).toBeInTheDocument();
+        expect(screen.getByText("panel test")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-panel")).toBeInTheDocument();
+        expect(screen.queryByTestId("page-heading-publish-button")).not.toBeInTheDocument();
+    });
+
+    test("when a title, subtitle, button, link, panel, show publish message and show publish button prop is passed in", () => {
+        pageHeadingProps = {
+            ...pageHeadingProps,
+            showPublishChangesMessage: true,
+            showPublishChangesButton: true,
             publishLink: "/publish"
         };
         render(<PageHeading {...pageHeadingProps} />);

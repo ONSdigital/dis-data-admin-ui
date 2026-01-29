@@ -21,7 +21,7 @@ export default function PageHeading(props){
             return (
                 <div className="ons-u-mt-l ons-u-mb-xl">
                     <Panel variant="warn" dataTestId="page-heading-publish-panel">There have been changes to this series.</Panel>
-                    <LinkButton variants={["secondary", "small"]} link={props.publishLink} text="Publish changes" iconType="ArrowIcon" iconPosition="after" dataTestId="page-heading-publish-button"/>
+                    {props.showPublishChangesButton && <LinkButton variants={["secondary", "small"]} link={props.publishLink} text="Publish changes" iconType="ArrowIcon" iconPosition="after" dataTestId="page-heading-publish-button"/>}
                 </div>
                 
             );
