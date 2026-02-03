@@ -34,8 +34,10 @@ test.describe("Create edition page", () => {
         await page.getByTestId("usage-notes-add-button").click();
         await page.getByTestId("usage-notes-input-1").fill("Another test usage notes");
         await page.getByTestId("usage-notes-textarea-1").fill("Another something about usage notes");
+        await page.getByTestId("alerts-radios-0-item-alerts-radios-0-correction-input").click();
         await page.getByTestId("alerts-textarea-0").fill("Something about a correction");
         await page.getByTestId("alerts-add-button").click();
+        await page.getByTestId("alerts-radios-1-item-alerts-radios-1-notice-input").click();
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
         await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify([{download_url: "test/file.csv"}, {download_url: "foo/bar.csv"}]); });
 
