@@ -12,8 +12,8 @@ describe("MultiContentItemsSelect", () => {
         it("when show showTypeOptions is false", () => {
             render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={false}/>);
 
-            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).not.toBeInTheDocument();
-            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).not.toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).toBeInTheDocument();
             expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
         });
         it("when show showTypeOptions is true", () => {

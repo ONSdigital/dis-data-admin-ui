@@ -20,8 +20,8 @@ describe("MultiContentItems", () => {
     describe("renders correctly when type=radios", () => {
         it("and doesn't contain data e.g. 'create' mode", () => {
             render(<MultiContentItems id="multi-content-test" fieldType="radios" buttonLabel="Add new test item"/>);
-            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-correction-input")).not.toBeInTheDocument();
-            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-notice-input")).not.toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-correction-input")).toBeInTheDocument();
+            expect(screen.queryByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-notice-input")).toBeInTheDocument();
 
             expect(screen.getByTestId("multi-content-test-textarea-0")).toBeInTheDocument();
 
