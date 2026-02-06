@@ -1,4 +1,3 @@
-import getAppConfig from "../config/config";
 import { logInfo, logError } from "../log/log";
 
 const xFlorenceHeaderKey = "X-Florence-Token";
