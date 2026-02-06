@@ -12,7 +12,6 @@ export default async function MigrationList() {
     const reqCfg = await SSRequestConfig(cookies, "migration-service");
 
     const migrationsResp = await httpGet(reqCfg, "/migration-jobs");
-    console.log(migrationsResp)
     let migrationsRespError = false;
     if (migrationsResp.ok != null && !migrationsResp.ok) {
         migrationsRespError = true;
