@@ -1,12 +1,31 @@
-import { BoxContainer } from "@/components/design-system/DesignSystem";
+import { cookies } from "next/headers";
+
+import { httpGet, SSRequestConfig } from "@/utils/request/request";
+
+import { BoxContainer, Panel } from "@/components/design-system/DesignSystem";
 import LinkButton from "@/components/link-button/LinkButton";
 import Table from "@/components/table/Table";
 
-import { migrationJobsList } from "../../../tests/mocks/migration-jobs.mjs";
 import { mapMigrationListTable } from "@/components/table/mapper";
 
-export default function MigrationList() {
-    const mappedTable = mapMigrationListTable(migrationJobsList.items);
+export default async function MigrationList() {
+    const reqCfg = await SSRequestConfig(cookies, "migration-service");
+
+    const migrationsResp = await httpGet(reqCfg, "/migration-jobs");
+    console.log(migrationsResp)
+    let migrationsRespError = false;
+    if (migrationsResp.ok != null && !migrationsResp.ok) {
+        migrationsRespError = true;
+    }
+
+    if (migrationsRespError) {
+        return (
+            <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
+                <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
+            </Panel>
+        );
+    }
+    const mappedTable = mapMigrationListTable(migrationsResp.items);
     const renderListArea = () => {
         return (
             <>
@@ -44,7 +63,7 @@ export default function MigrationList() {
                     </BoxContainer>
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
-                    {renderListArea()}
+                    { renderListArea() }
                 </div>
             </div>
         </>
