@@ -48,13 +48,13 @@ test.describe("Create version page", () => {
 
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/time-series/versions/404");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
          test("When 500 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/time-series/versions/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });

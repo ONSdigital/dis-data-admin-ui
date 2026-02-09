@@ -95,13 +95,13 @@ test.describe("Edit edition page", () => {
 
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/404/edit");
             await expect(page.getByText("There was a problem retreiving data for this page. Please try again later.")).toBeVisible();
         });
 
          test("When 500 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/500/edit");
             await expect(page.getByText("There was a problem retreiving data for this page. Please try again later.")).toBeVisible();
         });
