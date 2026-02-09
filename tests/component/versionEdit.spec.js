@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Create version page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
         await expect(page.getByRole("heading", { level: 1 })).toContainText("Edit version 1");
@@ -18,7 +18,7 @@ test.describe("Create version page", () => {
     });
 
     test("Submits form successfully", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/edit");
         await page.getByTestId("release-date-day").fill("1");

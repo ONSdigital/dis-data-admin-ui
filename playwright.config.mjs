@@ -17,7 +17,7 @@ export default defineConfig({
         },
       ],
     webServer: {
-        command: "API_ROUTER_URL=http://127.0.0.1:29401 npm run dev",
+        command: "API_ROUTER_URL=http://127.0.0.1:29401 MIGRATION_SERVICE_URL=http://127.0.0.1:29401/v1 npm run dev",
         port: 29400,
         reuseExistingServer: !process.env.CI,
     },

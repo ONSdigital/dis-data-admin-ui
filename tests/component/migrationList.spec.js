@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Migration list page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./migration")
         await expect(page.getByText("Showing 1 to 5 of 5 jobs")).toBeVisible();

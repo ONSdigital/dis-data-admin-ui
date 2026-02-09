@@ -5,10 +5,10 @@ import { useState, useEffect, useRef } from "react";
 import { Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent, showTypeOptions }) {
+export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent }) {
     // set to "alert" as default option when showTypeOptions is false because we assume we are in 
     // create mode and only alerts (not corrections) can be set when creating
-    const [contentType, setContentType] = useState(field?.type || !showTypeOptions ? "alert" : "");
+    const [contentType, setContentType] = useState(field?.type || "");
     const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
 
     const radiosID = id + "-radios-" + index;
@@ -37,8 +37,6 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
     };
 
     const renderRadioOptions = () => {
-        if (!showTypeOptions) return;
-
         return (
             <Radios
                 dataTestId={radiosID}

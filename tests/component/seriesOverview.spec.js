@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies, setValidAdminAuthCookies } from "../utils/utils";
 
 test.describe("Series overview page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
 
@@ -39,14 +39,14 @@ test.describe("Series overview page", () => {
     });
 
     test("Handles a dataset series response error", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/test-series-that-doesnt-exist");
         await expect(page.getByTestId("dataset-series-response-error")).toContainText("There was an issue retrieving the data for this page. Try refreshing the page.");
     })
 
     test("Page heading create button routes to create new edition page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
         await page.getByTestId("page-heading-create-button").click();
@@ -55,7 +55,7 @@ test.describe("Series overview page", () => {
     });
 
     test("Page heading 'back to' link routes to series list page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly");
         await page.getByTestId("page-heading-link").click();
@@ -64,7 +64,7 @@ test.describe("Series overview page", () => {
     });
 
     test("Routes to edition overview page when selecting edition from list", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
         await page.getByRole("link", { name: "Timeseries" }).click();
@@ -73,21 +73,21 @@ test.describe("Series overview page", () => {
     });
 
     test("Dhows series delete button when dataset is unpublished", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal");
         await expect(page.getByTestId("delete-series-button")).toBeVisible();
     });
 
     test("Does not show series delete button when dataset is published", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("delete-series-button")).not.toBeVisible();
     });
 
     test("Does not show publish message when no difference between current and next", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly");
         await expect(page.getByTestId("page-heading-publish-button")).not.toBeVisible();
@@ -95,22 +95,30 @@ test.describe("Series overview page", () => {
     });
 
     test("Shows publish message when no difference between current and next", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/test-publish-message-dataset");
-        await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
         await expect(page.getByTestId("page-heading-publish-panel")).toBeVisible();
+        await expect(page.getByTestId("page-heading-publish-button")).not.toBeVisible();
+    });
+
+    test("Shows publish message and button when user is admin", async ({ page, context }) => {
+        setValidAdminAuthCookies(context);
+
+        await page.goto("./series/test-publish-message-dataset");
+        await expect(page.getByTestId("page-heading-publish-panel")).toBeVisible();
+        await expect(page.getByTestId("page-heading-publish-button")).toBeVisible();
     });
 
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/404");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
             test("When 500 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });

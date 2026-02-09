@@ -1,12 +1,14 @@
 // function for handling mutltiple middleware since next only supports one
-// taken from https://medium.com/@aididalam/approach-to-multiple-middleware-and-auth-guard-in-next-js-app-routing-bbb641401477
+// taken/modified from https://medium.com/@aididalam/approach-to-multiple-middleware-and-auth-guard-in-next-js-app-routing-bbb641401477
 // see also https://stackoverflow.com/a/78980557
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export const multipleMiddlewares = (middlewares) => async (req, event, response) => {
-    // Array to store middleware headers
-    const middlewareHeader = [];
+    // Array to store middleware results
+    const middlewareResults = [];
+    // Track all request headers that need to be passed through
+    const allRequestHeaders = new Headers(req.headers);
 
     // Loop through middleware functions
     for (const middleware of middlewares) {
@@ -18,8 +20,20 @@ export const multipleMiddlewares = (middlewares) => async (req, event, response)
             return result;
         }
 
-        // Push middleware headers to the array
-        middlewareHeader.push(result.headers);
+        // Store the result
+        middlewareResults.push(result);
+
+        // Extract and merge request headers from this middleware's response
+        // When NextResponse.next({ request: { headers } }) is called, 
+        // those headers should be merged into the request for subsequent middlewares
+        // We need to track them to pass them through
+        const responseRequestHeaders = result.request?.headers;
+        if (responseRequestHeaders) {
+            for (const [key, value] of responseRequestHeaders.entries()) {
+                // Use set instead of append to avoid comma-separated duplicates
+                allRequestHeaders.set(key, value);
+            }
+        }
     }
 
     // Merge all the headers to check if there is a redirection or rewrite
@@ -28,42 +42,30 @@ export const multipleMiddlewares = (middlewares) => async (req, event, response)
     // Merge all the custom headers added by the middlewares
     const transmittedHeaders = new Headers();
 
-    // Merge
-    middlewareHeader.forEach((header) => {
-        for (const [key, value] of header.entries()) {
-            mergedHeaders.append(key, value);
+    // Merge response headers from all middleware results
+    middlewareResults.forEach((result) => {
+        for (const [key, value] of result.headers.entries()) {
+            // Use set instead of append to avoid comma-separated duplicates
+            mergedHeaders.set(key, value);
 
             // check if its a custom header added by one of the middlewares
-            if (key.startsWith('x-middleware-request-')) {
+            if (key.startsWith("x-middleware-request-")) {
                 // remove the prefix to get the original key
-                const fixedKey = key.replace('x-middleware-request-', '');
+                const fixedKey = key.replace("x-middleware-request-", "");
 
                 // add the original key to the transmitted headers
-                transmittedHeaders.append(fixedKey, value);
+                // Use set instead of append to avoid comma-separated duplicates
+                transmittedHeaders.set(fixedKey, value);
             }
         }
     });
 
-    // Look for the 'x-middleware-request-redirect' header
-    const redirect = mergedHeaders.get('x-middleware-request-redirect');
-
-    // If a redirection is required based on the middleware headers
-    if (redirect) {
-        // Perform the redirection
-        return NextResponse.redirect(new URL(redirect, req.url), {
-            status: 307, // Use the appropriate HTTP status code for the redirect
-        });
-    }
-
-    // Look for the 'x-middleware-rewrite' header
-    const rewrite = mergedHeaders.get('x-middleware-rewrite');
-    if (rewrite) {
-        // Perform the rewrite
-        return NextResponse.rewrite(new URL(rewrite, req.url), {
-            request: {
-                headers: transmittedHeaders,
-            },
-        });
+    // Merge transmittedHeaders with allRequestHeaders
+    // transmittedHeaders takes precedence for x-middleware-request-* headers
+    for (const [key, value] of allRequestHeaders.entries()) {
+        if (!transmittedHeaders.has(key)) {
+            transmittedHeaders.set(key, value);
+        }
     }
 
     // Initialize a NextResponse object

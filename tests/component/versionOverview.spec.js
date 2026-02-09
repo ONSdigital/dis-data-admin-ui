@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Version overview page", () => {
     test("Route from list of version to version overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto('./series/mock-quarterly/editions/time-series');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
         await page.getByRole('link', { name: 'Version: 1' }).click();
@@ -13,7 +13,7 @@ test.describe("Version overview page", () => {
     });
 
     test("Page heading create button routes to create new version page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await page.getByTestId("page-heading-create-button").click();
@@ -22,7 +22,7 @@ test.describe("Version overview page", () => {
     });
 
     test("Page heading 'back to' link routes to edition overview page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await page.getByTestId("page-heading-link").click();
@@ -31,7 +31,7 @@ test.describe("Version overview page", () => {
     });
 
     test("Fully populated version page renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
 
         // page heading
@@ -69,7 +69,7 @@ test.describe("Version overview page", () => {
     });
 
     test("Minimally populated version page renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId('id-field')).toContainText('mock-minimal');
         await expect(page.getByTestId('edition-field')).toContainText('time-series');
@@ -88,14 +88,14 @@ test.describe("Version overview page", () => {
     });
 
     test("Shows version delete button when version is unpublished", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId("delete-version-button")).toBeVisible();
     });
 
     test("Does not show version delete button when dataset is published", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await expect(page.getByTestId("delete-version-button")).not.toBeVisible();
@@ -103,13 +103,13 @@ test.describe("Version overview page", () => {
 
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/time-series/versions/404");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
          test("When 500 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/time-series/versions/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });

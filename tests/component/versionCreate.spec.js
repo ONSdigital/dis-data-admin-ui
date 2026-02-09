@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Create version page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
         await expect(page.getByTestId("page-heading-title")).toContainText("Create new version");
@@ -17,7 +17,7 @@ test.describe("Create version page", () => {
     });
 
     test("Submits form successfully", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
         await page.getByTestId("release-date-day").fill("1");
@@ -31,8 +31,10 @@ test.describe("Create version page", () => {
         await page.getByTestId("usage-notes-add-button").click();
         await page.getByTestId("usage-notes-input-1").fill("Another test usage notes");
         await page.getByTestId("usage-notes-textarea-1").fill("Another something about usage notes");
+        await page.getByTestId("alerts-radios-0-item-alerts-radios-0-correction-input").click();
         await page.getByTestId("alerts-textarea-0").fill("Something about a correction");
         await page.getByTestId("alerts-add-button").click();
+        await page.getByTestId("alerts-radios-1-item-alerts-radios-1-notice-input").click();
         await page.getByTestId("alerts-textarea-1").fill("Something about an alert");
         await page.getByTestId("dataset-upload-value").evaluate(element => { element.value = JSON.stringify([{download_url: "test/file.csv"}]); });
 
@@ -45,7 +47,7 @@ test.describe("Create version page", () => {
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/create");
 

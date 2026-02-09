@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Version delete page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
         await expect(page.getByTestId("page-heading-title")).toHaveText("Delete version");
@@ -15,7 +15,7 @@ test.describe("Version delete page", () => {
     });
 
     test("Submits form successfully", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
         await page.getByTestId("confirm-delete-item-yes-input").click();
@@ -26,7 +26,7 @@ test.describe("Version delete page", () => {
     });
 
     test("Shows validation error when submitting form without clicking checkbox", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
         await page.getByRole("button", { name: "Delete" }).click();
@@ -35,7 +35,7 @@ test.describe("Version delete page", () => {
     });
 
     test("Shows API error when API request fails", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/return-internal-server-error/delete");
         await page.getByTestId("confirm-delete-item-yes-input").click();

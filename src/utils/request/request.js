@@ -58,10 +58,21 @@ const request = async (cfg, url, method, body) => {
 
 /**
  * @param {function} cookies - NextJS cookies getter function
+ * @param {string} service - service to make the request to
  * @return {object} response config object contain base url and authorisation values
  */
-const SSRequestConfig = async (cookies) => {
-    const baseURL = process.env.API_ROUTER_URL;
+const SSRequestConfig = async (cookies, service = "api-router") => {
+    let baseURL;
+    switch (service) {
+        case "api-router":
+            baseURL = process.env.API_ROUTER_URL;
+            break;
+        case "migration-service":
+            baseURL = process.env.MIGRATION_SERVICE_URL;
+            break;
+        default:
+            baseURL = process.env.API_ROUTER_URL;
+    }
     const cookieStore = await cookies();
     const authToken = cookieStore.get("access_token");
     const cleanAuthToken = authToken.value.replace(/"/g, "");
@@ -69,7 +80,7 @@ const SSRequestConfig = async (cookies) => {
 };
 
 /**
- * @param {object} appConfig - appCongfg object, see: utils/config
+ * @param {object} appConfig - appConfig object, see: utils/config
  * @return {object} response config object contain base url and authorisation values
  */
 const CSRequestConfig = (appConfig) => {

@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Edition overview page", () => {
     test("Renders as expected", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series");
 
         // page heading
@@ -23,7 +23,7 @@ test.describe("Edition overview page", () => {
     });
 
     test("Page heading create button routes to create new version page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");
         await page.getByTestId("page-heading-create-button").click();
@@ -32,7 +32,7 @@ test.describe("Edition overview page", () => {
     });
 
     test("Page heading 'back to' link routes to series list page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series");
         await page.getByTestId("page-heading-link").click();
@@ -41,14 +41,14 @@ test.describe("Edition overview page", () => {
     });
 
     test("Page heading displays panel stating 'cannot create new dataset' because of unpublished dataset version", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series-unpublished");
         await expect(page.getByTestId("page-heading-panel")).toContainText("An unpublished version exists so cannot add new dataset version.");
     });
 
     test("Routes to version overview page when selecting version from list", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series");
         await page.getByRole("link", { name: "Version: 1" }).click();
         await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1");
@@ -57,13 +57,13 @@ test.describe("Edition overview page", () => {
 
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/404");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
          test("When 500 is returned", async ({ page, context }) => {
-            addValidAuthCookies(context);
+            setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });

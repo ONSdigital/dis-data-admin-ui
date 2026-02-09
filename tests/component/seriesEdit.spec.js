@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-import { addValidAuthCookies } from "../utils/utils";
+import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Edit series page", () => {
     test("Route from dataset series id page to edit page", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly")
         await page.getByTestId("action-link-title").click();
@@ -14,7 +14,7 @@ test.describe("Edit series page", () => {
     });
 
     test("Submit form successfully", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/edit")
 
@@ -38,7 +38,7 @@ test.describe("Edit series page", () => {
     });
 
     test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
-        addValidAuthCookies(context);
+        setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/edit")
 
