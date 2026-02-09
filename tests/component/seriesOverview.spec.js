@@ -72,7 +72,7 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
 
-    test("Dhows series delete button when dataset is unpublished", async ({ page, context }) => {
+    test("Shows series delete button when dataset is unpublished", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal");
