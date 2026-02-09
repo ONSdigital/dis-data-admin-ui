@@ -75,7 +75,7 @@ app.post("/datasets", (req, res) => {
     log("Handling POST '/datasets'", req.url, null);
 
     if (req.body.id === "duplicate-id") {
-        log("Returning success", req.url, 409);
+        log("Dataset ID already exists", req.url, 409);
         res.status(409).send("dataset already exists");
         return;
     }
