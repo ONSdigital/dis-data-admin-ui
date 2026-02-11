@@ -4,12 +4,8 @@ import { datasetList } from "../mocks/datasets.mjs";
 import { editions } from "../mocks/editions.mjs";
 import { versions } from "../mocks/versions.mjs";
 import { metadataList } from "../mocks/metadata.mjs";
-<<<<<<< HEAD
-import { migrationJobsList } from "../mocks/migration-jobs.mjs";
-
-=======
 import { topicList } from "../mocks/topics.mjs";
->>>>>>> origin/develop
+import { migrationJobsList } from "../mocks/migration-jobs.mjs";
 
 const app = express();
 const PORT = process.env.FAKE_API_PORT || 29401;
