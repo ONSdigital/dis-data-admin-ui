@@ -6,6 +6,7 @@ import { edition } from "../mocks/edition.mjs";
 import { topicList } from "../mocks/topics.mjs";
 import { versions } from "../mocks/versions.mjs";
 import { metadataList } from "../mocks/metadata.mjs";
+import { migrationJobsList } from "../mocks/migration-jobs.mjs";
 
 
 const app = express();
@@ -152,6 +153,11 @@ app.get("/topics/:id", (req, res) => {
 
 app.get("/topics", (req, res) => {
     res.send(topicList);
+});
+
+app.get("/v1/migration-jobs", (req, res) => {
+    console.log("HITTT!")
+    res.send(migrationJobsList);
 });
 
 app.listen(PORT, () => {
