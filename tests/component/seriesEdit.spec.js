@@ -7,7 +7,6 @@ test.describe("Edit series page", () => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly")
-        //await page.getByRole("link", { name: "Edit" }).click();
         await page.getByTestId("action-link-title").click();
         await page.waitForURL("**/series/mock-quarterly/edit#dataset-series-title");
 
@@ -29,7 +28,13 @@ test.describe("Edit series page", () => {
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save changes/i }).click();
 
+        // check success message is shown
         await expect(page.getByText("Dataset series saved")).toBeVisible();
+
+        // check body content loads correctly
+        await expect(page.locator("#series-id")).toContainText("mock-quarterly");
+        await expect(page.locator("#type")).toContainText("static");
+        await expect(page.locator("#title")).toContainText("Mock Dataset");
     });
 
     test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
@@ -41,5 +46,19 @@ test.describe("Edit series page", () => {
         await page.getByRole("button", { name: /Save changes/i }).click();
 
         await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
+    });
+
+    test.describe("Handles API error", () => {
+        test("When 404 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/404/edit");
+            await expect(page.getByText("There was a problem retreiving data for this page. Please try again later")).toBeVisible();
+        });
+
+         test("When 500 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/500/edit");
+            await expect(page.getByText("There was a problem retreiving data for this page. Please try again later")).toBeVisible();
+        });
     });
 });

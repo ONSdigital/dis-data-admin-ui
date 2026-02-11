@@ -37,7 +37,14 @@ test.describe("Create series page", () => {
         await page.waitForURL("**/series/mock-quarterly**");
 
         await expect(page.url().toString()).toContain("/series/mock-quarterly");
+
+        // check success message is shown
         await expect(page.getByText("Dataset series saved")).toBeVisible();
+
+        // check body content loads correctly
+        await expect(page.locator("#series-id")).toContainText("mock-quarterly");
+        await expect(page.locator("#type")).toContainText("static");
+        await expect(page.locator("#title")).toContainText("Mock Dataset");
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {

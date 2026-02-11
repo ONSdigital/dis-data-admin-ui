@@ -12,7 +12,6 @@
     "test:component": "playwright test --config=playwright.config.mjs"
   },
   "dependencies": {
-    "@axe-core/playwright": "^4.10.1",
     "@hapi/address": "^5.1.1",
     "author-design-system-react": "^1.0.65",
     "dis-authorisation-client-js": "^1.0.1",
@@ -28,10 +27,11 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@next/eslint-plugin-next": "^15.1.5",
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",

@@ -28,7 +28,12 @@ test.describe("Edit edition page", () => {
             await page.waitForURL("**/series/mock-quarterly/editions/test-id**");
             await expect(page.url().toString()).toContain("series/mock-quarterly/editions/test-id");
 
+            // check success message is shown
             await expect(page.getByText("Dataset edition saved")).toBeVisible();
+
+            // check body content loads correctly
+            await expect(page.locator("#edition-id")).toContainText("test-id");
+            await expect(page.locator("#edition-title")).toContainText("Test edition");
         });
 
         test("Show errors on mandatory fields", async ({ page, context }) => {
@@ -85,6 +90,20 @@ test.describe("Edit edition page", () => {
 
             await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
             await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
+        });
+    });
+
+    test.describe("Handles API error", () => {
+        test("When 404 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/mock-quarterly/editions/404/edit");
+            await expect(page.getByText("There was a problem retreiving data for this page. Please try again later.")).toBeVisible();
+        });
+
+         test("When 500 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/mock-quarterly/editions/500/edit");
+            await expect(page.getByText("There was a problem retreiving data for this page. Please try again later.")).toBeVisible();
         });
     });
 });

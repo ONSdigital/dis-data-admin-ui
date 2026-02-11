@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Version delete page", () => {
-    test("renders as expected", async ({ page, context }) => {
+    test("Renders as expected", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
@@ -14,7 +14,7 @@ test.describe("Version delete page", () => {
         await expect(page.getByRole("button", { name: "Delete" })).toBeVisible();
     });
 
-    test("submits form successfully", async ({ page, context }) => {
+    test("Submits form successfully", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
@@ -25,7 +25,7 @@ test.describe("Version delete page", () => {
         await expect(page.getByTestId("success-panel")).toContainText("Item deleted");
     });
 
-    test("shows validation error when submitting form without clicking checkbox", async ({ page, context }) => {
+    test("Shows validation error when submitting form without clicking checkbox", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete");
@@ -34,7 +34,7 @@ test.describe("Version delete page", () => {
         await expect(page.getByTestId("fieldset-confirm-delete-error")).toContainText("You must confirm deletion.");
     });
 
-    test("shows API error when API request fails", async ({ page, context }) => {
+    test("Shows API error when API request fails", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/return-internal-server-error/delete");

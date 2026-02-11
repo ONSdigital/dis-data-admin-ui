@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 import { setValidAuthCookies } from "../utils/utils";
 
-test.describe("version overview page", () => {
-    test("route from list of version to version overview page", async ({ page, context }) => {
+test.describe("Version overview page", () => {
+    test("Route from list of version to version overview page", async ({ page, context }) => {
         setValidAuthCookies(context);
         await page.goto('./series/mock-quarterly/editions/time-series');
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
@@ -12,7 +12,7 @@ test.describe("version overview page", () => {
         await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
     });
 
-    test("page heading create button routes to create new version page", async ({ page, context }) => {
+    test("Page heading create button routes to create new version page", async ({ page, context }) => {
         setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
@@ -21,7 +21,7 @@ test.describe("version overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/create?edition_title=This%20is%20an%20edition%20title%20for%20version%201");
     });
 
-    test("page heading 'back to' link routes to edition overview page", async ({ page, context }) => {
+    test("Page heading 'back to' link routes to edition overview page", async ({ page, context }) => {
         setValidAuthCookies(context);
         
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
@@ -30,7 +30,7 @@ test.describe("version overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
 
-    test("fully populated version page renders as expected", async ({ page, context }) => {
+    test("Fully populated version page renders as expected", async ({ page, context }) => {
         setValidAuthCookies(context);
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
 
@@ -68,7 +68,7 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId("distribution-download-url-1")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.xls");
     });
 
-    test("minimally populated version page renders as expected", async ({ page, context }) => {
+    test("Minimally populated version page renders as expected", async ({ page, context }) => {
         setValidAuthCookies(context);
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId('id-field')).toContainText('mock-minimal');
@@ -87,17 +87,31 @@ test.describe("version overview page", () => {
         await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.csv");
     });
 
-    test("shows version delete button when version is unpublished", async ({ page, context }) => {
+    test("Shows version delete button when version is unpublished", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
         await expect(page.getByTestId("delete-version-button")).toBeVisible();
     });
 
-    test("does not show version delete button when dataset is published", async ({ page, context }) => {
+    test("Does not show version delete button when dataset is published", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1");
         await expect(page.getByTestId("delete-version-button")).not.toBeVisible();
+    });
+
+    test.describe("Handles API error", () => {
+        test("When 404 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/mock-quarterly/editions/time-series/versions/404");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
+        });
+
+         test("When 500 is returned", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./series/mock-quarterly/editions/time-series/versions/500");
+            await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
+        });
     });
 });

@@ -7,22 +7,13 @@ test.describe("Series list page", () => {
         setValidAuthCookies(context);
 
         await page.goto("./series")
-        await expect(page.getByText("Showing 1 to 20 of 125 series")).toBeVisible();
+        await expect(page.getByText("Showing 1 to 20 of 130 series")).toBeVisible();
         await expect(page.getByRole("link", { name: "Weekly deaths" })).toBeVisible();
 
         // check filters are present
         await expect(page.getByTestId("series-list-search-by-id")).toBeVisible();
         await expect(page.getByTestId("icon-search")).toBeVisible();
     });
-
-    // test("Route from Series page to Create Dataset page", async ({ page, context }) => {
-    //     setValidAuthCookies(context);
-
-    //     await page.goto("./series")
-    //     await page.getByRole("link", { name: "Add new dataset series" }).click();
-    //     await page.waitForURL("**/series/create");
-    //     await expect(page.url().toString()).toContain("series/create");
-    // });
 
     test("Traverse through pagination", async ({ page, context }) => {
         setValidAuthCookies(context);
