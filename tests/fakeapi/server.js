@@ -244,11 +244,6 @@ app.get("/topics", (req, res) => {
     res.send(topicList);
 });
 
-<<<<<<< HEAD
-app.get("/v1/migration-jobs", (req, res) => {
-    console.log("HITTT!")
-    res.send(migrationJobsList);
-=======
 app.get("/topics/:id", (req, res) => {
     log("Handling GET '/topics/:id'", req.url, null);
 
@@ -262,10 +257,13 @@ app.get("/topics/:id", (req, res) => {
     res.send(topic);
 });
 
+app.get("/v1/migration-jobs", (req, res) => {
+    res.send(migrationJobsList);
+});
+
 app.use((req, res) => {
     log("Route not found", req.url, 404);
     res.status(404).send("Route not found");
->>>>>>> origin/develop
 });
 
 app.listen(PORT, () => {
