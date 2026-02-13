@@ -9,15 +9,11 @@ const getBaseBreadcrumb = (url) => {
     const navigationOptions = NAVIGATION_OPTIONS.slice(1);
     
     const base = navigationOptions.find((option) => url.includes(option.url));
-    if (!base) {
-        return null; // or return a default breadcrumb object
-    }
-    
     return {
         ...base,
         dataTestId: "breadcrumb-base"
     };
-}
+};
 
 const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
     const baseBreadcrumb = getBaseBreadcrumb("/data-admin/series/test-dataset/editions/test-edition/versions/1");
