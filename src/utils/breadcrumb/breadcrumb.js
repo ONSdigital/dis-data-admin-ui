@@ -16,7 +16,7 @@ const getBaseBreadcrumb = (url) => {
 };
 
 const generateBreadcrumb = (currentURL, datasetTitle, editionTitle) => {
-    const baseBreadcrumb = getBaseBreadcrumb("/data-admin/series/test-dataset/editions/test-edition/versions/1");
+    const baseBreadcrumb = getBaseBreadcrumb(currentURL);
     const breadcrumbs = [baseBreadcrumb];
     const urlSplit = currentURL.split("/");
 
