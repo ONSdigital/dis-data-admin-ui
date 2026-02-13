@@ -59,8 +59,13 @@ export default function PageHeading(props){
 
     const renderLink = () => {
         if (props.linkText && props.linkURL) {
+            const linkClasses = [
+                "ons-u-fs-s",
+                "ons-u-dib",
+                ...(props.buttonText && props.buttonURL ? ["ons-u-mt-s", "ons-u-ml-s"] : [])
+            ].join(" ");
             return (
-                <Link data-testid="page-heading-link" href={props.linkURL} className="ons-u-fs-s ons-u-dib ons-u-mt-s ons-u-ml-s">{props.linkText}</Link>
+                <Link data-testid="page-heading-link" href={props.linkURL} className={linkClasses}>{props.linkText}</Link>
             );
         }
     };
