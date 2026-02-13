@@ -144,3 +144,37 @@ describe("PageHeading", () => {
         expect(useRouter().push.mock.calls[0][0]).toBe("/button/url/test")
     });
 });
+
+describe("PageHeading link classes", () => {
+    it("applies ons-u-mt-s and ons-u-ml-s to the link when buttonText and buttonURL are set", () => {
+        render(
+            <PageHeading
+                title="Test"
+                linkText="Back"
+                linkURL="/back"
+                buttonText="Create"
+                buttonURL="/create"
+            />
+        );
+
+        const link = screen.getByTestId("page-heading-link");
+        expect(link).toHaveClass("ons-u-mt-s");
+        expect(link).toHaveClass("ons-u-ml-s");
+    });
+
+    it("does not apply ons-u-mt-s or ons-u-ml-s to the link when button is not present", () => {
+        render(
+            <PageHeading
+                title="Test"
+                linkText="Back"
+                linkURL="/back"
+            />
+        );
+
+        const link = screen.getByTestId("page-heading-link");
+        expect(link).not.toHaveClass("ons-u-mt-s");
+        expect(link).not.toHaveClass("ons-u-ml-s");
+        expect(link).toHaveClass("ons-u-fs-s");
+        expect(link).toHaveClass("ons-u-dib");
+    });
+});
