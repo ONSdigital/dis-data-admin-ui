@@ -11,7 +11,7 @@ PLAYWRIGHT_WORKERS ?= 1
 
 .PHONY: audit
 audit: ## Runs checks for security vulnerabilities on dependencies (including transient ones)
-	$(NPM) audit --audit-level=moderate
+	$(MAKE) node-modules && $(NPM) run audit
 
 .PHONY: build
 build: env-setup  ## Builds binary of application code and stores in bin directory as dis-data-admin-ui
