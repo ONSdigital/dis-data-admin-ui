@@ -33,7 +33,7 @@ const mapMigrationListTable = (data) => {
         body.rows.push(
             { 
                 columns: [
-                    { content: [<Link key={`migration-list-table-link-${index}`} href={`/migration/${item.id}`}>{item.id}</Link>], sortValue: item.id },
+                    { content: [<Link key={`migration-list-table-link-${index}`} href={`/migration/${item.job_number}`}>{item.job_number}</Link>], sortValue: item.id },
                     { content: formatDate(item.last_updated), sortValue: ISOToYYYYMMDD(item.last_updated) },
                     { content: item.series_title, sortValue: item.series_title },
                     { content: mapMigrationJobState(item.state, `migration-list-table-state-${index}`), sortValue: item.state }
