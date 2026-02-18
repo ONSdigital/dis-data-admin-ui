@@ -128,4 +128,23 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
     return contentBody;
 };
 
-export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary };
+const mapMigrationJobSummary = (tasks) => {
+    const contentBody = getBaseSummaryModel("migration-job-list");
+    const rows = contentBody[0].groups[0].rows;
+    tasks.forEach(task => {
+        switch(task.type) {
+            case "dataset_series":
+                mapRow("Series", task.target.id ,null, null, rows)
+                break;
+            case "dataset_edition":
+                mapRow("Edition", task.target.id ,null, null, rows)
+                break;
+            case "dataset_version":
+                mapRow("Version", task.target.id ,null, null, rows)
+                break;
+        }
+    })
+    return contentBody;
+}
+
+export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary, mapMigrationJobSummary };
