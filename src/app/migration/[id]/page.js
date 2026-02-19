@@ -21,11 +21,17 @@ export default async function MigrationOverview({ params }) {
         );
     }
 
-    const tasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
+    const displayMigrationJobDetails = migrationResp.state !== "submitted" || migrationResp.state !== "migrating";
+
+    let taskSummaryItems;
+    if (displayMigrationJobDetails) {
+        const tasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
+        taskSummaryItems = mapMigrationJobSummary(tasksResp.items);
+    }
 
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, migrationResp.label, null);
-    const taskSummaryItems = mapMigrationJobSummary(tasksResp.items);
+    
 
     return (
         <>
@@ -38,7 +44,7 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
-                    <Summary summaries={taskSummaryItems} />
+                    {displayMigrationJobDetails ? <Summary summaries={taskSummaryItems} /> : <p>Dataset series migration is still in progress. Try freshing.</p>}
                 </div>
             </div>
         </>
