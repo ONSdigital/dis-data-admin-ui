@@ -1,6 +1,7 @@
 // map content to design system <Summary> component
 
 import slugify from "slugify";
+import Link from "next/link";
 
 import { formatDate } from "@/utils/datetime/datetime";
 
@@ -14,12 +15,13 @@ const getBaseSummaryModel = (groupID) => {
     }];
 };
 
+const slugifyLowerCase = (string) => {
+    if (!string) return "no-value";
+    return slugify(string, {lower: true});
+};
+
 // map a <Summary> component row
 const mapRow = (itemName, value, multiValue, action, rows) => {
-    const slugifyLowerCase = (string) => {
-        if (!string) return "no-value";
-        return slugify(string, {lower: true});
-    };
 
     const mapItemValue = (value, multiValue) => {
         if (multiValue) {
@@ -128,23 +130,62 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
     return contentBody;
 };
 
+const mapMigrationRow = (itemName, value, valueURL, rows) => {
+    const item = {
+        id: `row-${slugifyLowerCase(itemName)}-${slugifyLowerCase(value)}`,
+        rowTitle: itemName,
+        rowItems: [
+            {
+                id: slugifyLowerCase(itemName),
+                valueList: [{text: [<Link key={`link-${itemName}-${value}`} href={valueURL}>{value}</Link>]}],
+            }
+        ]
+    };
+    rows.push(item);
+};
+
 const mapMigrationJobSummary = (tasks) => {
     const contentBody = getBaseSummaryModel("migration-job-list");
     const rows = contentBody[0].groups[0].rows;
+    const baseURL = "/series";
+    const edtitionsAndVersions = [];
     tasks.forEach(task => {
         switch(task.type) {
             case "dataset_series":
-                mapRow("Series", task.target.id ,null, null, rows)
+                mapMigrationRow("Series", task.target.id, `${baseURL}/${task.target.id}`, rows);
                 break;
             case "dataset_edition":
-                mapRow("Edition", task.target.id ,null, null, rows)
+                edtitionsAndVersions.push({
+                    edition: task.target.id, 
+                    version: 0, 
+                    url: `${baseURL}/${task.target.dataset_id}/editions/${task.target.id}`
+                });
                 break;
             case "dataset_version":
-                mapRow("Version", task.target.id ,null, null, rows)
+                edtitionsAndVersions.push({
+                    edition: task.target.edition_id, 
+                    version: task.target.id, 
+                    url: `${baseURL}/${task.target.dataset_id}/editions/${task.target.edition_id}/versions/${task.target.id}`
+                });
+                break;
+            default:
+                // do nothing with task type "dataset_download" or others as we don't want to map those
                 break;
         }
-    })
+    });
+
+    // order editions and versions
+    const sortedEdtitionsAndVersions = edtitionsAndVersions.toSorted((a, b) => {
+        return a.edition.localeCompare(b.edition) || Number(a.version) - Number(b.version);
+    });
+
+    sortedEdtitionsAndVersions.forEach(version => { 
+        const itemType = version.version === 0 ? "Edition" : "Version";
+        const itemValue = version.version === 0 ? version.edition : version.version;
+        mapMigrationRow(itemType, itemValue, version.url, rows);
+    });
+
     return contentBody;
-}
+};
 
 export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary, mapMigrationJobSummary };
