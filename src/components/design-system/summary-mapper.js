@@ -181,7 +181,7 @@ const mapMigrationRow = (itemName, value, valueURL, rows) => {
         rowTitle: itemName,
         rowItems: [
             {
-                id: slugifyLowerCase(itemName),
+                id: `${slugifyLowerCase(itemName)}-${value}`,
                 valueList: [{text: [<Link key={`link-${itemName}-${value}`} href={valueURL}>{value}</Link>]}],
             }
         ]
