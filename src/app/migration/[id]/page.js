@@ -44,7 +44,7 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
-                    {displayMigrationJobDetails ? <Summary summaries={taskSummaryItems} /> : <p>Dataset series migration is still in progress. Try freshing.</p>}
+                    {displayMigrationJobDetails ? <Summary summaries={taskSummaryItems} dataTestId="migration-job-overview-list"/> : <p>Dataset series migration is still in progress. Try freshing.</p>}
                 </div>
             </div>
         </>
