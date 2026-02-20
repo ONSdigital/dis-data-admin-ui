@@ -53,4 +53,4 @@ const getLayoutProps = (currentPath, username) => {
     return layout;
 };
 
-export { getLayoutProps, setActiveNavItem };
+export { getLayoutProps, setActiveNavItem, NAVIGATION_OPTIONS };

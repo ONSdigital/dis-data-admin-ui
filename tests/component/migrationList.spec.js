@@ -16,11 +16,11 @@ test.describe("Migration list page", () => {
         await expect(page.getByTestId("migration-list-table-cell-0-0")).toContainText("1");
         await expect(page.getByTestId("migration-list-table-cell-0-2")).toContainText("CPIH");
         await expect(page.getByTestId("migration-list-table-cell-0-1")).toContainText("11 June 2020");
-        await expect(page.getByTestId("migration-list-table-cell-0-3")).toContainText("Submitted");
+        await expect(page.getByTestId("migration-list-table-cell-0-3")).toContainText("In review");
         await expect(page.getByTestId("migration-list-table-cell-1-0")).toContainText("2");
         await expect(page.getByTestId("migration-list-table-cell-1-1")).toContainText("20 April 2020");
         await expect(page.getByTestId("migration-list-table-cell-1-2")).toContainText("Consumer price inflation");
-        await expect(page.getByTestId("migration-list-table-cell-1-3")).toContainText("In review");
+        await expect(page.getByTestId("migration-list-table-cell-1-3")).toContainText("Submitted");
         await expect(page.getByTestId("migration-list-table-cell-2-0")).toContainText("3");
         await expect(page.getByTestId("migration-list-table-cell-2-1")).toContainText("12 August 2020");
         await expect(page.getByTestId("migration-list-table-cell-2-2")).toContainText("Labour market");

@@ -22,15 +22,15 @@ describe("mapMigrationListTable", () => {
     test("maps migration data into table headers and rows", () => {
         const data = [
             {
-                id: "123",
+                job_number: "123",
                 last_updated: "2025-10-12T00:00:00Z",
-                series_title: "Series A",
+                label: "Series A",
                 state: "approved",
             },
             {
-                id: "456",
+                job_number: "456",
                 last_updated: "2025-10-24T00:00:00Z",
-                series_title: "Series B",
+                label: "Series B",
                 state: "submitted",
             },
         ];
@@ -49,7 +49,7 @@ describe("mapMigrationListTable", () => {
         const firstRow = result.body.rows[0];
         expect(firstRow.columns).toHaveLength(4);
         expect(firstRow.columns[0].sortValue).toBe("123");
-        expect(firstRow.columns[0].content[0].props.href).toBe("/data-admin/migration/123");
+        expect(firstRow.columns[0].content[0].props.href).toBe("/migration/123");
         expect(firstRow.columns[0].content[0].props.children).toBe("123");
 
         expect(firstRow.columns[1].content).toBe("formatted-2025-10-12T00:00:00Z");
