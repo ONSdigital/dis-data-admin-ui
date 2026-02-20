@@ -6,6 +6,7 @@ import { versions } from "../mocks/versions.mjs";
 import { metadataList } from "../mocks/metadata.mjs";
 import { topicList } from "../mocks/topics.mjs";
 import { migrationJobsList } from "../mocks/migration-jobs.mjs";
+import { migrationTasksList } from "../mocks/migration-tasks.mjs";
 
 const app = express();
 const PORT = process.env.FAKE_API_PORT || 29401;
@@ -254,7 +255,31 @@ app.get("/topics/:id", (req, res) => {
 });
 
 app.get("/v1/migration-jobs", (req, res) => {
+    log("Handling GET '/migration-jobs'", req.url, null);
     res.send(migrationJobsList);
+});
+
+app.get("/v1/migration-jobs/:id", (req, res) => {
+    log("Handling GET '/migration-jobs/:id'", req.url, null);
+    if (handleMockError(req, res, req.params.id)) return;
+    
+    const job = migrationJobsList.items.find(item => item.job_number === req.params.id);
+    if (!job) {
+        log("Migration job not found", req.url, 404);
+        res.status(404).send("Migration job not found");
+        return;
+    }
+
+    console.log("JOB IS:", job)
+    log("Returning success", req.url, 200);
+    res.send(job);
+});
+
+app.get("/v1/migration-jobs/:id/tasks", (req, res) => {
+    log("Handling GET '/migration-jobs/:id/tasks'", req.url, null);
+
+    log("Returning success", req.url, 200);
+    res.send(migrationTasksList);
 });
 
 app.use((req, res) => {
