@@ -36,7 +36,6 @@ test.describe("Migration overview page", () => {
         await page.goto("./migration/1")
         await expect(page.getByText("Dataset series migration is still in progress. Try freshing the page")).not.toBeVisible();
         await expect(page.getByTestId("migration-job-overview-list")).toBeVisible();
-        await page.waitForTimeout(60000)
 
         // body/summary content
         await expect(page.locator("#series-new-dataset")).toContainText("new-dataset");
