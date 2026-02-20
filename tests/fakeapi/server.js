@@ -93,6 +93,49 @@ app.post("/datasets", (req, res) => {
     });
 });
 
+app.post("/migration-jobs", (req, res) => {
+    log("Handling POST '/migration-jobs'", req.url, null);
+
+    if (req.body.source_id === "/test/invalid") {
+        log("source ID is invalid", req.url, 409);
+        res.status(409).send("source ID is invalid");
+        return;
+    }
+
+    if (req.body.target_id === "duplicate-id") {
+        log("job already running", req.url, 409);
+        res.status(409).send("job already running");
+        return;
+    }
+    
+    log("Returning success", req.url, 202);
+    res.send({
+        "job_number": 20,
+        "last_updated": "2020-06-11T12:49:20+01:00",
+        "label": "Consumer Price Index: All Items",
+        "links": {
+            "events": {
+            "href": "https://api.beta.ons.gov.uk/v1/migration-jobs/20/events"
+            },
+            "self": {
+            "href": "https://api.beta.ons.gov.uk/v1/migration-jobs/20",
+            "job_number": 20
+            },
+            "tasks": {
+            "href": "https://api.beta.ons.gov.uk/v1/migration-jobs/20/tasks"
+            }
+        },
+        "config": {
+            "source_id": "/economy/inflationandpriceindices",
+            "target_id": "migration-series-id",
+            "type": "static_dataset"
+        },
+        "state": "submitted",
+        "type": "static_dataset"
+    });
+});
+
+
 app.put("/datasets/:id", (req, res) => {
     log("Handling PUT '/datasets'", req.url, null);
 
