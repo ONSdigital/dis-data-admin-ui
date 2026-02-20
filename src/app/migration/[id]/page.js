@@ -21,7 +21,7 @@ export default async function MigrationOverview({ params }) {
         );
     }
 
-    const displayMigrationJobDetails = migrationResp.state !== "submitted" || migrationResp.state !== "migrating";
+    const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
 
     const renderTaskList = async() => {
         if (!displayMigrationJobDetails) {
@@ -36,7 +36,7 @@ export default async function MigrationOverview({ params }) {
                 </Panel>
             );
         }
-        
+
         const migrationTaskSummaryItems = mapMigrationJobSummary(migrationTasksResp.items);
         return (
             <Summary summaries={migrationTaskSummaryItems} dataTestId="migration-job-overview-list"/>
