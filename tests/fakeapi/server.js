@@ -270,7 +270,6 @@ app.get("/v1/migration-jobs/:id", (req, res) => {
         return;
     }
 
-    console.log("JOB IS:", job)
     log("Returning success", req.url, 200);
     res.send(job);
 });
