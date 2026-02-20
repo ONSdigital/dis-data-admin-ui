@@ -23,11 +23,25 @@ export default async function MigrationOverview({ params }) {
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" || migrationResp.state !== "migrating";
 
-    let migrationTaskSummaryItems;
-    if (displayMigrationJobDetails) {
+    const renderTaskList = async() => {
+        if (!displayMigrationJobDetails) {
+            return (<p>Dataset series migration is still in progress. Try freshing the page.</p>);
+        }
+
         const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
-        migrationTaskSummaryItems = mapMigrationJobSummary(migrationTasksResp.items);
-    }
+        if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
+            return (
+                <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
+                    <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
+                </Panel>
+            );
+        }
+        
+        const migrationTaskSummaryItems = mapMigrationJobSummary(migrationTasksResp.items);
+        return (
+            <Summary summaries={migrationTaskSummaryItems} dataTestId="migration-job-overview-list"/>
+        );
+    };
 
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, migrationResp.label, null);
@@ -43,10 +57,7 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
-                    {displayMigrationJobDetails ? 
-                        <Summary summaries={migrationTaskSummaryItems} dataTestId="migration-job-overview-list"/> : 
-                        <p>Dataset series migration is still in progress. Try freshing.</p>
-                    }
+                    {renderTaskList()}
                 </div>
             </div>
         </>
