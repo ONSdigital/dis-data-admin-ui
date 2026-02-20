@@ -1,6 +1,7 @@
-import { mapSeriesSummary, mapEditionSummary } from "./summary-mapper";
+import { mapSeriesSummary, mapEditionSummary, mapMigrationJobSummary } from "./summary-mapper";
 import { datasetList } from "../../../tests/mocks/datasets.mjs";
 import { versions } from "../../../tests/mocks/versions.mjs";
+import { migrationTasksList } from "../../../tests/mocks/migration-tasks.mjs";
 
 describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
@@ -167,5 +168,62 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[2].rowTitle).toBe("Release date");
         expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+    });
+});
+
+describe("mapMigrationJobSummary", () => {
+    test("returns expected object of mapped content items", () => {
+        const tasks = migrationTasksList.items;
+        const mapped = mapMigrationJobSummary(tasks);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        // Should have 1 Series + 1 Edition + 5 Versions = 7 rows total
+        expect(mappedItems).toHaveLength(7);
+        
+        // expect "Series" to be first row (mapped immediately, not sorted)
+        expect(mappedItems[0].rowTitle).toBe("Series");
+        expect(mappedItems[0].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset");
+        expect(mappedItems[0].rowItems[0].valueList[0].text[0].props.children).toBe("new-dataset");
+        expect(mappedItems[0].id).toBe("row-series-new-dataset");
+        
+        // expect "Edition" to be second row (sorted editions come before versions)
+        expect(mappedItems[1].rowTitle).toBe("Edition");
+        expect(mappedItems[1].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion");
+        expect(mappedItems[1].rowItems[0].valueList[0].text[0].props.children).toBe("latestversion");
+        expect(mappedItems[1].id).toBe("row-edition-latestversion");
+        
+        // expect "Version" rows to be sorted numerically (1, 2, 3, 4, 5)
+        expect(mappedItems[2].rowTitle).toBe("Version");
+        expect(mappedItems[2].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion/versions/1");
+        expect(mappedItems[2].rowItems[0].valueList[0].text[0].props.children).toBe("1");
+        expect(mappedItems[2].id).toBe("row-version-1");
+        
+        expect(mappedItems[3].rowTitle).toBe("Version");
+        expect(mappedItems[3].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion/versions/2");
+        expect(mappedItems[3].rowItems[0].valueList[0].text[0].props.children).toBe("2");
+        expect(mappedItems[3].id).toBe("row-version-2");
+        
+        expect(mappedItems[4].rowTitle).toBe("Version");
+        expect(mappedItems[4].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion/versions/3");
+        expect(mappedItems[4].rowItems[0].valueList[0].text[0].props.children).toBe("3");
+        expect(mappedItems[4].id).toBe("row-version-3");
+        
+        expect(mappedItems[5].rowTitle).toBe("Version");
+        expect(mappedItems[5].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion/versions/4");
+        expect(mappedItems[5].rowItems[0].valueList[0].text[0].props.children).toBe("4");
+        expect(mappedItems[5].id).toBe("row-version-4");
+        
+        expect(mappedItems[6].rowTitle).toBe("Version");
+        expect(mappedItems[6].rowItems[0].valueList[0].text[0].props.href).toBe("/series/new-dataset/editions/latestversion/versions/5");
+        expect(mappedItems[6].rowItems[0].valueList[0].text[0].props.children).toBe("5");
+        expect(mappedItems[6].id).toBe("row-version-5");
+    });
+
+    test("ignores dataset_download tasks", () => {
+        const tasks = migrationTasksList.items.filter(t => t.type === "dataset_download");
+        const mapped = mapMigrationJobSummary(tasks);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        expect(mappedItems).toHaveLength(0);
     });
 });
