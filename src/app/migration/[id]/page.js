@@ -15,7 +15,7 @@ export default async function MigrationOverview({ params }) {
     const migrationResp = await httpGet(reqCfg, `/migration-jobs/${id}`);
     if (migrationResp.ok != null && !migrationResp.ok) {
         return (
-            <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
+            <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
             </Panel>
         );
