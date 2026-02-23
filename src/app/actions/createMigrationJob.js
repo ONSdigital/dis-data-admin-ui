@@ -49,14 +49,15 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest) 
                 }
             } else {
                 response.recentlySubmitted = true;
+                response.jobNumber = data.job_number
                 logInfo("migration job created successfully");
             }
         } catch (err) {
             return err.toString();
         }
         if (response.success == true) {
-            // Will need to redirect to migration view job when made.
-            redirect("/migration");
+            console.log(response.jobNumber)
+            redirect(`/migration/${response.jobNumber}`)
         }
     }
     return response;
