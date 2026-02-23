@@ -93,18 +93,31 @@ app.post("/datasets", (req, res) => {
     });
 });
 
-app.post("/migration-jobs", (req, res) => {
+app.post("/v1/migration-jobs", (req, res) => {
     log("Handling POST '/migration-jobs'", req.url, null);
-
     if (req.body.source_id === "/test/invalid") {
-        log("source ID is invalid", req.url, 409);
-        res.status(409).send("source ID is invalid");
+        log("source ID is invalid", req.url, 400);
+        res.status(400).send(JSON.stringify({
+            "errors": [
+                {
+                    "code": 0,
+                    "description": "source ID is invalid"
+                }
+            ]
+        }));
         return;
     }
 
     if (req.body.target_id === "duplicate-id") {
-        log("job already running", req.url, 409);
-        res.status(409).send("job already running");
+        log("job is already running", req.url, 409);
+        res.status(409).send(JSON.stringify({
+            "errors": [
+                {
+                "code": 409,
+                "description": "job already running"
+                }
+            ]
+        }));
         return;
     }
     
