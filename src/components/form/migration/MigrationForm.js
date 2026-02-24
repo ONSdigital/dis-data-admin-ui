@@ -5,7 +5,7 @@ import { useState, useActionState } from "react";
 import { TextInput, Panel, HyperLinksList } from "author-design-system-react";
 import LinkButton from "@/components/link-button/LinkButton";
 
-export default function migrationForm({ action }) {
+export default function MigrationForm({ action }) {
 
     const [formState, formAction, isPending] = useActionState(action, {});
     const [sourceURI, setSourceURI] = useState("");

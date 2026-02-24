@@ -49,15 +49,14 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest) 
                 }
             } else {
                 response.recentlySubmitted = true;
-                response.jobNumber = data.job_number
+                response.jobNumber = data.job_number;
                 logInfo("migration job created successfully");
             }
         } catch (err) {
             return err.toString();
         }
         if (response.success == true) {
-            console.log(response.jobNumber)
-            redirect(`/migration/${response.jobNumber}`)
+            redirect(`/migration/${response.jobNumber}`);
         }
     }
     return response;
