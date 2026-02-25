@@ -123,7 +123,7 @@ app.post("/v1/migration-jobs", (req, res) => {
     
     log("Returning success", req.url, 202);
     res.send({
-        "job_number": 1,
+        "job_number": 6,
         "last_updated": "2020-06-11T12:49:20+01:00",
         "label": "Consumer Price Index: All Items",
         "links": {

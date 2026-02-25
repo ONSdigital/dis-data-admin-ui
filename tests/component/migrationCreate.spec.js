@@ -22,16 +22,8 @@ test.describe("Create migration page", () => {
         await page.getByLabel("Series ID", { exact: true }).fill("mock-quarterly");
         await page.getByRole("button", { name: /Create Job/i }).click();
 
-        // await page.waitForURL("**/series/mock-quarterly**");
-        // await expect(page.url().toString()).toContain("/series/mock-quarterly");
-
-        // check success message is shown
-        // await expect(page.getByText("Dataset series saved")).toBeVisible();
-
-        // check body content loads correctly
-        // await expect(page.locator("#series-id")).toContainText("mock-quarterly");
-        // await expect(page.locator("#type")).toContainText("static");
-        // await expect(page.locator("#title")).toContainText("Mock Dataset");
+        await page.waitForURL("**/migration/6**");
+        await expect(page.url().toString()).toContain("/migration/6");
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
