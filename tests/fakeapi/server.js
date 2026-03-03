@@ -254,7 +254,32 @@ app.get("/topics/:id", (req, res) => {
 });
 
 app.get("/v1/migration-jobs", (req, res) => {
-    res.send(migrationJobsList);
+    const { state } = req.query;
+
+    // If no filter is applied, return the full list
+    if (!state) {
+        return res.send(migrationJobsList);
+    }
+
+    // Normalise state to an array:
+    // - If user selects one checkbox → "approved"
+    // - If user selects multiple → ["approved", "submitted"]
+    const states = Array.isArray(state) ? state : [state];
+
+    // Filter the items based on the selected states
+    const filteredItems = migrationJobsList.items.filter(item =>
+        states.includes(item.state)
+    );
+
+    // Build a filtered response object
+    const filteredResponse = {
+        ...migrationJobsList,
+        items: filteredItems,
+        count: filteredItems.length,
+        total_count: filteredItems.length
+    };
+
+    return res.send(filteredResponse);
 });
 
 app.use((req, res) => {
