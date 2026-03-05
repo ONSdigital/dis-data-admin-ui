@@ -87,12 +87,17 @@ export default function VersionFields(props) {
             <MultiContentItems id="alerts" fieldType="radios" buttonLabel="Add additional alert" contentItems={props.fieldValues?.alerts || []}></MultiContentItems>
 
             <h2 className="ons-u-mt-xl">Dataset file</h2>
-            <ResumableFileUpload id="dataset-upload"
+            <ResumableFileUpload
+                key={props.edition}
+                id="dataset-upload"
                 label="File upload"
                 description="File types accepted are .csdb, .csv, .csvw, .sdmx, .xls and .xlsx"
                 uploadBaseURL={appConfig?.uploadBaseURL}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFiles={props.fieldValues?.distributions}
+                datasetID={props.datasetID}
+                edition={props.edition}
+                version={props.version}
             />
         </>
     );
