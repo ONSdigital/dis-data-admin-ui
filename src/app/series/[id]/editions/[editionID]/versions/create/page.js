@@ -19,6 +19,7 @@ export default async function CreateVersion({ params }) {
     }
     
     const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
+    const nextVersion = Number(dataset?.links?.latest_version?.id ?? 0) + 1;
 
     let datasetTitle;
     if (datasetError) {
@@ -37,7 +38,13 @@ export default async function CreateVersion({ params }) {
             <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
                 <p>You must fill in all fields unless marked optional</p>
             </Panel>
-            <VersionForm datasetID={id} editionID={editionID} isNewVersion={true} action={createDatasetVersion} />
+            <VersionForm
+                datasetID={id}
+                editionID={editionID}
+                uploadVersionNumber={nextVersion}
+                isNewVersion={true}
+                action={createDatasetVersion}
+            />
         </>
     );
 }
