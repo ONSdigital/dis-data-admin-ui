@@ -26,7 +26,7 @@ test.describe("Migration overview page", () => {
         setValidAuthCookies(context);
 
         await page.goto("./migration/2")
-        await expect(page.getByText("Dataset series migration is still in progress. Try freshing the page")).toBeVisible();
+        await expect(page.getByText("Dataset series migration is still in progress. Try refreshing the page")).toBeVisible();
         await expect(page.getByTestId("migration-job-overview-list")).not.toBeVisible();
     });
 
@@ -34,7 +34,7 @@ test.describe("Migration overview page", () => {
         setValidAuthCookies(context);
 
         await page.goto("./migration/1")
-        await expect(page.getByText("Dataset series migration is still in progress. Try freshing the page")).not.toBeVisible();
+        await expect(page.getByText("Dataset series migration is still in progress. Try refreshing the page")).not.toBeVisible();
         await expect(page.getByTestId("migration-job-overview-list")).toBeVisible();
 
         // body/summary content
