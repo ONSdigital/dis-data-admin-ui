@@ -25,7 +25,7 @@ export default async function MigrationOverview({ params }) {
 
     const renderTaskList = async() => {
         if (!displayMigrationJobDetails) {
-            return (<p>Dataset series migration is still in progress. Try freshing the page.</p>);
+            return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
         }
 
         const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
