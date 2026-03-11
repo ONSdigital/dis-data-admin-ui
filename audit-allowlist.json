@@ -8,10 +8,6 @@
         {
             "id" : "CVE-2025-69873",
             "reason" : "No fix published for ajv yet"
-        },
-        {
-            "id" : "CVE-2026-26996",
-            "reason" : "minimatch is an indirect import used in eslint and glob. Overridng this package causes breakages"
         }
     ]
 }
