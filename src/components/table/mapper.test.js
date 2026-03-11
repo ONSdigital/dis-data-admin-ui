@@ -22,13 +22,13 @@ describe("mapMigrationListTable", () => {
     test("maps migration data into table headers and rows", () => {
         const data = [
             {
-                job_number: "123",
+                job_number: 123,
                 last_updated: "2025-10-12T00:00:00Z",
                 label: "Series A",
                 state: "approved",
             },
             {
-                job_number: "456",
+                job_number: 456,
                 last_updated: "2025-10-24T00:00:00Z",
                 label: "Series B",
                 state: "submitted",
