@@ -3,15 +3,33 @@ import Link from "next/link";
 import { formatDate, ISOToYYYYMMDD } from "@/utils/datetime/datetime";
 
 const mapMigrationJobState = (state, key) => {
+    const unslugify = (slug) => slug.replace(/\_/g, " ").replace(/\w\S*/g, (text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase());
+    const userFriendlyString = unslugify(state);
+    
     switch(state) {
         case "approved":
-            return [<span key={key} className="ons-status ons-status--success">Approved</span>];
-        case "in_review":
-            return [<span key={key} className="ons-status ons-status--pending">In review</span>];
+        case "published":
+        case "completed":
+            // green status colour
+            return [<span key={key} className="ons-status ons-status--success">{userFriendlyString}</span>];
         case "submitted":
-            return [<span key={key} className="ons-status ons-status--pending">Submitted</span>];
-        case "reverted":
-            return [<span key={key} className="ons-status ons-status--dead">Reverted</span>];
+            // orange status colour
+            return [<span key={key} className="ons-status ons-status--pending">{userFriendlyString}</span>];
+        case "in_review":
+        case "migrating":
+        case "publishing":
+        case "post_publishing":
+        case "reverting":
+            // blue status
+            return [<span key={key} className="ons-status ons-status--info">{userFriendlyString}</span>];
+        case "cancelled":
+            // grey status colour
+            return [<span key={key} className="ons-status ons-status--dead">{userFriendlyString}</span>];
+        case "failed_publish":
+        case "failed_post_publish":
+        case "failed_migration":
+            // red status colour
+            return [<span key={key} className="ons-status ons-status--error">{userFriendlyString}</span>];
         default:
             return "No state";
     }
