@@ -3,7 +3,12 @@ import Link from "next/link";
 import { formatDate, ISOToYYYYMMDD } from "@/utils/datetime/datetime";
 
 const mapMigrationJobState = (state, key) => {
-    const unslugify = (slug) => slug.replace(/\_/g, " ").replace(/\w\S*/g, (text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase());
+    // unslufgy a string e.g. "in_review" becomes "In review"
+    const unslugify = (slug) =>
+        slug
+            .replace(/\_/g, " ")
+            .toLowerCase()
+            .replace(/^./, (char) => char.toUpperCase());
     const userFriendlyString = unslugify(state);
     
     switch(state) {
