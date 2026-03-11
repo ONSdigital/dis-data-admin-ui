@@ -116,7 +116,7 @@ describe("mapMigrationListTable", () => {
 
         expect(Array.isArray(result)).toBe(true);
         expect(result[0].props.className).toBe("ons-status ons-status--info");
-        expect(result[0].props.children).toBe("In Review");
+        expect(result[0].props.children).toBe("In review");
     });
 
     test("maps cancelled state to dead status component", () => {
@@ -132,6 +132,6 @@ describe("mapMigrationListTable", () => {
 
         expect(Array.isArray(result)).toBe(true);
         expect(result[0].props.className).toBe("ons-status ons-status--error");
-        expect(result[0].props.children).toBe("Failed Migration");
+        expect(result[0].props.children).toBe("Failed migration");
     });
 });
