@@ -8,6 +8,9 @@ export default async function createPage() {
             <PageHeading 
                 title="Create new migration job"
             />
+            <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
+                <p>You must fill in all fields unless marked optional</p>
+            </Panel>
             <MigrationForm 
                 action={createMigrationJob}
             />
