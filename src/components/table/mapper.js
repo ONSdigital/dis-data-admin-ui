@@ -66,4 +66,4 @@ const mapMigrationListTable = (data) => {
     return { headers, body };
 };
 
-export { mapMigrationListTable };
+export { mapMigrationListTable, mapMigrationJobState };

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { mapMigrationListTable } from "./mapper";
+import { mapMigrationListTable, mapMigrationJobState } from "./mapper";
 
 jest.mock("next/link", () => {
     return ({ href, children }) => <a href={href}>{children}</a>;
@@ -88,3 +88,50 @@ describe("mapMigrationListTable", () => {
     });
 });
 
+describe("mapMigrationListTable", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test("maps success states to success status component", () => {
+        const result = mapMigrationJobState("approved", "key-1");
+
+        expect(Array.isArray(result)).toBe(true);
+        expect(result[0].type).toBe("span");
+        expect(result[0].props.className).toBe("ons-status ons-status--success");
+        expect(result[0].props.children).toBe("Approved");
+        expect(result[0].key).toBe("key-1");
+    });
+
+    test("maps submitted state to pending status component", () => {
+        const result = mapMigrationJobState("submitted", "key-2");
+
+        expect(Array.isArray(result)).toBe(true);
+        expect(result[0].props.className).toBe("ons-status ons-status--pending");
+        expect(result[0].props.children).toBe("Submitted");
+    });
+
+    test("maps in-progress states to info status component and unslugifies text", () => {
+        const result = mapMigrationJobState("in_review", "key-3");
+
+        expect(Array.isArray(result)).toBe(true);
+        expect(result[0].props.className).toBe("ons-status ons-status--info");
+        expect(result[0].props.children).toBe("In Review");
+    });
+
+    test("maps cancelled state to dead status component", () => {
+        const result = mapMigrationJobState("cancelled", "key-4");
+
+        expect(Array.isArray(result)).toBe(true);
+        expect(result[0].props.className).toBe("ons-status ons-status--dead");
+        expect(result[0].props.children).toBe("Cancelled");
+    });
+
+    test("maps failed states to error status component", () => {
+        const result = mapMigrationJobState("failed_migration", "key-5");
+
+        expect(Array.isArray(result)).toBe(true);
+        expect(result[0].props.className).toBe("ons-status ons-status--error");
+        expect(result[0].props.children).toBe("Failed Migration");
+    });
+});
