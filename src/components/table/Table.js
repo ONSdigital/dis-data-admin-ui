@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { sanitiseString } from "author-design-system-react";
 
 export default function Table({ contents, caption, classes, dataTestId  }) {
     const [rows, setRows] = useState(contents?.body?.rows || []);
     const [sorted, setSorted] = useState();
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setRows(contents?.body?.rows || []);
+    }, [contents]);
 
     const sanitisedDataTestId = sanitiseString(dataTestId);
 
