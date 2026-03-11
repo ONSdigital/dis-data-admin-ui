@@ -50,7 +50,7 @@ describe("mapMigrationListTable", () => {
         expect(firstRow.columns).toHaveLength(4);
         expect(firstRow.columns[0].sortValue).toBe("123");
         expect(firstRow.columns[0].content[0].props.href).toBe("/migration/123");
-        expect(firstRow.columns[0].content[0].props.children).toBe("123");
+        expect(firstRow.columns[0].content[0].props.children).toBe("Job 123");
 
         expect(firstRow.columns[1].content).toBe("formatted-2025-10-12T00:00:00Z");
         expect(firstRow.columns[1].sortValue).toBe("yyyymmdd-2025-10-12T00:00:00Z");
@@ -73,7 +73,7 @@ describe("mapMigrationListTable", () => {
     test("uses fallback when state is unknown", () => {
         const data = [
             {
-                id: "999",
+                job_number: 999,
                 last_updated: "2025-10-12T00:00:00Z",
                 series_title: "Series X",
                 state: "unknown-state",
