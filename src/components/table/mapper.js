@@ -9,32 +9,32 @@ const mapMigrationJobState = (state, key) => {
             .replace(/\_/g, " ")
             .toLowerCase()
             .replace(/^./, (char) => char.toUpperCase());
-    const userFriendlyString = unslugify(state);
+    const userFriendlyStateLabel = unslugify(state);
     
     switch(state) {
         case "approved":
         case "published":
         case "completed":
             // green status colour
-            return [<span key={key} className="ons-status ons-status--success">{userFriendlyString}</span>];
+            return [<span key={key} className="ons-status ons-status--success">{userFriendlyStateLabel}</span>];
         case "submitted":
             // orange status colour
-            return [<span key={key} className="ons-status ons-status--pending">{userFriendlyString}</span>];
+            return [<span key={key} className="ons-status ons-status--pending">{userFriendlyStateLabel}</span>];
         case "in_review":
         case "migrating":
         case "publishing":
         case "post_publishing":
         case "reverting":
             // blue status
-            return [<span key={key} className="ons-status ons-status--info">{userFriendlyString}</span>];
+            return [<span key={key} className="ons-status ons-status--info">{userFriendlyStateLabel}</span>];
         case "cancelled":
             // grey status colour
-            return [<span key={key} className="ons-status ons-status--dead">{userFriendlyString}</span>];
+            return [<span key={key} className="ons-status ons-status--dead">{userFriendlyStateLabel}</span>];
         case "failed_publish":
         case "failed_post_publish":
         case "failed_migration":
             // red status colour
-            return [<span key={key} className="ons-status ons-status--error">{userFriendlyString}</span>];
+            return [<span key={key} className="ons-status ons-status--error">{userFriendlyStateLabel}</span>];
         default:
             return "No state";
     }
