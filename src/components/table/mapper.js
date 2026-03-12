@@ -3,7 +3,7 @@ import Link from "next/link";
 import { formatDate, ISOToYYYYMMDD } from "@/utils/datetime/datetime";
 
 const mapMigrationJobState = (state, key) => {
-    // unslufgy a string e.g. "in_review" becomes "In review"
+    // unslugify a string e.g. "in_review" becomes "In review"
     const unslugify = (slug) =>
         slug
             .replace(/_/g, " ")
