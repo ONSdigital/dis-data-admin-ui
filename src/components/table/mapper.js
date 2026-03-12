@@ -6,7 +6,7 @@ const mapMigrationJobState = (state, key) => {
     // unslufgy a string e.g. "in_review" becomes "In review"
     const unslugify = (slug) =>
         slug
-            .replace(/\_/g, " ")
+            .replace(/_/g, " ")
             .toLowerCase()
             .replace(/^./, (char) => char.toUpperCase());
     const userFriendlyStateLabel = unslugify(state);
