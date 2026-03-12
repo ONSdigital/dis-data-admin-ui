@@ -31,7 +31,7 @@ export default async function MigrationList() {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing 1 to {migrationsResp.total_count} of {migrationsResp.total_count} jobs
+                            Showing 1 to {migrationsResp.count} of {migrationsResp.total_count} jobs
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
