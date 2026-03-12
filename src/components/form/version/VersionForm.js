@@ -49,7 +49,7 @@ export default function VersionForm({ datasetID, editionID, version, isNewVersio
                 {
                     formState.success == false && formState.code ?    
                         <Panel classes="ons-u-mb-xl" title="There was a problem creating this dataset version" variant="error">
-                            <p>An error occured when trying to create this dataset version.</p>
+                            <p>{formState.httpError || "An error occurred when trying to create this dataset version."}</p>
                         </Panel> : null
                 }
             </>
