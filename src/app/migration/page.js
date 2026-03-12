@@ -11,7 +11,7 @@ import { mapMigrationListTable } from "@/components/table/mapper";
 export default async function MigrationList() {
     const reqCfg = await SSRequestConfig(cookies, "migration-service");
 
-    const migrationsResp = await httpGet(reqCfg, "/migration-jobs?limit=50");
+    const migrationsResp = await httpGet(reqCfg, "/migration-jobs?limit=50&sort=job_number:desc");
     let migrationsRespError = false;
     if (migrationsResp.ok != null && !migrationsResp.ok) {
         migrationsRespError = true;
