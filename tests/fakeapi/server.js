@@ -337,6 +337,13 @@ app.get("/v1/migration-jobs/:id/tasks", (req, res) => {
     res.send(migrationTasksList);
 });
 
+app.put("/files/*path", (req, res) => {
+    log("Handling PUT '/files/*path'", req.url, null);
+
+    log("Returning success", req.url, 200);
+    res.send({status: 200});
+});
+
 app.use((req, res) => {
     log("Route not found", req.url, 404);
     res.status(404).send("Route not found");
