@@ -9,6 +9,7 @@ test.describe("Create migration page", () => {
         await page.goto("./migration/create")
 
         await expect(page.getByTestId("page-heading-title")).toContainText("Create new migration job");
+        await expect(page.getByTestId("mandatory-fields-panel")).toContainText("You must fill in all fields unless marked optional");
         await expect(page.getByTestId("dataset-series-id")).toBeVisible();
         await expect(page.getByTestId("source-uri")).toBeVisible();
     });

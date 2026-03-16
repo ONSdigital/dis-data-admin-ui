@@ -35,7 +35,7 @@ export default async function MigrationList({ searchParams }) {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing 1 to 5 of 5 jobs
+                            Showing 1 to {migrationsResp.count} of {migrationsResp.total_count} jobs asdmalksdmaklsm
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
@@ -67,10 +67,10 @@ export default async function MigrationList({ searchParams }) {
 
 // build URL (with state params) to make request to migration-api
 const createRequestURL = (params) => {
-    let url  = `/migration-jobs`;
+    let url  = `/migration-jobs?limit=50&sort=job_number:desc`;
 
     if (params.state) {
-        url = `${url}?state=${params.state}`;
+        url = `${url}&state=${params.state}`;
     }
     return url;
 };
