@@ -51,7 +51,7 @@ export default function MigrationForm({ action }) {
                     name="source-uri"
                     label={{
                         text: "Source URI",
-                        description: `E.g "/employmentandlabourmarket/peopleinwork/workplacedisputesandworkingconditions/datasets/labourdisputeslabourdisputesannualestimates"`
+                        description: 'URL of the dataset to migrate. This should be a dataset landing page e.g "/employmentandlabourmarket/peopleinwork/workplacedisputesandworkingconditions/datasets/labourdisputeslabourdisputesannualestimates"'
                     }}
                     value={sourceURI}
                     onChange={e => setSourceURI(e.target.value)}
