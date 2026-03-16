@@ -23,20 +23,12 @@ export default function MigrationFilter() {
     };
 
     const filterByState = () => {
-        const lastItem = stateFilters[stateFilters.length - 1];
-
-        let url = `${pathname}?state=`;
         if (stateFilters.length === 0) {
+            push(pathname);
             return;
-        } else {
-            stateFilters.forEach(state => {
-                if (state === lastItem) {
-                    url = url + state
-                } else {
-                    url = url + state + "&state="
-                }
-            });
         }
+
+        const url = `${pathname}?state=${stateFilters.join(",")}`;
         push(url);
     };
 
