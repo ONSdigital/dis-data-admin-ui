@@ -39,7 +39,7 @@ export default function MigrationFilter() {
                 borderWidth={1}
                 classes="ons-grid__col ons-u-pl-no"
                 id="box-container"
-                title="Search and filter"
+                title="Filter"
             >
                 <Checkbox
                     id="state-filter"
