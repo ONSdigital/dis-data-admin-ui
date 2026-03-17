@@ -1,8 +1,6 @@
 import { cookies, headers } from "next/headers";
-import Link from "next/link";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
-import { formatDate } from "@/utils/datetime/datetime";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
@@ -11,7 +9,6 @@ import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapVersionSummary } from "@/components/design-system/summary-mapper";
-import { mapQualityDesignationToUserFriendlyString } from "./mapper";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
@@ -34,7 +31,8 @@ export default async function Version({ params, searchParams }) {
     const query = await searchParams;
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.title, metadata.edition_title);
-    const versionSummary = mapVersionSummary(metadata, "hello")
+    const editURL = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}/edit`;
+    const versionSummary = mapVersionSummary(metadata, editURL);
 
     return (
         <>
