@@ -40,13 +40,9 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest) 
                 response.code = data.status;
 
                 const parsedError = JSON.parse(data.errorMessage);
-                if (parsedError.errors[0].description.trim() === "job already running") {
-                    response.httpError = `Job already running`;
-                } else if (parsedError.errors[0].description.trim() === "source ID is invalid") {
-                    response.httpError = `Source ID is invalid`;
-                } else {
-                    response.httpError = data.errorMessage;
-                }
+                const rawError = parsedError.errors[0].description.trim();
+                // Capitalise first letter of returned error description
+                response.httpError = rawError.charAt(0).toUpperCase() + rawError.slice(1);
             } else {
                 response.recentlySubmitted = true;
                 response.jobNumber = data.job_number;

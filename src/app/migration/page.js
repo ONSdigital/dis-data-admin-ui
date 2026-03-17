@@ -11,7 +11,7 @@ import { mapMigrationListTable } from "@/components/table/mapper";
 export default async function MigrationList() {
     const reqCfg = await SSRequestConfig(cookies, "migration-service");
 
-    const migrationsResp = await httpGet(reqCfg, "/migration-jobs");
+    const migrationsResp = await httpGet(reqCfg, "/migration-jobs?limit=50&sort=job_number:desc");
     let migrationsRespError = false;
     if (migrationsResp.ok != null && !migrationsResp.ok) {
         migrationsRespError = true;
@@ -31,7 +31,7 @@ export default async function MigrationList() {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing 1 to 5 of 5 jobs
+                            Showing 1 to {migrationsResp.count} of {migrationsResp.total_count} jobs
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
