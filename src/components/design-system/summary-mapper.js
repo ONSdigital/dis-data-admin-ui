@@ -15,6 +15,11 @@ const QUALITY_DESIGNATION_LABELS = {
     "no-accreditation": "No accreditation",
 };
 
+/**
+ * Converts a quality designation code to a user‑friendly label.
+ * @param {string} qualityDesignation - Raw quality designation code
+ * @returns {string} Human‑readable label for the designation
+ */
 const mapQualityDesignationToUserFriendlyString = (qualityDesignation) =>
     QUALITY_DESIGNATION_LABELS[qualityDesignation] ?? qualityDesignation;
 
@@ -42,6 +47,11 @@ const slugifyLowerCase = (string) => {
     return slugify(string, {lower: true});
 };
 
+/**
+ * Maps alert/usage note items to JSX content for display in Summary rows.
+ * @param {Array>} items - Alerts or usage notes
+ * @returns {Array} Renderable content for alerts/usage notes
+ */
 const mapAlertsAndUsuageNotes = (items) => {
     return items.map((item, index) => {
         return (
@@ -53,6 +63,11 @@ const mapAlertsAndUsuageNotes = (items) => {
     })
 }
 
+/**
+ * Maps file distribution items into JSX content with download links.
+ * @param {Array} items - File distribution objects
+ * @returns {Array} Renderable content for file downloads
+ */
 const mapFileDownloads = (items) => {
     return items.map((item, index) => {
         console.log(item)
@@ -180,6 +195,12 @@ const mapEditionSummary = (edition, editBaseURL) => {
     return contentBody;
 };
 
+/**
+ * Maps dataset version metadata to Summary component model.
+ * @param {Object} version - Version metadata 
+ * @param {string} editBaseURL - Base URL for edit actions
+ * @returns {Array} Summary model for version metadata
+ */
 const mapVersionSummary = (version, editBaseURL) => {
     console.log(version)
     const contentBody = getBaseSummaryModel("version-metadata");
