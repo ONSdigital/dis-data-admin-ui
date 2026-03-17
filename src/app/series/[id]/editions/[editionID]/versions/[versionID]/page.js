@@ -5,11 +5,12 @@ import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { formatDate } from "@/utils/datetime/datetime";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import { Panel } from "@/components/design-system/DesignSystem";
+import { Panel, Summary } from "@/components/design-system/DesignSystem";
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
+import { mapVersionSummary } from "@/components/design-system/summary-mapper";
 import { mapQualityDesignationToUserFriendlyString } from "./mapper";
 
 export default async function Version({ params, searchParams }) {
@@ -33,6 +34,7 @@ export default async function Version({ params, searchParams }) {
     const query = await searchParams;
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.title, metadata.edition_title);
+    const versionSummary = mapVersionSummary(metadata, "hello")
 
     return (
         <>
@@ -48,81 +50,8 @@ export default async function Version({ params, searchParams }) {
             />  
             
             <div className="ons-grid ons-u-mt-xl">
-                <div className="ons-grid__col ons-col-6@m ">
-                <Link href={`${versionID}/edit`}>Edit metadata</Link>
-                    <h2 className="ons-u-mt-m@xxs@m">Series ID</h2>
-                    <p data-testid="id-field">{metadata.id}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Edition</h2>
-                    <p data-testid="edition-field">{metadata.edition}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Edition title</h2>
-                    <p data-testid="edition-title-field">{metadata.edition_title}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Release date</h2>
-                    <p data-testid="release-date-field">
-                        {formatDate(metadata.release_date)}
-                    </p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Version</h2>
-                    <p data-testid="version-field">{metadata.version}</p>
-
-                    <h2 className="ons-u-mt-m@xxs@m">Last updated</h2>
-                    <p data-testid="last-updated-field">
-                        {formatDate(metadata.last_updated)}
-                    </p>
-
-                    {metadata.quality_designation && (
-                        <>
-                            <h2 className="ons-u-mt-m@xxs@m">Quality designation</h2>
-                            <p data-testid="quality-designation-field">{mapQualityDesignationToUserFriendlyString(metadata.quality_designation)}</p>
-                        </>
-                    )}
-
-                    {metadata.usage_notes && metadata.usage_notes.length > 0 && (
-                        <>
-                            <h2 className="ons-u-mt-m@xxs@m">Usage notes</h2>
-                            {metadata.usage_notes.map((item, index) => (
-                                <div key={index}>
-                                    <h3 data-testid={`usage-note-title-${index}`}>{item.title}</h3>
-                                    <p data-testid={`usage-note-text-${index}`}>{item.note}</p>
-                                </div>
-                            ))}
-                        </>
-                    )}
-
-                    {metadata.alerts && metadata.alerts.length > 0 && (
-                        <>
-                            <h2 className="ons-u-mt-m@xxs@m">Alerts</h2>
-                            {metadata.alerts.map((alert, index) => (
-                                <div key={index}>
-                                    <h3 data-testid={`alert-type-${index}`}>
-                                        {alert.type === "alert" && "Notice"}
-                                        {alert.type === "correction" && "Correction"}
-                                    </h3>
-                                    <p data-testid={`alert-description-${index}`}>{alert.description}</p>
-                                </div>
-                            ))}
-                        </>
-                    )}
-
-                    {metadata.distributions && metadata.distributions.length > 0 && (
-                        <>
-                            <h2 className="ons-u-mt-m@xxs@m">Downloads</h2>
-                            {metadata.distributions.map((distribution, index) => (
-                                <div key={index}>
-                                    <h3 data-testid={`distribution-title-${index}`}>{distribution.title}</h3>
-                                    <p data-testid={`distribution-format-${index}`}>{distribution.format}</p>
-                                    <p data-testid={`distribution-media-type-${index}`}>{distribution.media_type}</p>
-                                    <p data-testid={`distribution-byte-size-${index}`}>{distribution.byte_size} bytes</p>
-                                    <p>
-                                        <a href={distribution.download_url} target="_blank" data-testid={`distribution-download-url-${index}`}>{distribution.download_url}</a>
-                                    </p>
-                                </div>
-                            ))}
-                        </>
-                    )}
-
+                <div className="ons-grid__col ons-col-8@m ">
+                    <Summary summaries={versionSummary} />
                     {metadata.state !== "published" && (
                         <LinkButton
                             dataTestId="delete-version-button"
