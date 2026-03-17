@@ -8,7 +8,7 @@ import LinkButton from "@/components/link-button/LinkButton";
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from "@/components/form/version/VersionFields";
 
-export default function EditionForm({ datasetID, edition, isNewEdition, showEditionIDField, action }) {
+export default function EditionForm({ datasetID, edition, isNewEdition, showEditionIDField, action, accessToken }) {
     const [formState, formAction, isPending] = useActionState(action, {});
     const [editionID, setEditionID] = useState(edition?.edition || "");
     const [editionTitle, setEditionTitle] = useState(edition?.edition_title || "");
@@ -76,7 +76,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                     error={ (formState.errors && formState.errors.edition_title) ? {id:'edition-title-error', text: formState.errors.edition_title} : null}
                 />
 
-                { isNewEdition ? <VersionFields errors={formState.errors} /> : null }
+                { isNewEdition ? <VersionFields errors={formState.errors} accessToken={accessToken} /> : null }
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="edition-save-button">
                     <span className="ons-btn__inner">
