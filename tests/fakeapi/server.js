@@ -311,16 +311,14 @@ app.get("/topics/:id", (req, res) => {
 });
 
 app.get("/v1/migration-jobs", (req, res) => {
-    const { state } = req.query;
-
-    // If no filter is applied, return the full list
+    log("Handling GET '/migration-jobs'", req.url, null);
+    
+    const state = req.query?.state;
     if (!state) {
         return res.send(migrationJobsList);
     }
 
     // Normalise state to an array:
-    // - If user selects one checkbox → "approved"
-    // - If user selects multiple → ["approved", "submitted"]
     const states = Array.isArray(state) ? state : [state];
 
     // Filter the items based on the selected states
@@ -328,7 +326,6 @@ app.get("/v1/migration-jobs", (req, res) => {
         states.includes(item.state)
     );
 
-    // Build a filtered response object
     const filteredResponse = {
         ...migrationJobsList,
         items: filteredItems,

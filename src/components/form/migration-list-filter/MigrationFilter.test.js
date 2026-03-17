@@ -54,7 +54,7 @@ describe("MigrationFilter", () => {
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
 
             expect(router.push).toHaveBeenCalledTimes(1);
-            expect(router.push).toHaveBeenCalledWith("/migration?state=approved&state=submitted&state=in_review");
+            expect(router.push).toHaveBeenCalledWith("/migration?state=approved,submitted,in_review");
         });
 
         it("removes a state when checkbox is unchecked", () => {
