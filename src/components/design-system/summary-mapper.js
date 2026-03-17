@@ -59,9 +59,9 @@ const mapAlertsAndUsuageNotes = (items) => {
                 <p className="ons-u-mb-xs">{item.title || `${formatDate(item.date)} - ${item.type}`}</p>
                 <p className="ons-u-fw-n ons-u-mb-l">{item.note || item.description}</p>
             </span>
-        )
-    })
-}
+        );
+    });
+};
 
 /**
  * Maps file distribution items into JSX content with download links.
@@ -70,15 +70,14 @@ const mapAlertsAndUsuageNotes = (items) => {
  */
 const mapFileDownloads = (items) => {
     return items.map((item, index) => {
-        console.log(item)
         return (
             <span key={index}>
                 <p className="ons-u-mb-xs">{item.title || `Download ${index}`}</p>
                 <p className="ons-u-fw-n ons-u-mb-l"><a href={item.download_url}>Download</a></p>
             </span>
-        )
-    })
-}
+        );
+    });
+};
 
 /**
  * Maps a single row into the Summary component row format and pushes it onto rows.
@@ -202,7 +201,6 @@ const mapEditionSummary = (edition, editBaseURL) => {
  * @returns {Array} Summary model for version metadata
  */
 const mapVersionSummary = (version, editBaseURL) => {
-    console.log(version)
     const contentBody = getBaseSummaryModel("version-metadata");
     const rows = contentBody[0].groups[0].rows;
     const action = {
@@ -216,7 +214,7 @@ const mapVersionSummary = (version, editBaseURL) => {
     mapRow("Series", version.title, null, null, rows);
     mapRow("Edition", version.edition, null, null, rows);
     mapRow("Edition title", version.edition_title, null, null, rows);
-    version.state === "published" && mapRow("State", "Published", null, null, rows)
+    version.state === "published" && mapRow("State", "Published", null, null, rows);
     mapRow("Release date", formatDate(version.release_date), null, action, rows);
     mapRow("Last updated", formatDate(version.last_updated), null, action, rows);
     if (version.quality_designation) {
@@ -232,7 +230,7 @@ const mapVersionSummary = (version, editBaseURL) => {
         mapRow("Downloads", mapFileDownloads(version.distributions), null, action, rows);
     }
     return contentBody;
-}
+};
 
 /**
  * Maps uploaded files to Summary component model with delete action.
