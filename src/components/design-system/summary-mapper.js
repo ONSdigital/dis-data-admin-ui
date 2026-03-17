@@ -8,6 +8,16 @@ import Link from "next/link";
 
 import { formatDate } from "@/utils/datetime/datetime";
 
+const QUALITY_DESIGNATION_LABELS = {
+    "accredited-official": "National Statistic",
+    "official": "Official Statistic",
+    "official-in-development": "Official Statistic in Development",
+    "no-accreditation": "No accreditation",
+};
+
+const mapQualityDesignationToUserFriendlyString = (qualityDesignation) =>
+    QUALITY_DESIGNATION_LABELS[qualityDesignation] ?? qualityDesignation;
+
 /**
  * Returns the base structure for a Summary component model.
  * @param {string} [groupID="group"] - Identifier for the summary group
@@ -31,6 +41,29 @@ const slugifyLowerCase = (string) => {
     if (!string) return "no-value";
     return slugify(string, {lower: true});
 };
+
+const mapAlertsAndUsuageNotes = (items) => {
+    return items.map((item, index) => {
+        return (
+            <span key={index}>
+                <p className="ons-u-mb-xs">{item.title || `${formatDate(item.date)} - ${item.type}`}</p>
+                <p className="ons-u-fw-n ons-u-mb-l">{item.note || item.description}</p>
+            </span>
+        )
+    })
+}
+
+const mapFileDownloads = (items) => {
+    return items.map((item, index) => {
+        console.log(item)
+        return (
+            <span key={index}>
+                <p className="ons-u-mb-xs">{item.title || `Download ${index}`}</p>
+                <p className="ons-u-fw-n ons-u-mb-l"><a href={item.download_url}>Download</a></p>
+            </span>
+        )
+    })
+}
 
 /**
  * Maps a single row into the Summary component row format and pushes it onto rows.
@@ -147,6 +180,39 @@ const mapEditionSummary = (edition, editBaseURL) => {
     return contentBody;
 };
 
+const mapVersionSummary = (version, editBaseURL) => {
+    console.log(version)
+    const contentBody = getBaseSummaryModel("version-metadata");
+    const rows = contentBody[0].groups[0].rows;
+    const action = {
+        url: editBaseURL,
+        onClick: null,
+        anchorIDPrefix: "dataset-version-",
+        text: "Edit"
+    };
+
+    mapRow("Version ID", version.version, null, null, rows);
+    mapRow("Series", version.title, null, null, rows);
+    mapRow("Edition", version.edition, null, null, rows);
+    mapRow("Edition title", version.edition_title, null, null, rows);
+    version.state === "published" && mapRow("State", "Published", null, null, rows)
+    mapRow("Release date", formatDate(version.release_date), null, action, rows);
+    mapRow("Last updated", formatDate(version.last_updated), null, action, rows);
+    if (version.quality_designation) {
+        mapRow("Quality designation", mapQualityDesignationToUserFriendlyString(version.quality_designation), null, action, rows);
+    }
+    if (version.usage_notes && version.usage_notes.length > 0) {
+        mapRow("Usage notes", mapAlertsAndUsuageNotes(version.usage_notes), null, action, rows);
+    }
+    if (version.alerts && version.alerts.length > 0) {
+        mapRow("Alerts", mapAlertsAndUsuageNotes(version.alerts), null, action, rows);
+    }
+    if (version.distributions && version.distributions.length > 0) {
+        mapRow("Downloads", mapFileDownloads(version.distributions), null, action, rows);
+    }
+    return contentBody;
+}
+
 /**
  * Maps uploaded files to Summary component model with delete action.
  * @param {Array} files - List of uploaded file objects
@@ -239,4 +305,4 @@ const mapMigrationJobSummary = (tasks) => {
     return contentBody;
 };
 
-export { mapSeriesSummary, mapEditionSummary, mapUploadedFilesSummary, mapMigrationJobSummary };
+export { mapSeriesSummary, mapEditionSummary, mapVersionSummary, mapUploadedFilesSummary, mapMigrationJobSummary };
