@@ -22,7 +22,7 @@ export default async function createPage() {
     } else {
         const listOfAllTopics = response.items;
         return (
-            <>
+            <div className="ons-col-8@m">
                 <PageHeading 
                     title="Create new dataset series"
                 />
@@ -33,7 +33,7 @@ export default async function createPage() {
                     listOfAllTopics={listOfAllTopics} 
                     action={createDatasetSeries}
                 />
-            </>
+            </div>
         );
     }
 }
