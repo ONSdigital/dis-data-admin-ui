@@ -9,8 +9,8 @@ import VersionForm from "@/components/form/version/VersionForm";
 
 export default async function CreateVersion({ params }) {
     const { id, editionID } = await params;
-    
     const reqCfg = await SSRequestConfig(cookies);
+    const accessToken = reqCfg.authToken;
     const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
         
     let datasetError = false;
@@ -37,7 +37,7 @@ export default async function CreateVersion({ params }) {
             <Panel dataTestId="mandatory-fields-panel" classes="ons-u-mb-l ons-u-dib">
                 <p>You must fill in all fields unless marked optional</p>
             </Panel>
-            <VersionForm datasetID={id} editionID={editionID} isNewVersion={true} action={createDatasetVersion} />
+            <VersionForm datasetID={id} editionID={editionID} isNewVersion={true} action={createDatasetVersion} accessToken={accessToken} />
         </>
     );
 }

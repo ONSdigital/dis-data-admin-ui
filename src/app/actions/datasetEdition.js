@@ -4,8 +4,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
-import { logInfo } from "@/utils/log/log";
+import { logError, logInfo } from "@/utils/log/log";
 import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation } from "./datasetVersion";
+import { updateDistributionsMetadata } from "./updateDistributionsMetadata";
 
 import { z } from "zod";
  
@@ -29,7 +30,6 @@ const editionWithVersionSchema = z.object({
 });
 
 const doSubmission = async (datasetEditionSubmission, makeRequest) => {
-    const actionResponse = {};
     const reqCfg = await SSRequestConfig(cookies);
 
     const datasetID = datasetEditionSubmission.dataset_id;
@@ -38,31 +38,52 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
     let url = `/datasets/${datasetID}/editions/${editionID}/versions`;
     if (datasetEditionSubmission.edition_id) { url = url + `/1`; }
 
+    let data = {};
     try {
-        const data = await makeRequest(reqCfg, url, datasetEditionSubmission);
-        actionResponse.success = true;
+        data = await makeRequest(reqCfg, url, datasetEditionSubmission);
         if (data.status >= 400) {
-            actionResponse.success = false;
-            actionResponse.code = data.status;
-
             const errorMessage = JSON.parse(data.errorMessage);
+            let httpError;
             if (errorMessage.errors[0].code === "ErrVersionAlreadyExists") {
-                actionResponse.httpError = `A edition with this ID already exists within this series`;
+                httpError = "A edition with this ID already exists within this series";
             } else if (errorMessage.errors[0].code === "ErrEditionTitleAlreadyExists") {
-                actionResponse.httpError = `A edition with this Title already exists within this series`;
+                httpError = "A edition with this Title already exists within this series";
             }
-            return actionResponse;
+            return { success: false, code: data.status, httpError };
         }
         logInfo("saved dataset edition successfully", null, null);
     } catch (err) {
-        return err.toString();
-    }
-    
-    if (actionResponse.success === true) {
-        redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
+        logError("error saving dataset edition", null, null, err);
+        return { success: false, code: 500 };
     }
 
-    return actionResponse;
+    try {
+        const results = await updateDistributionsMetadata(
+            reqCfg,
+            data.distributions,
+            datasetEditionSubmission.dataset_id,
+            datasetEditionSubmission.edition,
+            1
+        );
+        if (!results.success) {
+            logError("one or more file metadata updates failed", results.failures, null);
+            return {
+                success: false,
+                code: 500,
+                httpError: "Failed to update file metadata. Please contact an admin.",
+            };
+        }
+        logInfo("successfully updated file metadata for distributions");
+    } catch (err) {
+        logError("error updating file metadata", null, null, err);
+        return {
+            success: false,
+            code: 500,
+            httpError: "Failed to update file metadata. Please contact an admin.",
+        };
+    }
+
+    redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
 };
 
 const getFormData = (formData) => {

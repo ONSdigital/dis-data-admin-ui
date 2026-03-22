@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
-import { logInfo } from "@/utils/log/log";
+import { logError, logInfo } from "@/utils/log/log";
+import { updateDistributionsMetadata } from "./updateDistributionsMetadata";
 
 import { z } from "zod";
  
@@ -58,7 +59,6 @@ const parseMutliContentField = (multiItem) => {
 };
 
 const doSubmission = async (datasetVersionSubmission, makeRequest) => {
-    const actionResponse = {};
     const reqCfg = await SSRequestConfig(cookies);
 
     let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
@@ -67,21 +67,43 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     let data = {};
     try {
         data = await makeRequest(reqCfg, url, datasetVersionSubmission);
-        actionResponse.success = true;
         if (data.status >= 400) {
-            actionResponse.success = false;
-            actionResponse.code = data.status;
-            return actionResponse;
+            return { success: false, code: data.status };
         }
         logInfo("created dataset version successfully", null, null);
     } catch (err) {
-        return err.toString();
+        logError("error saving dataset version", null, null, err);
+        return { success: false, code: 500 };
     }
-    if (actionResponse.success == true) {
-        const versionID = data.version || datasetVersionSubmission.version_id;
-        redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + versionID + "?display_success=true");
+
+    const versionID = data.version || datasetVersionSubmission.version_id;
+    try {
+        const results = await updateDistributionsMetadata(
+            reqCfg,
+            datasetVersionSubmission.distributions,
+            datasetVersionSubmission.dataset_id,
+            datasetVersionSubmission.edition,
+            versionID
+        );
+        if (!results.success) {
+            logError("one or more file metadata updates failed", results.failures, null);
+            return {
+                success: false,
+                code: 500,
+                httpError: "Failed to update file metadata. Please contact an admin.",
+            };
+        }
+        logInfo("successfully updated file metadata for distributions");
+    } catch (err) {
+        logError("error updating file metadata", null, null, err);
+        return {
+            success: false,
+            code: 500,
+            httpError: "Failed to update file metadata. Please contact an admin.",
+        };
     }
-    return actionResponse;
+
+    redirect("/series/" + datasetVersionSubmission.dataset_id + "/editions/" + datasetVersionSubmission.edition + "/versions/" + versionID + "?display_success=true");
 };
 
 const getFormData = async (formData) => {
