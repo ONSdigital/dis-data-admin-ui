@@ -64,11 +64,11 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
     let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
     if (datasetVersionSubmission.version_id) { url = url + `/${datasetVersionSubmission.version_id}`; }
 
-    let data = {};
+    let versionResponse = {};
     try {
-        data = await makeRequest(reqCfg, url, datasetVersionSubmission);
-        if (data.status >= 400) {
-            return { success: false, code: data.status };
+        versionResponse = await makeRequest(reqCfg, url, datasetVersionSubmission);
+        if (versionResponse.status >= 400) {
+            return { success: false, code: versionResponse.status };
         }
         logInfo("created dataset version successfully", null, null);
     } catch (err) {
@@ -76,21 +76,21 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return { success: false, code: 500 };
     }
 
-    const versionID = data.version || datasetVersionSubmission.version_id;
+    const versionID = versionResponse.version || datasetVersionSubmission.version_id;
     try {
-        const results = await updateDistributionsMetadata(
+        const distributionUpdateResponse = await updateDistributionsMetadata(
             reqCfg,
             datasetVersionSubmission.distributions,
             datasetVersionSubmission.dataset_id,
             datasetVersionSubmission.edition,
             versionID
         );
-        if (!results.success) {
-            logError("one or more file metadata updates failed", results.failures, null);
+        if (!distributionUpdateResponse.success) {
+            logError("one or more file metadata updates failed", distributionUpdateResponse.failures, null);
             return {
                 success: false,
                 code: 500,
-                httpError: "Failed to update file metadata. Please contact an admin.",
+                httpError: "Failed to update file metadata. Please raise a support issue through Slack.",
             };
         }
         logInfo("successfully updated file metadata for distributions");
@@ -99,7 +99,7 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return {
             success: false,
             code: 500,
-            httpError: "Failed to update file metadata. Please contact an admin.",
+            httpError: "Failed to update file metadata. Please raise a support issue through Slack.",
         };
     }
 

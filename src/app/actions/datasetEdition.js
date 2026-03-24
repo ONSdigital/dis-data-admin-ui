@@ -38,18 +38,18 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
     let url = `/datasets/${datasetID}/editions/${editionID}/versions`;
     if (datasetEditionSubmission.edition_id) { url = url + `/1`; }
 
-    let data = {};
+    let editionResponse = {};
     try {
-        data = await makeRequest(reqCfg, url, datasetEditionSubmission);
-        if (data.status >= 400) {
-            const errorMessage = JSON.parse(data.errorMessage);
+        editionResponse = await makeRequest(reqCfg, url, datasetEditionSubmission);
+        if (editionResponse.status >= 400) {
+            const errorMessage = JSON.parse(editionResponse.errorMessage);
             let httpError;
             if (errorMessage.errors[0].code === "ErrVersionAlreadyExists") {
                 httpError = "A edition with this ID already exists within this series";
             } else if (errorMessage.errors[0].code === "ErrEditionTitleAlreadyExists") {
                 httpError = "A edition with this Title already exists within this series";
             }
-            return { success: false, code: data.status, httpError };
+            return { success: false, code: editionResponse.status, httpError };
         }
         logInfo("saved dataset edition successfully", null, null);
     } catch (err) {
@@ -58,19 +58,19 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
     }
 
     try {
-        const results = await updateDistributionsMetadata(
+        const distributionUpdateResponse = await updateDistributionsMetadata(
             reqCfg,
-            data.distributions,
+            editionResponse.distributions,
             datasetEditionSubmission.dataset_id,
             datasetEditionSubmission.edition,
             1
         );
-        if (!results.success) {
-            logError("one or more file metadata updates failed", results.failures, null);
+        if (!distributionUpdateResponse.success) {
+            logError("one or more file metadata updates failed", distributionUpdateResponse.failures, null);
             return {
                 success: false,
                 code: 500,
-                httpError: "Failed to update file metadata. Please contact an admin.",
+                httpError: "Failed to update file metadata. Please raise a support issue through Slack.",
             };
         }
         logInfo("successfully updated file metadata for distributions");
@@ -79,7 +79,7 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
         return {
             success: false,
             code: 500,
-            httpError: "Failed to update file metadata. Please contact an admin.",
+            httpError: "Failed to update file metadata. Please raise a support issue through Slack.",
         };
     }
 
