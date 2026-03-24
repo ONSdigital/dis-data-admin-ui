@@ -1,6 +1,6 @@
 import { httpPut } from "@/utils/request/request";
 import { logError } from "@/utils/log/log";
-import { getDistributionPath } from "@/utils/url";
+import { getDistributionPath } from "@/utils/url/url";
 
 /**
  * Updates file metadata for each distribution in a dataset version.
