@@ -312,7 +312,28 @@ app.get("/topics/:id", (req, res) => {
 
 app.get("/v1/migration-jobs", (req, res) => {
     log("Handling GET '/migration-jobs'", req.url, null);
-    res.send(migrationJobsList);
+    
+    const state = req.query?.state;
+    if (!state) {
+        return res.send(migrationJobsList);
+    }
+
+    // Normalise state to an array:
+    const states = Array.isArray(state) ? state : [state];
+
+    // Filter the items based on the selected states
+    const filteredItems = migrationJobsList.items.filter(item =>
+        states.includes(item.state)
+    );
+
+    const filteredResponse = {
+        ...migrationJobsList,
+        items: filteredItems,
+        count: filteredItems.length,
+        total_count: filteredItems.length
+    };
+
+    return res.send(filteredResponse);
 });
 
 app.get("/v1/migration-jobs/:id", (req, res) => {
