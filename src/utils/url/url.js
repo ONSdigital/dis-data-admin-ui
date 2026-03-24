@@ -1,20 +1,23 @@
-import { logError } from "./log/log";
+import { logError } from "../log/log";
 
-function getURLPath(url) {
+const getURLPath = (url) => {
     if (!url) {
         return null;
     }
 
     try {
-        const parsedUrl = new URL(url, "https://example.com");
+        // The URL constructor requires a base for relative paths.
+        // "thismessage:/" is used to avoid implying a real site.
+        // See: https://www.w3.org/wiki/UriSchemes/thismessage
+        const parsedUrl = new URL(url, "thismessage:/");
         return parsedUrl.pathname.replace(/^\/+/, "");
     } catch (error) {
         logError("failed to parse url", { url }, null, error);
         return null;
     }
-}
+};
 
-function getDistributionPath(url) {
+const getDistributionPath = (url) => {
     const path = getURLPath(url);
 
     if (!path) {
@@ -29,6 +32,6 @@ function getDistributionPath(url) {
     }
 
     return segments.join("/");
-}
+};
 
 export { getURLPath, getDistributionPath };
