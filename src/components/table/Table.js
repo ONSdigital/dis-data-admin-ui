@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { sanitiseString } from "author-design-system-react";
 
-export default function Table({ contents, caption, classes, dataTestId  }) {
+export default function Table({ contents, caption, classes, dataTestId, noResultsText = "No data available" }) {
     const [rows, setRows] = useState(contents?.body?.rows || []);
     const [sorted, setSorted] = useState();
 
@@ -62,7 +62,7 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
     const renderTableBody = () => {
         if (!rows.length) {
             return (
-                <tbody className="ons-table__body"><tr><td data-testid={`${sanitisedDataTestId}-no-data`}>No data available</td></tr></tbody>
+                <tbody className="ons-table__body"><tr><td data-testid={`${sanitisedDataTestId}-no-data`}>{noResultsText}</td></tr></tbody>
             );
         }
         return (
