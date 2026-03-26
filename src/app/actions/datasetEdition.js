@@ -5,8 +5,7 @@ import { redirect } from "next/navigation";
 
 import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
 import { logError, logInfo } from "@/utils/log/log";
-import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation } from "./datasetVersion";
-import { updateDistributionsMetadata } from "./updateDistributionsMetadata";
+import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata } from "./datasetVersion";
 
 import { z } from "zod";
  
