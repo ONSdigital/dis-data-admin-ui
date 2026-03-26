@@ -30,5 +30,5 @@ export default function AccordionItem({ accordionItem }) {
                 </div>
             }       
         </div>
-    )
+    );
 };
