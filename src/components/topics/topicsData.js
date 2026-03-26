@@ -9,7 +9,7 @@ import { httpGet } from "@/utils/request/request";
 export const getAllTopics = async (reqCfg) => {
     const topics = await httpGet(reqCfg, "/topics");
     if (topics.ok != null && !topics.ok || topics?.items.length === 0) return [];
-    
+
     const mappedTopics = await Promise.all(
         topics.items.map(async (topic) => {
             const subTubTopicURL = new URL(topic.links.subtopics.href);
@@ -17,7 +17,7 @@ export const getAllTopics = async (reqCfg) => {
             return mapTopic(topic, subTopic);
         })
     );
-    
+
     return mappedTopics;
 };
 
@@ -28,9 +28,10 @@ export const getAllTopics = async (reqCfg) => {
  * @param {string} url - Endpoint path passed to {@link httpGet}.
  * @returns {<Array>}
  */
-const getSubTopics = async(reqCfg, url) => {
+const getSubTopics = async (reqCfg, url) => {
     const subTopics = await httpGet(reqCfg, url);
     if (subTopics.ok != null && !subTopics.ok || subTopics?.items.length === 0) return [];
+
     const mappedSubTopics = subTopics.items.map(subTopic => {
         return mapTopic(subTopic, null);
     });

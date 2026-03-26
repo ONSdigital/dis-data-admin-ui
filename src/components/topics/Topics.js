@@ -1,61 +1,111 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Field, Button, Checkbox } from "author-design-system-react";
+import { Field, Button, Checkbox, Panel } from "author-design-system-react";
+import Accordion from "../accordion/Accordion";
+import { getAllTopics, mapTopicsToTopicSelector } from "./topicsData";
+import Table from "../table/Table";
+import { mapTopicSummary } from "../table/mapper";
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
-    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
-    const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
+    const [selectedTopics, setSelectedTopics] = useState([]);
+    const [topicSummary, setTopicSummary] = useState(mapTopicSummary(selectedTopics))
+    // const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
+    // const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
     useEffect(() => {
-        /* eslint-disable-next-line react-hooks/set-state-in-effect */
-        setCheckboxOptionsItems(createCheckboxes);
+        setTopicSummary(mapTopicSummary(selectedTopics));
     }, [selectedTopics]);
 
-    useEffect(() => {
-        checkboxOptionsItems.itemsList.forEach(checkboxOption => {
-            const checkbox = document.getElementById(checkboxOption.id);
-            if (checkboxOption.checked === false) {
-                checkbox.defaultChecked = false;
-            }
-        });
-    }, [checkboxOptionsItems]);
+    // useEffect(() => {
+    //     /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    //     setCheckboxOptionsItems(createCheckboxes);
+    // }, [selectedTopics]);
+
+    // useEffect(() => {
+    //     checkboxOptionsItems.itemsList.forEach(checkboxOption => {
+    //         const checkbox = document.getElementById(checkboxOption.id);
+    //         if (checkboxOption.checked === false) {
+    //             checkbox.defaultChecked = false;
+    //         }
+    //     });
+    // }, [checkboxOptionsItems]);
 
 
-    function createCheckboxes() {
-        const checkboxOptions = [];
-        listOfAllTopics.forEach(topic => {
-            const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
-            const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
-            const selected = selectedTopics.includes(topicId);
+    // function createCheckboxes() {
+    //     const checkboxOptions = [];
+    //     listOfAllTopics.forEach(topic => {
+    //         const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
+    //         const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
+    //         const selected = selectedTopics.includes(topicId);
 
-            if (topicId && topicTitle) {
-                checkboxOptions.push({
-                    dataTestId: "checkbox-" + topicId,
-                    id: "checkbox-" + topicId,
-                    label: {
-                        text: topicTitle
-                    },
-                    onChange: () => { topicOnChange(topicId); },
-                    value: topicId,
-                    checked: selected
-                });
-            }
-        });
-        return ({ itemsList: checkboxOptions });
+    //         if (topicId && topicTitle) {
+    //             checkboxOptions.push({
+    //                 dataTestId: "checkbox-" + topicId,
+    //                 id: "checkbox-" + topicId,
+    //                 label: {
+    //                     text: topicTitle
+    //                 },
+    //                 onChange: () => { topicOnChange(topicId); },
+    //                 value: topicId,
+    //                 checked: selected
+    //             });
+    //         }
+    //     });
+    //     return ({ itemsList: checkboxOptions });
+    // }
+
+    const topicOnChange = (topic) => {
+        setSelectedTopics(prev =>
+            prev.some(t => t.id === topic.id)
+                ? prev.filter(t => t.id !== topic.id)
+                : [...prev, topic]
+        );
+    };
+
+    const mapTopicsToTopicSelector = (topics) => {
+        if (!topics) return [];
+        return topics.map(topic => ({
+            ...topic,
+            body: topic.subtopics?.map(sub => (
+                <span
+                    className="ons-checkbox ons-checkbox--no-border ons-u-mb-xs"
+                    data-testid={`dataset-series-topic-${sub.id}-checkbox`}
+                    key={`${topic.id}-${sub.id}`}
+                >
+                    <input
+                        type="checkbox"
+                        id={sub.id}
+                        name={sub.id}
+                        className="ons-checkbox__input"
+                        onChange={() => topicOnChange({ id: sub.id, label: sub.label })}
+                    />
+                    <label
+                        className="ons-checkbox__label"
+                        htmlFor={sub.id}
+                        id={`${sub.id}-label`}
+                        data-testid={`dataset-series-topic-${sub.id}-label`}
+                    >
+                        <span>{sub.label}</span>
+                    </label>
+                </span>
+            ))
+        }));
     }
 
-    const topicOnChange = (topicId) => {
-        if (!selectedTopics.includes(topicId)) {
-            setSelectedTopics([...selectedTopics, topicId]);
-        } else {
-            setSelectedTopics(
-                selectedTopics.filter(t =>
-                    t !== topicId
-                )
-            );
-        }
-    };
+    const accord = mapTopicsToTopicSelector(listOfAllTopics);
+
+    return (
+        <div className="ons-u-mt-l ons-u-mb-l">
+            <h2>Choose a topic</h2>
+            <Panel variant="info">
+                <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
+            </Panel>
+            <Accordion id="topics-selector-accordion" accordionItems={accord} />
+            <h3 className="ons-u-mt-m">Topic summary</h3>
+            <Table contents={topicSummary} noResultsText="No topic selected" />
+        </div>
+    );
 
     return (
         <>
