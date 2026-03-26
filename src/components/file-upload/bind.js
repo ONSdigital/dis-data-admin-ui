@@ -9,7 +9,7 @@ const RESUMABLE_OPTIONS = {
     licenceUrl: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
 };
 
-const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
+const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, accessToken, handleFileStart, handleFileProgress, handleFileComplete, handleError) => {
     // we lower case ID values here because if an upper case values are in ID they will get santised and lowercased 
     // by the <TextInput /> component from eq-author and there will be errors when trying to bind
     const elID = elementID.toLowerCase();
@@ -21,6 +21,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, handleFil
     const uploadURL = uploadBaseURL + "/upload-new";
     const r = new Resumable({
         target: uploadURL,
+        headers: accessToken ? { Authorization: accessToken } : undefined,
         chunkSize: FIVE_MEGABYTES,
         query: {
             aliasName: "",

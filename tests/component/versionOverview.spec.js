@@ -60,12 +60,12 @@ test.describe("Version overview page", () => {
         await expect(page.getByTestId("distribution-format-0")).toContainText("csv");
         await expect(page.getByTestId("distribution-media-type-0")).toContainText("text/csv");
         await expect(page.getByTestId("distribution-byte-size-0")).toContainText("4300000 bytes");
-        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.csv");
+        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
         await expect(page.getByTestId("distribution-title-1")).toContainText("Full Dataset (XLS)");
         await expect(page.getByTestId("distribution-format-1")).toContainText("xls");
         await expect(page.getByTestId("distribution-media-type-1")).toContainText("application/vnd.ms-excel");
         await expect(page.getByTestId("distribution-byte-size-1")).toContainText("265000 bytes");
-        await expect(page.getByTestId("distribution-download-url-1")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.xls");
+        await expect(page.getByTestId("distribution-download-url-1")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls");
     });
 
     test("Minimally populated version page renders as expected", async ({ page, context }) => {
@@ -84,7 +84,7 @@ test.describe("Version overview page", () => {
         await expect(page.getByTestId("distribution-format-0")).toContainText("csv");
         await expect(page.getByTestId("distribution-media-type-0")).toContainText("text/csv");
         await expect(page.getByTestId("distribution-byte-size-0")).toContainText("4300000 bytes");
-        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.csv");
+        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
     });
 
     test("Shows version delete button when version is unpublished", async ({ page, context }) => {

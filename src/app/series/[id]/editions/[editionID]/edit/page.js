@@ -10,6 +10,7 @@ import EditionForm from "@/components/form/edition/EditionForm";
 
 export default async function EditEdition({ params }) {
     const reqCfg = await SSRequestConfig(cookies);
+    const accessToken = reqCfg.authToken;
 
     const { id, editionID } = await params;
     const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
@@ -37,7 +38,7 @@ export default async function EditEdition({ params }) {
             /> 
             { !editionError ?  
                 <> 
-                    <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state === "published"} action={ updateDatasetEdition }/>
+                    <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state === "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
                 </>
                 : renderErrorPanel()
             }
