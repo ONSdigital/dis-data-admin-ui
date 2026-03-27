@@ -15,7 +15,9 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
     const [mainTopicID, setMainTopicID] = useState(getTopicID(preSelectedTopics?.[0]));
 
-    const selectedTopicIDsCsv = useMemo(() => {
+    // track selectedTopics and mainTopiIDc in a correctly ordered list to submit to API. 
+    // e.g. keep selected mainTopicID as first in the list because API infers first is main
+    const orderedTopicsList = useMemo(() => {
         const mainId = getTopicID(mainTopicID);
         const selectedIds = (selectedTopics || [])
             .map((topic) => getTopicID(topic))
@@ -32,6 +34,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         setMainTopicID(topicID)
     }
     
+    // re-map topic summary when selectedTopics or mainTopicID changes
     const topicSummary = useMemo(() => {
         const headers = [
             { label: "Topic", isSortable: false, rightAlign: false },
@@ -42,24 +45,36 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
             rows: []
         };
 
-        selectedTopics?.forEach((item, index) => {
+        selectedTopics?.forEach((topic) => {
             body.rows.push(
                 { 
                     columns: [
-                        { content: item.label, rightAlign: false },
+                        { content: topic.label, rightAlign: false },
                         { content: [
-                            <span className="ons-radios__item ons-radios__item--no-border" data-testid="quality-designation-radios-item-official-container">
-                                <span className="ons-radio ons-radio--no-border" data-testid="quality-designation-radios-item-official">
-                                    <input id="official" className="ons-radio__input" 
-                                    data-testid="quality-designation-radios-item-official-input" 
-                                    type="radio" value="official" name="quality-designation-radios" onClick={() => mainTopicOnChange(item.id)}
-                                    checked={item.id === mainTopicID}
+                            <span className="ons-radios__item ons-radios__item--no-border" 
+                                data-testid="quality-designation-radios-item-official-container"
+                            >
+                                <span className="ons-radio ons-radio--no-border" 
+                                    data-testid="quality-designation-radios-item-official"
+                                >
+                                    <input id="official" 
+                                        className="ons-radio__input" 
+                                        data-testid="quality-designation-radios-item-official-input" 
+                                        type="radio" value="official" name="quality-designation-radios" 
+                                        onClick={() => mainTopicOnChange(topic.id)}
+                                        checked={topic.id === mainTopicID}
                                     />
-                                    <label className="ons-radio__label" htmlFor="official" id="official-label" data-testid="quality-designation-radios-item-official-label">
+                                    <label className="ons-radio__label" 
+                                        htmlFor="official" 
+                                        id="official-label" 
+                                        data-testid="quality-designation-radios-item-official-label"
+                                    >
                                         &nbsp;
                                     </label>
                                 </span>
-                            </span>], rightAlign: true},
+                            </span>], 
+                            rightAlign: true
+                        },
                     ]
                 }
             );
@@ -120,7 +135,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
-                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={selectedTopicIDsCsv} />
+                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={orderedTopicsList} />
                 <Accordion id="topics-selector-accordion" accordionItems={accord} />
                 <h3 className="ons-u-mt-m">Topic summary</h3>
                 <Table contents={topicSummary} noResultsText="No topic selected" />
