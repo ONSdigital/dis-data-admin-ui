@@ -17,7 +17,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         setMainTopic(topic)
     }
 
-    const mapTopicSummary = (data) => {
+    const mapTopicSummaryTable = (data) => {
         const headers = [
             { label: "Topic", isSortable: false, rightAlign: false },
             { label: "Main topic", isSortable: false, rightAlign: true }
@@ -28,7 +28,6 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         };
 
         data?.forEach((item, index) => {
-            console.log("IS CHECKED", item.id === mainTopic.id, item.id, mainTopic.id)
             body.rows.push(
                 { 
                     columns: [
@@ -55,7 +54,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     }
 
     useEffect(() => {
-        setTopicSummary(mapTopicSummary(selectedTopics));
+        setTopicSummary(mapTopicSummaryTable(selectedTopics));
     }, [selectedTopics, mainTopic]);
 
     // useEffect(() => {
