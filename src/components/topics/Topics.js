@@ -1,14 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
 
+const getTopicID = (topicOrId) => {
+    if (topicOrId === null || topicOrId === undefined) return null;
+    if (typeof topicOrId === "object") return topicOrId.id ?? topicOrId.ID ?? null;
+    return topicOrId;
+};
+
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
     const [topicSummary, setTopicSummary] = useState();
-    const [mainTopicID, setMainTopicID] = useState(preSelectedTopics[0] || null);
+    const [mainTopicID, setMainTopicID] = useState(getTopicID(preSelectedTopics?.[0]));
+
+    const selectedTopicIDsCsv = useMemo(() => {
+        const mainId = getTopicID(mainTopicID);
+        const selectedIds = (selectedTopics || [])
+            .map((topic) => getTopicID(topic))
+            .filter((id) => id !== null && id !== undefined);
+
+        const orderedIds = mainId !== null && mainId !== undefined
+            ? [mainId, ...selectedIds.filter((id) => id !== mainId)]
+            : selectedIds;
+
+        return orderedIds.join(",");
+    }, [mainTopicID, selectedTopics]);
 
     const mainTopicOnChange = (topicID) => {
         setMainTopicID(topicID)
@@ -106,7 +125,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
-                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(selectedTopics)} />
+                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={selectedTopicIDsCsv} />
                 <Accordion id="topics-selector-accordion" accordionItems={accord} />
                 <h3 className="ons-u-mt-m">Topic summary</h3>
                 <Table contents={topicSummary} noResultsText="No topic selected" />
