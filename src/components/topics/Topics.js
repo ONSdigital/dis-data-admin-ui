@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
@@ -13,7 +13,6 @@ const getTopicID = (topicOrId) => {
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
-    const [topicSummary, setTopicSummary] = useState();
     const [mainTopicID, setMainTopicID] = useState(getTopicID(preSelectedTopics?.[0]));
 
     const selectedTopicIDsCsv = useMemo(() => {
@@ -32,8 +31,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     const mainTopicOnChange = (topicID) => {
         setMainTopicID(topicID)
     }
-
-    const mapTopicSummaryTable = (data) => {
+    
+    const topicSummary = useMemo(() => {
         const headers = [
             { label: "Topic", isSortable: false, rightAlign: false },
             { label: "Main topic", isSortable: false, rightAlign: true }
@@ -43,7 +42,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
             rows: []
         };
 
-        data?.forEach((item, index) => {
+        selectedTopics?.forEach((item, index) => {
             body.rows.push(
                 { 
                     columns: [
@@ -67,10 +66,6 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
 
         return { headers, body };
-    }
-
-    useEffect(() => {
-        setTopicSummary(mapTopicSummaryTable(selectedTopics));
     }, [selectedTopics, mainTopicID]);
 
     const topicOnChange = (topic) => {
