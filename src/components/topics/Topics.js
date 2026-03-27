@@ -96,14 +96,17 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     const accord = mapTopicsToTopicSelector(listOfAllTopics);
 
     return (
+        
         <div className="ons-u-mt-l ons-u-mb-l">
             <h2>Choose a topic</h2>
             <Panel variant="info">
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
-            <Accordion id="topics-selector-accordion" accordionItems={accord} />
-            <h3 className="ons-u-mt-m">Topic summary</h3>
-            <Table contents={topicSummary} noResultsText="No topic selected" />
+            <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
+                <Accordion id="topics-selector-accordion" accordionItems={accord} />
+                <h3 className="ons-u-mt-m">Topic summary</h3>
+                <Table contents={topicSummary} noResultsText="No topic selected" />
+            </Field>
         </div>
     );
 
