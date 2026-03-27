@@ -5,22 +5,58 @@ import { Field, Button, Checkbox, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import { getAllTopics, mapTopicsToTopicSelector } from "./topicsData";
 import Table from "../table/Table";
-import { mapTopicSummary } from "../table/mapper";
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
-    const [topicSummary, setTopicSummary] = useState(mapTopicSummary(selectedTopics, () => {}));
+    const [topicSummary, setTopicSummary] = useState();
     const [mainTopic, setMainTopic] = useState(preSelectedTopics[0] || null);
     // const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
     // const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
-    const mainOnChange = (topic) => {
+    const mainTopicOnChange = (topic) => {
         setMainTopic(topic)
     }
 
+    const mapTopicSummary = (data) => {
+        const headers = [
+            { label: "Topic", isSortable: false, rightAlign: false },
+            { label: "Main topic", isSortable: false, rightAlign: true }
+        ];
+
+        const body =  {
+            rows: []
+        };
+
+        data?.forEach((item, index) => {
+            console.log("IS CHECKED", item.id === mainTopic.id, item.id, mainTopic.id)
+            body.rows.push(
+                { 
+                    columns: [
+                        { content: item.label, rightAlign: false },
+                        { content: [
+                            <span className="ons-radios__item ons-radios__item--no-border" data-testid="quality-designation-radios-item-official-container">
+                                <span className="ons-radio ons-radio--no-border" data-testid="quality-designation-radios-item-official">
+                                    <input id="official" className="ons-radio__input" 
+                                    data-testid="quality-designation-radios-item-official-input" 
+                                    type="radio" value="official" name="quality-designation-radios" onClick={() => mainTopicOnChange({id: item.id, label: item.label})}
+                                    checked={item.id === mainTopic.id}
+                                    />
+                                    <label className="ons-radio__label" htmlFor="official" id="official-label" data-testid="quality-designation-radios-item-official-label">
+                                        &nbsp;
+                                    </label>
+                                </span>
+                            </span>], rightAlign: true},
+                    ]
+                }
+            );
+        });
+
+        return { headers, body };
+    }
+
     useEffect(() => {
-        setTopicSummary(mapTopicSummary(selectedTopics, mainOnChange));
-    }, [selectedTopics]);
+        setTopicSummary(mapTopicSummary(selectedTopics));
+    }, [selectedTopics, mainTopic]);
 
     // useEffect(() => {
     //     /* eslint-disable-next-line react-hooks/set-state-in-effect */
@@ -61,8 +97,10 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     // }
 
     const topicOnChange = (topic) => {
+        // while no topics are curerently selected assume the first topic
+        // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopic(topic.id)
+            setMainTopic(topic)
         }
         setSelectedTopics(prev =>
             prev.some(t => t.id === topic.id)
