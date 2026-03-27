@@ -50,7 +50,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 { 
                     columns: [
                         { content: topic.label, rightAlign: false },
-                        { content: [
+                        { content: 
                             <span className="ons-radios__item ons-radios__item--no-border" 
                                 data-testid="quality-designation-radios-item-official-container"
                             >
@@ -72,7 +72,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                         &nbsp;
                                     </label>
                                 </span>
-                            </span>], 
+                            </span>, 
                             rightAlign: true
                         },
                     ]
