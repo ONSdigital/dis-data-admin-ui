@@ -5,34 +5,34 @@ import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
 
-const getTopicID = (topicOrId) => {
-    if (topicOrId === null || topicOrId === undefined) return null;
-    if (typeof topicOrId === "object") return topicOrId.id ?? topicOrId.ID ?? null;
-    return topicOrId;
+const getTopicID = (topicOrID) => {
+    if (topicOrID === null || topicOrID === undefined) return null;
+    if (typeof topicOrID === "object") return topicOrID.id ?? topicOrID.ID ?? null;
+    return topicOrID;
 };
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
     const [mainTopicID, setMainTopicID] = useState(getTopicID(preSelectedTopics?.[0]));
 
-    // track selectedTopics and mainTopiIDc in a correctly ordered list to submit to API. 
+    // track selectedTopics and mainTopiID in a correctly ordered list to submit to API. 
     // e.g. keep selected mainTopicID as first in the list because API infers first is main
     const orderedTopicsList = useMemo(() => {
-        const mainId = getTopicID(mainTopicID);
-        const selectedIds = (selectedTopics || [])
+        const mainID = getTopicID(mainTopicID);
+        const selectedIDs = (selectedTopics || [])
             .map((topic) => getTopicID(topic))
             .filter((id) => id !== null && id !== undefined);
 
-        const orderedIds = mainId !== null && mainId !== undefined
-            ? [mainId, ...selectedIds.filter((id) => id !== mainId)]
-            : selectedIds;
+        const orderedIDs = mainID !== null && mainID !== undefined
+            ? [mainID, ...selectedIDs.filter((id) => id !== mainID)]
+            : selectedIDs;
 
-        return orderedIds.join(",");
+        return orderedIDs.join(",");
     }, [mainTopicID, selectedTopics]);
 
-    const mainTopicOnChange = (topicID) => {
-        setMainTopicID(topicID)
-    }
+    const handleMainTopicChange = (topicID) => {
+        setMainTopicID(topicID);
+    };
     
     // re-map topic summary when selectedTopics or mainTopicID changes
     const topicSummary = useMemo(() => {
@@ -46,28 +46,31 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         };
 
         selectedTopics?.forEach((topic) => {
+            const elementID = `main-topic-selector-radios-item-${topic.id}}`;
             body.rows.push(
                 { 
                     columns: [
                         { content: topic.label, rightAlign: false },
                         { content: 
                             <span className="ons-radios__item ons-radios__item--no-border" 
-                                data-testid="quality-designation-radios-item-official-container"
+                                data-testid={`${elementID}-container`}
                             >
                                 <span className="ons-radio ons-radio--no-border" 
-                                    data-testid="quality-designation-radios-item-official"
+                                    data-testid="${elementID}"
                                 >
-                                    <input id="official" 
+                                    <input id={`${topic.id}-radio`} 
                                         className="ons-radio__input" 
-                                        data-testid="quality-designation-radios-item-official-input" 
-                                        type="radio" value="official" name="quality-designation-radios" 
-                                        onChange={() => mainTopicOnChange(topic.id)}
+                                        data-testid={`${elementID}-input`} 
+                                        type="radio" 
+                                        value={topic.id} 
+                                        name="main-topic-selector-radios" 
+                                        onChange={() => handleMainTopicChange(topic.id)}
                                         checked={topic.id === mainTopicID}
                                     />
                                     <label className="ons-radio__label" 
-                                        htmlFor="official" 
-                                        id="official-label" 
-                                        data-testid="quality-designation-radios-item-official-label"
+                                        htmlFor={`${topic.id}-radio`} 
+                                        id={`${elementID}-label`} 
+                                        data-testid={`${elementID}-label`}
                                     >
                                         &nbsp;
                                     </label>
@@ -83,11 +86,11 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         return { headers, body };
     }, [selectedTopics, mainTopicID]);
 
-    const topicOnChange = (topic) => {
+    const handleTopicChange = (topic) => {
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopicID(topic.id)
+            setMainTopicID(topic.id);
         }
         setSelectedTopics(prev =>
             prev.some(t => t.id === topic.id)
@@ -111,7 +114,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                         id={sub.id}
                         name={sub.id}
                         className="ons-checkbox__input"
-                        onChange={() => topicOnChange({ id: sub.id, label: sub.label })}
+                        onChange={() => handleTopicChange({ id: sub.id, label: sub.label })}
                     />
                     <label
                         className="ons-checkbox__label"
@@ -124,9 +127,9 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 </span>
             ))
         }));
-    }
+    };
 
-    const accord = mapTopicsToTopicSelector(listOfAllTopics);
+    const topicAccordionItems = mapTopicsToTopicSelector(listOfAllTopics);
 
     return (
         <div className="ons-u-mt-l ons-u-mb-l">
@@ -136,7 +139,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
             </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
                 <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={orderedTopicsList} />
-                <Accordion id="topics-selector-accordion" accordionItems={accord} />
+                <Accordion id="topics-selector-accordion" accordionItems={topicAccordionItems} />
                 <h3 className="ons-u-mt-m">Topic summary</h3>
                 <Table contents={topicSummary} noResultsText="No topic selected" />
             </Field>
