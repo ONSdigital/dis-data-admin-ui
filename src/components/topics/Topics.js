@@ -9,12 +9,12 @@ import Table from "../table/Table";
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
     const [topicSummary, setTopicSummary] = useState();
-    const [mainTopic, setMainTopic] = useState(preSelectedTopics[0] || null);
+    const [mainTopicID, setMainTopic] = useState(preSelectedTopics[0] || null);
     // const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
     // const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
-    const mainTopicOnChange = (topic) => {
-        setMainTopic(topic)
+    const mainTopicOnChange = (topicID) => {
+        setMainTopic(topicID)
     }
 
     const mapTopicSummaryTable = (data) => {
@@ -37,7 +37,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                 <span className="ons-radio ons-radio--no-border" data-testid="quality-designation-radios-item-official">
                                     <input id="official" className="ons-radio__input" 
                                     data-testid="quality-designation-radios-item-official-input" 
-                                    type="radio" value="official" name="quality-designation-radios" onClick={() => mainTopicOnChange({id: item.id, label: item.label})}
+                                    type="radio" value="official" name="quality-designation-radios" onClick={() => mainTopicOnChange(item.id)}
                                     checked={item.id === mainTopic.id}
                                     />
                                     <label className="ons-radio__label" htmlFor="official" id="official-label" data-testid="quality-designation-radios-item-official-label">
@@ -99,7 +99,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopic(topic)
+            setMainTopic(topic.id)
         }
         setSelectedTopics(prev =>
             prev.some(t => t.id === topic.id)
