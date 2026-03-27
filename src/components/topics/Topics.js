@@ -61,7 +61,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                         className="ons-radio__input" 
                                         data-testid="quality-designation-radios-item-official-input" 
                                         type="radio" value="official" name="quality-designation-radios" 
-                                        onClick={() => mainTopicOnChange(topic.id)}
+                                        onChange={() => mainTopicOnChange(topic.id)}
                                         checked={topic.id === mainTopicID}
                                     />
                                     <label className="ons-radio__label" 
