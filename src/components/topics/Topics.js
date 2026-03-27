@@ -27,7 +27,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
             ? [mainID, ...selectedIDs.filter((id) => id !== mainID)]
             : selectedIDs;
 
-        return orderedIDs.join(",");
+        return orderedIDs;
     }, [mainTopicID, selectedTopics]);
 
     const handleMainTopicChange = (topicID) => {
@@ -138,7 +138,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
-                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={orderedTopicsList} />
+                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(orderedTopicsList || [])} />
                 <Accordion id="topics-selector-accordion" accordionItems={topicAccordionItems} />
                 <h3 className="ons-u-mt-m">Topic summary</h3>
                 <Table contents={topicSummary} noResultsText="No topic selected" />
