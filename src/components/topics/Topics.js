@@ -9,12 +9,12 @@ import Table from "../table/Table";
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
     const [topicSummary, setTopicSummary] = useState();
-    const [mainTopicID, setMainTopic] = useState(preSelectedTopics[0] || null);
+    const [mainTopicID, setMainTopicID] = useState(preSelectedTopics[0] || null);
     // const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
     // const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
 
     const mainTopicOnChange = (topicID) => {
-        setMainTopic(topicID)
+        setMainTopicID(topicID)
     }
 
     const mapTopicSummaryTable = (data) => {
@@ -38,7 +38,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                     <input id="official" className="ons-radio__input" 
                                     data-testid="quality-designation-radios-item-official-input" 
                                     type="radio" value="official" name="quality-designation-radios" onClick={() => mainTopicOnChange(item.id)}
-                                    checked={item.id === mainTopic.id}
+                                    checked={item.id === mainTopicID}
                                     />
                                     <label className="ons-radio__label" htmlFor="official" id="official-label" data-testid="quality-designation-radios-item-official-label">
                                         &nbsp;
@@ -55,7 +55,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
     useEffect(() => {
         setTopicSummary(mapTopicSummaryTable(selectedTopics));
-    }, [selectedTopics, mainTopic]);
+    }, [selectedTopics, mainTopicID]);
 
     // useEffect(() => {
     //     /* eslint-disable-next-line react-hooks/set-state-in-effect */
@@ -99,7 +99,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopic(topic.id)
+            setMainTopicID(topic.id)
         }
         setSelectedTopics(prev =>
             prev.some(t => t.id === topic.id)
