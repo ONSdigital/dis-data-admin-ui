@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
@@ -11,30 +11,47 @@ const getTopicID = (topicOrID) => {
     return topicOrID;
 };
 
+const topicsListKey = (topics) => {
+    const idStrings = (topics ?? []).map((t) => getTopicID(t));
+    return JSON.stringify(idStrings);
+};
+
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
-    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics || []);
-    const [mainTopicID, setMainTopicID] = useState(getTopicID(preSelectedTopics?.[0]));
+    const [selectedTopics, setSelectedTopics] = useState(() => preSelectedTopics || []);
+    const [mainTopic, setMainTopic] = useState(() => getTopicID(preSelectedTopics?.[0]));
 
-    // track selectedTopics and mainTopiID in a correctly ordered list to submit to API. 
-    // e.g. keep selected mainTopicID as first in the list because API infers first is main
+    // preSelectedTopics updates after a failed submit (original submission returned) but
+    // useState only initialises once — keep local state in sync with the prop.
+    useEffect(() => {
+        const next = preSelectedTopics || [];
+        setSelectedTopics(next);
+        setMainTopic(getTopicID(next[0]));
+    }, [topicsListKey(preSelectedTopics)]);
+
+    // track selectedTopics and mainTopic in a correctly ordered list to submit to API. 
+    // e.g. keep selected mainTopic as first in the list because API infers first is main
     const orderedTopicsList = useMemo(() => {
-        const mainID = getTopicID(mainTopicID);
-        const selectedIDs = (selectedTopics || [])
-            .map((topic) => getTopicID(topic))
-            .filter((id) => id !== null && id !== undefined);
+        const list = selectedTopics || [];
+        const mainID = getTopicID(mainTopic);
 
-        const orderedIDs = mainID !== null && mainID !== undefined
-            ? [mainID, ...selectedIDs.filter((id) => id !== mainID)]
-            : selectedIDs;
+        const mainTopicObj =
+            list.find((t) => getTopicID(t) === mainID) ??
+            (typeof mainTopic === "object" && mainTopic !== null ? mainTopic : null);
 
-        return orderedIDs;
-    }, [mainTopicID, selectedTopics]);
+        const others = list.filter((t) => getTopicID(t) !== mainID);
 
-    const handleMainTopicChange = (topicID) => {
-        setMainTopicID(topicID);
+        if (mainID !== null && mainID !== undefined && mainTopicObj !== null) {
+            return [mainTopicObj, ...others];
+        }
+
+        return list;
+    }, [mainTopic, selectedTopics]);
+
+    const handleMainTopicChange = (topic) => {
+        setMainTopic(topic);
     };
     
-    // re-map topic summary when selectedTopics or mainTopicID changes
+    // re-map topic summary when selectedTopics or mainTopic changes
     const topicSummary = useMemo(() => {
         const headers = [
             { label: "Topic", isSortable: false, rightAlign: false },
@@ -64,8 +81,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                         type="radio" 
                                         value={topic.id} 
                                         name="main-topic-selector-radios" 
-                                        onChange={() => handleMainTopicChange(topic.id)}
-                                        checked={topic.id === mainTopicID}
+                                        onChange={() => handleMainTopicChange(topic)}
+                                        checked={getTopicID(topic) === getTopicID(mainTopic)}
                                     />
                                     <label className="ons-radio__label" 
                                         htmlFor={`${topic.id}-radio`} 
@@ -84,17 +101,17 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
 
         return { headers, body };
-    }, [selectedTopics, mainTopicID]);
+    }, [selectedTopics, mainTopic]);
 
     const handleTopicChange = (topic) => {
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopicID(topic.id);
+            setMainTopic(topic);
         }
-        setSelectedTopics(prev =>
-            prev.some(t => t.id === topic.id)
-                ? prev.filter(t => t.id !== topic.id)
+        setSelectedTopics((prev) =>
+            prev.some((t) => getTopicID(t) === getTopicID(topic))
+                ? prev.filter((t) => getTopicID(t) !== getTopicID(topic))
                 : [...prev, topic]
         );
     };
@@ -114,7 +131,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                         id={sub.id}
                         name={sub.id}
                         className="ons-checkbox__input"
-                        onChange={() => handleTopicChange({ id: sub.id, label: sub.label })}
+                        checked={selectedTopics.some((t) => getTopicID(t) === getTopicID(sub))}
+                        onChange={() => handleTopicChange(sub)}
                     />
                     <label
                         className="ons-checkbox__label"
