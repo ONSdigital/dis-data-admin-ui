@@ -59,7 +59,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
     };
 
     return (
-        <>
+        <div className="ons-col-8@m">
             {renderFailure()}
             <form className="ons-u-mt-m" action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
@@ -95,7 +95,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                 />
                 <Topics
                     listOfAllTopics={listOfAllTopics}
-                    preSelectedTopics={currentTopics}
+                    preSelectedTopics={formState.submission?.originalTopics ?? currentTopics}
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                 />
                 <TextArea
@@ -154,6 +154,6 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
             </form>
-        </>
+        </div>
     );
 }
