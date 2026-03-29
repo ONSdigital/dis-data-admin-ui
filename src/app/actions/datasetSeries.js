@@ -11,8 +11,8 @@ import { z } from "zod";
 const createSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
     id: z.string().min(1, { message: "ID is required" }),
-    topics: z.string().array().nonempty({ message: "Topic is required" }),
     description: z.string().min(1, { message: "Description is required" }),
+    topics: z.string().array().nonempty({ message: "Topic is required" }),
     contacts: z.array(z.object({
         name: z.string(),
         email: z.string()
