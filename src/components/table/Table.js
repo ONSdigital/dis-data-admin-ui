@@ -43,8 +43,11 @@ export default function Table({ contents, caption, classes, dataTestId, noResult
                 <tr className="ons-table__row">
                     {contents?.headers.map((header, index) => {
                         const sanitisedHeaderLabel = sanitiseString(header.label);
+                        const headerClass = `ons-table__header ${header?.rightAlign && "ons-table__header--numeric"}`;
                         return (
-                            <th scope="col" className="ons-table__header" aria-sort="none" key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}>
+                            <th scope="col" className={headerClass} aria-sort="none" 
+                                key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}
+                            >
                                 {header.isSortable ?
                                     <button aria-label="Sort by Legal basis" type="button" data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} className="ons-table__sort-button" onClick={() => {handleSort(index);}}>
                                         {header.label}
@@ -76,8 +79,11 @@ export default function Table({ contents, caption, classes, dataTestId, noResult
                     return (
                         <tr className="ons-table__row" key={`row-${index}`}>
                             {row.columns.map((cell, i) => {
+                                const cellClass = `ons-table__cell ${cell?.rightAlign && "ons-table__cell--numeric"}`;
                                 return (
-                                    <td className="ons-table__cell" key={`row-${index}cell-${i}`} data-testid={`${sanitisedDataTestId}-cell-${index}-${i}`}>{cell.content}</td>
+                                    <td className={cellClass} key={`row-${index}cell-${i}`} data-testid={`${sanitisedDataTestId}-cell-${index}-${i}`}>
+                                        {cell.content}
+                                    </td>
                                 );
                             })}
                         </tr>
