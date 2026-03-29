@@ -12,7 +12,7 @@ const getTopicID = (topicOrID) => {
     return topicOrID;
 };
 
-// generate string of comma seperated IDs. used to track changes more reliably than watching preSelectedTopics array
+// generate JSON string of comma seperated IDs. used to track changes more reliably than watching preSelectedTopics array
 const topicsListKey = (topics) => {
     const idStrings = (topics ?? []).map((t) => getTopicID(t));
     return JSON.stringify(idStrings);
@@ -24,11 +24,13 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
     // preSelectedTopics updates after a failed submit (original submission returned) but
     // useState only initialises once — keep local state in sync with the prop.
+    const preSelectedTopicsKey = topicsListKey(preSelectedTopics);
     useEffect(() => {
-        const next = preSelectedTopics || [];
-        setSelectedTopics(next);
-        setMainTopic(getTopicID(next[0]));
-    }, [topicsListKey(preSelectedTopics)]);
+        const topicsFromProps = preSelectedTopics || [];
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
+        setSelectedTopics(topicsFromProps);
+        setMainTopic(getTopicID(topicsFromProps[0]));
+    }, [preSelectedTopicsKey, preSelectedTopics]);
 
     // track selectedTopics and mainTopic in a correctly ordered list to submit to API. 
     // e.g. keep selected mainTopic as first in the list because API infers first is main
