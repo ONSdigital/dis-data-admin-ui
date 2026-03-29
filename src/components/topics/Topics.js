@@ -5,12 +5,14 @@ import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
 
+// get ID of a topic whatever form it comes in
 const getTopicID = (topicOrID) => {
     if (topicOrID === null || topicOrID === undefined) return null;
     if (typeof topicOrID === "object") return topicOrID.id ?? topicOrID.ID ?? null;
     return topicOrID;
 };
 
+// generate string of comma seperated IDs. used to track changes more reliably than watching preSelectedTopics array
 const topicsListKey = (topics) => {
     const idStrings = (topics ?? []).map((t) => getTopicID(t));
     return JSON.stringify(idStrings);
