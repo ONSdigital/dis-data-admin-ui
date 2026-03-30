@@ -18,6 +18,22 @@ const topicsListKey = (topics) => {
     return JSON.stringify(idStrings);
 };
 
+// get a topic label from a topic or topicID
+const getTopicLabel = (topicOrID, topics) => {
+    const id = getTopicID(topicOrID);
+    if (id == null || id === undefined) return null;
+    if (!topics?.length) return null;
+    for (const topic of topics) {
+        if (getTopicID(topic) === id) return topic.label;
+        const subs = topic.subtopics;
+        if (subs?.length) {
+            const sub = subs.find((s) => getTopicID(s) === id);
+            if (sub) return sub.label;
+        }
+    }
+    return null;
+};
+
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
     const [selectedTopics, setSelectedTopics] = useState(() => preSelectedTopics || []);
     const [mainTopic, setMainTopic] = useState(() => getTopicID(preSelectedTopics?.[0]));
@@ -71,7 +87,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
             body.rows.push(
                 { 
                     columns: [
-                        { content: topic.label, rightAlign: false },
+                        { content: topic.label ? topic.label : getTopicLabel(topic, listOfAllTopics), rightAlign: false },
                         { content: 
                             <span className="ons-radios__item ons-radios__item--no-border" 
                                 data-testid={`${elementID}-container`}
@@ -105,7 +121,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
 
         return { headers, body };
-    }, [selectedTopics, mainTopic]);
+    }, [selectedTopics, mainTopic, listOfAllTopics]);
 
     const handleTopicChange = (topic) => {
         // while no topics are curerently selected assume the first topic
