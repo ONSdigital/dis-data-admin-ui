@@ -4,10 +4,6 @@ import userEvent from "@testing-library/user-event";
 
 import AccordionItem from "./AccordionItem";
 
-// jest.mock("author-design-system-react", () => ({
-//     sanitiseString: jest.fn((value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")),
-// }));
-
 describe("AccordionItem", () => {
     test("renders closed by default and toggles content open and closed", async () => {
         const user = userEvent.setup();
