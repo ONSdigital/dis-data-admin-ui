@@ -140,6 +140,9 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         if (!topics) return [];
         return topics.map(topic => ({
             ...topic,
+            isOpen: topic.subtopics?.some((sub) =>
+                selectedTopics.some((t) => getTopicID(t) === getTopicID(sub))
+            ) ?? false,
             body: topic.subtopics?.map(sub => (
                 <span
                     className="ons-checkbox ons-checkbox--no-border ons-u-mb-xs"

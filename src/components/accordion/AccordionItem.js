@@ -3,7 +3,7 @@ import { useState } from "react";
 import { sanitiseString } from "author-design-system-react";
 
 export default function AccordionItem({ accordionItem }) {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(accordionItem.isOpen || false);
 
     const handleOnClick = () => {
         setIsOpen(!isOpen);
