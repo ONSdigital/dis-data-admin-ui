@@ -175,14 +175,19 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     return (
         <div className="ons-u-mt-l ons-u-mb-l">
             <h2>Choose a topic</h2>
-            <Panel variant="info">
+            <Panel variant="info" dataTestId="topics-explainer-panel">
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
-                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(orderedTopicsList || [])} />
+                <input id="dataset-series-topics-input" 
+                    type="hidden" 
+                    name="dataset-series-topics-input" 
+                    data-testid="dataset-series-topics-input"
+                    value={JSON.stringify(orderedTopicsList || [])} 
+                />
                 <Accordion id="topics-selector-accordion" accordionItems={topicAccordionItems} />
                 <h3 className="ons-u-mt-m">Topic summary</h3>
-                <Table contents={topicSummary} noResultsText="No topic selected" />
+                <Table contents={topicSummary} dataTestId="topics-summary" noResultsText="No topic selected" />
             </Field>
         </div>
     );
