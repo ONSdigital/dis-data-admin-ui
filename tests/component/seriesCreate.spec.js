@@ -11,7 +11,11 @@ test.describe("Create series page", () => {
         await expect(page.getByTestId("mandatory-fields-panel")).toContainText("You must fill in all fields unless marked optional");
         await expect(page.getByTestId("dataset-series-id")).toBeVisible();
         await expect(page.getByTestId("dataset-series-title")).toBeVisible();
-        await expect(page.getByTestId("fieldset-dataset-series-topics-checkbox")).toBeVisible();
+        await expect(page.getByTestId("topics-selector-accordion-accordion-item-1000")).toBeVisible();
+        await expect(page.getByTestId("topics-selector-accordion-accordion-item-1000")).toContainText("Business");
+        await expect(page.getByTestId("topics-selector-accordion-accordion-item-2000")).toBeVisible();
+        await expect(page.getByTestId("topics-selector-accordion-accordion-item-2000")).toContainText("Census");
+        await expect(page.getByTestId("topics-summary-no-data")).toContainText("No topic selected");
         await expect(page.getByTestId("dataset-series-description")).toBeVisible();
         await expect(page.getByTestId("dataset-series-qmi")).toBeVisible();
         await expect(page.getByTestId("dataset-series-keywords")).toBeVisible();
@@ -20,12 +24,14 @@ test.describe("Create series page", () => {
     });
 
     test("Submit form successfully", async ({ page, context }) => {
-        setValidAuthCookies(context);
+        await setValidAuthCookies(context);
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
         await page.getByLabel("Series ID", {exact: true}).fill("mock-quarterly");
-        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
+        await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
+        await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
+        
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
@@ -82,8 +88,9 @@ test.describe("Create series page", () => {
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
         await page.getByLabel("Series ID", {exact: true}).fill("duplicate-id");
-        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
+        await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test name");
@@ -100,8 +107,9 @@ test.describe("Create series page", () => {
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("duplicate-title");
         await page.getByLabel("Series ID", {exact: true}).fill("test ID");
-        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
+        await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test name");
