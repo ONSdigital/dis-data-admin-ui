@@ -12,10 +12,11 @@ export const getAllTopics = async (reqCfg) => {
 
     const mappedTopics = await Promise.all(
         topics.items.map(async (topic) => {
-            if (topic.links?.subtopics?.href) {
-                const subTubTopicURL = new URL(topic.links.subtopics.href);
+            const t = topic.current || topic.next || topic;
+            if (t.links?.subtopics?.href) {
+                const subTubTopicURL = new URL(t.links.subtopics.href);
                 const subTopic = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
-                return mapTopic(topic, subTopic);
+                return mapTopic(t, subTopic);
             }
         })
     );
@@ -35,7 +36,8 @@ const getSubTopics = async (reqCfg, url) => {
     if (subTopics.ok != null && !subTopics.ok || subTopics?.items.length === 0) return [];
 
     const mappedSubTopics = subTopics.items.map(subTopic => {
-        return mapTopic(subTopic, null);
+        const st = subTopic.current || subTopic.next || subTopic;
+        return mapTopic(st, null);
     });
     return mappedSubTopics;
 };
