@@ -20,8 +20,6 @@ export const getAllTopics = async (reqCfg) => {
             }
         })
     );
-
-    console.log("MAPPED TOPICS IS:", mappedTopics)
     return mappedTopics;
 };
 
