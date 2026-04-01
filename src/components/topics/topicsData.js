@@ -12,9 +12,11 @@ export const getAllTopics = async (reqCfg) => {
 
     const mappedTopics = await Promise.all(
         topics.items.map(async (topic) => {
-            const subTubTopicURL = new URL(topic.links.subtopics.href);
-            const subTopic = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
-            return mapTopic(topic, subTopic);
+            if (topic.links?.subtopics?.href) {
+                const subTubTopicURL = new URL(topic.links.subtopics.href);
+                const subTopic = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
+                return mapTopic(topic, subTopic);
+            }
         })
     );
 
