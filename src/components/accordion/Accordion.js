@@ -12,7 +12,7 @@ export default function Accordion({ id, dataTestId, accordionItems }) {
 
     return (
         <div id={sanitisedId} className="ons-accordion ons-u-mt-l" data-testid={sanitisedDataTestId}>
-            {accordionItems.map((item, index) => <AccordionItem accordionItem={item} key={`accordion-item-${index}`} />)}
+            {accordionItems.map((item, index) => <AccordionItem id={id} accordionItem={item} key={`accordion-item-${index}`} />)}
         </div>
     );
 };

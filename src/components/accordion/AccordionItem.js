@@ -2,15 +2,15 @@ import { useState } from "react";
 
 import { sanitiseString } from "author-design-system-react";
 
-export default function AccordionItem({ accordionItem }) {
+export default function AccordionItem({ id, accordionItem }) {
     const [isOpen, setIsOpen] = useState(accordionItem.isOpen || false);
 
     const handleOnClick = () => {
         setIsOpen(!isOpen);
     };
 
-    const sanitisedId = sanitiseString(`accordion-item-${accordionItem.id}`);
-    const sanitisedDataTestId = sanitiseString(`accordion-item-${accordionItem.id}`);
+    const sanitisedId = sanitiseString(`${id}-accordion-item-${accordionItem.id}`);
+    const sanitisedDataTestId = sanitiseString(`${id}-accordion-item-${accordionItem.id}`);
 
     return (
         <div id={sanitisedId} className="ons-details ons-details--accordion" data-group="accordion-example" key={accordionItem.id} data-testid={sanitisedDataTestId}>
