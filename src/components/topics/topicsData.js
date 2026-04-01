@@ -21,6 +21,7 @@ export const getAllTopics = async (reqCfg) => {
         })
     );
 
+    console.log("MAPPED TOPICS IS:", mappedTopics)
     return mappedTopics;
 };
 
@@ -50,9 +51,10 @@ const getSubTopics = async (reqCfg, url) => {
  * @returns {object}
  */
 const mapTopic = (topic, subTopics) => {
-    return {
+    const mappedTopic = {
         id: topic.id,
         label: topic.title,
-        subtopics: subTopics || null
     };
+    if (subTopics) mappedTopic.subtopics = subTopics;
+    return mappedTopic;
 };
