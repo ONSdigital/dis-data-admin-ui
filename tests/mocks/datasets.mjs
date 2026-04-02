@@ -58,7 +58,7 @@ export const datasetList = {
             "state": "published",
             "title": "Mock Dataset",
             "unit_of_measure": "Percentage",
-            "topics": ["id1", "id2"],
+            "topics": ["1001", "2002"],
             "contacts": [
                 {
                     "email": "contactOne@ons.gov.uk",

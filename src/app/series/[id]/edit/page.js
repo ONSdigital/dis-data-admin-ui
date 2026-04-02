@@ -6,12 +6,13 @@ import { updateDatasetSeries } from "@/app/actions/datasetSeries";
 import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
+import { getAllTopics } from "@/components/topics/topicsData";
 
 export default async function createPage({params}) {
     const { id } = await params;
 
     const reqCfg = await SSRequestConfig(cookies);
-    const topicsResp = await httpGet(reqCfg, "/topics");
+    const topics = await getAllTopics(reqCfg);
     const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
 
     let datasetError, topicsError = false;
@@ -19,7 +20,7 @@ export default async function createPage({params}) {
         datasetError = true;
     }
 
-    if (topicsResp.ok != null && !topicsResp.ok) {
+    if(Object.keys(topics).length === 0) {
         topicsError = true;
     }
 
@@ -47,7 +48,6 @@ export default async function createPage({params}) {
     };
 
     const dataset = datasetResp?.next;
-    const listOfAllTopics = topicsResp?.items;
     return (
         <>
             <PageHeading 
@@ -63,7 +63,7 @@ export default async function createPage({params}) {
                         currentQMI={dataset.qmi?.href}
                         currentKeywords={dataset.keywords}
                         currentContacts={dataset.contacts}
-                        listOfAllTopics={listOfAllTopics}
+                        listOfAllTopics={topics}
                         action={updateDatasetSeries}
                     />
                 </>
