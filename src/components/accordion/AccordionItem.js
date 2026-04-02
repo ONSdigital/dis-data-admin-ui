@@ -9,8 +9,9 @@ export default function AccordionItem({ id, accordionItem }) {
         setIsOpen(!isOpen);
     };
 
-    const sanitisedId = sanitiseString(`${id}-accordion-item-${accordionItem.id}`);
-    const sanitisedDataTestId = sanitiseString(`${id}-accordion-item-${accordionItem.id}`);
+    const idPrefix = id ? `${id}-` : "";
+    const sanitisedId = sanitiseString(`${idPrefix}accordion-item-${accordionItem.id}`);
+    const sanitisedDataTestId = sanitiseString(`${idPrefix}accordion-item-${accordionItem.id}`);
 
     return (
         <div id={sanitisedId} className="ons-details ons-details--accordion" data-group="accordion-example" key={accordionItem.id} data-testid={sanitisedDataTestId}>

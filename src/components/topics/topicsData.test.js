@@ -57,8 +57,8 @@ describe("getAllTopics", () => {
                 id: "2945",
                 label: "Business",
                 subtopics: [
-                    { id: "sub-1", label: "Retail", subtopics: null },
-                    { id: "sub-2", label: "Manufacturing", subtopics: null },
+                    { id: "sub-1", label: "Retail" },
+                    { id: "sub-2", label: "Manufacturing" },
                 ],
             },
         ]);

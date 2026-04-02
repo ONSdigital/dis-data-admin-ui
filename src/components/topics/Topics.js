@@ -91,7 +91,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         };
 
         selectedTopics?.forEach((topic) => {
-            const elementID = `main-topic-selector-radios-item-${topic.id}}`;
+            const elementID = `main-topic-selector-radios-item-${topic.id}`;
             body.rows.push(
                 { 
                     columns: [
@@ -101,7 +101,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                 data-testid={`${elementID}-container`}
                             >
                                 <span className="ons-radio ons-radio--no-border" 
-                                    data-testid="${elementID}"
+                                    data-testid={elementID}
                                 >
                                     <input id={`${topic.id}-radio`} 
                                         className="ons-radio__input" 

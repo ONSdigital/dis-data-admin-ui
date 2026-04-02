@@ -36,9 +36,9 @@ describe("Topics", () => {
         const hiddenInput = screen.getByTestId("dataset-series-topics-input")
         expect(hiddenInput).toBeInTheDocument();
         expect(hiddenInput.value).toBe("[]");
-        expect(screen.getByTestId("accordion-item-0001")).toHaveTextContent("Business, industry and trade");
+        expect(screen.getByTestId("topics-selector-accordion-accordion-item-0001")).toHaveTextContent("Business, industry and trade");
         expect(screen.queryByLabelText("Retail sales")).not.toBeInTheDocument();
-        expect(screen.getByTestId("accordion-item-0002")).toHaveTextContent("Census");
+        expect(screen.getByTestId("topics-selector-accordion-accordion-item-0002")).toHaveTextContent("Census");
         expect(screen.queryByLabelText("Population estimates")).not.toBeInTheDocument();
         expect(screen.getByTestId("topics-summary-header-label-topic")).toHaveTextContent("Topic");
         expect(screen.getByTestId("topics-summary-header-label-main-topic")).toHaveTextContent("Main topic");
@@ -56,7 +56,7 @@ describe("Topics", () => {
         expect(screen.getByRole("heading", { name: "Choose a topic" })).toBeInTheDocument();
         expect(screen.getAllByText("Retail sales")).toHaveLength(2);
 
-        const mainTopicRadio = screen.getByTestId("main-topic-selector-radios-item-1001}-input");
+        const mainTopicRadio = screen.getByTestId("main-topic-selector-radios-item-1001-input");
         expect(mainTopicRadio).toBeChecked();
 
         expect(screen.getByLabelText("Retail sales")).toBeChecked();
@@ -75,7 +75,7 @@ describe("Topics", () => {
         await user.click(screen.getByLabelText("Retail sales"));
 
         expect(screen.getByLabelText("Retail sales")).toBeChecked();
-        expect(screen.getByTestId("main-topic-selector-radios-item-1001}-input")).toBeChecked();
+        expect(screen.getByTestId("main-topic-selector-radios-item-1001-input")).toBeChecked();
         expect(screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')).toBeInTheDocument();
     });
 
@@ -92,8 +92,8 @@ describe("Topics", () => {
             />
         );
 
-        const retailRadio = screen.getByTestId("main-topic-selector-radios-item-1001}-input");
-        const populationRadio = screen.getByTestId("main-topic-selector-radios-item-2001}-input");
+        const retailRadio = screen.getByTestId("main-topic-selector-radios-item-1001-input");
+        const populationRadio = screen.getByTestId("main-topic-selector-radios-item-2001-input");
 
         expect(retailRadio).toBeChecked();
         expect(populationRadio).not.toBeChecked();
