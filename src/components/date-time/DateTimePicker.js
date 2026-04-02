@@ -10,6 +10,22 @@ export default function DateTimePicker(props) {
     const [hour, setHour] = useState(releaseDate?.hour || "");
     const [minutes, setMinutes] = useState(releaseDate?.minutes || "");
 
+    const buildReleaseDateValue = () => {
+    if (!day || !month || !year || !hour || !minutes) {
+        return "";
+    }
+
+    const date = new Date(
+        parseInt(year, 10),
+        parseInt(month, 10) - 1,
+        parseInt(day, 10),
+        parseInt(hour, 10),
+        parseInt(minutes, 10)
+    );
+
+    return isNaN(date.getTime()) ? "" : date.toISOString();
+};
+
     const sanitisedId = sanitiseString(props.id);
     const sanitisedDataTestId = sanitiseString(props.dataTestId);
 
@@ -28,7 +44,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={day}
-                name={"release-date-day"}
                 dataTestId={`${sanitisedDataTestId}-day`}
             />
 
@@ -45,7 +60,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={month}
-                name={"release-date-month"}
                 dataTestId={`${sanitisedDataTestId}-month`}
             />
 
@@ -62,7 +76,6 @@ export default function DateTimePicker(props) {
                 maxLength={4}
                 type="number"
                 value={year}
-                name={"release-date-year"}
                 dataTestId={`${sanitisedDataTestId}-year`}
             />
 
@@ -79,7 +92,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={hour}
-                name={"release-date-hour"}
                 dataTestId={`${sanitisedDataTestId}-hour`}
             />
 
@@ -91,10 +103,20 @@ export default function DateTimePicker(props) {
                 }}
                 onChange={e => setMinutes(e.target.value)}
                 width="3"
-                type="input"
+                min={0}
+                max={59}
+                maxLength={2}
+                type="number"
                 value={minutes}
-                name={"release-date-minutes"}
                 dataTestId={`${sanitisedDataTestId}-minutes`}
+            />
+
+            <input
+                id={`${sanitisedId}-value`}
+                data-testid={`${sanitisedDataTestId}-value`}
+                name="release-date-value"
+                type="hidden"
+                value={buildReleaseDateValue()}
             />
         </div>
     );
@@ -106,7 +128,7 @@ export default function DateTimePicker(props) {
                 legend={props.legend}
                 description={props.description}
                 dataTestId={`fieldset-${sanitisedDataTestId}`}
-                error={(props.errors && props.errors.release_date_time) ? {id:'release-date-time-error', text: props.errors.release_date_time} : null} 
+                error={(props.errors && props.errors.release_date) ? {id:'release-date-error', text: props.errors.release_date} : null} 
             >
                 {fields}
             </Fieldset>

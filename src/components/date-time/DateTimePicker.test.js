@@ -23,6 +23,9 @@ describe("DateTimerPicker", () => {
 
         const minutes = screen.getByTestId("release-date-minutes");
         expect(minutes).toBeInTheDocument();
+
+        const hiddenReleaseDate = screen.getByTestId("release-date-value");
+        expect(hiddenReleaseDate).toBeInTheDocument();
     });
 
     it("renders correctly when existing date is passed in", () => {
@@ -31,16 +34,19 @@ describe("DateTimerPicker", () => {
         expect(day.value).toBe("25");
 
         const month = screen.getByTestId("release-date-month");
-        expect(month).toBeInTheDocument("2");
+        expect(month.value).toBe("02");
 
         const year = screen.getByTestId("release-date-year");
-        expect(year).toBeInTheDocument("2025");
+        expect(year.value).toBe("2025");
 
         const hour = screen.getByTestId("release-date-hour");
-        expect(hour).toBeInTheDocument("9");
+        expect(hour.value).toBe("09");
 
         const minutes = screen.getByTestId("release-date-minutes");
-        expect(minutes).toBeInTheDocument("30");
+        expect(minutes.value).toBe("30");
+
+        const hiddenReleaseDate = screen.getByTestId("release-date-value");
+        expect(hiddenReleaseDate.value).toBe("2025-02-25T09:30:00.000Z");
     });
 
     it("onChange handler updates day state", () => {
