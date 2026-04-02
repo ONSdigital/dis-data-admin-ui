@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
 
-export default function MigrationFilter() {
+export default function MigrationFilter({ states }) {
     const [stateFilters, setStateFilters] = useState([]);
 
     const { push } = useRouter();
@@ -32,6 +32,28 @@ export default function MigrationFilter() {
         push(url);
     };
 
+    function createCheckboxes() {
+        const checkboxOptions = [];
+        states.forEach(state => {
+            const spaceReplacement = state.replace(/_/g, " ");
+            const formattedLabel = spaceReplacement.charAt(0).toUpperCase() + spaceReplacement.slice(1);
+
+            checkboxOptions.push({
+                id: "checkbox-" + state,
+                name: state,
+                dataTestId: "checkbox-" + state,
+                label: {
+                    text: formattedLabel
+                },
+                onChange: (e) => { stateFilterOnChange(e.target.value) },
+                value: state,
+            });
+        })
+        return ({ itemsList: checkboxOptions });
+    }
+
+    const checkboxOptionsItems = createCheckboxes()
+
     return (
         <>
             <BoxContainer
@@ -41,65 +63,27 @@ export default function MigrationFilter() {
                 id="box-container"
                 title="Filter"
             >
-                <Checkbox
-                    id="state-filter"
-                    dataTestId="state-filter"
-                    items={{
-                        itemsList: [
-                            {
-                                id: "approved",
-                                name: "approved",
-                                label: {
-                                    text: "Approved",
-                                },
-                                onChange: (e) => { stateFilterOnChange(e.target.value) },
-                                value: "approved",
-                            },
-                            {
-                                id: "submitted",
-                                name: "submitted",
-                                label: {
-                                    text: "Submitted",
-                                },
-                                onChange: (e) => { stateFilterOnChange(e.target.value) },
-
-                                value: "submitted",
-                            },
-                            {
-                                id: "in-review",
-                                name: "in-review",
-                                label: {
-                                    text: "In review",
-                                },
-                                onChange: (e) => { stateFilterOnChange(e.target.value) },
-
-                                value: "in_review",
-                            },
-                            {
-                                id: "reverted",
-                                name: "reverted",
-                                label: {
-                                    text: "Reverted",
-                                },
-                                onChange: (e) => { stateFilterOnChange(e.target.value) },
-
-                                value: "reverting",
-                            }
-                        ]
-                    }}
-                    legend="Filter by state"
-                    borderless
-                    classes="ons-u-mt-m ons-u-mb-m"
-                />
-                <Button
-                    dataTestId="migration-filter-apply-button"
-                    id="migration-filter-apply-button"
-                    text="Apply"
-                    variants={[
-                        "small"
-                    ]}
-                    onClick={() => { filterByState(); }}
-                />
+                {states.length > 0 ? (
+                    <>
+                        <Checkbox
+                            id="state-filter"
+                            dataTestId="state-filter"
+                            items={checkboxOptionsItems}
+                            legend="Filter by state"
+                            borderless
+                            classes="ons-u-mt-m ons-u-mb-m"
+                        />
+                        <Button
+                            dataTestId="migration-filter-apply-button"
+                            id="migration-filter-apply-button"
+                            text="Apply"
+                            variants={["small"]}
+                            onClick={filterByState}
+                        />
+                    </>
+                ) : (
+                    <p className="ons-u-mt-m ons-u-mb-m">No migration jobs found</p>
+                )}
             </BoxContainer>
         </>
     );
