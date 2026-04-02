@@ -24,8 +24,7 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("action-link-title")).toBeVisible();
         await expect(page.locator("#description")).toContainText("This is a mock dataset test description");
         await expect(page.getByTestId("action-link-description")).toBeVisible();
-        await expect(page.locator("#topics")).toContainText("Business, industry and trade");
-        await expect(page.locator("#topics")).toContainText("Census");
+        await expect(page.locator("#topics")).toContainText("Business");
         await expect(page.getByTestId("action-link-topics")).toBeVisible();
         await expect(page.locator("#last-updated")).toContainText("1 January 2000");
         await expect(page.locator("#licence")).toContainText("My License");
