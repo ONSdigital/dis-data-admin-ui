@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { Field, Panel } from "author-design-system-react";
 import Accordion from "../accordion/Accordion";
 import Table from "../table/Table";
@@ -41,12 +41,20 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     // preSelectedTopics updates after a failed submit (original submission returned) but
     // useState only initialises once — keep local state in sync with the prop.
     const preSelectedTopicsKey = topicsListKey(preSelectedTopics);
+    const previousPreSelectedTopicsKey = useRef(preSelectedTopicsKey);
     useEffect(() => {
+        // parent rerenders can recreate the same array instance during submit; only
+        // resync local state when the selected topic ids actually change.
+        if (previousPreSelectedTopicsKey.current === preSelectedTopicsKey) {
+            return;
+        }
+
+        previousPreSelectedTopicsKey.current = preSelectedTopicsKey;
         const topicsFromProps = preSelectedTopics || [];
         /* eslint-disable-next-line react-hooks/set-state-in-effect */
         setSelectedTopics(topicsFromProps);
         setMainTopic(getTopicID(topicsFromProps[0]));
-    }, [preSelectedTopicsKey, preSelectedTopics]);
+    }, [preSelectedTopics, preSelectedTopicsKey]);
 
     // track selectedTopics and mainTopic in a correctly ordered list to submit to API. 
     // e.g. keep selected mainTopic as first in the list because API infers first is main
