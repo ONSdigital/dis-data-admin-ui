@@ -18,11 +18,7 @@ const editionWithVersionSchema = z.object({
     edition: z.string().min(1, { message: "Edition ID is required" }),
     edition_title: z.string().min(1, { message: "Edition title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
-    release_day: z.string().min(1, { message: "Day is required" }),
-    release_month: z.string().min(1, { message: "Month is required" }),
-    release_year: z.string().min(1, { message: "Year is required" }),
-    release_hour: z.string().min(1, { message: "Hour is required" }),
-    release_minutes: z.string().min(1, { message: "Minutes are required" }),
+    release_date: z.string().min(1, { message: "A release time and date is required" }),
     distributions: z.array(z.object({
         download_url: z.string(),
     })).min(1, { message: "A file upload is required" })

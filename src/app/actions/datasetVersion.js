@@ -11,11 +11,7 @@ import { z } from "zod";
  
 const versionSchema = z.object({
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
-    release_day: z.string().min(1, { message: "Day is required" }),
-    release_month: z.string().min(1, { message: "Month is required" }),
-    release_year: z.string().min(1, { message: "Year is required" }),
-    release_hour: z.string().min(1, { message: "Hour is required" }),
-    release_minutes: z.string().min(1, { message: "Minutes are required" }),
+    release_date: z.string().min(1, { message: "A release time and date is required" }),
     distributions: z.array(z.object({
         download_url: z.string().min(1, { message: "A file upload is required" }),
     })).min(1, { message: "A file upload is required" })
@@ -33,16 +29,6 @@ const addUploadFileErrorMessage = (errors) => {
     return errors;
 };
 
-// check if any release date or time errors exists and merge them into one for time and date fieldset
-const mergeDateTimeErrors = (errors) => {
-    if (!errors) {
-        return;
-    } 
-    if (errors.release_day || errors.release_month || errors.release_year || errors.release_hour || errors.release_minutes) {
-        errors.release_date_time = ["A release time and date is required"];
-    }
-    return errors;
-};
 
 // check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
 const parseMutliContentField = (multiItem) => {
@@ -166,19 +152,12 @@ const getFormData = async (formData) => {
         version_id: formData.get("version-id"),
         edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-designation-value"),
-        release_day: formData.get("release-date-day"),
-        release_month: formData.get("release-date-month"),
-        release_year: formData.get("release-date-year"),
-        release_hour: formData.get("release-date-hour"),
-        release_minutes: formData.get("release-date-minutes"),
+        release_date: formData.get("release-date-value"),
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: JSON.parse(formData.get("dataset-upload-value")),
-        release_date: null,
         type: "static",
     };
-
-    datasetVersion.release_date =  new Date(datasetVersion.release_year, datasetVersion.release_month - 1, datasetVersion.release_day, datasetVersion.release_hour, datasetVersion.release_minutes).toISOString();
     return datasetVersion;
 };
 
@@ -187,7 +166,6 @@ const handleFailedValidation = async (validation, datasetVersionSubmission) => {
     actionResponse.success = validation.success;
     actionResponse.errors = validation.error.flatten().fieldErrors;
     actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
-    actionResponse.errors = mergeDateTimeErrors(actionResponse.errors);
     actionResponse.submission = datasetVersionSubmission;
     logInfo("failed dataset version validation", null, null);
     return actionResponse;
