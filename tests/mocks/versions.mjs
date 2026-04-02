@@ -55,14 +55,14 @@ export const versions = {
                     "title": "Full Dataset (CSV)",
                     "format": "csv",
                     "media_type": "text/csv",
-                    "download_url": "/datasets/RM086/editions/2021/versions/1.csv",
+                    "download_url": "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv",
                     "byte_size": 4300000
                 },
                 {
                     "title": "Full Dataset (XLS)",
                     "format": "xls",
                     "media_type": "application/vnd.ms-excel",
-                    "download_url": "/datasets/RM086/editions/2021/versions/1.xls",
+                    "download_url": "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     "byte_size": 265000
                 }
             ]
@@ -122,14 +122,14 @@ export const versions = {
                     "title": "Full Dataset (CSV)",
                     "format": "csv",
                     "media_type": "text/csv",
-                    "download_url": "/datasets/RM086/editions/2021/versions/2.csv",
+                    "download_url": "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv",
                     "byte_size": 4300000
                 },
                 {
                     "title": "Full Dataset (XLS)",
                     "format": "xls",
                     "media_type": "application/vnd.ms-excel",
-                    "download_url": "/datasets/RM086/editions/2021/versions/2.xls",
+                    "download_url": "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     "byte_size": 265000
                 }
             ]
