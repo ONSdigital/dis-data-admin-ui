@@ -44,7 +44,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={day}
-                name={"release-date-day"}
                 dataTestId={`${sanitisedDataTestId}-day`}
             />
 
@@ -61,7 +60,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={month}
-                name={"release-date-month"}
                 dataTestId={`${sanitisedDataTestId}-month`}
             />
 
@@ -78,7 +76,6 @@ export default function DateTimePicker(props) {
                 maxLength={4}
                 type="number"
                 value={year}
-                name={"release-date-year"}
                 dataTestId={`${sanitisedDataTestId}-year`}
             />
 
@@ -95,7 +92,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={hour}
-                name={"release-date-hour"}
                 dataTestId={`${sanitisedDataTestId}-hour`}
             />
 
@@ -112,7 +108,6 @@ export default function DateTimePicker(props) {
                 maxLength={2}
                 type="number"
                 value={minutes}
-                name={"release-date-minutes"}
                 dataTestId={`${sanitisedDataTestId}-minutes`}
             />
 
