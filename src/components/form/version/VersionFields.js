@@ -91,6 +91,7 @@ export default function VersionFields(props) {
                 label="File upload"
                 description="File types accepted are .csdb, .csv, .csvw, .sdmx, .xls and .xlsx"
                 uploadBaseURL={appConfig?.uploadBaseURL}
+                accessToken={props.accessToken}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFiles={props.fieldValues?.distributions}
             />

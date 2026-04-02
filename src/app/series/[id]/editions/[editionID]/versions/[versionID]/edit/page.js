@@ -9,8 +9,8 @@ import { Panel } from "@/components/design-system/DesignSystem";
 
 export default async function EditVersion({ params }) {
     const { id, editionID, versionID } = await params;
-
     const reqCfg = await SSRequestConfig(cookies);
+    const accessToken = reqCfg.authToken;
     const response = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}`);
     const version = response.next || response.current || response;
 
@@ -26,7 +26,7 @@ export default async function EditVersion({ params }) {
                     <PageHeading 
                         title={`Edit version ${versionID}`}
                     /> 
-                    <VersionForm datasetID={id} editionID={editionID} version={version} isNewVersion={false} action={updateDatasetVersion} />
+                    <VersionForm datasetID={id} editionID={editionID} version={version} isNewVersion={false} action={updateDatasetVersion} accessToken={accessToken} />
                 </>
             : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
         </>
