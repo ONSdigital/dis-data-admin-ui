@@ -27,7 +27,7 @@ export default function VersionFields(props) {
                 id="release-date"
                 dataTestId="release-date"
                 legend="Release date and time"
-                description="For example, 31 3 1980 09 30"
+                description="For example, 31 03 1980 09 30"
                 errors={props.errors}
                 releaseDate={props.fieldValues?.release_date}
             />
