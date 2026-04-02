@@ -40,7 +40,7 @@ const getFormData = (formData) => {
         next_release: "To be announced"
     };
 
-    datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id);
+    datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
     return datasetSeriesSubmission;
 };
 
