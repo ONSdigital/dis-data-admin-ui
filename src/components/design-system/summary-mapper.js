@@ -49,15 +49,17 @@ const slugifyLowerCase = (string) => {
 
 /**
  * Maps alert/usage note items to JSX content for display in Summary rows.
- * @param {Array>} items - Alerts or usage notes
+ * @param {Array} items - Alerts or usage notes
+ * @param {string} type - String of type of items e.g. "alerts" or "usage-notes"
  * @returns {Array} Renderable content for alerts/usage notes
  */
-const mapAlertsAndUsuageNotes = (items) => {
+const mapAlertsAndUsuageNotes = (items, type) => {
     return items.map((item, index) => {
+        const dataTestIDPrefix = `version-${type}`;
         return (
             <span key={index}>
-                <p className="ons-u-mb-xs">{item.title || `${formatDate(item.date)} - ${item.type}`}</p>
-                <p className="ons-u-fw-n ons-u-mb-l">{item.note || item.description}</p>
+                <p className="ons-u-mb-xs" data-testid={`${dataTestIDPrefix}-title-${index}`}>{item.title || `${formatDate(item.date)} - ${item.type}`}</p>
+                <p className="ons-u-fw-n ons-u-mb-l" data-testid={`${dataTestIDPrefix}-description-${index}`}>{item.note || item.description}</p>
             </span>
         );
     });
@@ -70,10 +72,11 @@ const mapAlertsAndUsuageNotes = (items) => {
  */
 const mapFileDownloads = (items) => {
     return items.map((item, index) => {
+        const dataTestIDPrefix = "version-file-download";
         return (
             <span key={index}>
-                <p className="ons-u-mb-xs">{item.title || `Download ${index}`}</p>
-                <p className="ons-u-fw-n ons-u-mb-l"><a href={item.download_url}>Download</a></p>
+                <p className="ons-u-mb-xs" data-testid={`${dataTestIDPrefix}-title-${index}`}>{item.title || `Download ${index}`}</p>
+                <p className="ons-u-fw-n ons-u-mb-l"><a href={item.download_url} data-testid={`${dataTestIDPrefix}-download-${index}`}>Download</a></p>
             </span>
         );
     });
@@ -221,10 +224,10 @@ const mapVersionSummary = (version, editBaseURL) => {
         mapRow("Quality designation", mapQualityDesignationToUserFriendlyString(version.quality_designation), null, action, rows);
     }
     if (version.usage_notes && version.usage_notes.length > 0) {
-        mapRow("Usage notes", mapAlertsAndUsuageNotes(version.usage_notes), null, action, rows);
+        mapRow("Usage notes", mapAlertsAndUsuageNotes(version.usage_notes, "usage-notes"), null, action, rows);
     }
     if (version.alerts && version.alerts.length > 0) {
-        mapRow("Alerts", mapAlertsAndUsuageNotes(version.alerts), null, action, rows);
+        mapRow("Alerts", mapAlertsAndUsuageNotes(version.alerts, "alerts"), null, action, rows);
     }
     if (version.distributions && version.distributions.length > 0) {
         mapRow("Downloads", mapFileDownloads(version.distributions), null, action, rows);
