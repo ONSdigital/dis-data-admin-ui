@@ -14,7 +14,7 @@ export default function AccordionItem({ id, accordionItem }) {
     const sanitisedDataTestId = sanitiseString(`${idPrefix}accordion-item-${accordionItem.id}`);
 
     return (
-        <div id={sanitisedId} className="ons-details ons-details--accordion" data-group="accordion-example" key={accordionItem.id} data-testid={sanitisedDataTestId}>
+        <div id={sanitisedId} className="ons-details ons-details--accordion" key={accordionItem.id} data-testid={sanitisedDataTestId}>
             <div className="ons-details__heading" role="button" onClick={handleOnClick}>
                 <h2 className="ons-details__title ons-u-fs-r--b"><a>{accordionItem.label}</a></h2>
                 <span className="ons-details__icon">
