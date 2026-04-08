@@ -64,11 +64,13 @@ test.describe("Create series page", () => {
         await expect(page.getByLabel("There was a problem").getByText("Title is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("ID is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Description is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Topic is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Contact is required")).toBeVisible();
 
         await expect(page.getByTestId("field-dataset-series-title-error").getByText("Title is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-id-error").getByText("ID is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-description-error").getByText("Description is required")).toBeVisible();
+        await expect(page.getByTestId("field-dataset-series-topics-error").getByText("Topic is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-contacts-error").getByText("Contact is required")).toBeVisible();
     });
 
