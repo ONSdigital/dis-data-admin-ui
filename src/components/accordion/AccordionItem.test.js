@@ -6,8 +6,6 @@ import AccordionItem from "./AccordionItem";
 
 describe("AccordionItem", () => {
     test("renders closed by default and toggles content open and closed", async () => {
-        const user = userEvent.setup();
-
         render(
             <AccordionItem
                 accordionItem={{
@@ -22,11 +20,11 @@ describe("AccordionItem", () => {
         expect(screen.getByText("Accordion label")).toBeInTheDocument();
         expect(screen.queryByTestId("accordion-item-item-one-content")).not.toBeInTheDocument();
 
-        await user.click(screen.getByRole("button"));
+        await userEvent.click(screen.getByRole("button"));
         expect(screen.getByTestId("accordion-item-item-one-content")).toBeInTheDocument();
         expect(screen.getByTestId("accordion-item-item-one-content")).toHaveTextContent("Accordion body");
 
-        await user.click(screen.getByRole("button"));
+        await userEvent.click(screen.getByRole("button"));
         expect(screen.queryByTestId("accordion-item-item-one-content")).not.toBeInTheDocument();
     });
 
