@@ -65,23 +65,40 @@ describe("Topics", () => {
     });
 
     test("opens a topic accordion item and adds a selected subtopic", async () => {
-        const user = userEvent.setup();
-
         render(<Topics listOfAllTopics={listOfAllTopics} preSelectedTopics={[]} />);
 
         expect(screen.queryByLabelText("Retail sales")).not.toBeInTheDocument();
 
-        await user.click(screen.getByRole("button", { name: "Business, industry and trade" }));
-        await user.click(screen.getByLabelText("Retail sales"));
+        await userEvent.click(screen.getByRole("button", { name: "Business, industry and trade" }));
+        await userEvent.click(screen.getByLabelText("Retail sales"));
 
         expect(screen.getByLabelText("Retail sales")).toBeChecked();
         expect(screen.getByTestId("main-topic-selector-radios-item-1001-input")).toBeChecked();
         expect(screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')).toBeInTheDocument();
     });
 
-    test("lets the user choose a different main topic while preserving selection order", async () => {
-        const user = userEvent.setup();
+    test("removes a topic when the user re-selects an already selected topic", async () => {
+        render(
+            <Topics
+                listOfAllTopics={listOfAllTopics}
+                preSelectedTopics={[{ id: "1001", label: "Retail sales" }]}
+            />
+        );
 
+        const retailSalesCheckbox = screen.getByLabelText("Retail sales");
+        expect(retailSalesCheckbox).toBeChecked();
+        expect(
+            screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')
+        ).toBeInTheDocument();
+
+        await userEvent.click(retailSalesCheckbox);
+
+        expect(retailSalesCheckbox).not.toBeChecked();
+        expect(screen.getByTestId("topics-summary-no-data")).toHaveTextContent("No topic selected");
+        expect(screen.getByDisplayValue("[]")).toBeInTheDocument();
+    });
+
+    test("lets the user choose a different main topic while preserving selection order", async () => {
         render(
             <Topics
                 listOfAllTopics={listOfAllTopics}
@@ -98,7 +115,7 @@ describe("Topics", () => {
         expect(retailRadio).toBeChecked();
         expect(populationRadio).not.toBeChecked();
 
-        await user.click(populationRadio);
+        await userEvent.click(populationRadio);
 
         expect(populationRadio).toBeChecked();
         expect(retailRadio).not.toBeChecked();
