@@ -11,8 +11,8 @@ import { z } from "zod";
 const createSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
     id: z.string().min(1, { message: "ID is required" }),
-    topics: z.string().array().nonempty({ message: "Topic is required" }),
     description: z.string().min(1, { message: "Description is required" }),
+    topics: z.string().array().nonempty({ message: "Topic is required" }),
     contacts: z.array(z.object({
         name: z.string(),
         email: z.string()
@@ -28,7 +28,9 @@ const getFormData = (formData) => {
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
         id : formData.get("dataset-series-id"),
-        topics: JSON.parse(formData.get("dataset-series-topics-input")),
+        // we store original topic field so this can be returned to create/edit form
+        // in it's raw/original format
+        originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
         description: formData.get("dataset-series-description"),
         contacts: JSON.parse(formData.get("dataset-series-contacts")),
         qmi: { 
@@ -38,6 +40,7 @@ const getFormData = (formData) => {
         next_release: "To be announced"
     };
 
+    datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
     return datasetSeriesSubmission;
 };
 

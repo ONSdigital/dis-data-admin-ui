@@ -33,19 +33,19 @@ const setAuthCookies = async (browserContext, expiry, givenName, familyName, rol
 };
 
 const setValidAdminAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
-    setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-admin"]);
+    await setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-admin"]);
 };
 
 const setValidPublisherAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
-    setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
+    await setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
 };
 
 const setValidAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
-    setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
+    await setAuthCookies(browserContext, UNEXPIRED_COOKIE_DATE, givenName, familyName, ["role-publisher"]);
 };
 
 const setExpiredAuthCookies = async (browserContext, givenName = "Test", familyName = "Name") => {
-    setAuthCookies(browserContext,  EXPIRED_COOKIE_DATE, givenName, familyName, []);
+    await setAuthCookies(browserContext,  EXPIRED_COOKIE_DATE, givenName, familyName, []);
 };
 
 export { 
