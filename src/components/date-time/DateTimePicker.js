@@ -11,20 +11,20 @@ export default function DateTimePicker(props) {
     const [minutes, setMinutes] = useState(releaseDate?.minutes || "");
 
     const buildReleaseDateValue = () => {
-    if (!day || !month || !year || !hour || !minutes) {
-        return "";
-    }
+        if (!day || !month || !year || !hour || !minutes) {
+            return "";
+        }
 
-    const date = new Date(
-        parseInt(year, 10),
-        parseInt(month, 10) - 1,
-        parseInt(day, 10),
-        parseInt(hour, 10),
-        parseInt(minutes, 10)
-    );
+        const date = new Date(
+            parseInt(year, 10),
+            parseInt(month, 10) - 1,
+            parseInt(day, 10),
+            parseInt(hour, 10),
+            parseInt(minutes, 10)
+        );
 
-    return isNaN(date.getTime()) ? "" : date.toISOString();
-};
+        return isNaN(date.getTime()) ? "" : date.toISOString();
+    };
 
     const sanitisedId = sanitiseString(props.id);
     const sanitisedDataTestId = sanitiseString(props.dataTestId);
