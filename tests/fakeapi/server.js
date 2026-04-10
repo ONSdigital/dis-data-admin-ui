@@ -310,6 +310,19 @@ app.get("/topics/:id", (req, res) => {
     res.send(topic);
 });
 
+app.get("/topics/:id/subtopics", (req, res) => {
+    log("Handling GET '/topics/:id/subtopics'", req.url, null);
+
+    const topic = topicList.items.find(item => item.id === req.params.id);
+    if (!topic) {
+        log("subtopic not found", req.url, 404);
+        res.status(404).send("Subtopic not found");
+        return;
+    }
+    log("Returning success", req.url, 200);
+    res.send(topic.subtopics);
+});
+
 app.get("/v1/migration-jobs", (req, res) => {
     log("Handling GET '/migration-jobs'", req.url, null);
     
@@ -372,4 +385,5 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Fake API test server running at http://localhost:${PORT}/`);
+    process.env.ENABLE_LOGGING && console.log("Logging enabled");
 });

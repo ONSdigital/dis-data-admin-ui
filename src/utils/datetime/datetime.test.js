@@ -35,11 +35,11 @@ describe('formatDate', () => {
 describe('ISOToDMYMHValues', () => {
     test('should return correct values for valid date string', () => {
         const result = ISOToDMYMHValues('2000-01-01T07:00:00.000Z');
-        expect(result.day).toBe(1);
-        expect(result.month).toBe(1);
+        expect(result.day).toBe('01');
+        expect(result.month).toBe('01');
         expect(result.year).toBe(2000);
         expect(result.minutes).toBe('00');
-        expect(result.hour).toBe(7);
+        expect(result.hour).toBe('07');
     });
 
     test('should return null when called with no arguments', () => {
