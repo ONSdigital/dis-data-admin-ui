@@ -9,7 +9,8 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, action }) {
+export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, action }) {
+    console.log(isPublished)
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
@@ -107,6 +108,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     listOfAllTopics={listOfAllTopics}
                     preSelectedTopics={formState.submission?.originalTopics ?? currentTopics}
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
+                    disableMainTopics={isPublished}
                 />
                 <TextInput
                     id="dataset-series-qmi"

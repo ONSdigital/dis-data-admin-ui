@@ -34,7 +34,7 @@ const getTopicLabel = (topicOrID, topics) => {
     return null;
 };
 
-export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
+export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError, disableMainTopics }) {
     const [selectedTopics, setSelectedTopics] = useState(() => preSelectedTopics || []);
     const [mainTopic, setMainTopic] = useState(() => getTopicID(preSelectedTopics?.[0]));
 
@@ -111,6 +111,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                         name="main-topic-selector-radios" 
                                         onChange={() => handleMainTopicChange(topic)}
                                         checked={getTopicID(topic) === getTopicID(mainTopic)}
+                                        disabled={disableMainTopics}
                                     />
                                     <label className="ons-radio__label" 
                                         htmlFor={`${topic.id}-radio`} 
