@@ -123,4 +123,19 @@ describe("Topics", () => {
             screen.getByDisplayValue('[{"id":"2001","label":"Population estimates"},{"id":"1001","label":"Retail sales"}]')
         ).toBeInTheDocument();
     });
+
+    test("disables main topic radios when disableMainTopics is true", () => {
+        render(
+            <Topics
+                listOfAllTopics={listOfAllTopics}
+                preSelectedTopics={[
+                    { id: "1001", label: "Retail sales" },
+                    { id: "2001", label: "Population estimates" },
+                ]}
+                disableMainTopics
+            />
+        );
+        expect(screen.getByTestId("main-topic-selector-radios-item-1001-input")).toBeDisabled();
+        expect(screen.getByTestId("main-topic-selector-radios-item-2001-input")).toBeDisabled();   
+    });
 });
