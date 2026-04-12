@@ -31,6 +31,7 @@ export default async function createPage() {
                 <SeriesForm 
                     listOfAllTopics={topics} 
                     action={createDatasetSeries}
+                    isPublished={false}
                 />
             </>
         );
