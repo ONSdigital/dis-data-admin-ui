@@ -48,6 +48,17 @@ test.describe("Edit series page", () => {
         await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
     });
 
+    test("Does not allow editing of main topic on a published dataset", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/cpih/edit");
+
+
+        await expect(page.getByTestId("main-topic-selector-radios-item-1001-input")).toBeDisabled();
+        await expect(page.getByTestId("main-topic-selector-radios-item-2002-input")).toBeDisabled();
+
+    });
+
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);
