@@ -49,7 +49,7 @@ describe("Topics", () => {
         render(
             <Topics
                 listOfAllTopics={listOfAllTopics}
-                preSelectedTopics={[{ id: "1001", label: "Retail sales" }]}
+                preSelectedTopics={["1001"]}
             />
         );
 
@@ -61,7 +61,7 @@ describe("Topics", () => {
 
         expect(screen.getByLabelText("Retail sales")).toBeChecked();
 
-        expect(screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('["1001"]')).toBeInTheDocument();
     });
 
     test("opens a topic accordion item and adds a selected subtopic", async () => {
@@ -74,21 +74,21 @@ describe("Topics", () => {
 
         expect(screen.getByLabelText("Retail sales")).toBeChecked();
         expect(screen.getByTestId("main-topic-selector-radios-item-1001-input")).toBeChecked();
-        expect(screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('["1001"]')).toBeInTheDocument();
     });
 
     test("removes a topic when the user re-selects an already selected topic", async () => {
         render(
             <Topics
                 listOfAllTopics={listOfAllTopics}
-                preSelectedTopics={[{ id: "1001", label: "Retail sales" }]}
+                preSelectedTopics={["1001"]}
             />
         );
 
         const retailSalesCheckbox = screen.getByLabelText("Retail sales");
         expect(retailSalesCheckbox).toBeChecked();
         expect(
-            screen.getByDisplayValue('[{"id":"1001","label":"Retail sales"}]')
+            screen.getByDisplayValue('["1001"]')
         ).toBeInTheDocument();
 
         await userEvent.click(retailSalesCheckbox);
@@ -102,10 +102,7 @@ describe("Topics", () => {
         render(
             <Topics
                 listOfAllTopics={listOfAllTopics}
-                preSelectedTopics={[
-                    { id: "1001", label: "Retail sales" },
-                    { id: "2001", label: "Population estimates" },
-                ]}
+                preSelectedTopics={["1001",  "2001"]}
             />
         );
 
@@ -120,7 +117,7 @@ describe("Topics", () => {
         expect(populationRadio).toBeChecked();
         expect(retailRadio).not.toBeChecked();
         expect(
-            screen.getByDisplayValue('[{"id":"2001","label":"Population estimates"},{"id":"1001","label":"Retail sales"}]')
+            screen.getByDisplayValue('["2001","1001"]')
         ).toBeInTheDocument();
     });
 
@@ -128,11 +125,8 @@ describe("Topics", () => {
         render(
             <Topics
                 listOfAllTopics={listOfAllTopics}
-                preSelectedTopics={[
-                    { id: "1001", label: "Retail sales" },
-                    { id: "2001", label: "Population estimates" },
-                ]}
-                disableMainTopics
+                preSelectedTopics={["1001", "2001"]}
+                disableMainTopics={true}
             />
         );
         expect(screen.getByTestId("main-topic-selector-radios-item-1001-input")).toBeDisabled();
