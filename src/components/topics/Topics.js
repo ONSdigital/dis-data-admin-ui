@@ -131,7 +131,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
 
         return { headers, body };
-    }, [selectedTopics, mainTopic, listOfAllTopics]);
+    }, [selectedTopics, mainTopic, listOfAllTopics, disableMainTopics]);
 
     const handleTopicChange = (topic) => {
         const id = getTopicID(topic);
