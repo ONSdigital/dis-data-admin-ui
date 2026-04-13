@@ -110,7 +110,7 @@ describe("mapSeriesSummary", () => {
     });
 
     test("returns expected object of mapped content items when no keywords are present", () => {
-        const mapped = mapSeriesSummary(datasetList.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[0].current, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
