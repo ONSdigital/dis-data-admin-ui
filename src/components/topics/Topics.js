@@ -91,7 +91,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         };
 
         selectedTopics?.forEach((topic) => {
-            const elementID = `main-topic-selector-radios-item-${topic.id}`;
+            const topicId = getTopicID(topic);
+            const elementID = `main-topic-selector-radios-item-${topicId}`;
             body.rows.push(
                 { 
                     columns: [
@@ -103,18 +104,18 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                 <span className="ons-radio ons-radio--no-border" 
                                     data-testid={elementID}
                                 >
-                                    <input id={`${topic.id}-radio`} 
+                                    <input id={`${topicId}-radio`} 
                                         className="ons-radio__input" 
                                         data-testid={`${elementID}-input`} 
                                         type="radio" 
-                                        value={topic.id} 
+                                        value={topicId} 
                                         name="main-topic-selector-radios" 
-                                        onChange={() => handleMainTopicChange(topic)}
+                                        onChange={() => handleMainTopicChange(topicId)}
                                         checked={getTopicID(topic) === getTopicID(mainTopic)}
                                         disabled={disableMainTopics}
                                     />
                                     <label className="ons-radio__label" 
-                                        htmlFor={`${topic.id}-radio`} 
+                                        htmlFor={`${topicId}-radio`} 
                                         id={`${elementID}-label`} 
                                         data-testid={`${elementID}-label`}
                                     >
@@ -133,15 +134,16 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     }, [selectedTopics, mainTopic, listOfAllTopics]);
 
     const handleTopicChange = (topic) => {
+        const id = getTopicID(topic);
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopic(topic);
+            setMainTopic(id);
         }
         setSelectedTopics((prev) =>
-            prev.some((t) => getTopicID(t) === getTopicID(topic))
-                ? prev.filter((t) => getTopicID(t) !== getTopicID(topic))
-                : [...prev, topic]
+            prev.some((t) => getTopicID(t) === id)
+                ? prev.filter((t) => getTopicID(t) !== id)
+                : [...prev, id]
         );
     };
 
