@@ -91,4 +91,43 @@ describe("getAllTopics", () => {
             },
         ]);
     });
+
+    it("excludes topic when ID matches exlcude list and does not fetch subtopics for it", async () => {
+        const includedSubtopicsHref = "https://api.example.com/v1/topics/2945/subtopics";
+
+        httpGet.mockResolvedValueOnce({
+            items: [
+                {
+                    id: "5829",
+                    title: "About us",
+                    links: {
+                        subtopics: {
+                            href: "https://api.example.com/v1/topics/5829/subtopics",
+                        },
+                    },
+                },
+                {
+                    id: "2945",
+                    title: "Business",
+                    links: { subtopics: { href: includedSubtopicsHref } },
+                },
+            ],
+        });
+        httpGet.mockResolvedValueOnce({
+            items: [{ id: "sub-1", title: "Retail" }],
+        });
+
+        const result = await getAllTopics(reqCfg);
+
+        expect(result).toEqual([
+            {
+                id: "2945",
+                label: "Business",
+                subtopics: [{ id: "sub-1", label: "Retail" }],
+            },
+        ]);
+        expect(httpGet).toHaveBeenCalledTimes(2);
+        expect(httpGet).toHaveBeenNthCalledWith(1, reqCfg, "/topics");
+        expect(httpGet).toHaveBeenNthCalledWith(2, reqCfg, "/topics/2945/subtopics");
+    });
 });

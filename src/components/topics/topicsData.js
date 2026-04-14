@@ -1,5 +1,12 @@
 import { httpGet } from "@/utils/request/request";
 
+// Topic ID's that we don't want to appear in Topic Selector UI
+const EXCLUDED_TOPIC_IDS = new Set([
+    "5829", // About us
+    "6537", // Methodolgy
+    "8925", // Help
+]);
+
 /**
  * Returns mapped topics with subtopics
  *
@@ -10,8 +17,13 @@ export const getAllTopics = async (reqCfg) => {
     const topics = await httpGet(reqCfg, "/topics");
     if (topics.ok != null && !topics.ok || topics?.items.length === 0) return [];
 
-    const mappedTopics = await Promise.all(
-        topics.items.map(async (topic) => {
+    const includedItems = topics.items.filter((topic) => {
+        const t = topic.current || topic.next || topic;
+        return !EXCLUDED_TOPIC_IDS.has(String(t.id));
+    });
+
+    return Promise.all(
+        includedItems.map(async (topic) => {
             const t = topic.current || topic.next || topic;
             if (t.links?.subtopics?.href) {
                 const subTubTopicURL = new URL(t.links.subtopics.href);
@@ -20,7 +32,6 @@ export const getAllTopics = async (reqCfg) => {
             }
         })
     );
-    return mappedTopics;
 };
 
 /**
