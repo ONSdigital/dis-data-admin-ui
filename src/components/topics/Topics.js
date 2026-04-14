@@ -25,13 +25,13 @@ const getTopicLabel = (topicOrID, topics) => {
     if (!topics?.length) return null;
     for (const topic of topics) {
         if (getTopicID(topic) === id) return topic.label;
-        const subs = topic.subtopics;
+        const subs = topic?.subtopics;
         if (subs?.length) {
             const sub = subs.find((s) => getTopicID(s) === id);
             if (sub) return sub.label;
         }
     }
-    return null;
+    return "Unable to get topic title";
 };
 
 export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
