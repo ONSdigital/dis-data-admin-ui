@@ -92,6 +92,54 @@ describe("getAllTopics", () => {
         ]);
     });
 
+    it("resolves nested subtopics recursively", async () => {
+        httpGet.mockResolvedValueOnce({
+            items: [
+                {
+                    id: "1",
+                    title: "Topic",
+                    links: {
+                        subtopics: { href: "https://api.example.com/v1/topics/1/subtopics" },
+                    },
+                },
+            ],
+        });
+        httpGet.mockResolvedValueOnce({
+            items: [
+                {
+                    id: "2",
+                    title: "Subtopic",
+                    links: {
+                        subtopics: { href: "https://api.example.com/v1/topics/2/subtopics" },
+                    },
+                },
+            ],
+        });
+        httpGet.mockResolvedValueOnce({
+            items: [{ id: "3", title: "Nested subtopic" }],
+        });
+
+        const result = await getAllTopics(reqCfg);
+
+        expect(result).toEqual([
+            {
+                id: "1",
+                label: "Topic",
+                subtopics: [
+                    {
+                        id: "2",
+                        label: "Subtopic",
+                    },
+                    { id: "3", label: "Nested subtopic" },
+                ],
+            },
+        ]);
+        expect(httpGet).toHaveBeenCalledTimes(3);
+        expect(httpGet).toHaveBeenNthCalledWith(1, reqCfg, "/topics");
+        expect(httpGet).toHaveBeenNthCalledWith(2, reqCfg, "/topics/1/subtopics");
+        expect(httpGet).toHaveBeenNthCalledWith(3, reqCfg, "/topics/2/subtopics");
+    });
+
     it("excludes topic when ID matches exlcude list and does not fetch subtopics for it", async () => {
         const includedSubtopicsHref = "https://api.example.com/v1/topics/2945/subtopics";
 

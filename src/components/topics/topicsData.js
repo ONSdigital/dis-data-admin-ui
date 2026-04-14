@@ -7,6 +7,8 @@ const EXCLUDED_TOPIC_IDS = new Set([
     "8925", // Help
 ]);
 
+
+
 /**
  * Returns mapped topics with subtopics
  *
@@ -45,10 +47,21 @@ const getSubTopics = async (reqCfg, url) => {
     const subTopics = await httpGet(reqCfg, url);
     if (subTopics.ok != null && !subTopics.ok || subTopics?.items.length === 0) return [];
 
-    const mappedSubTopics = subTopics.items.map(subTopic => {
-        const st = subTopic.current || subTopic.next || subTopic;
-        return mapTopic(st, null);
-    });
+    const mappedSubTopics = [];
+    const resolvedSubTopics = await Promise.all(
+        subTopics.items.map(async (subTopic) => {
+            const st = subTopic.current || subTopic.next || subTopic;
+            const mappedCurrentSubTopic = mapTopic(st, null);
+            if (st.links?.subtopics?.href) {
+                const subTubTopicURL = new URL(st.links.subtopics.href);
+                const nestedSubTopics = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
+                return [mappedCurrentSubTopic, ...nestedSubTopics];
+            }
+
+            return [mappedCurrentSubTopic];
+        })
+    );
+    resolvedSubTopics.forEach((topic) => mappedSubTopics.push(...topic));
     return mappedSubTopics;
 };
 
