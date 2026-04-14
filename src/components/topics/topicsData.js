@@ -93,7 +93,7 @@ const getSubTopics = async (reqCfg, url) => {
 const mapTopic = (topic, subTopics) => {
     const mappedTopic = {
         id: topic.id,
-        label: topic.title,
+        label: topic.title || "No label available",
     };
     if (subTopics) mappedTopic.subtopics = subTopics;
     return mappedTopic;
