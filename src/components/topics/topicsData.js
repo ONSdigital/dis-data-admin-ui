@@ -7,7 +7,24 @@ const EXCLUDED_TOPIC_IDS = new Set([
     "8925", // Help
 ]);
 
-
+// Subtopic ID's that we don't want to appear in Topic Selector UI
+const EXCLUDED_SUBTOPIC_IDS = new Set([
+    "1678", // Population and migration
+    "1792", // Cultural identity
+    "1831", // Business
+    "2364", // Household characteristics
+    "3258", // Personal and household finances
+    "4261", // Elections
+    "4573", // Changes to business
+    "6462", // People in work
+    "7273", // People not in work
+    "8268", // Government, public sector and taxes
+    "8533", // Regional accounts
+    "8629", // National accounts
+    "8636", // Births, deaths and marriages"
+    "8725", // Economic output and productivity
+    "9559", // Health and social care
+]);
 
 /**
  * Returns mapped topics with subtopics
@@ -45,24 +62,25 @@ export const getAllTopics = async (reqCfg) => {
  */
 const getSubTopics = async (reqCfg, url) => {
     const subTopics = await httpGet(reqCfg, url);
-    if (subTopics.ok != null && !subTopics.ok || subTopics?.items.length === 0) return [];
+    if (subTopics.ok != null && !subTopics.ok || !subTopics?.items?.length) return [];
 
-    const mappedSubTopics = [];
-    const resolvedSubTopics = await Promise.all(
+    const rows = await Promise.all(
         subTopics.items.map(async (subTopic) => {
             const st = subTopic.current || subTopic.next || subTopic;
-            const mappedCurrentSubTopic = mapTopic(st, null);
+            let nested = [];
             if (st.links?.subtopics?.href) {
                 const subTubTopicURL = new URL(st.links.subtopics.href);
-                const nestedSubTopics = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
-                return [mappedCurrentSubTopic, ...nestedSubTopics];
+                nested = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
             }
 
-            return [mappedCurrentSubTopic];
+            // Excluded subtopics are omitted; their descendants are hoisted into `nested`.
+            if (EXCLUDED_SUBTOPIC_IDS.has(String(st.id))) {
+                return nested;
+            }
+            return [mapTopic(st, null), ...nested];
         })
     );
-    resolvedSubTopics.forEach((topic) => mappedSubTopics.push(...topic));
-    return mappedSubTopics;
+    return rows.flat();
 };
 
 /**
