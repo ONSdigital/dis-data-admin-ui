@@ -182,7 +182,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
     return (
         <div className="ons-u-mt-l ons-u-mb-l">
-            <h2>Choose a topic</h2>
+            <h2 id="dataset-series-topics">Choose a topic</h2>
             <Panel variant="info" dataTestId="topics-explainer-panel">
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
