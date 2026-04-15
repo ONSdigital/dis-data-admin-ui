@@ -50,12 +50,12 @@ export default async function MigrationList({ searchParams }) {
             </>
         );
     };
-
+    const listOfStates = [...new Set(migrationsResp.items.map(item => item.state))];
     return (
         <>
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <MigrationFilter></MigrationFilter>
+                    <MigrationFilter states={listOfStates}></MigrationFilter>
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
                     { renderListArea() }
