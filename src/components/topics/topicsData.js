@@ -73,7 +73,7 @@ const getSubTopics = async (reqCfg, url) => {
                 nested = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
             }
 
-            // Excluded subtopics are omitted; their descendants are hoisted into `nested`.
+            // Excluded subtopics are omitted and their children are added into list
             if (EXCLUDED_SUBTOPIC_IDS.has(String(st.id))) {
                 return nested;
             }
