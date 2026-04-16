@@ -45,4 +45,14 @@ test.describe("Migration list page", () => {
         }
     });
 
+    test("Filter options are populated by returned jobs", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration");
+
+        await expect(page.getByLabel("Approved")).toBeVisible();
+        await expect(page.getByLabel("In review")).toBeVisible();
+        await expect(page.getByLabel("Reverted")).toBeVisible();
+        await expect(page.getByLabel("Submitted")).toBeVisible();
+    });
 });
