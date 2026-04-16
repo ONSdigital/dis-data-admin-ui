@@ -6,7 +6,7 @@ import { Panel } from "@/components/design-system/DesignSystem";
 
 import LinkButton from "@/components/link-button/LinkButton";
 import Table from "@/components/table/Table";
-import  MigrationFilter  from "@/components/form/migration-list-filter/MigrationFilter"
+import  MigrationFilter  from "@/components/form/migration-list-filter/MigrationFilter";
 
 import { mapMigrationListTable } from "@/components/table/mapper";
 
