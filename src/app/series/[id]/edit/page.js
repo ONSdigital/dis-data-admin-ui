@@ -64,6 +64,7 @@ export default async function createPage({params}) {
                         currentKeywords={dataset.keywords}
                         currentContacts={dataset.contacts}
                         listOfAllTopics={topics}
+                        isPublished={datasetResp?.current?.state === "published"}
                         action={updateDatasetSeries}
                     />
                 </>

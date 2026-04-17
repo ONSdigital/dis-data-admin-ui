@@ -14,6 +14,8 @@ jest.mock("next/navigation", () => ({
 describe("MigrationFilter", () => {
     let router;
 
+    const listOfStates = ["approved", "submitted", "in_review", "rejected"]
+
     beforeEach(() => {
         router = useRouter();
         router.push.mockClear();
@@ -21,13 +23,13 @@ describe("MigrationFilter", () => {
 
     describe("renders correctly", () => {
         it("renders the checkbox list and apply button", () => {
-            render(<MigrationFilter />);
+            render(<MigrationFilter states={listOfStates} />);
 
             expect(screen.getByTestId("fieldset-state-filter")).toBeInTheDocument();
             expect(screen.getByLabelText("Approved")).toBeInTheDocument();
             expect(screen.getByLabelText("Submitted")).toBeInTheDocument();
             expect(screen.getByLabelText("In review")).toBeInTheDocument();
-            expect(screen.getByLabelText("Reverted")).toBeInTheDocument();
+            expect(screen.getByLabelText("Rejected")).toBeInTheDocument();
 
             expect(screen.getByTestId("migration-filter-apply-button")).toBeInTheDocument();
         });
@@ -35,7 +37,7 @@ describe("MigrationFilter", () => {
 
     describe("onClick handler", () => {
         it("is called with single selected state", () => {
-            render(<MigrationFilter />);
+            render(<MigrationFilter states={listOfStates} />);
 
             fireEvent.click(screen.getByLabelText("Approved"));
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
@@ -45,7 +47,7 @@ describe("MigrationFilter", () => {
         });
 
         it("is called with multiple selected states", () => {
-            render(<MigrationFilter />);
+            render(<MigrationFilter states={listOfStates} />);
 
             fireEvent.click(screen.getByLabelText("Approved"));
             fireEvent.click(screen.getByLabelText("Submitted"));
@@ -58,7 +60,7 @@ describe("MigrationFilter", () => {
         });
 
         it("removes a state when checkbox is unchecked", () => {
-            render(<MigrationFilter />);
+            render(<MigrationFilter states={listOfStates} />);
 
             const approved = screen.getByLabelText("Approved");
             const submitted = screen.getByLabelText("Submitted");

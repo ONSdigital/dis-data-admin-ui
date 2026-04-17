@@ -12,7 +12,7 @@ jest.mock("next/navigation", () => ({
 
 describe("Publish form", () => {
     test("renders correctly", () => {
-        render(<PublishForm dataset={ datasetList.items[0] } cancelLink={"./"}  />);
+        render(<PublishForm dataset={ datasetList.items[0].current } cancelLink={"./"}  />);
 
         expect(screen.getByText(/Are you sure you want to publish "Consumer prices"?/i)).toBeInTheDocument();
         expect(screen.getByText(/Approving this action will make the dataset series visible to the public./i)).toBeInTheDocument();

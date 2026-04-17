@@ -25,16 +25,16 @@ const getTopicLabel = (topicOrID, topics) => {
     if (!topics?.length) return null;
     for (const topic of topics) {
         if (getTopicID(topic) === id) return topic.label;
-        const subs = topic.subtopics;
+        const subs = topic?.subtopics;
         if (subs?.length) {
             const sub = subs.find((s) => getTopicID(s) === id);
             if (sub) return sub.label;
         }
     }
-    return null;
+    return "Unable to get topic title";
 };
 
-export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
+export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError, disableMainTopics }) {
     const [selectedTopics, setSelectedTopics] = useState(() => preSelectedTopics || []);
     const [mainTopic, setMainTopic] = useState(() => getTopicID(preSelectedTopics?.[0]));
 
@@ -91,7 +91,8 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         };
 
         selectedTopics?.forEach((topic) => {
-            const elementID = `main-topic-selector-radios-item-${topic.id}`;
+            const topicId = getTopicID(topic);
+            const elementID = `main-topic-selector-radios-item-${topicId}`;
             body.rows.push(
                 { 
                     columns: [
@@ -103,17 +104,18 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
                                 <span className="ons-radio ons-radio--no-border" 
                                     data-testid={elementID}
                                 >
-                                    <input id={`${topic.id}-radio`} 
+                                    <input id={`${topicId}-radio`} 
                                         className="ons-radio__input" 
                                         data-testid={`${elementID}-input`} 
                                         type="radio" 
-                                        value={topic.id} 
+                                        value={topicId} 
                                         name="main-topic-selector-radios" 
-                                        onChange={() => handleMainTopicChange(topic)}
+                                        onChange={() => handleMainTopicChange(topicId)}
                                         checked={getTopicID(topic) === getTopicID(mainTopic)}
+                                        disabled={disableMainTopics}
                                     />
                                     <label className="ons-radio__label" 
-                                        htmlFor={`${topic.id}-radio`} 
+                                        htmlFor={`${topicId}-radio`} 
                                         id={`${elementID}-label`} 
                                         data-testid={`${elementID}-label`}
                                     >
@@ -129,18 +131,19 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
         });
 
         return { headers, body };
-    }, [selectedTopics, mainTopic, listOfAllTopics]);
+    }, [selectedTopics, mainTopic, listOfAllTopics, disableMainTopics]);
 
     const handleTopicChange = (topic) => {
+        const id = getTopicID(topic);
         // while no topics are curerently selected assume the first topic
         // selected to be the main topic until one is selected by the user
         if (selectedTopics?.length === 0) {
-            setMainTopic(topic);
+            setMainTopic(id);
         }
         setSelectedTopics((prev) =>
-            prev.some((t) => getTopicID(t) === getTopicID(topic))
-                ? prev.filter((t) => getTopicID(t) !== getTopicID(topic))
-                : [...prev, topic]
+            prev.some((t) => getTopicID(t) === id)
+                ? prev.filter((t) => getTopicID(t) !== id)
+                : [...prev, id]
         );
     };
 
@@ -182,7 +185,7 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
     return (
         <div className="ons-u-mt-l ons-u-mb-l">
-            <h2>Choose a topic</h2>
+            <h2 id="dataset-series-topics">Choose a topic</h2>
             <Panel variant="info" dataTestId="topics-explainer-panel">
                 <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
             </Panel>
