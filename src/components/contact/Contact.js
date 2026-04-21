@@ -56,11 +56,11 @@ export default function Contact({contactsList, contactsError}) {
         }
 
         return (
-            <div className="ons-u-mt-l">
-                <h3 id="dataset-series-contacts">Contacts</h3>
-                <ul className="ons-document-list ons-u-mt-l ons-grid ons-grid--gutterless">
+            <div className="ons-u-mt-xl">
+                <h3 className="ons-u-mb-xs" id="dataset-series-contacts">Contacts</h3>
+                <ul className="ons-document-list ons-u-mt-xs ons-grid ons-grid--gutterless">
                     {contacts.map((contact, index) => (
-                        <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col" data-testid={"contact-item-" + index} key={index}>
+                        <li className="ons-u-pt-s ons-u-pb-s ons-u-bb ons-grid__col ons-u-mb-no" data-testid={"contact-item-" + index} key={index}>
                             <div className="ons-document-list__item-content">
                                 <div className="ons-grid__col ons-col-3@m">
                                     <span className="ons-u-fw">{contact.name}</span>
@@ -69,19 +69,17 @@ export default function Contact({contactsList, contactsError}) {
                                     <span className="ons-u-fw">{contact.email}</span>
                                 </div>
                                 <div className="ons-grid__col ons-col-2@m ons-push-5@m">
-                                    <p>
-                                        <a
-                                            data-testid={"dataset-remove-contact-" + index}
-                                            id={"dataset-remove-contact-" + index}
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                removeContact(contact.email);
-                                            }}
-                                        >
-                                            Remove
-                                        </a>
-                                    </p>
+                                    <a
+                                        data-testid={"dataset-remove-contact-" + index}
+                                        id={"dataset-remove-contact-" + index}
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            removeContact(contact.email);
+                                        }}
+                                    >
+                                        Remove
+                                    </a>
                                 </div>
                             </div>
                         </li>
@@ -93,8 +91,8 @@ export default function Contact({contactsList, contactsError}) {
 
     return (
         <>
-            <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:"dataset-series-contacts-error", text: contactsError} : null}>
-                <h2>Add Contacts</h2>
+            <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:"dataset-series-contacts-error", text: contactsError} : null} classes={["ons-u-mt-xl ons-u-mb-l"]}>
+                <h2 className="ons-u-mb-no">Add Contacts</h2>
                 <TextInput
                     id="dataset-series-contact-name"
                     dataTestId="dataset-series-contact-name"
@@ -120,12 +118,13 @@ export default function Contact({contactsList, contactsError}) {
                     fieldClasses="ons-u-dib ons-u-ml-xs"
                 />
                 <Button
-                    classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                    classes="ons-u-mt-m"
                     dataTestId="dataset-series-add-contact-button"
                     id="dataset-series-add-contact-button"
                     text="Add contact"
                     variants={[
-                        "small"
+                        "small",
+                        "secondary"
                     ]}
                     onClick={() => { addContact(); }}
                 />
