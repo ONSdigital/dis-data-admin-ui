@@ -16,5 +16,5 @@ module.exports = {
   },
 };
 
-console.log(module.exports.experimental.serverActions.allowedOrigins)
-console.log(allowedOrigins)
+console.log("Allowed origins from env vars: ", allowedOrigins);
+console.log("Allowed orgings from module.exports: ", module.exports.experimental.serverActions.allowedOrigins)
