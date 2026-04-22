@@ -7,7 +7,14 @@ module.exports = {
   basePath: "/data-admin",
   experimental: {
     serverActions: {
-      allowedOrigins
+      allowedOrigins: [
+        "publishing.dp.aws.onsdigital.uk", // sandbox
+        "publishing.dp-staging.aws.onsdigital.uk", // staging
+        "localhost:29500" // local when running in dataset-catalogue stack
+      ],
     },
   },
 };
+
+console.log("Allowed origins from env vars: ", allowedOrigins);
+console.log("Allowed orgings from module.exports: ", module.exports.experimental.serverActions.allowedOrigins)
