@@ -37,7 +37,6 @@ const EXCLUDED_SUBTOPIC_IDS = new Set([
  */
 export const getAllTopics = async (reqCfg) => {
     const topics = await httpGet(reqCfg, "/topics");
-    console.log("TOPICS REQUEST:", topics)
     if (topics.ok != null && !topics.ok || topics?.items.length === 0) return [];
 
     const includedItems = topics.items.filter((topic) => {

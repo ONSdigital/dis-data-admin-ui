@@ -148,7 +148,6 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     };
 
     const mapTopicsToTopicSelector = (topics) => {
-        console.log("HEllo")
         if (!topics) return [];
         return topics.map(topic => ({
             ...topic,
