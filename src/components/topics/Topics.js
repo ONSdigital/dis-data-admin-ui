@@ -148,13 +148,14 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
     };
 
     const mapTopicsToTopicSelector = (topics) => {
+        console.log("HEllo")
         if (!topics) return [];
         return topics.map(topic => ({
             ...topic,
-            isOpen: topic.subtopics?.some((sub) =>
+            isOpen: topic?.subtopics?.some((sub) =>
                 selectedTopics.some((t) => getTopicID(t) === getTopicID(sub))
             ) ?? false,
-            body: topic.subtopics?.map(sub => (
+            body: topic?.subtopics?.map(sub => (
                 <span
                     className="ons-checkbox ons-checkbox--no-border ons-u-mb-xs"
                     data-testid={`dataset-series-topic-${sub.id}-checkbox`}
