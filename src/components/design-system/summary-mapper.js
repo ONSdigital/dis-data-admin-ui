@@ -53,7 +53,7 @@ const slugifyLowerCase = (string) => {
  * @param {string} type - String of type of items e.g. "alerts" or "usage-notes"
  * @returns {Array} Renderable content for alerts/usage notes
  */
-const mapAlertsAndUsuageNotes = (items, type) => {
+const mapAlertsAndUsageNotes = (items, type) => {
     return items.map((item, index) => {
         const dataTestIDPrefix = `version-${type}`;
         return (
@@ -224,10 +224,10 @@ const mapVersionSummary = (version, editBaseURL) => {
         mapRow("Quality designation", mapQualityDesignationToUserFriendlyString(version.quality_designation), null, action, rows);
     }
     if (version.usage_notes && version.usage_notes.length > 0) {
-        mapRow("Usage notes", mapAlertsAndUsuageNotes(version.usage_notes, "usage-notes"), null, action, rows);
+        mapRow("Usage notes", mapAlertsAndUsageNotes(version.usage_notes, "usage-notes"), null, action, rows);
     }
     if (version.alerts && version.alerts.length > 0) {
-        mapRow("Alerts", mapAlertsAndUsuageNotes(version.alerts, "alerts"), null, action, rows);
+        mapRow("Alerts", mapAlertsAndUsageNotes(version.alerts, "alerts"), null, action, rows);
     }
     if (version.distributions && version.distributions.length > 0) {
         mapRow("Downloads", mapFileDownloads(version.distributions), null, action, rows);
