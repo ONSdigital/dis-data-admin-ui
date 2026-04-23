@@ -27,7 +27,7 @@ export default function VersionFields(props) {
                 id="release-date"
                 dataTestId="release-date"
                 legend="Release date and time"
-                description="For example, 31 3 1980 09 30"
+                description="For example, 31 03 1980 09 30"
                 errors={props.errors}
                 releaseDate={props.fieldValues?.release_date}
             />
@@ -91,6 +91,7 @@ export default function VersionFields(props) {
                 label="File upload"
                 description="File types accepted are .csdb, .csv, .csvw, .sdmx, .xls and .xlsx"
                 uploadBaseURL={appConfig?.uploadBaseURL}
+                accessToken={props.accessToken}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFiles={props.fieldValues?.distributions}
             />

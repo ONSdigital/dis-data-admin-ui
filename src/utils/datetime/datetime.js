@@ -31,10 +31,13 @@ export function ISOToDMYMHValues(dateString) {
             return null;
         }
 
-        let minutes = date.getMinutes();
-        if (minutes < 9) { minutes = "0" + minutes; }
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
 
-        return {day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear(), minutes: minutes, hour: date.getHours()};
+        return {day: day, month: month, year: year, minutes: minutes, hour: hours};
     } catch (error) {
         logError("error converting ISO date to day, month, year, minutes, hours values", null, null, error);
         return null;

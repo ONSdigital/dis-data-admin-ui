@@ -4,14 +4,14 @@ import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
 import { createDatasetSeries } from "@/app/actions/datasetSeries";
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { SSRequestConfig } from "@/utils/request/request";
+import { getAllTopics } from "@/components/topics/topicsData";
 
 export default async function createPage() {
-
     const reqCfg = await SSRequestConfig(cookies);
-    const response = await httpGet(reqCfg, "/topics");
+    const topics = await getAllTopics(reqCfg);
 
-    if(Object.keys(response).length === 0){
+    if(Object.keys(topics).length === 0){
         return(
             <>
                 <Panel title="Topics service error" variant="error">
@@ -20,7 +20,6 @@ export default async function createPage() {
             </>
         );
     } else {
-        const listOfAllTopics = response.items;
         return (
             <>
                 <PageHeading 
@@ -30,8 +29,9 @@ export default async function createPage() {
                     <p>You must fill in all fields unless marked optional</p>
                 </Panel>
                 <SeriesForm 
-                    listOfAllTopics={listOfAllTopics} 
+                    listOfAllTopics={topics} 
                     action={createDatasetSeries}
+                    isPublished={false}
                 />
             </>
         );

@@ -15,33 +15,65 @@ const automatedDatasetList = () => {
 export const datasetList = {
     "items": [
         {
-            "title": "Consumer prices",
-            "description": "Something about consumer prices",
             "id": "cpih",
-            "national_statistic": "false",
-            "next_release": "TBC",
-            "release_frequency": "Quarterly",
-            "state": "published",
-            "unit_of_measure": "Percentage",
-            "topics": ["id1", "id2"],
-            "last_updated": "2000-01-01T07:00:00.000Z",
-            "license": "My License",
-            "publisher": {
-                "href": "https://www.ons.gov.uk",
-                "name": "ONS"
-            },
-            "contacts": [
-                {
-                    "email": "contactOne@ons.gov.uk",
-                    "name": "First Contact",
-                    "telephone": "+44 1234 567891"
+            "next": {
+                "title": "Consumer prices",
+                "description": "Something about consumer prices",
+                "id": "cpih",
+                "national_statistic": "false",
+                "next_release": "TBC",
+                "release_frequency": "Quarterly",
+                "state": "associated",
+                "unit_of_measure": "Percentage",
+                "topics": ["1001", "2002"],
+                "last_updated": "2000-01-01T07:00:00.000Z",
+                "license": "My License",
+                "publisher": {
+                    "href": "https://www.ons.gov.uk",
+                    "name": "ONS"
                 },
-                {
-                    "email": "contactTwo@ons.gov.uk",
-                    "name": "Second Contact",
-                    "telephone": "+44 1234 567892"
-                }
-            ],
+                "contacts": [
+                    {
+                        "email": "contactOne@ons.gov.uk",
+                        "name": "First Contact",
+                        "telephone": "+44 1234 567891"
+                    },
+                    {
+                        "email": "contactTwo@ons.gov.uk",
+                        "name": "Second Contact",
+                        "telephone": "+44 1234 567892"
+                    }
+                ],
+            },
+            "current": {
+                "title": "Consumer prices",
+                "description": "Something about consumer prices",
+                "id": "cpih",
+                "national_statistic": "false",
+                "next_release": "TBC",
+                "release_frequency": "Quarterly",
+                "state": "published",
+                "unit_of_measure": "Percentage",
+                "topics": ["1001", "2002"],
+                "last_updated": "2000-01-01T07:00:00.000Z",
+                "license": "My License",
+                "publisher": {
+                    "href": "https://www.ons.gov.uk",
+                    "name": "ONS"
+                },
+                "contacts": [
+                    {
+                        "email": "contactOne@ons.gov.uk",
+                        "name": "First Contact",
+                        "telephone": "+44 1234 567891"
+                    },
+                    {
+                        "email": "contactTwo@ons.gov.uk",
+                        "name": "Second Contact",
+                        "telephone": "+44 1234 567892"
+                    }
+                ],
+            }
         },
         {
             "title": "Weekly deaths",
@@ -58,7 +90,7 @@ export const datasetList = {
             "state": "published",
             "title": "Mock Dataset",
             "unit_of_measure": "Percentage",
-            "topics": ["id1", "id2"],
+            "topics": ["1001", "2002"],
             "contacts": [
                 {
                     "email": "contactOne@ons.gov.uk",

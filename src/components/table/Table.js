@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { sanitiseString } from "author-design-system-react";
 
-export default function Table({ contents, caption, classes, dataTestId  }) {
+export default function Table({ contents, caption, classes, dataTestId, noResultsText = "No data available" }) {
     const [rows, setRows] = useState(contents?.body?.rows || []);
     const [sorted, setSorted] = useState();
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setRows(contents?.body?.rows || []);
+    }, [contents]);
 
     const sanitisedDataTestId = sanitiseString(dataTestId);
 
@@ -38,8 +43,11 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                 <tr className="ons-table__row">
                     {contents?.headers.map((header, index) => {
                         const sanitisedHeaderLabel = sanitiseString(header.label);
+                        const headerClass = `ons-table__header ${header?.rightAlign && "ons-table__header--numeric"}`;
                         return (
-                            <th scope="col" className="ons-table__header" aria-sort="none" key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}>
+                            <th scope="col" className={headerClass} aria-sort="none" 
+                                key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}
+                            >
                                 {header.isSortable ?
                                     <button aria-label="Sort by Legal basis" type="button" data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} className="ons-table__sort-button" onClick={() => {handleSort(index);}}>
                                         {header.label}
@@ -62,7 +70,7 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
     const renderTableBody = () => {
         if (!rows.length) {
             return (
-                <tbody className="ons-table__body"><tr><td data-testid={`${sanitisedDataTestId}-no-data`}>No data available</td></tr></tbody>
+                <tbody className="ons-table__body"><tr><td data-testid={`${sanitisedDataTestId}-no-data`}>{noResultsText}</td></tr></tbody>
             );
         }
         return (
@@ -71,8 +79,11 @@ export default function Table({ contents, caption, classes, dataTestId  }) {
                     return (
                         <tr className="ons-table__row" key={`row-${index}`}>
                             {row.columns.map((cell, i) => {
+                                const cellClass = `ons-table__cell ${cell?.rightAlign && "ons-table__cell--numeric"}`;
                                 return (
-                                    <td className="ons-table__cell" key={`row-${index}cell-${i}`} data-testid={`${sanitisedDataTestId}-cell-${index}-${i}`}>{cell.content}</td>
+                                    <td className={cellClass} key={`row-${index}cell-${i}`} data-testid={`${sanitisedDataTestId}-cell-${index}-${i}`}>
+                                        {cell.content}
+                                    </td>
                                 );
                             })}
                         </tr>

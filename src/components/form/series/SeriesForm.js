@@ -9,7 +9,7 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, action }) {
+export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, action }) {
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
@@ -59,7 +59,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
     };
 
     return (
-        <>
+        <div className="ons-col-8@m">
             {renderFailure()}
             <form className="ons-u-mt-m" action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
@@ -93,11 +93,6 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                 />
-                <Topics
-                    listOfAllTopics={listOfAllTopics}
-                    preSelectedTopics={currentTopics}
-                    topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
-                />
                 <TextArea
                     id={"dataset-series-description"}
                     dataTestId={"dataset-series-description"}
@@ -107,6 +102,12 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     error={(formState.errors && formState.errors.description) ? { id: "dataset-series-description-error", text: formState.errors.description } : null}
+                />
+                <Topics
+                    listOfAllTopics={listOfAllTopics}
+                    preSelectedTopics={formState.submission?.originalTopics ?? currentTopics}
+                    topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
+                    disableMainTopics={isPublished}
                 />
                 <TextInput
                     id="dataset-series-qmi"
@@ -154,6 +155,6 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
             </form>
-        </>
+        </div>
     );
 }

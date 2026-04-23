@@ -310,9 +310,43 @@ app.get("/topics/:id", (req, res) => {
     res.send(topic);
 });
 
+app.get("/topics/:id/subtopics", (req, res) => {
+    log("Handling GET '/topics/:id/subtopics'", req.url, null);
+
+    const topic = topicList.items.find(item => item.id === req.params.id);
+    if (!topic) {
+        log("subtopic not found", req.url, 404);
+        res.status(404).send("Subtopic not found");
+        return;
+    }
+    log("Returning success", req.url, 200);
+    res.send(topic.subtopics);
+});
+
 app.get("/v1/migration-jobs", (req, res) => {
     log("Handling GET '/migration-jobs'", req.url, null);
-    res.send(migrationJobsList);
+    
+    const state = req.query?.state;
+    if (!state) {
+        return res.send(migrationJobsList);
+    }
+
+    // Normalise state to an array:
+    const states = Array.isArray(state) ? state : [state];
+
+    // Filter the items based on the selected states
+    const filteredItems = migrationJobsList.items.filter(item =>
+        states.includes(item.state)
+    );
+
+    const filteredResponse = {
+        ...migrationJobsList,
+        items: filteredItems,
+        count: filteredItems.length,
+        total_count: filteredItems.length
+    };
+
+    return res.send(filteredResponse);
 });
 
 app.get("/v1/migration-jobs/:id", (req, res) => {
@@ -337,6 +371,13 @@ app.get("/v1/migration-jobs/:id/tasks", (req, res) => {
     res.send(migrationTasksList);
 });
 
+app.put("/files/*path", (req, res) => {
+    log("Handling PUT '/files/*path'", req.url, null);
+
+    log("Returning success", req.url, 200);
+    res.send({status: 200});
+});
+
 app.use((req, res) => {
     log("Route not found", req.url, 404);
     res.status(404).send("Route not found");
@@ -344,4 +385,5 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Fake API test server running at http://localhost:${PORT}/`);
+    process.env.ENABLE_LOGGING && console.log("Logging enabled");
 });

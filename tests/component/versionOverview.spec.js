@@ -59,9 +59,9 @@ test.describe("Version overview page", () => {
         await expect(page.getByTestId("version-alerts-title-1")).toContainText("correction");
         await expect(page.getByTestId("version-alerts-description-1")).toContainText("This is a correction for version 1");
         await expect(page.getByTestId("version-file-download-title-0")).toContainText("Full Dataset (CSV)");
-        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.csv");
+        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
         await expect(page.getByTestId("version-file-download-title-1")).toContainText("Full Dataset (XLS)");
-        await expect(page.getByTestId("version-file-download-download-1")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.xls");
+        await expect(page.getByTestId("version-file-download-download-1")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls");
     });
 
     test("Minimally populated version page renders as expected", async ({ page, context }) => {
@@ -77,7 +77,7 @@ test.describe("Version overview page", () => {
         await expect(page.getByTestId("version-usage-notes-title-0")).not.toBeVisible();
         await expect(page.getByTestId("version-alerts-title-0")).not.toBeVisible();
         await expect(page.getByTestId("version-file-download-title-0")).toContainText("Full Dataset (CSV)");
-        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads-new/datasets/RM086/editions/2021/versions/1.csv");
+        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
     });
 
     test("Shows version delete button when version is unpublished", async ({ page, context }) => {

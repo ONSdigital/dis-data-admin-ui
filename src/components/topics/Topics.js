@@ -1,91 +1,205 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Field, Button, Checkbox } from "author-design-system-react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Field, Panel } from "author-design-system-react";
+import Accordion from "../accordion/Accordion";
+import Table from "../table/Table";
 
-export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError }) {
-    const [selectedTopics, setSelectedTopics] = useState(preSelectedTopics);
-    const [checkboxOptionsItems, setCheckboxOptionsItems] = useState(createCheckboxes);
+// get ID of a topic whatever form it comes in
+const getTopicID = (topicOrID) => {
+    if (topicOrID === null || topicOrID === undefined) return null;
+    if (typeof topicOrID === "object") return topicOrID.id ?? topicOrID.ID ?? null;
+    return topicOrID;
+};
 
-    useEffect(() => {
-        /* eslint-disable-next-line react-hooks/set-state-in-effect */
-        setCheckboxOptionsItems(createCheckboxes);
-    }, [selectedTopics]);
+// generate JSON string of comma seperated IDs. used to track changes more reliably than watching preSelectedTopics array
+const topicsListKey = (topics) => {
+    const idStrings = (topics ?? []).map((t) => getTopicID(t));
+    return JSON.stringify(idStrings);
+};
 
-    useEffect(() => {
-        checkboxOptionsItems.itemsList.forEach(checkboxOption => {
-            const checkbox = document.getElementById(checkboxOption.id);
-            if (checkboxOption.checked === false) {
-                checkbox.defaultChecked = false;
-            }
-        });
-    }, [checkboxOptionsItems]);
-
-
-    function createCheckboxes() {
-        const checkboxOptions = [];
-        listOfAllTopics.forEach(topic => {
-            const topicId = topic.current?.id || topic.next?.id || topic.id || "missing id";
-            const topicTitle = topic.current?.title || topic.next?.title || topic.title || "missing title";
-            const selected = selectedTopics.includes(topicId);
-
-            if (topicId && topicTitle) {
-                checkboxOptions.push({
-                    dataTestId: "checkbox-" + topicId,
-                    id: "checkbox-" + topicId,
-                    label: {
-                        text: topicTitle
-                    },
-                    onChange: () => { topicOnChange(topicId); },
-                    value: topicId,
-                    checked: selected
-                });
-            }
-        });
-        return ({ itemsList: checkboxOptions });
-    }
-
-    const topicOnChange = (topicId) => {
-        if (!selectedTopics.includes(topicId)) {
-            setSelectedTopics([...selectedTopics, topicId]);
-        } else {
-            setSelectedTopics(
-                selectedTopics.filter(t =>
-                    t !== topicId
-                )
-            );
+// get a topic label from a topic or topicID
+const getTopicLabel = (topicOrID, topics) => {
+    const id = getTopicID(topicOrID);
+    if (id == null || id === undefined) return null;
+    if (!topics?.length) return null;
+    for (const topic of topics) {
+        if (getTopicID(topic) === id) return topic.label;
+        const subs = topic?.subtopics;
+        if (subs?.length) {
+            const sub = subs.find((s) => getTopicID(s) === id);
+            if (sub) return sub.label;
         }
+    }
+    return "Unable to get topic title";
+};
+
+export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError, disableMainTopics }) {
+    const [selectedTopics, setSelectedTopics] = useState(() => preSelectedTopics || []);
+    const [mainTopic, setMainTopic] = useState(() => getTopicID(preSelectedTopics?.[0]));
+
+    // preSelectedTopics updates after a failed submit (original submission returned) but
+    // useState only initialises once — keep local state in sync with the prop.
+    const preSelectedTopicsKey = topicsListKey(preSelectedTopics);
+    const previousPreSelectedTopicsKey = useRef(preSelectedTopicsKey);
+    useEffect(() => {
+        // parent rerenders can recreate the same array instance during submit; only
+        // resync local state when the selected topic ids actually change.
+        if (previousPreSelectedTopicsKey.current === preSelectedTopicsKey) {
+            return;
+        }
+
+        previousPreSelectedTopicsKey.current = preSelectedTopicsKey;
+        const topicsFromProps = preSelectedTopics || [];
+        /* eslint-disable-next-line react-hooks/set-state-in-effect */
+        setSelectedTopics(topicsFromProps);
+        setMainTopic(getTopicID(topicsFromProps[0]));
+    }, [preSelectedTopics, preSelectedTopicsKey]);
+
+    // track selectedTopics and mainTopic in a correctly ordered list to submit to API. 
+    // e.g. keep selected mainTopic as first in the list because API infers first is main
+    const orderedTopicsList = useMemo(() => {
+        const list = selectedTopics || [];
+        const mainID = getTopicID(mainTopic);
+
+        const mainTopicObj =
+            list.find((t) => getTopicID(t) === mainID) ??
+            (typeof mainTopic === "object" && mainTopic !== null ? mainTopic : null);
+
+        const others = list.filter((t) => getTopicID(t) !== mainID);
+
+        if (mainID !== null && mainID !== undefined && mainTopicObj !== null) {
+            return [mainTopicObj, ...others];
+        }
+
+        return list;
+    }, [mainTopic, selectedTopics]);
+
+    const handleMainTopicChange = (topic) => {
+        setMainTopic(topic);
+    };
+    
+    // re-map topic summary when selectedTopics or mainTopic changes
+    const topicSummary = useMemo(() => {
+        const headers = [
+            { label: "Topic", isSortable: false, rightAlign: false },
+            { label: "Main topic", isSortable: false, rightAlign: true }
+        ];
+
+        const body =  {
+            rows: []
+        };
+
+        selectedTopics?.forEach((topic) => {
+            const topicId = getTopicID(topic);
+            const elementID = `main-topic-selector-radios-item-${topicId}`;
+            body.rows.push(
+                { 
+                    columns: [
+                        { content: topic.label ? topic.label : getTopicLabel(topic, listOfAllTopics), rightAlign: false },
+                        { content: 
+                            <span className="ons-radios__item ons-radios__item--no-border" 
+                                data-testid={`${elementID}-container`}
+                            >
+                                <span className="ons-radio ons-radio--no-border" 
+                                    data-testid={elementID}
+                                >
+                                    <input id={`${topicId}-radio`} 
+                                        className="ons-radio__input" 
+                                        data-testid={`${elementID}-input`} 
+                                        type="radio" 
+                                        value={topicId} 
+                                        name="main-topic-selector-radios" 
+                                        onChange={() => handleMainTopicChange(topicId)}
+                                        checked={getTopicID(topic) === getTopicID(mainTopic)}
+                                        disabled={disableMainTopics}
+                                    />
+                                    <label className="ons-radio__label" 
+                                        htmlFor={`${topicId}-radio`} 
+                                        id={`${elementID}-label`} 
+                                        data-testid={`${elementID}-label`}
+                                    >
+                                        &nbsp;
+                                    </label>
+                                </span>
+                            </span>, 
+                            rightAlign: true
+                        },
+                    ]
+                }
+            );
+        });
+
+        return { headers, body };
+    }, [selectedTopics, mainTopic, listOfAllTopics, disableMainTopics]);
+
+    const handleTopicChange = (topic) => {
+        const id = getTopicID(topic);
+        // while no topics are curerently selected assume the first topic
+        // selected to be the main topic until one is selected by the user
+        if (selectedTopics?.length === 0) {
+            setMainTopic(id);
+        }
+        setSelectedTopics((prev) =>
+            prev.some((t) => getTopicID(t) === id)
+                ? prev.filter((t) => getTopicID(t) !== id)
+                : [...prev, id]
+        );
     };
 
+    const mapTopicsToTopicSelector = (topics) => {
+        if (!topics) return [];
+        return topics.map(topic => ({
+            ...topic,
+            isOpen: topic.subtopics?.some((sub) =>
+                selectedTopics.some((t) => getTopicID(t) === getTopicID(sub))
+            ) ?? false,
+            body: topic.subtopics?.map(sub => (
+                <span
+                    className="ons-checkbox ons-checkbox--no-border ons-u-mb-xs"
+                    data-testid={`dataset-series-topic-${sub.id}-checkbox`}
+                    key={`${topic.id}-${sub.id}`}
+                >
+                    <input
+                        type="checkbox"
+                        id={sub.id}
+                        name={sub.id}
+                        className="ons-checkbox__input"
+                        checked={selectedTopics.some((t) => getTopicID(t) === getTopicID(sub))}
+                        onChange={() => handleTopicChange(sub)}
+                    />
+                    <label
+                        className="ons-checkbox__label"
+                        htmlFor={sub.id}
+                        id={`${sub.id}-label`}
+                        data-testid={`dataset-series-topic-${sub.id}-label`}
+                    >
+                        <span>{sub.label}</span>
+                    </label>
+                </span>
+            ))
+        }));
+    };
+
+    const topicAccordionItems = mapTopicsToTopicSelector(listOfAllTopics);
+
     return (
-        <>
+        <div className="ons-u-mt-l ons-u-mb-l">
+            <h2 id="dataset-series-topics">Choose a topic</h2>
+            <Panel variant="info" dataTestId="topics-explainer-panel">
+                <p>Choose a main topic for this series. This will be used in the URL and navigation. You can then select any other relevant topics.</p>
+            </Panel>
             <Field dataTestId="field-dataset-series-topics" error={topicsError ? { id: "dataset-series-topics-error", text: topicsError } : null}>
-                <input id="dataset-series-topics-input" type="hidden" name="dataset-series-topics-input" value={JSON.stringify(selectedTopics)} />
-                <Checkbox
-                    id="dataset-series-topics"
-                    dataTestId="dataset-series-topics-checkbox"
-                    items={checkboxOptionsItems}
-                    legend="Topics"
-                    borderless
-                    classes="ons-u-mb-m"
+                <input id="dataset-series-topics-input" 
+                    type="hidden" 
+                    name="dataset-series-topics-input" 
+                    data-testid="dataset-series-topics-input"
+                    value={JSON.stringify(orderedTopicsList || [])} 
                 />
-                <Button
-                    id="dataset-series-clear-topic-selection-button"
-                    dataTestId="dataset-series-clear-topic-selection-button"
-                    text="Clear Selection"
-                    variants={[
-                        "secondary",
-                        "small"
-                    ]}
-                    onClick={() => {
-                        const inputs = document.querySelectorAll("input[type='checkbox']");
-                        for (let i = 0; i < inputs.length; i++) {
-                            inputs[i].checked = false;
-                        }
-                        setSelectedTopics([]);
-                    }}
-                />
+                <Accordion id="topics-selector-accordion" accordionItems={topicAccordionItems} />
+                <h3 className="ons-u-mt-m">Topic summary</h3>
+                <Table contents={topicSummary} dataTestId="topics-summary" noResultsText="No topic selected" />
             </Field>
-        </>
+        </div>
     );
 }

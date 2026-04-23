@@ -30,7 +30,7 @@ export default async function PublishDataset({ params }) {
     }
 
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
-    const seriesIsPublishable = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated" && datasetResp?.current?.links?.latest_version?.id === datasetResp?.next?.links?.latest_version?.id;
+    const seriesIsPublishable = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated";
 
     if (!seriesIsPublishable) {
         return (

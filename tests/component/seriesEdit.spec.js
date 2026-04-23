@@ -19,8 +19,8 @@ test.describe("Edit series page", () => {
         await page.goto("./series/mock-quarterly/edit")
 
         await page.getByTestId("dataset-series-title").fill("test edit title");
-        await page.getByTestId('dataset-series-topics-checkbox-item-business-industry-and-trade-input').click()
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test edit description");
+        await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test edit name");
@@ -46,6 +46,17 @@ test.describe("Edit series page", () => {
         await page.getByRole("button", { name: /Save changes/i }).click();
 
         await expect(page.getByText("A dataset series titled duplicate-title already exists")).toBeVisible();
+    });
+
+    test("Does not allow editing of main topic on a published dataset", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/cpih/edit");
+
+
+        await expect(page.getByTestId("main-topic-selector-radios-item-1001-input")).toBeDisabled();
+        await expect(page.getByTestId("main-topic-selector-radios-item-2002-input")).toBeDisabled();
+
     });
 
     test.describe("Handles API error", () => {
