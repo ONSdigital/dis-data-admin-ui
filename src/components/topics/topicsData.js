@@ -1,10 +1,13 @@
 import { httpGet } from "@/utils/request/request";
 
-// Topic ID's that we don't want to appear in Topic Selector UI
-const EXCLUDED_TOPIC_IDS = new Set([
-    "5829", // About us
-    "6537", // Methodolgy
-    "8925", // Help
+// Topic slug's that we don't want to appear in Topic Selector UI
+// note: slug doesn't always match title
+const EXCLUDED_TOPIC_SLUGS = new Set([
+    "aboutus", // About us
+    "help", // Help
+    "methodology", // Methodolgy
+    "news", // Media
+    "surverys" // Our studies
 ]);
 
 // Subtopic ID's that we don't want to appear in Topic Selector UI
@@ -34,11 +37,12 @@ const EXCLUDED_SUBTOPIC_IDS = new Set([
  */
 export const getAllTopics = async (reqCfg) => {
     const topics = await httpGet(reqCfg, "/topics");
+    console.log("TOPICS REQUEST:", topics)
     if (topics.ok != null && !topics.ok || topics?.items.length === 0) return [];
 
     const includedItems = topics.items.filter((topic) => {
         const t = topic.current || topic.next || topic;
-        return !EXCLUDED_TOPIC_IDS.has(String(t.id));
+        return !EXCLUDED_TOPIC_SLUGS.has(String(t.slug));
     });
 
     return Promise.all(
