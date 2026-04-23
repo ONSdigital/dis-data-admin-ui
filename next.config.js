@@ -14,6 +14,7 @@ module.exports = {
       ],
     },
   },
+  allowedDevOrigins: ["127.0.0.1"], // for component tests
 };
 
 console.log("Allowed origins from env vars: ", allowedOrigins);
