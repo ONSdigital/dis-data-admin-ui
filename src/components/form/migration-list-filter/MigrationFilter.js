@@ -45,14 +45,14 @@ export default function MigrationFilter({ states }) {
                 label: {
                     text: formattedLabel
                 },
-                onChange: (e) => { stateFilterOnChange(e.target.value) },
+                onChange: (e) => { stateFilterOnChange(e.target.value); },
                 value: state,
             });
-        })
+        });
         return ({ itemsList: checkboxOptions });
     }
 
-    const checkboxOptionsItems = createCheckboxes()
+    const checkboxOptionsItems = createCheckboxes();
 
     return (
         <>
