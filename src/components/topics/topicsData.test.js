@@ -37,6 +37,7 @@ describe("getAllTopics", () => {
                 {
                     id: "2945",
                     title: "Business",
+                    slug: "businessindustryandtrade",
                     links: {
                         subtopics: { href: subtopicsHref },
                     },
@@ -75,6 +76,7 @@ describe("getAllTopics", () => {
                 {
                     id: "1",
                     title: "Topic",
+                    slug: "economy",
                     links: { subtopics: { href: subtopicsHref } },
                 },
             ],
@@ -98,6 +100,7 @@ describe("getAllTopics", () => {
                 {
                     id: "1",
                     title: "Topic",
+                    slug: "economy",
                     links: {
                         subtopics: { href: "https://api.example.com/v1/topics/1/subtopics" },
                     },
@@ -146,6 +149,7 @@ describe("getAllTopics", () => {
                 {
                     id: "1",
                     title: "Topic",
+                    slug: "economy",
                     links: {
                         subtopics: { href: "https://api.example.com/v1/topics/1/subtopics" },
                     },
@@ -183,7 +187,7 @@ describe("getAllTopics", () => {
         expect(httpGet).toHaveBeenNthCalledWith(3, reqCfg, "/topics/2/subtopics");
     });
 
-    it("excludes topic when ID matches exlcude list and does not fetch subtopics for it", async () => {
+    it("includes only topics whose slug matches include list and does not fetch subtopics for excluded slugs", async () => {
         const includedSubtopicsHref = "https://api.example.com/v1/topics/2945/subtopics";
 
         httpGet.mockResolvedValueOnce({
@@ -201,7 +205,7 @@ describe("getAllTopics", () => {
                 {
                     id: "2945",
                     title: "Business",
-                    slug: "business",
+                    slug: "businessindustryandtrade",
                     links: { subtopics: { href: includedSubtopicsHref } },
                 },
             ],

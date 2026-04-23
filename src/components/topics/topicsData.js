@@ -1,13 +1,12 @@
 import { httpGet } from "@/utils/request/request";
 
-// Topic slug's that we don't want to appear in Topic Selector UI
-// note: slug doesn't always match title
-const EXCLUDED_TOPIC_SLUGS = new Set([
-    "aboutus", // About us
-    "help", // Help
-    "methodology", // Methodolgy
-    "news", // Media
-    "surverys" // Our studies
+// Topic slug's that we want to appear in Topic Selector UI
+const INCLUDE_TOPIC_SLUGS = new Set([
+    "businessindustryandtrade", // Business, industry and trade
+    "census", // Census
+    "economy", // Economy
+    "employmentandlabourmarket", // Employment and labour market
+    "peoplepopulationandcommunity", // People, population and community
 ]);
 
 /**
@@ -22,7 +21,7 @@ export const getAllTopics = async (reqCfg) => {
 
     const includedItems = topics.items.filter((topic) => {
         const t = topic.current || topic.next || topic;
-        return !EXCLUDED_TOPIC_SLUGS.has(String(t.slug));
+        return INCLUDE_TOPIC_SLUGS.has(String(t.slug));
     });
 
     return Promise.all(
