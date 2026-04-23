@@ -93,7 +93,7 @@ export default async function Series({ searchParams }) {
                 <>
                     <SuccessPanel query={pageParams} contentType="Item" />
                     <div className="ons-grid ons-u-mt-l ons-u-mb-l">
-                        <div className="ons-grid__col ons-col-4@m ons-u-pr-s">
+                        <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
                             <SeriesListForm datasetID={pageParams.id} />
                         </div>
                         <div className="ons-grid__col ons-col-8@m">
