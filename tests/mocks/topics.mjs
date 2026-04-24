@@ -2,7 +2,8 @@ export const topicList = {
     "items": [
         {
             "id": "1000",
-            "title": "Business",
+            "title": "Business, industry and trade",
+            "slug": "businessindustryandtrade",
             "links": {
                 "subtopics": {
                     "href": "https://api.dp.aws.onsdigital.uk/v1/topics/1000/subtopics"
@@ -24,6 +25,7 @@ export const topicList = {
         {
             "id": "2000",
             "title": "Census",
+            "slug": "census",
             "links": {
                 "subtopics": {
                     "href": "https://api.dp.aws.onsdigital.uk/v1/topics/2000/subtopics"
