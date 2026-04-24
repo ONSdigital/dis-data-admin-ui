@@ -109,6 +109,7 @@ export const metadataList = {
             "edition": "time-series",
             "edition_title": "This is an edition title for version 2",
             "id": "mock-minimal",
+            "title": "Minimal mock dataset",
             "version": "2"
         }
     ]

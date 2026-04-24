@@ -1,15 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
 import { setValidAuthCookies } from "../utils/utils";
 
 test.describe("Version overview page", () => {
     test("Route from list of version to version overview page", async ({ page, context }) => {
         setValidAuthCookies(context);
-        await page.goto('./series/mock-quarterly/editions/time-series');
-        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series');
-        await page.getByRole('link', { name: 'Version: 1' }).click();
-        await page.waitForURL('**/series/mock-quarterly/editions/time-series/versions/1');
-        await expect(page.url().toString()).toContain('series/mock-quarterly/editions/time-series/versions/1');
+        await page.goto("./series/mock-quarterly/editions/time-series");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
+        await page.getByRole("link", { name: "Version: 1" }).click();
+        await page.waitForURL("**/series/mock-quarterly/editions/time-series/versions/1");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series/versions/1");
     });
 
     test("Page heading create button routes to create new version page", async ({ page, context }) => {
@@ -41,50 +41,43 @@ test.describe("Version overview page", () => {
         await expect(page.getByTestId("page-heading-link")).toContainText("Back to edition overview");
 
         // page content
-        await expect(page.getByTestId('id-field')).toContainText('mock-quarterly');
-        await expect(page.getByTestId('edition-field')).toContainText('time-series');
-        await expect(page.getByTestId('edition-title-field')).toContainText('This is an edition title for version 1');
-        await expect(page.getByTestId('release-date-field')).toContainText('26 January 2025');
-        await expect(page.getByTestId('version-field')).toContainText('1');
-        await expect(page.getByTestId('last-updated-field')).toContainText('26 February 2025');
-        await expect(page.getByTestId('quality-designation-field')).toContainText('National Statistic');
-        await expect(page.getByTestId("usage-note-title-0")).toContainText("Usage Note 1");
-        await expect(page.getByTestId("usage-note-text-0")).toContainText("This is a usage note for version 1");
-        await expect(page.getByTestId("usage-note-title-1")).toContainText("Usage Note 2");
-        await expect(page.getByTestId("usage-note-text-1")).toContainText("This is another usage note for version 1");
-        await expect(page.getByTestId("alert-type-0")).toContainText("Notice");
-        await expect(page.getByTestId("alert-description-0")).toContainText("This is an alert for version 1");
-        await expect(page.getByTestId("alert-type-1")).toContainText("Correction");
-        await expect(page.getByTestId("alert-description-1")).toContainText("This is a correction for version 1");
-        await expect(page.getByTestId("distribution-title-0")).toContainText("Full Dataset (CSV)");
-        await expect(page.getByTestId("distribution-format-0")).toContainText("csv");
-        await expect(page.getByTestId("distribution-media-type-0")).toContainText("text/csv");
-        await expect(page.getByTestId("distribution-byte-size-0")).toContainText("4300000 bytes");
-        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
-        await expect(page.getByTestId("distribution-title-1")).toContainText("Full Dataset (XLS)");
-        await expect(page.getByTestId("distribution-format-1")).toContainText("xls");
-        await expect(page.getByTestId("distribution-media-type-1")).toContainText("application/vnd.ms-excel");
-        await expect(page.getByTestId("distribution-byte-size-1")).toContainText("265000 bytes");
-        await expect(page.getByTestId("distribution-download-url-1")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls");
+        await expect(page.locator("#version-id")).toContainText("1");
+        await expect(page.locator("#series")).toContainText("Consumer price inflation tables");
+        await expect(page.locator("#edition")).toContainText("time-series");
+        await expect(page.locator("#edition-title")).toContainText("This is an edition title for version 1");
+        await expect(page.locator("#edition")).toContainText("time-series");
+        await expect(page.locator("#state")).toContainText("Published");
+        await expect(page.locator("#release-date")).toContainText("26 January 2025");
+        await expect(page.locator("#last-updated")).toContainText("26 February 2025");
+        await expect(page.locator("#quality-designation")).toContainText("National Statistic");
+        await expect(page.getByTestId("version-usage-notes-title-0")).toContainText("Usage Note 1");
+        await expect(page.getByTestId("version-usage-notes-description-0")).toContainText("This is a usage note for version 1");
+        await expect(page.getByTestId("version-usage-notes-title-1")).toContainText("Usage Note 2");
+        await expect(page.getByTestId("version-usage-notes-description-1")).toContainText("This is another usage note for version 1");
+        await expect(page.getByTestId("version-alerts-title-0")).toContainText("alert");
+        await expect(page.getByTestId("version-alerts-description-0")).toContainText("This is an alert for version 1");
+        await expect(page.getByTestId("version-alerts-title-1")).toContainText("correction");
+        await expect(page.getByTestId("version-alerts-description-1")).toContainText("This is a correction for version 1");
+        await expect(page.getByTestId("version-file-download-title-0")).toContainText("Full Dataset (CSV)");
+        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
+        await expect(page.getByTestId("version-file-download-title-1")).toContainText("Full Dataset (XLS)");
+        await expect(page.getByTestId("version-file-download-download-1")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls");
     });
 
     test("Minimally populated version page renders as expected", async ({ page, context }) => {
         setValidAuthCookies(context);
         await page.goto("./series/mock-minimal/editions/time-series/versions/2");
-        await expect(page.getByTestId('id-field')).toContainText('mock-minimal');
-        await expect(page.getByTestId('edition-field')).toContainText('time-series');
-        await expect(page.getByTestId('edition-title-field')).toContainText('This is an edition title for version 2');
-        await expect(page.getByTestId('release-date-field')).toContainText('26 January 2025');
-        await expect(page.getByTestId('version-field')).toContainText('2');
-        await expect(page.getByTestId('last-updated-field')).toContainText('26 February 2025');
-        await expect(page.getByTestId('quality-designation-field')).not.toBeVisible();
-        await expect(page.locator("h2", { hasText: "Usage Notes" })).not.toBeVisible();
-        await expect(page.locator("h2", { hasText: "Alerts" })).not.toBeVisible();
-        await expect(page.getByTestId("distribution-title-0")).toContainText("Full Dataset (CSV)");
-        await expect(page.getByTestId("distribution-format-0")).toContainText("csv");
-        await expect(page.getByTestId("distribution-media-type-0")).toContainText("text/csv");
-        await expect(page.getByTestId("distribution-byte-size-0")).toContainText("4300000 bytes");
-        await expect(page.getByTestId("distribution-download-url-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
+        await expect(page.locator("#version-id")).toContainText("2");
+        await expect(page.locator("#series")).toContainText("Minimal mock dataset");
+        await expect(page.locator("#edition")).toContainText("time-series");
+        await expect(page.locator("#edition-title")).toContainText("This is an edition title for version 2");
+        await expect(page.locator("#release-date")).toContainText("26 January 2025");
+        await expect(page.locator("#last-updated")).toContainText("26 February 2025");
+        await expect(page.locator("#quality-designation")).not.toBeVisible();
+        await expect(page.getByTestId("version-usage-notes-title-0")).not.toBeVisible();
+        await expect(page.getByTestId("version-alerts-title-0")).not.toBeVisible();
+        await expect(page.getByTestId("version-file-download-title-0")).toContainText("Full Dataset (CSV)");
+        await expect(page.getByTestId("version-file-download-download-0")).toHaveAttribute("href", "http://localhost:23600/downloads/files/uuid-1/full-dataset.csv");
     });
 
     test("Shows version delete button when version is unpublished", async ({ page, context }) => {

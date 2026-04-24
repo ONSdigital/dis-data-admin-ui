@@ -94,7 +94,7 @@ export default function Table({ contents, caption, classes, dataTestId, noResult
     };
 
     return (
-        <div className={"ons-table-scrollable ons-table-scrollable--on " + classes}>
+        <div className={"ons-table-scrollable " + classes}>
             <div className="ons-table-scrollable__content" tabIndex="0" role="region" aria-label="JavaScript enhanced sortable table. Scrollable table">
                 <table data-testid={dataTestId} className="ons-table ons-table--sortable" data-aria-sort="Sort by" data-aria-asc="ascending" data-aria-desc="descending">
                     { caption && <caption data-testid={`${sanitisedDataTestId}-caption`} className="ons-table__caption"> {caption} </caption>}
