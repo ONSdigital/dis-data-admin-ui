@@ -37,6 +37,7 @@ describe("getAllTopics", () => {
                 {
                     id: "2945",
                     title: "Business",
+                    slug: "businessindustryandtrade",
                     links: {
                         subtopics: { href: subtopicsHref },
                     },
@@ -75,6 +76,7 @@ describe("getAllTopics", () => {
                 {
                     id: "1",
                     title: "Topic",
+                    slug: "economy",
                     links: { subtopics: { href: subtopicsHref } },
                 },
             ],
@@ -98,6 +100,7 @@ describe("getAllTopics", () => {
                 {
                     id: "1",
                     title: "Topic",
+                    slug: "economy",
                     links: {
                         subtopics: { href: "https://api.example.com/v1/topics/1/subtopics" },
                     },
@@ -140,7 +143,51 @@ describe("getAllTopics", () => {
         expect(httpGet).toHaveBeenNthCalledWith(3, reqCfg, "/topics/2/subtopics");
     });
 
-    it("excludes topic when ID matches exlcude list and does not fetch subtopics for it", async () => {
+    it("omits parent subtopic when it has subtopics metadata and flattens children", async () => {
+        httpGet.mockResolvedValueOnce({
+            items: [
+                {
+                    id: "1",
+                    title: "Topic",
+                    slug: "economy",
+                    links: {
+                        subtopics: { href: "https://api.example.com/v1/topics/1/subtopics" },
+                    },
+                },
+            ],
+        });
+        httpGet.mockResolvedValueOnce({
+            items: [
+                {
+                    id: "2",
+                    title: "Wrapper subtopic",
+                    subtopics_ids: ["3"],
+                    links: {
+                        subtopics: { href: "https://api.example.com/v1/topics/2/subtopics" },
+                    },
+                },
+            ],
+        });
+        httpGet.mockResolvedValueOnce({
+            items: [{ id: "3", title: "Nested subtopic" }],
+        });
+
+        const result = await getAllTopics(reqCfg);
+
+        expect(result).toEqual([
+            {
+                id: "1",
+                label: "Topic",
+                subtopics: [{ id: "3", label: "Nested subtopic" }],
+            },
+        ]);
+        expect(httpGet).toHaveBeenCalledTimes(3);
+        expect(httpGet).toHaveBeenNthCalledWith(1, reqCfg, "/topics");
+        expect(httpGet).toHaveBeenNthCalledWith(2, reqCfg, "/topics/1/subtopics");
+        expect(httpGet).toHaveBeenNthCalledWith(3, reqCfg, "/topics/2/subtopics");
+    });
+
+    it("includes only topics whose slug matches include list and does not fetch subtopics for excluded slugs", async () => {
         const includedSubtopicsHref = "https://api.example.com/v1/topics/2945/subtopics";
 
         httpGet.mockResolvedValueOnce({
@@ -148,6 +195,7 @@ describe("getAllTopics", () => {
                 {
                     id: "5829",
                     title: "About us",
+                    slug: "aboutus",
                     links: {
                         subtopics: {
                             href: "https://api.example.com/v1/topics/5829/subtopics",
@@ -157,6 +205,7 @@ describe("getAllTopics", () => {
                 {
                     id: "2945",
                     title: "Business",
+                    slug: "businessindustryandtrade",
                     links: { subtopics: { href: includedSubtopicsHref } },
                 },
             ],
