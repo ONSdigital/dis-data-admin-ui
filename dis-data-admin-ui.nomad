@@ -70,7 +70,6 @@ job "dis-data-admin-ui" {
       template {
         source      = "${NOMAD_TASK_DIR}/vars-template"
         destination = "${NOMAD_TASK_DIR}/vars"
-        env         = true
       }
 
       vault {
