@@ -14,7 +14,6 @@ export default async function MigrationList({ searchParams }) {
     const pageParams = await searchParams;
     const requestURL = createRequestURL(pageParams);
     const reqCfg = await SSRequestConfig(cookies, "migration-service");
-    console.log("CONFIG:", reqCfg)
     const migrationsResp = await httpGet(reqCfg, requestURL);
 
     let migrationsRespError = false;
