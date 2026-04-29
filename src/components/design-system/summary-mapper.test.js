@@ -54,9 +54,13 @@ describe("mapSeriesSummary", () => {
         // expect "Next release" to have single value and have "edit" action
         expect(mappedItems[7].rowTitle).toBe("Next release");
         expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "TBC"});
-        expect(mappedItems[7].rowItems[0].actions).toBeFalsy();
-        expect(mappedItems[8].rowTitle).toBe("Keywords");
+        expect(mappedItems[7].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-next-release",
+            visuallyHiddenText: "Edit Next release",
+            url: "test/foo/edit#dataset-series-next-release"
+        });
         // expect "Keywords" to have two values and have "edit" action
+        expect(mappedItems[8].rowTitle).toBe("Keywords");
         expect(mappedItems[8].rowItems[0].valueList).toHaveLength(2)
         expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "mock"});
         expect(mappedItems[8].rowItems[0].valueList[1]).toMatchObject({text: "test"});
