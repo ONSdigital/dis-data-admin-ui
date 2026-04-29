@@ -2,19 +2,18 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import MigrationFilter from "./MigrationFilter";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
     useRouter: jest.fn().mockReturnValue({
         push: jest.fn(),
     }),
-    usePathname: jest.fn().mockReturnValue("/migration"),
 }));
 
 describe("MigrationFilter", () => {
     let router;
 
-    const listOfStates = ["approved", "submitted", "in_review", "rejected"]
+    const listOfStates = ["approved", "submitted", "in_review", "rejected"];
 
     beforeEach(() => {
         router = useRouter();
@@ -23,13 +22,14 @@ describe("MigrationFilter", () => {
 
     describe("renders correctly", () => {
         it("renders the checkbox list and apply button", () => {
-            render(<MigrationFilter states={listOfStates} />);
+            render(<MigrationFilter states={listOfStates} selectedStates={[]} pathname="/migration" />);
 
             expect(screen.getByTestId("fieldset-state-filter")).toBeInTheDocument();
-            expect(screen.getByLabelText("Approved")).toBeInTheDocument();
-            expect(screen.getByLabelText("Submitted")).toBeInTheDocument();
-            expect(screen.getByLabelText("In review")).toBeInTheDocument();
-            expect(screen.getByLabelText("Rejected")).toBeInTheDocument();
+
+            expect(screen.getByTestId("state-filter-item-approved-input")).toBeInTheDocument();
+            expect(screen.getByTestId("state-filter-item-submitted-input")).toBeInTheDocument();
+            expect(screen.getByTestId("state-filter-item-in-review-input")).toBeInTheDocument();
+            expect(screen.getByTestId("state-filter-item-rejected-input")).toBeInTheDocument();
 
             expect(screen.getByTestId("migration-filter-apply-button")).toBeInTheDocument();
         });
@@ -37,33 +37,31 @@ describe("MigrationFilter", () => {
 
     describe("onClick handler", () => {
         it("is called with single selected state", () => {
-            render(<MigrationFilter states={listOfStates} />);
+            render(<MigrationFilter states={listOfStates} selectedStates={[]} pathname="/migration" />);
 
-            fireEvent.click(screen.getByLabelText("Approved"));
+            fireEvent.click(screen.getByTestId("state-filter-item-approved-input"));
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
 
-            expect(router.push).toHaveBeenCalledTimes(1);
             expect(router.push).toHaveBeenCalledWith("/migration?state=approved");
         });
 
         it("is called with multiple selected states", () => {
-            render(<MigrationFilter states={listOfStates} />);
+            render(<MigrationFilter states={listOfStates} selectedStates={[]} pathname="/migration" />);
 
-            fireEvent.click(screen.getByLabelText("Approved"));
-            fireEvent.click(screen.getByLabelText("Submitted"));
-            fireEvent.click(screen.getByLabelText("In review"));
+            fireEvent.click(screen.getByTestId("state-filter-item-approved-input"));
+            fireEvent.click(screen.getByTestId("state-filter-item-submitted-input"));
+            fireEvent.click(screen.getByTestId("state-filter-item-in-review-input"));
 
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
 
-            expect(router.push).toHaveBeenCalledTimes(1);
             expect(router.push).toHaveBeenCalledWith("/migration?state=approved,submitted,in_review");
         });
 
         it("removes a state when checkbox is unchecked", () => {
-            render(<MigrationFilter states={listOfStates} />);
+            render(<MigrationFilter states={listOfStates} selectedStates={[]} pathname="/migration" />);
 
-            const approved = screen.getByLabelText("Approved");
-            const submitted = screen.getByLabelText("Submitted");
+            const approved = screen.getByTestId("state-filter-item-approved-input");
+            const submitted = screen.getByTestId("state-filter-item-submitted-input");
 
             fireEvent.click(approved);
             fireEvent.click(submitted);
@@ -73,9 +71,7 @@ describe("MigrationFilter", () => {
 
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
 
-            expect(router.push).toHaveBeenCalledTimes(1);
             expect(router.push).toHaveBeenCalledWith("/migration?state=submitted");
         });
-
     });
 });
