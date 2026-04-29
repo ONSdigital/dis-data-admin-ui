@@ -37,11 +37,12 @@ export default async function MigrationList({ searchParams }) {
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
                             Showing 1 to {migrationsResp.count} of {migrationsResp.total_count} jobs
                         </div>
-                        <div className="ons-grid__col ons-col-2@m ons-push-1@m">
+                        <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
                                 dataTestId="create-migration-job-button"
                                 text="Create migration job"
                                 link="migration/create"
+                                classes="ons-u-fr"
                             />
                         </div>
                     </div>
