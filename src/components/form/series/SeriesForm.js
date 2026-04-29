@@ -116,10 +116,10 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     classes="ons-input--block ons-input-number--w-50"
                     name="dataset-series-next-release"
                     label={{
-                        text: "Next release (optional)",
+                        text: "Next release",
                         description: `Date or text e.g. "12 March 2014" or "To be announced"`
                     }}
-                    error={(formState.errors && formState.errors.nextRelease) ? { id: "dataset-series-next-release-error", text: formState.errors.nextRelease } : null}
+                    error={(formState.errors && formState.errors.next_release) ? { id: "dataset-series-next-release-error", text: formState.errors.next_release } : null}
                     value={nextRelease}
                     onChange={e => setNextRelease(e.target.value)}
                 />

@@ -13,6 +13,7 @@ const createSchema = z.object({
     id: z.string().min(1, { message: "ID is required" }),
     description: z.string().min(1, { message: "Description is required" }),
     topics: z.string().array().nonempty({ message: "Topic is required" }),
+    next_release: z.string().min(1, { message: "Next release is required" }),
     contacts: z.array(z.object({
         name: z.string(),
         email: z.string()
