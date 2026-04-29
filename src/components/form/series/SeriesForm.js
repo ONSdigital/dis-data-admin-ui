@@ -142,7 +142,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     classes="ons-input--block ons-input-number--w-50"
                     name="dataset-series-keywords"
                     label={{
-                        text: "Keywords (optional)",
+                        text: "Keywords",
                         description: `Comma separated list of keywords e.g. "economy, inflation, prices"`
                     }}
                     error={(formState.errors && formState.errors.keywords) ? { id: "dataset-series-keywords-error", text: formState.errors.keywords } : null}
