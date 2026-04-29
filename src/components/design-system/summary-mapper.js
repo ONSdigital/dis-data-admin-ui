@@ -159,7 +159,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
 
     mapRow("Last updated", formatDate(data.last_updated), null, null, rows);
     mapRow("Licence", data.license, null, null, rows);
-    mapRow("Next release", data.next_release, null, null, rows);
+    mapRow("Next release", data.next_release, null, action, rows);
 
     if (data.keywords && data.keywords.length > 0) {
         mapRow("Keywords", data.keywords, true, action, rows);
