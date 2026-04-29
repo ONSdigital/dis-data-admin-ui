@@ -9,11 +9,12 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, action }) {
+export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentNextRelease = "", currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, action }) {
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
     const [qmi, setQMI] = useState(currentQMI);
+    const [nextRelease, setNextRelease] = useState(currentNextRelease);
     const [keywords, setKeywords] = useState(currentKeywords);
 
     const [formState, formAction, isPending] = useActionState(action, {});
@@ -108,6 +109,19 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     preSelectedTopics={formState.submission?.originalTopics ?? currentTopics}
                     topicsError={(formState.errors && formState.errors.topics) ? formState.errors.topics : null}
                     disableMainTopics={isPublished}
+                />
+                <TextInput
+                    id="dataset-series-next-release"
+                    dataTestId="dataset-series-next-release"
+                    classes="ons-input--block ons-input-number--w-50"
+                    name="dataset-series-next-release"
+                    label={{
+                        text: "Next release (optional)",
+                        description: `Date or text e.g. "12 March 2014" or "To be announced"`
+                    }}
+                    error={(formState.errors && formState.errors.nextRelease) ? { id: "dataset-series-next-release-error", text: formState.errors.nextRelease } : null}
+                    value={nextRelease}
+                    onChange={e => setNextRelease(e.target.value)}
                 />
                 <TextInput
                     id="dataset-series-qmi"

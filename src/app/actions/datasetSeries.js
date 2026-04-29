@@ -27,17 +27,17 @@ const getFormData = (formData) => {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
-        id : formData.get("dataset-series-id"),
+        id: formData.get("dataset-series-id"),
         // we store original topic field so this can be returned to create/edit form
         // in it's raw/original format
         originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
         description: formData.get("dataset-series-description"),
         contacts: JSON.parse(formData.get("dataset-series-contacts")),
+        next_release: formData.get("dataset-series-next-release"),
         qmi: { 
             href: formData.get("dataset-series-qmi") 
         },
         keywords: [ formData.get("dataset-series-keywords") ],
-        next_release: "To be announced"
     };
 
     datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
