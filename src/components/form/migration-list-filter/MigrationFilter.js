@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
 
-export default function MigrationFilter({ states }) {
-    const [stateFilters, setStateFilters] = useState([]);
+export default function MigrationFilter({ states, selectedStates, pathname }) {
 
     const { push } = useRouter();
-    const pathname = usePathname();
+    const [stateFilters, setStateFilters] = useState(selectedStates);
+
+    useEffect(() => {
+        setStateFilters(selectedStates);
+    }, [selectedStates]);
 
     const stateFilterOnChange = (state) => {
         if (!stateFilters.includes(state)) {
@@ -47,6 +50,7 @@ export default function MigrationFilter({ states }) {
                 },
                 onChange: (e) => { stateFilterOnChange(e.target.value); },
                 value: state,
+                checked: stateFilters.includes(state)
             });
         });
         return ({ itemsList: checkboxOptions });
