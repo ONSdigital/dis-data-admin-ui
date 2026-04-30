@@ -24,7 +24,7 @@ export default function VersionFields(props) {
     return (
         <>
             <DateTimePicker
-                id="release-date"
+                id="dataset-version-release-date"
                 dataTestId="release-date"
                 legend="Release date and time"
                 description="For example, 31 03 1980 09 30"
@@ -34,6 +34,7 @@ export default function VersionFields(props) {
 
             <input id="quality-designation-value" data-testid="quality-designation-value-input" name="quality-designation-value" type="hidden" value={qualityDesignation} />
             <Radios
+                id="dataset-version-quality-designation"
                 dataTestId="quality-designation-radios"
                 legend="Quality designation"
                 name="quality-designation-radios"
@@ -80,13 +81,13 @@ export default function VersionFields(props) {
                     ]
                 }}
             />
-            <h3 className="ons-u-mt-xl">Usage notes (optional)</h3>
+            <h3 id="dataset-version-usage-notes" className="ons-u-mt-xl">Usage notes (optional)</h3>
             <MultiContentItems id="usage-notes" fieldType="input" buttonLabel="Add additional usage note" contentItems={props.fieldValues?.usage_notes || []}></MultiContentItems>
 
-            <h3 className="ons-u-mt-xl">Alerts (optional)</h3>
+            <h3 id="dataset-version-alerts" className="ons-u-mt-xl">Alerts (optional)</h3>
             <MultiContentItems id="alerts" fieldType="radios" buttonLabel="Add additional alert" contentItems={props.fieldValues?.alerts || []}></MultiContentItems>
 
-            <h2 className="ons-u-mt-xl">Dataset file</h2>
+            <h2 id="dataset-version-downloads" className="ons-u-mt-xl">Dataset file</h2>
             <ResumableFileUpload id="dataset-upload"
                 label="File upload"
                 description="File types accepted are .csdb, .csv, .csvw, .sdmx, .xls and .xlsx"
