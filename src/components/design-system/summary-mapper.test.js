@@ -217,11 +217,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         // expect "Last updated" to have single value and have "edit" action
         expect(mappedItems[6].rowTitle).toBe("Last updated");
         expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
-        expect(mappedItems[6].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-last-updated",
-            visuallyHiddenText: "Edit Last updated",
-            url: "test/foo/edit#dataset-version-last-updated",
-        });
+        expect(mappedItems[6].rowItems[0].actions).toBeFalsy();
         // expect "Quality designation" to have single value and have "edit" action
         expect(mappedItems[7].rowTitle).toBe("Quality designation");
         expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
@@ -288,11 +284,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         // expect "Last updated" to have single value and have "edit" action
         expect(mappedItems[5].rowTitle).toBe("Last updated");
         expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
-        expect(mappedItems[5].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-last-updated",
-            visuallyHiddenText: "Edit Last updated",
-            url: "test/foo/edit#dataset-version-last-updated",
-        });
+        expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
         // expect "Quality designation" to have single value and have "edit" action
         expect(mappedItems[6].rowTitle).toBe("Quality designation");
         expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
