@@ -219,7 +219,7 @@ const mapVersionSummary = (version, editBaseURL) => {
     mapRow("Edition title", version.edition_title, null, null, rows);
     version.state === "published" && mapRow("State", "Published", null, null, rows);
     mapRow("Release date", formatDate(version.release_date), null, action, rows);
-    mapRow("Last updated", formatDate(version.last_updated), null, action, rows);
+    mapRow("Last updated", formatDate(version.last_updated), null, null, rows);
     if (version.quality_designation) {
         mapRow("Quality designation", mapQualityDesignationToUserFriendlyString(version.quality_designation), null, action, rows);
     }
