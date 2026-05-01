@@ -6,6 +6,7 @@ module.exports = {
     serverActions: {
       allowedOrigins: [
         "publishing.dp.aws.onsdigital.uk", // sandbox
+        "publishing.eks.dp.aws.onsdigital.uk",
         "publishing.dp-staging.aws.onsdigital.uk", // staging
         "localhost:29500" // local when running in dataset-catalogue stack
       ],
