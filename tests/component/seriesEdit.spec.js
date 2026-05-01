@@ -21,6 +21,7 @@ test.describe("Edit series page", () => {
         await page.getByTestId("dataset-series-title").fill("test edit title");
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test edit description");
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
+        await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test edit name");

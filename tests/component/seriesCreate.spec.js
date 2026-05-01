@@ -17,6 +17,7 @@ test.describe("Create series page", () => {
         await expect(page.getByTestId("topics-selector-accordion-accordion-item-2000")).toContainText("Census");
         await expect(page.getByTestId("topics-summary-no-data")).toContainText("No topic selected");
         await expect(page.getByTestId("dataset-series-description")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-next-release")).toBeVisible();
         await expect(page.getByTestId("dataset-series-qmi")).toBeVisible();
         await expect(page.getByTestId("dataset-series-keywords")).toBeVisible();
         await expect(page.getByTestId("dataset-series-contact-name")).toBeVisible();
@@ -33,6 +34,7 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
         
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
+        await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test name");
@@ -65,12 +67,14 @@ test.describe("Create series page", () => {
         await expect(page.getByLabel("There was a problem").getByText("ID is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Description is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Topic is required")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Next release is required")).toBeVisible();
         await expect(page.getByLabel("There was a problem").getByText("Contact is required")).toBeVisible();
 
         await expect(page.getByTestId("field-dataset-series-title-error").getByText("Title is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-id-error").getByText("ID is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-description-error").getByText("Description is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-topics-error").getByText("Topic is required")).toBeVisible();
+        await expect(page.getByTestId("field-dataset-series-next-release-error").getByText("Next release is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-series-contacts-error").getByText("Contact is required")).toBeVisible();
     });
 
@@ -93,6 +97,7 @@ test.describe("Create series page", () => {
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
+        await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test name");
@@ -112,6 +117,7 @@ test.describe("Create series page", () => {
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
+        await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test name");

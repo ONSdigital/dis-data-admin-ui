@@ -60,6 +60,7 @@ export default async function createPage({params}) {
                         currentID={dataset.id} 
                         currentDescription={dataset.description} 
                         currentTopics={dataset.topics}
+                        currentNextRelease={dataset.next_release}
                         currentQMI={dataset.qmi?.href}
                         currentKeywords={dataset.keywords}
                         currentContacts={dataset.contacts}
