@@ -54,9 +54,13 @@ describe("mapSeriesSummary", () => {
         // expect "Next release" to have single value and have "edit" action
         expect(mappedItems[7].rowTitle).toBe("Next release");
         expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "TBC"});
-        expect(mappedItems[7].rowItems[0].actions).toBeFalsy();
-        expect(mappedItems[8].rowTitle).toBe("Keywords");
+        expect(mappedItems[7].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-next-release",
+            visuallyHiddenText: "Edit Next release",
+            url: "test/foo/edit#dataset-series-next-release"
+        });
         // expect "Keywords" to have two values and have "edit" action
+        expect(mappedItems[8].rowTitle).toBe("Keywords");
         expect(mappedItems[8].rowItems[0].valueList).toHaveLength(2)
         expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "mock"});
         expect(mappedItems[8].rowItems[0].valueList[1]).toMatchObject({text: "test"});
@@ -213,11 +217,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         // expect "Last updated" to have single value and have "edit" action
         expect(mappedItems[6].rowTitle).toBe("Last updated");
         expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
-        expect(mappedItems[6].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-last-updated",
-            visuallyHiddenText: "Edit Last updated",
-            url: "test/foo/edit#dataset-version-last-updated",
-        });
+        expect(mappedItems[6].rowItems[0].actions).toBeFalsy();
         // expect "Quality designation" to have single value and have "edit" action
         expect(mappedItems[7].rowTitle).toBe("Quality designation");
         expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
@@ -284,11 +284,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         // expect "Last updated" to have single value and have "edit" action
         expect(mappedItems[5].rowTitle).toBe("Last updated");
         expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
-        expect(mappedItems[5].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-last-updated",
-            visuallyHiddenText: "Edit Last updated",
-            url: "test/foo/edit#dataset-version-last-updated",
-        });
+        expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
         // expect "Quality designation" to have single value and have "edit" action
         expect(mappedItems[6].rowTitle).toBe("Quality designation");
         expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
