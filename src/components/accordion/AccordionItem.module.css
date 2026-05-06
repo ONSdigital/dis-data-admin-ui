@@ -1,5 +1,5 @@
 .icon {
-    top: 0rem;
+    top: 0rem !important;
     position: relative;
     width: 1.75rem;
     color: var(--ons-color-text-link);
@@ -7,6 +7,6 @@
 }
 
 .iconOpen {
-    top: 0.5rem;
+    top: 0.4rem !important;
     transform: rotate(90deg);
 }
