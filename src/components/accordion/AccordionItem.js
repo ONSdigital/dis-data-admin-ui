@@ -1,19 +1,7 @@
 import { useState } from "react";
 
 import { sanitiseString } from "author-design-system-react";
-
-const ICON_STYLE = {
-    top: "0rem",
-    position: "relative",
-    width: "1.75rem",
-    color: "var(--ons-color-text-link)",
-};
-
-const ICON_ROTATED_STYLE = {
-    ...ICON_STYLE,
-    top: "0.5rem",
-    transform: "rotate(90deg)",
-};
+import styles from "./AccordionItem.module.css";
 
 export default function AccordionItem({ id, accordionItem }) {
     const [isOpen, setIsOpen] = useState(accordionItem.isOpen || false);
@@ -27,8 +15,10 @@ export default function AccordionItem({ id, accordionItem }) {
     const sanitisedDataTestId = sanitiseString(`${idPrefix}accordion-item-${accordionItem.id}`);
 
     const renderIcon = () => {
+        const containerClassName = `ons-details__icon ons-u-dib ${styles.icon} ${isOpen ? styles.iconOpen : ""}`;
+
         return (
-            <span className="ons-details__icon ons-u-dib" style={isOpen ? ICON_ROTATED_STYLE : ICON_STYLE}>
+            <span className={containerClassName}>
                 <svg className="ons-icon" viewBox="0 0 8 13" xmlns="http://www.w3.org/2000/svg" focusable="false"
                     fill="currentColor" role="img" aria-hidden="true">
                     <path

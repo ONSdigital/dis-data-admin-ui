@@ -1,0 +1,12 @@
+.icon {
+    top: 0rem;
+    position: relative;
+    width: 1.75rem;
+    color: var(--ons-color-text-link);
+    transition: transform 0.2s ease, top 0.2s ease;
+}
+
+.iconOpen {
+    top: 0.5rem;
+    transform: rotate(90deg);
+}
