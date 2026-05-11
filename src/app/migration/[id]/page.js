@@ -33,7 +33,7 @@ export default async function MigrationOverview({ params }) {
                 return (
                     <div className="ons-u-mb-m">
                         <p className="ons-u-mb-no ons-u-fw-b">Series</p>
-                        <Link data-TestId="migration-series-link" href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
+                        <Link data-testid="migration-series-link" href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
                     </div>
                 );
             }

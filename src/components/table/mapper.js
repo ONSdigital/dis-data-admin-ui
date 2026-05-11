@@ -130,7 +130,7 @@ const mapMigrationJobTable = (data) => {
                         <Link
                             key={`migration-job-table-edition-${editionID}`}
                             href={editionHref}
-                            data-TestId={`migration-job-table-edition-${editionID}`}
+                            data-testid={`migration-job-table-edition-${editionID}`}
                         >
                             {editionID}
                         </Link>
@@ -148,7 +148,7 @@ const mapMigrationJobTable = (data) => {
                                 const versionHref = `${editionHref}/versions/${v}`;
                                 return (
                                     <li key={`${editionID}-${v}`}>
-                                        <Link data-TestId={`migration-job-table-edition-${editionID}-${v}`} href={versionHref}>{`Version ${v}`}</Link>
+                                        <Link data-testid={`migration-job-table-edition-${editionID}-${v}`} href={versionHref}>{`Version ${v}`}</Link>
                                     </li>
                                 );
                             })}
