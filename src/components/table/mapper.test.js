@@ -1,6 +1,8 @@
 import React from "react";
 
-import { mapMigrationListTable, mapMigrationJobState } from "./mapper";
+import { migrationTasksList } from "../../../tests/mocks/migration-tasks.mjs";
+
+import { mapMigrationListTable, mapMigrationJobState, mapMigrationJobTable } from "./mapper";
 
 jest.mock("next/link", () => {
     return ({ href, children }) => <a href={href}>{children}</a>;
@@ -133,5 +135,51 @@ describe("mapMigrationListTable", () => {
         expect(Array.isArray(result)).toBe(true);
         expect(result[0].props.className).toBe("ons-status ons-status--error");
         expect(result[0].props.children).toBe("Failed migration");
+    });
+});
+
+describe("mapMigrationJobTable", () => {
+    test("returns empty rows when data is missing or empty", () => {
+        expect(mapMigrationJobTable(undefined).body.rows).toEqual([]);
+        expect(mapMigrationJobTable([]).body.rows).toEqual([]);
+    });
+
+    test("groups tasks by edition, dedupes versions, sorts versions ascending using migrationTasksList mock", () => {
+        const data = migrationTasksList.items;
+        const datasetID = data[0].target.dataset_id;
+        const editionID = "latestversion";
+
+        const result = mapMigrationJobTable(data);
+
+        expect(result.headers).toEqual([
+            { label: "Editions", isSortable: false },
+            { label: "Versions", isSortable: false },
+        ]);
+
+        expect(result.body.rows).toHaveLength(1);
+
+        const editionLink = result.body.rows[0].columns[0].content[0];
+        expect(editionLink.props.href).toBe(`/data-admin/series/${datasetID}/editions/${editionID}`);
+        expect(editionLink.props.children).toBe(editionID);
+
+        const versionsUl = result.body.rows[0].columns[1].content[0];
+        expect(versionsUl.type).toBe("ul");
+        const versionLinks = React.Children.toArray(versionsUl.props.children).map(
+            (li) => li.props.children
+        );
+        expect(versionLinks.map((link) => link.props.href)).toEqual([
+            `/data-admin/series/${datasetID}/editions/${editionID}/versions/1`,
+            `/data-admin/series/${datasetID}/editions/${editionID}/versions/2`,
+            `/data-admin/series/${datasetID}/editions/${editionID}/versions/3`,
+            `/data-admin/series/${datasetID}/editions/${editionID}/versions/4`,
+            `/data-admin/series/${datasetID}/editions/${editionID}/versions/5`,
+        ]);
+        expect(versionLinks.map((link) => link.props.children)).toEqual([
+            "Version 1",
+            "Version 2",
+            "Version 3",
+            "Version 4",
+            "Version 5",
+        ]);
     });
 });
