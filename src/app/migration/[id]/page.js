@@ -1,12 +1,14 @@
+import Link from "next/link";
 import { cookies, headers } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import { Panel, Summary } from "@/components/design-system/DesignSystem";
+import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
 
-import { mapMigrationJobSummary } from "@/components/design-system/summary-mapper";
+import { mapMigrationJobTable } from "@/components/table/mapper";
+import Table from "@/components/table/Table";
 
 export default async function MigrationOverview({ params }) {
     const { id } = await params;
@@ -23,6 +25,18 @@ export default async function MigrationOverview({ params }) {
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
 
+    const renderSeriesTask = (taskList) => {
+        const datasetID = taskList[0]?.target?.dataset_id;
+        if (datasetID) {
+            return (
+                <div className="ons-u-mb-m">
+                    <p className="ons-u-mb-no ons-u-fw-b">Series</p>
+                    <Link href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
+                </div>
+            );
+        }
+    };
+
     const renderTaskList = async() => {
         if (!displayMigrationJobDetails) {
             return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
@@ -37,9 +51,12 @@ export default async function MigrationOverview({ params }) {
             );
         }
 
-        const migrationTaskSummaryItems = mapMigrationJobSummary(migrationTasksResp.items);
+        const migrationTaskTableItems = mapMigrationJobTable(migrationTasksResp.items);
         return (
-            <Summary summaries={migrationTaskSummaryItems} dataTestId="migration-job-overview-list"/>
+            <>
+                { renderSeriesTask(migrationTasksResp.items) }
+                <Table contents={migrationTaskTableItems} />
+            </>
         );
     };
 
