@@ -71,4 +71,90 @@ const mapMigrationListTable = (data) => {
     return { headers, body };
 };
 
-export { mapMigrationListTable, mapMigrationJobState };
+const compareversionIDs = (a, b) => {
+    const na = Number(a);
+    const nb = Number(b);
+    const aIsNumeric = !Number.isNaN(na) && String(na) === String(a).trim();
+    const bIsNumeric = !Number.isNaN(nb) && String(nb) === String(b).trim();
+    if (aIsNumeric && bIsNumeric) {
+        return na - nb;
+    }
+    return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
+};
+
+const mapMigrationJobTable = (data) => {
+    const headers = [
+        { label: "Editions", isSortable: false },
+        { label: "Versions", isSortable: false }
+    ];
+
+    const body = {
+        rows: []
+    };
+
+    if (!Array.isArray(data) || data.length === 0) {
+        return { headers, body };
+    }
+
+    const datasetID = data[0].target?.dataset_id;
+
+    const editionsMap = new Map();
+
+    data.forEach((item) => {
+        const editionID = item?.target?.edition_id;
+        const versionID = item?.target?.version_id;
+        if (editionID == null || versionID == null) {
+            return;
+        }
+        const editionKey = String(editionID);
+        if (!editionsMap.has(editionKey)) {
+            editionsMap.set(editionKey, { versions: new Set() });
+        }
+        editionsMap.get(editionKey).versions.add(String(versionID));
+    });
+
+    editionsMap.forEach((edition, editionID) => {
+        const sortedVersions = [...edition.versions].sort(compareversionIDs);
+
+        const editionHref = `/data-admin/series/${datasetID}/editions/${editionID}`;
+
+        body.rows.push({
+            columns: [
+                {
+                    content: [
+                        <Link
+                            key={`migration-job-table-edition-${datasetID}-${editionID}`}
+                            href={editionHref}
+                        >
+                            {editionID}
+                        </Link>
+                    ],
+                    sortValue: editionID
+                },
+                {
+                    content: [
+                        <ul
+                            key={`migration-job-table-versions-${datasetID}-${editionID}`}
+                            className="ons-u-mb-no ons-u-pl-no"
+                            style={{ listStyleType: "none" }}
+                        >
+                            {sortedVersions.map((v) => {
+                                const versionHref = `${editionHref}/versions/${v}`;
+                                return (
+                                    <li key={`${editionID}-${v}`}>
+                                        <Link href={versionHref}>{`Version ${v}`}</Link>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    ],
+                    sortValue: sortedVersions.join(",")
+                }
+            ]
+        });
+    });
+
+    return { headers, body };
+};
+
+export { mapMigrationListTable, mapMigrationJobState, mapMigrationJobTable };
