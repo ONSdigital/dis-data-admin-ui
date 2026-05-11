@@ -4,7 +4,6 @@
  */
 
 import slugify from "slugify";
-import Link from "next/link";
 
 import { formatDate } from "@/utils/datetime/datetime";
 
@@ -254,27 +253,6 @@ const mapUploadedFilesSummary = (files, actionOnClick) => {
         mapRow(file.title  || file.download_url, " ", null, action, rows);
     });
     return contentBody;
-};
-
-/**
- * Adds a single migration job row (with link) to the Summary rows array.
- * @param {string} itemName - Row label (e.g. "Series", "Edition", "Version")
- * @param {string} value - Display value and link text
- * @param {string} valueURL - URL for the row link
- * @param {Array} rows - Summary rows array to push onto (mutated)
- */
-const mapMigrationRow = (itemName, value, valueURL, rows) => {
-    const item = {
-        id: `row-${slugifyLowerCase(itemName)}-${slugifyLowerCase(value)}`,
-        rowTitle: itemName,
-        rowItems: [
-            {
-                id: `${slugifyLowerCase(itemName)}-${value}`,
-                valueList: [{text: [<Link key={`link-${itemName}-${value}`} href={valueURL}>{value}</Link>]}],
-            }
-        ]
-    };
-    rows.push(item);
 };
 
 export { mapSeriesSummary, mapEditionSummary, mapVersionSummary, mapUploadedFilesSummary };
