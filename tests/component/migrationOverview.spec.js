@@ -35,16 +35,36 @@ test.describe("Migration overview page", () => {
 
         await page.goto("./migration/1")
         await expect(page.getByText("Dataset series migration is still in progress. Try refreshing the page")).not.toBeVisible();
-        await expect(page.getByTestId("migration-job-overview-list")).toBeVisible();
+        //await page.waitForTimeout(60000);
 
         // body/summary content
-        await expect(page.locator("#series-new-dataset")).toContainText("new-dataset");
-        await expect(page.locator("#edition-latestversion")).toContainText("latestversion");
-        await expect(page.locator("#version-1")).toContainText("1");
-        await expect(page.locator("#version-2")).toContainText("2");
-        await expect(page.locator("#version-3")).toContainText("3");
-        await expect(page.locator("#version-4")).toContainText("4");
-        await expect(page.locator("#version-5")).toContainText("5");
+        await expect(page.getByTestId("migration-overview-task-table")).toBeVisible();
+        await expect(page.getByTestId("migration-series-link")).toContainText("CPIH");
+        await expect(page.getByTestId("migration-series-link")).toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion")).toContainText("latestversion");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-1")).toContainText("Version 1");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-1"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion/versions/1");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-2")).toContainText("Version 2");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-2"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion/versions/2");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-3")).toContainText("Version 3");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-3"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion/versions/3");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-4")).toContainText("Version 4");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-4"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion/versions/4");
+
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-5")).toContainText("Version 5");
+        await expect(page.getByTestId("migration-job-table-edition-latestversion-5"))
+            .toHaveAttribute("href", "/data-admin/data-admin/series/new-dataset/editions/latestversion/versions/5");
     });
 
     test.describe("Handles API error", () => {
