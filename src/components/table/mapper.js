@@ -128,8 +128,9 @@ const mapMigrationJobTable = (data) => {
                 {
                     content: [
                         <Link
-                            key={`migration-job-table-edition-${datasetID}-${editionID}`}
+                            key={`migration-job-table-edition-${editionID}`}
                             href={editionHref}
+                            data-TestId={`migration-job-table-edition-${editionID}`}
                         >
                             {editionID}
                         </Link>
@@ -139,7 +140,7 @@ const mapMigrationJobTable = (data) => {
                 {
                     content: [
                         <ul
-                            key={`migration-job-table-versions-${datasetID}-${editionID}`}
+                            key={`migration-job-table-${editionID}-versions`}
                             className="ons-u-mb-no ons-u-pl-no"
                             style={{ listStyleType: "none" }}
                         >
@@ -147,7 +148,7 @@ const mapMigrationJobTable = (data) => {
                                 const versionHref = `${editionHref}/versions/${v}`;
                                 return (
                                     <li key={`${editionID}-${v}`}>
-                                        <Link href={versionHref}>{`Version ${v}`}</Link>
+                                        <Link data-TestId={`migration-job-table-edition-${editionID}-${v}`} href={versionHref}>{`Version ${v}`}</Link>
                                     </li>
                                 );
                             })}

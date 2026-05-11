@@ -33,7 +33,7 @@ export default async function MigrationOverview({ params }) {
                 return (
                     <div className="ons-u-mb-m">
                         <p className="ons-u-mb-no ons-u-fw-b">Series</p>
-                        <Link href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
+                        <Link data-TestId="migration-series-link" href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
                     </div>
                 );
             }
@@ -58,7 +58,7 @@ export default async function MigrationOverview({ params }) {
         return (
             <>
                 { renderSeriesTask(migrationTasksResp.items) }
-                <Table contents={migrationTaskTableItems} />
+                <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"}/>
             </>
         );
     };
