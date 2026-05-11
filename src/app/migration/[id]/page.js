@@ -26,14 +26,17 @@ export default async function MigrationOverview({ params }) {
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
 
     const renderSeriesTask = (taskList) => {
-        const datasetID = taskList[0]?.target?.dataset_id;
-        if (datasetID) {
-            return (
-                <div className="ons-u-mb-m">
-                    <p className="ons-u-mb-no ons-u-fw-b">Series</p>
-                    <Link href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
-                </div>
-            );
+        if (!Array.isArray(taskList) || taskList.length > 0) {
+            // we use the first item as all items contain the dataset ID
+            const datasetID = taskList[0]?.target?.dataset_id;
+            if (datasetID) {
+                return (
+                    <div className="ons-u-mb-m">
+                        <p className="ons-u-mb-no ons-u-fw-b">Series</p>
+                        <Link href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
+                    </div>
+                );
+            }
         }
     };
 

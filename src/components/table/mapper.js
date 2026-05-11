@@ -2,6 +2,12 @@ import Link from "next/link";
 
 import { formatDate, ISOToYYYYMMDD } from "@/utils/datetime/datetime";
 
+/**
+ * Renders a migration job state as an ONS-style status pill, or a fallback string.
+ * @param {string} state - API state slug (e.g. `in_review`, `completed`).
+ * @param {string} key - Stable React `key` for the returned element(s).
+ * @returns {import("react").ReactNode | string} One or more `<span>` status nodes, or `"No state"` if unrecognised.
+ */
 const mapMigrationJobState = (state, key) => {
     // unslugify a string e.g. "in_review" becomes "In review"
     const unslugify = (slug) =>
@@ -40,6 +46,11 @@ const mapMigrationJobState = (state, key) => {
     }
 };
 
+/**
+ * Map migration job data. One row per migration job with job id, dates, label, state.
+ * @param {Array} data - Migration job list items from the API; omitted or empty yields no rows.
+ * @returns {TableContents}
+ */
 const mapMigrationListTable = (data) => {
     const headers = [
         { label: "Job ID", isSortable: true },
@@ -71,17 +82,11 @@ const mapMigrationListTable = (data) => {
     return { headers, body };
 };
 
-const compareversionIDs = (a, b) => {
-    const na = Number(a);
-    const nb = Number(b);
-    const aIsNumeric = !Number.isNaN(na) && String(na) === String(a).trim();
-    const bIsNumeric = !Number.isNaN(nb) && String(nb) === String(b).trim();
-    if (aIsNumeric && bIsNumeric) {
-        return na - nb;
-    }
-    return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
-};
-
+/**
+ * Map migration job tasks (e.g. editions and versions). One row per edition with a column of version links
+ * @param {Array} data - Migration job tasks; tasks without `edition_id` or `version_id` are skipped.
+ * @returns {TableContents} Empty `body.rows` when `data` is not a non-empty array.
+ */
 const mapMigrationJobTable = (data) => {
     const headers = [
         { label: "Editions", isSortable: false },
@@ -114,7 +119,7 @@ const mapMigrationJobTable = (data) => {
     });
 
     editionsMap.forEach((edition, editionID) => {
-        const sortedVersions = [...edition.versions].sort(compareversionIDs);
+        const sortedVersions = [...edition.versions].sort((a, b) => Number(a) - Number(b));
 
         const editionHref = `/data-admin/series/${datasetID}/editions/${editionID}`;
 
