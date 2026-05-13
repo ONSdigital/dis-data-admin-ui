@@ -5,8 +5,8 @@
             "reason" : "Glob is an indirect import used in Jest and author-design-system-react. Overridng this package causes breakages"
         },
         {
-            "id" : "CVE-2026-6991",
-            "reason" : "Vulernabiltiy effects latest version of Zod (4.3.6) so no fix is available yet"
+            "id" : "CVE-2026-27904",
+            "reason" : "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
         }
     ]
 }
