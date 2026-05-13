@@ -6,10 +6,10 @@ module.exports = {
   experimental: {
     serverActions: {
       allowedOrigins: [
-        "publishing.dp.aws.onsdigital.uk", // sandbox
-        "publishing.dp-staging.aws.onsdigital.uk", // staging
-        "localhost:29500" // local when running in dataset-catalogue stack
-      ],
+        "localhost:29500", // local when running in dataset-catalogue stack
+        "publishing.eks.dp.aws.onsdigital.uk", // sandbox
+        "publishing.eks.dp-staging.aws.onsdigital.uk" // staging
+        ],
     },
   },
   allowedDevOrigins: ["127.0.0.1"], // for component tests
