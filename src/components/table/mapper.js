@@ -121,7 +121,7 @@ const mapMigrationJobTable = (data) => {
     editionsMap.forEach((edition, editionID) => {
         const sortedVersions = [...edition.versions].sort((a, b) => Number(a) - Number(b));
 
-        const editionHref = `/data-admin/series/${datasetID}/editions/${editionID}`;
+        const editionHref = `/series/${datasetID}/editions/${editionID}`;
 
         body.rows.push({
             columns: [

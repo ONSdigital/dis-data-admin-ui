@@ -33,7 +33,7 @@ export default async function MigrationOverview({ params }) {
                 return (
                     <div className="ons-u-mb-m">
                         <p className="ons-u-mb-no ons-u-fw-b">Series</p>
-                        <Link data-testid="migration-series-link" href={`/data-admin/series/${datasetID}`}>{migrationResp.label}</Link>
+                        <Link data-testid="migration-series-link" href={`/series/${datasetID}`}>{migrationResp.label}</Link>
                     </div>
                 );
             }
@@ -46,6 +46,7 @@ export default async function MigrationOverview({ params }) {
         }
 
         const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
+        console.log(migrationTasksResp.items)
         if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
             return (
                 <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
