@@ -159,7 +159,7 @@ describe("mapMigrationJobTable", () => {
         expect(result.body.rows).toHaveLength(1);
 
         const editionLink = result.body.rows[0].columns[0].content[0];
-        expect(editionLink.props.href).toBe(`/data-admin/series/${datasetID}/editions/${editionID}`);
+        expect(editionLink.props.href).toBe(`/series/${datasetID}/editions/${editionID}`);
         expect(editionLink.props.children).toBe(editionID);
 
         const versionsUl = result.body.rows[0].columns[1].content[0];
@@ -168,11 +168,11 @@ describe("mapMigrationJobTable", () => {
             (li) => li.props.children
         );
         expect(versionLinks.map((link) => link.props.href)).toEqual([
-            `/data-admin/series/${datasetID}/editions/${editionID}/versions/1`,
-            `/data-admin/series/${datasetID}/editions/${editionID}/versions/2`,
-            `/data-admin/series/${datasetID}/editions/${editionID}/versions/3`,
-            `/data-admin/series/${datasetID}/editions/${editionID}/versions/4`,
-            `/data-admin/series/${datasetID}/editions/${editionID}/versions/5`,
+            `/series/${datasetID}/editions/${editionID}/versions/1`,
+            `/series/${datasetID}/editions/${editionID}/versions/2`,
+            `/series/${datasetID}/editions/${editionID}/versions/3`,
+            `/series/${datasetID}/editions/${editionID}/versions/4`,
+            `/series/${datasetID}/editions/${editionID}/versions/5`,
         ]);
         expect(versionLinks.map((link) => link.props.children)).toEqual([
             "Version 1",
