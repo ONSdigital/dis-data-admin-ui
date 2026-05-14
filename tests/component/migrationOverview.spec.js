@@ -35,7 +35,6 @@ test.describe("Migration overview page", () => {
 
         await page.goto("./migration/1")
         await expect(page.getByText("Dataset series migration is still in progress. Try refreshing the page")).not.toBeVisible();
-        //await page.waitForTimeout(60000);
 
         // body/summary content
         await expect(page.getByTestId("migration-overview-task-table")).toBeVisible();
