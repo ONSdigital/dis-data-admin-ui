@@ -325,28 +325,40 @@ app.get("/topics/:id/subtopics", (req, res) => {
 
 app.get("/v1/migration-jobs", (req, res) => {
     log("Handling GET '/migration-jobs'", req.url, null);
-    
+
     const state = req.query?.state;
-    if (!state) {
-        return res.send(migrationJobsList);
+    const offset = Number(req.query?.offset || 0);
+    const limit = Number(req.query?.limit || 10);
+
+    if (state) {
+        // Normalise state to an array:
+        const states = Array.isArray(state) ? state : [state];
+
+        // Filter the items based on the selected states
+        const filteredItems = migrationJobsList.items.filter(item =>
+            states.includes(item.state)
+        );
+
+        const paginatedFiltered = filteredItems.slice(offset, offset + limit);
+
+        return res.send({
+            ...migrationJobsList,
+            items: paginatedFiltered,
+            count: paginatedFiltered.length,
+            total_count: filteredItems.length,
+            offset,
+            limit
+        });
     }
 
-    // Normalise state to an array:
-    const states = Array.isArray(state) ? state : [state];
-
-    // Filter the items based on the selected states
-    const filteredItems = migrationJobsList.items.filter(item =>
-        states.includes(item.state)
-    );
-
-    const filteredResponse = {
+    const items = migrationJobsList.items.slice(offset, offset + limit);
+    return res.send({
         ...migrationJobsList,
-        items: filteredItems,
-        count: filteredItems.length,
-        total_count: filteredItems.length
-    };
-
-    return res.send(filteredResponse);
+        items,
+        offset,
+        limit,
+        count: items.length
+    });
 });
 
 app.get("/v1/migration-jobs/:id", (req, res) => {

@@ -1,8 +1,29 @@
+const automatedMigrationJobs = () => {
+    const list = [];
+    for (let i = 6; i <= 120; i++) {
+        list.push({
+            id: `auto-${i}`,
+            job_number: `${i}`,
+            last_updated: "2024-01-01T00:00:00+00:00",
+            links: {
+                events: { href: `https://api.beta.ons.gov.uk/v1/migration-jobs/${i}/events` },
+                self: { href: `https://api.beta.ons.gov.uk/v1/migration-jobs/${i}`, id: "string" },
+                tasks: { href: `https://api.beta.ons.gov.uk/v1/migration-jobs/${i}/tasks` }
+            },
+            source_id: "/economy/test/datasets/mock/data",
+            state: ["approved", "submitted", "in_review", "reverted"][i % 4],
+            type: "static_dataset",
+            label: `Mock job ${i}`
+        });
+    }
+    return list;
+};
+
 export const migrationJobsList = {
-    "count": 5,
-    "limit": 0,
+    "count": 120,
+    "limit": 50,
     "offset": 0,
-    "total_count": 5,
+    "total_count": 120,
     "items": [
         {
             "id": "17166cd8-c17d-4da2-8abb-3a33f510790f",
@@ -22,7 +43,7 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "in_review",
-            "type": "static_dataset", 
+            "type": "static_dataset",
             "label": "CPIH"
         },
         {
@@ -108,6 +129,7 @@ export const migrationJobsList = {
             "state": "submitted",
             "type": "static_dataset",
             "label": "Crime statistics"
-        }
+        },
+        ...automatedMigrationJobs()
     ]
-}
+};

@@ -6,12 +6,15 @@ import { Panel } from "@/components/design-system/DesignSystem";
 
 import LinkButton from "@/components/link-button/LinkButton";
 import Table from "@/components/table/Table";
-import MigrationFilter from "@/components/form/migration-list-filter/MigrationFilter";
+import Pagination from "@/components/pagination/Pagination";
 
 import { mapMigrationListTable } from "@/components/table/mapper";
 
-export default async function MigrationList({ searchParams }) {    
+export default async function MigrationList({ searchParams }) {
     const pageParams = await searchParams;
+    pageParams.limit = pageParams.limit ? Number(pageParams.limit) : 10;
+    pageParams.offset = pageParams.offset ? Number(pageParams.offset) : 0;
+
     const requestURL = createRequestURL(pageParams);
     const reqCfg = await SSRequestConfig(cookies, "migration-service");
     const migrationsResp = await httpGet(reqCfg, requestURL);
@@ -29,13 +32,18 @@ export default async function MigrationList({ searchParams }) {
         );
     }
     const mappedTable = mapMigrationListTable(migrationsResp.items);
+
+    const totalCount = migrationsResp.total_count;
+    const totalNumberOfPages = Math.ceil(totalCount / pageParams.limit);
+    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
+
     const renderListArea = () => {
         return (
             <>
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing 1 to {migrationsResp.count} of {migrationsResp.total_count} jobs
+                            Showing {migrationsResp.offset + 1} to {migrationsResp.offset + migrationsResp.count} of {migrationsResp.total_count} jobs
                         </div>
                         <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
@@ -48,6 +56,11 @@ export default async function MigrationList({ searchParams }) {
                     </div>
                 </div>
                 <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" />
+                <Pagination
+                    totalNumberOfPages={totalNumberOfPages}
+                    currentPage={currentPage}
+                    limit={pageParams.limit}
+                />
             </>
         );
     };
@@ -56,22 +69,25 @@ export default async function MigrationList({ searchParams }) {
         <>
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <MigrationFilter states={listOfStates}></MigrationFilter>
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
-                    { renderListArea() }
+                    {renderListArea()}
                 </div>
             </div>
         </>
     );
 }
 
-// build URL (with state params) to make request to migration-api
 const createRequestURL = (params) => {
-    let url  = `/migration-jobs?limit=50&sort=job_number:desc`;
+    let url = `/migration-jobs?limit=${params.limit}&sort=job_number:desc`;
 
     if (params.state) {
         url = `${url}&state=${params.state}`;
     }
+
+    if (params.offset) {
+        url = `${url}&offset=${params.offset}`;
+    }
+
     return url;
 };
