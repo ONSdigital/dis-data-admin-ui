@@ -31,7 +31,7 @@ export default function AccordionItem({ id, accordionItem }) {
 
     return (
         <div id={sanitisedId} className="ons-details ons-details--accordion" key={accordionItem.id} data-testid={sanitisedDataTestId}>
-            <div className="ons-details__heading" role="button" onClick={handleOnClick}>
+            <div className={`ons-details__heading ${styles.clickableHeading}`} role="button" onClick={handleOnClick}>
                 <h2 className="ons-details__title ons-u-fs-r--b">
                     { renderIcon() }
                     <a>{accordionItem.label}</a>

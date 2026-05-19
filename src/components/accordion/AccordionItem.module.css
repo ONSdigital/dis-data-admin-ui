@@ -1,3 +1,7 @@
+.clickableHeading {
+    cursor: pointer;
+}
+
 .icon {
     top: 0rem !important;
     position: relative;
