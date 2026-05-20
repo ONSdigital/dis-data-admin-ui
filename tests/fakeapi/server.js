@@ -352,8 +352,8 @@ app.get("/v1/migration-jobs", (req, res) => {
     }
 
     const items = migrationJobsList.items.slice(offset, offset + limit);
+    log("Returning success", req.url, 200);
     return res.send({
-        ...migrationJobsList,
         items,
         offset,
         limit,
