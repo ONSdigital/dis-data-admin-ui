@@ -342,7 +342,6 @@ app.get("/v1/migration-jobs", (req, res) => {
         const paginatedFiltered = filteredItems.slice(offset, offset + limit);
 
         return res.send({
-            ...migrationJobsList,
             items: paginatedFiltered,
             count: paginatedFiltered.length,
             total_count: filteredItems.length,
@@ -357,7 +356,8 @@ app.get("/v1/migration-jobs", (req, res) => {
         items,
         offset,
         limit,
-        count: items.length
+        count: items.length,
+        total_count: migrationJobsList.total_count
     });
 });
 
