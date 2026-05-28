@@ -8,7 +8,10 @@ jest.mock("uuid", () => ({
 
 import ResumableFileUpload from "./ResumableFileUpload";
 
-const uploadedFile = [{title: "Test dataset title", format: "csv", download_url: "12345678-1234-1234-1234-123456789012/download.csv"}];
+const uploadedFiles = [
+    { title: "Relative dataset title", format: "csv", download_url: "12345678-1234-1234-1234-123456789012/relative.csv" },
+    { title: "Absolute dataset title", format: "csv", download_url: "http://localhost:23600/downloads/files/12345678-1234-1234-1234-123456789012/absolute.csv" }
+];
 
 describe("ResumableFileUpload", () => {
     it("renders correctly in ready state", () => {
@@ -28,23 +31,25 @@ describe("ResumableFileUpload", () => {
     });
 
     it("renders correctly when a file has been uploaded", () => {
-        render(<ResumableFileUpload uploadedFiles={uploadedFile}/>);
-        expect(screen.getByTestId("dataset-upload-value").value).toBe("[{\"title\":\"Test dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/download.csv\"}]");
-        expect(screen.getAllByText(/Test dataset title/i)[0]).toBeInTheDocument();
-        expect(screen.getByTestId("action-link-test-dataset-title")).toBeInTheDocument();
+        render(<ResumableFileUpload uploadedFiles={uploadedFiles}/>);
+        expect(screen.getByTestId("dataset-upload-value").value).toBe("[{\"title\":\"Relative dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/relative.csv\"},{\"title\":\"Absolute dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/absolute.csv\"}]");
+        expect(screen.getAllByText(/Relative dataset title/i)[0]).toBeInTheDocument();
+        expect(screen.getAllByText(/Absolute dataset title/i)[0]).toBeInTheDocument();
+        expect(screen.getByTestId("action-link-relative-dataset-title")).toBeInTheDocument();
+        expect(screen.getByTestId("action-link-absolute-dataset-title")).toBeInTheDocument();
     });
 
     it("remove file link works correctly", () => {
-        render(<ResumableFileUpload uploadedFiles={uploadedFile}/>);
+        render(<ResumableFileUpload uploadedFiles={uploadedFiles}/>);
         const hiddenInput = screen.getByTestId("dataset-upload-value");
-        expect(hiddenInput.value).toBe("[{\"title\":\"Test dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/download.csv\"}]");
+        expect(hiddenInput.value).toBe("[{\"title\":\"Relative dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/relative.csv\"},{\"title\":\"Absolute dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/absolute.csv\"}]");
 
-        const removeButton = screen.getByTestId("action-link-test-dataset-title");
+        const removeButton = screen.getByTestId("action-link-relative-dataset-title");
         fireEvent.click(removeButton);
 
-        // distrubution (upload) value is reset
-        expect(hiddenInput.value).toBe("[]");
+        // one file remains after removal
+        expect(hiddenInput.value).toBe("[{\"title\":\"Absolute dataset title\",\"format\":\"csv\",\"download_url\":\"12345678-1234-1234-1234-123456789012/absolute.csv\"}]");
 
-        expect(screen.getByTestId("dataset-upload-no-files-uploaded-text")).toBeInTheDocument();
+        expect(screen.queryByTestId("dataset-upload-no-files-uploaded-text")).not.toBeInTheDocument();
     });
 });

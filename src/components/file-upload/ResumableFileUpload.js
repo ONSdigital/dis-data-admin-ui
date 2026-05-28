@@ -7,6 +7,7 @@ import bindFileUploadInput from "./bind";
 
 import { TextInput, Summary } from "author-design-system-react";
 import { mapUploadedFilesSummary } from "@/components/design-system/summary-mapper";
+import { getDistributionPath } from "@/utils/url/url";
 
 const UUID_EXTRACT_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 
@@ -14,11 +15,23 @@ const PROGRESS_BAR_STYLE = {
     width: "20rem",
 };
 
+// The dataset-api returns absolute download URLs, but we need to send relative paths.
+const normalizeUploadedFiles = (uploadedFiles = []) => {
+    return uploadedFiles.map((file) => {
+        const normalizedDownloadURL = getDistributionPath(file?.download_url);
+
+        return {
+            ...file,
+            download_url: normalizedDownloadURL || file?.download_url,
+        };
+    });
+};
+
 export default function ResumableFileUpload({ id = "dataset-upload", uploadBaseURL, label = "File upload", description, validationError, uploadedFiles, accessToken }) {
     const [showProgressBar, setShowProgressBar] = useState(false);
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState(validationError || null);
-    const [files, setFiles] = useState(uploadedFiles || []);
+    const [files, setFiles] = useState(() => normalizeUploadedFiles(uploadedFiles || []));
 
     const handleFileStart = useCallback(() => {
         setShowProgressBar(true);
