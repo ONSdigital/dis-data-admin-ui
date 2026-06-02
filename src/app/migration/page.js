@@ -55,7 +55,7 @@ export default async function MigrationList({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" />
+                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={pageParams.sort}/>
                 <Pagination
                     totalNumberOfPages={totalNumberOfPages}
                     currentPage={currentPage}
