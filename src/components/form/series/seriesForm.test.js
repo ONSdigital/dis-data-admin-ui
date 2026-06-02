@@ -3,13 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import SeriesForm from "./SeriesForm"
 import { datasetList } from "../../../../tests/mocks/datasets.mjs";
 
-import { useRouter } from "next/navigation";
-
-jest.mock("next/navigation", () => ({ 
-    useRouter: jest.fn().mockReturnValue({ 
-        push: jest.fn(), 
-    }), 
-}));
 
 describe("Series Form", () => {
     const listOfAllTopics = [
