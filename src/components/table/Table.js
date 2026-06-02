@@ -1,41 +1,54 @@
 "use client";
 
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { sanitiseString } from "author-design-system-react";
 
-export default function Table({ contents, caption, classes, dataTestId, noResultsText = "No data available" }) {
+export default function Table({ contents, caption, classes, dataTestId, noResultsText = "No data available", sortBy = null }) {
     const [rows, setRows] = useState(contents?.body?.rows || []);
     const [sorted, setSorted] = useState();
+    const router = useRouter();
+    const pathname = usePathname();
+    const params = useSearchParams();
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setRows(contents?.body?.rows || []);
+        if (!sortBy) { 
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setRows(contents?.body?.rows || []); 
+        } else {
+            const sortByStr = sortBy.split(":");
+            const sortIndex = sortByStr[0];
+            const sortDirection = sortByStr[1];
+            doSort(sortIndex, sortDirection)
+        }
     }, [contents]);
 
     const sanitisedDataTestId = sanitiseString(dataTestId);
 
-    const handleSort = (rowIndex) => {
-        const isSameColumn = sorted?.rowIndex === rowIndex;
-        const isAscending = sorted?.order === "ascending";
-        const shouldSortDescending = isSameColumn && isAscending;
+    const handleSortClick = (rowIndex, sortDirection) => {
+        const allParams = new URLSearchParams(Array.from(params.entries()));
+        allParams.set("sort", `${rowIndex}:${sortDirection}`);
+        router.replace(`${pathname}?${allParams.toString()}`);
+    }
+
+    const doSort = (rowIndex, sortDirection) => {
+        const isDescending = sortDirection === "desc";
+        const sortColumnIndex = Number(rowIndex);
+        const sourceRows = contents?.body?.rows || [];
         
-        const sortedRows = [...rows].sort((a, b) => {
-            const sortValueA = a.columns[rowIndex]?.sortValue || "";
-            const sortValueB = b.columns[rowIndex]?.sortValue || "";
+        const sortedRows = [...sourceRows].sort((a, b) => {
+            const sortValueA = a.columns[sortColumnIndex]?.sortValue || "";
+            const sortValueB = b.columns[sortColumnIndex]?.sortValue || "";
             
-            if (shouldSortDescending) {
+            if (isDescending) {
                 return sortValueB.localeCompare(sortValueA);
-            } else {
-                return sortValueA.localeCompare(sortValueB);
             }
+            return sortValueA.localeCompare(sortValueB);
         });
         
         setRows(sortedRows);
-        setSorted({ 
-            rowIndex, 
-            order: shouldSortDescending ? "descending" : "ascending" 
-        });
-    };
+        setSorted({ rowIndex: sortColumnIndex, order: isDescending ? "desc" : "asc" });
+    }
 
     const renderTableHeader = () => {
         return (
@@ -49,7 +62,13 @@ export default function Table({ contents, caption, classes, dataTestId, noResult
                                 key={header.label + index} data-testid={`${sanitisedDataTestId}-header-${sanitisedHeaderLabel}`}
                             >
                                 {header.isSortable ?
-                                    <button aria-label="Sort by Legal basis" type="button" data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} className="ons-table__sort-button" onClick={() => {handleSort(index);}}>
+                                    <button aria-label="Sort by Legal basis" type="button" 
+                                        data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} 
+                                        className="ons-table__sort-button" 
+                                        onClick={() => {
+                                            handleSortClick(index, index === sorted?.rowIndex ? sorted?.order === "asc" ? "desc" : "asc" : "asc")
+                                        }}
+                                    >
                                         {header.label}
                                         <svg id="sort-sprite-legal-basis-0" className="ons-icon" viewBox="0 0 12 19" xmlns="http://www.w3.org/2000/svg" focusable="false" fill="currentColor" role="img" aria-hidden="true">
                                             <path className="ons-topTriangle" d="M6 0l6 7.2H0L6 0zm0 18.6l6-7.2H0l6 7.2zm0 3.6l6 7.2H0l6-7.2z"></path>
