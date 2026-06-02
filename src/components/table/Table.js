@@ -1,54 +1,63 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { sanitiseString } from "author-design-system-react";
 
+function parseSortBy(sortBy) {
+    if (!sortBy) {
+        return null;
+    }
+    const [rowIndexStr, direction] = sortBy.split(":");
+    const rowIndex = Number(rowIndexStr);
+    if (Number.isNaN(rowIndex) || (direction !== "asc" && direction !== "desc")) {
+        return null;
+    }
+    return { rowIndex, order: direction };
+}
+
+function sortRows(rows, rowIndex, direction) {
+    const isDescending = direction === "desc";
+    return [...rows].sort((a, b) => {
+        const sortValueA = a.columns[rowIndex]?.sortValue ?? "";
+        const sortValueB = b.columns[rowIndex]?.sortValue ?? "";
+
+        if (isDescending) {
+            return sortValueB.localeCompare(sortValueA);
+        }
+        return sortValueA.localeCompare(sortValueB);
+    });
+}
+
 export default function Table({ contents, caption, classes, dataTestId, noResultsText = "No data available", sortBy = null }) {
-    const [rows, setRows] = useState(contents?.body?.rows || []);
-    const [sorted, setSorted] = useState();
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
 
-    useEffect(() => {
-        if (!sortBy) { 
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setRows(contents?.body?.rows || []); 
-        } else {
-            const sortByStr = sortBy.split(":");
-            const sortIndex = sortByStr[0];
-            const sortDirection = sortByStr[1];
-            doSort(sortIndex, sortDirection)
+    const activeSort = useMemo(() => parseSortBy(sortBy), [sortBy]);
+
+    const rows = useMemo(() => {
+        const sourceRows = contents?.body?.rows || [];
+        if (!activeSort) {
+            return sourceRows;
         }
-    }, [contents]);
+        return sortRows(sourceRows, activeSort.rowIndex, activeSort.order);
+    }, [contents?.body?.rows, activeSort]);
 
     const sanitisedDataTestId = sanitiseString(dataTestId);
+
+    const getNextSortDirection = (columnIndex) => {
+        if (activeSort?.rowIndex === columnIndex) {
+            return activeSort.order === "asc" ? "desc" : "asc";
+        }
+        return "asc";
+    };
 
     const handleSortClick = (rowIndex, sortDirection) => {
         const allParams = new URLSearchParams(Array.from(params.entries()));
         allParams.set("sort", `${rowIndex}:${sortDirection}`);
         router.replace(`${pathname}?${allParams.toString()}`);
-    }
-
-    const doSort = (rowIndex, sortDirection) => {
-        const isDescending = sortDirection === "desc";
-        const sortColumnIndex = Number(rowIndex);
-        const sourceRows = contents?.body?.rows || [];
-        
-        const sortedRows = [...sourceRows].sort((a, b) => {
-            const sortValueA = a.columns[sortColumnIndex]?.sortValue || "";
-            const sortValueB = b.columns[sortColumnIndex]?.sortValue || "";
-            
-            if (isDescending) {
-                return sortValueB.localeCompare(sortValueA);
-            }
-            return sortValueA.localeCompare(sortValueB);
-        });
-        
-        setRows(sortedRows);
-        setSorted({ rowIndex: sortColumnIndex, order: isDescending ? "desc" : "asc" });
-    }
+    };
 
     const renderTableHeader = () => {
         return (
@@ -66,7 +75,7 @@ export default function Table({ contents, caption, classes, dataTestId, noResult
                                         data-testid={`${sanitisedDataTestId}-sort-button-${sanitisedHeaderLabel}`} 
                                         className="ons-table__sort-button" 
                                         onClick={() => {
-                                            handleSortClick(index, index === sorted?.rowIndex ? sorted?.order === "asc" ? "desc" : "asc" : "asc")
+                                            handleSortClick(index, getNextSortDirection(index));
                                         }}
                                     >
                                         {header.label}
