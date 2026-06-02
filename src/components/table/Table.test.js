@@ -1,9 +1,19 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 
 import Table from "./Table";
+
+const mockReplace = jest.fn();
+
+jest.mock("next/navigation", () => ({
+    useRouter: jest.fn(() => ({
+        replace: mockReplace,
+    })),
+    usePathname: jest.fn(() => "/migration"),
+    useSearchParams: jest.fn(() => new URLSearchParams()),
+}));
 
 const createTableContents = (overrides = {}) => ({
     headers: [
@@ -30,6 +40,10 @@ const createTableContents = (overrides = {}) => ({
 });
 
 describe("Table", () => {
+    beforeEach(() => {
+        mockReplace.mockClear();
+    });
+
     test("renders table with caption, headers, and rows", () => {
         render(<Table caption="Test caption" classes="custom-class" contents={createTableContents()} dataTestId="test-table" />);
 
@@ -47,23 +61,46 @@ describe("Table", () => {
         expect(screen.getByTestId("test-table-no-data")).toHaveTextContent("No data available");
     });
 
-    test("sorts rows ascending and descending when clicking sortable header", async () => {
-        render(<Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" />);
-
-        const sortButton = screen.getByTestId("sortable-table-sort-button-name");
-
+    test("sorts rows ascending and descending via sortBy prop", () => {
         const getRowOrder = () => [
             screen.getByTestId("sortable-table-cell-0-0").textContent,
             screen.getByTestId("sortable-table-cell-1-0").textContent,
         ];
 
+        const { rerender } = render(
+            <Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" />
+        );
+
         expect(getRowOrder()).toEqual(["Row B", "Row A"]);
 
-        await userEvent.click(sortButton);
+        rerender(
+            <Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" sortBy="0:asc" />
+        );
         expect(getRowOrder()).toEqual(["Row A", "Row B"]);
 
+        rerender(
+            <Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" sortBy="0:desc" />
+        );
+        expect(getRowOrder()).toEqual(["Row B", "Row A"]);
+    });
+
+    test("updates sort query when clicking sortable header", async () => {
+        render(<Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" />);
+
+        const sortButton = screen.getByTestId("sortable-table-sort-button-name");
+
         await userEvent.click(sortButton);
-        expect(getRowOrder()).toEqual(["Row B", "Row A"]); 
+        expect(mockReplace).toHaveBeenCalledWith("/migration?sort=0%3Aasc");
+    });
+
+    test("toggles sort direction when clicking the same column with sortBy set", async () => {
+        render(
+            <Table caption="Sortable table" contents={createTableContents()} dataTestId="sortable-table" sortBy="0:asc" />
+        );
+
+        const sortButton = screen.getByTestId("sortable-table-sort-button-name");
+
+        await userEvent.click(sortButton);
+        expect(mockReplace).toHaveBeenCalledWith("/migration?sort=0%3Adesc");
     });
 });
-
