@@ -1,5 +1,6 @@
 import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
+import globals from "globals";
 import nextVitals from "eslint-config-next/core-web-vitals";
 
 const eslintConfig = defineConfig([
@@ -15,6 +16,12 @@ const eslintConfig = defineConfig([
             "**/**.test.**",
             "coverage/**",
         ],
+    },
+    {
+        files: ["jest.setup.js", "jest.config.js"],
+        languageOptions: {
+            globals: globals.jest,
+        },
     },
     {
         files: ["**/*.{js,jsx,mjs,cjs}"],
