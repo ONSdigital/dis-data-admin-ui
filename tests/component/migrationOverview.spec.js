@@ -103,8 +103,6 @@ test.describe("Migration overview page", () => {
         await expect(page.getByTestId("success-panel")).toContainText("Migration for new-dataset reverted.");
     });
 
-
-
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);
@@ -112,7 +110,7 @@ test.describe("Migration overview page", () => {
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
-        test("When 500 is returned", async ({ page, context }) => {
+    test("When 500 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);
             await page.goto("./migration/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
