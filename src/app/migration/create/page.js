@@ -1,7 +1,7 @@
 import PageHeading from "@/components/page-heading/PageHeading";
 import { Panel } from "@/components/design-system/DesignSystem";
 import MigrationForm from "@/components/form/migration/MigrationForm";
-import { createMigrationJob } from "@/app/actions/createMigrationJob";
+import { createMigrationJob } from "@/app/actions/migrationJob";
 
 export default async function createPage() {
     return (

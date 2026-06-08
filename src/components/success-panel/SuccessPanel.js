@@ -9,6 +9,8 @@ export default function SuccessPanel({query, contentType = "Item"}) {
     const showSuccessPanel = 
         query?.display_success === "true" || 
         query?.display_publish_success === "true" ||
+        query?.display_approve_success === "true" ||
+        query?.display_rejected_success === "true" ||
         query?.display_delete_success === "true";
 
     if (!showSuccessPanel) {
@@ -24,6 +26,12 @@ export default function SuccessPanel({query, contentType = "Item"}) {
         }
         if (query?.display_delete_success === "true") {
             return `${contentType} deleted.`;
+        }
+        if (query?.display_approve_success === "true") {
+            return `Migration for ${contentType} approved.`;
+        }
+        if (query?.display_rejected_success === "true") {
+            return `Migration for ${contentType} reverted.`;
         }
         return null;
     };

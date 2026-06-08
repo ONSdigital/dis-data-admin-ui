@@ -383,6 +383,12 @@ app.get("/v1/migration-jobs/:id/tasks", (req, res) => {
     res.send(migrationTasksList);
 });
 
+app.put("/v1/migration-jobs/:id/state", (req, res) => {
+    log("Handling PUT '/migration-jobs/:id/state'", req.url, null);
+    log("Returning success", req.url, 204);
+    res.sendStatus(204);
+});
+
 app.put("/files/*path", (req, res) => {
     log("Handling PUT '/files/*path'", req.url, null);
 

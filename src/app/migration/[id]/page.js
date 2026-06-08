@@ -6,9 +6,13 @@ import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
+import LinkButton from "@/components/link-button/LinkButton";
+import StateChangeButton from "@/components/state-change-button/StateChangeButton";
 
 import { mapMigrationJobTable } from "@/components/table/mapper";
 import Table from "@/components/table/Table";
+
+import { updateMigrationJobState } from "@/app/actions/migrationJob";
 
 export default async function MigrationOverview({ params }) {
     const { id } = await params;
@@ -40,12 +44,14 @@ export default async function MigrationOverview({ params }) {
         }
     };
 
-    const renderTaskList = async() => {
+    const renderTaskList = async () => {
         if (!displayMigrationJobDetails) {
             return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
         }
 
         const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
+        const associatedDataset = migrationTasksResp.items[0].target.dataset_id
+
         if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
             return (
                 <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
@@ -55,12 +61,39 @@ export default async function MigrationOverview({ params }) {
         }
 
         const migrationTaskTableItems = mapMigrationJobTable(migrationTasksResp.items);
-        return (
-            <>
-                { renderSeriesTask(migrationTasksResp.items) }
-                <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"}/>
-            </>
-        );
+
+        if (migrationResp.state == "in_review") {
+            return (
+                <>
+                    {renderSeriesTask(migrationTasksResp.items)}
+                    <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
+                    <StateChangeButton
+                        classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                        dataTestId="migration-approve-button"
+                        id="migration-approve-button"
+                        text="Approve"
+                        jobID={id}
+                        jobState={"approved"}
+                        series={associatedDataset}
+                        onClick={updateMigrationJobState}
+                    />
+                    <LinkButton
+                        dataTestId="migration-reject-button"
+                        text="Reject"
+                        link={`/migration/${id}/reject/${associatedDataset}`}
+                        variants={["secondary"]}
+                        classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                    />
+                </>
+            );
+        } else {
+            return (
+                <>
+                    {renderSeriesTask(migrationTasksResp.items)}
+                    <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
+                </>
+            );
+        }
     };
 
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
@@ -68,11 +101,11 @@ export default async function MigrationOverview({ params }) {
 
     return (
         <>
-            <PageHeading 
+            <PageHeading
                 subtitle="Series"
                 title={migrationResp.label}
                 breadcrumbs={breadcrumbs}
-                linkURL="/migration" 
+                linkURL="/migration"
                 linkText="Back to migration jobs list"
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
