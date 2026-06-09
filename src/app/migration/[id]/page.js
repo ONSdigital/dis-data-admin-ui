@@ -28,8 +28,7 @@ export default async function MigrationOverview({ params }) {
     }
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
-        const associatedDataset = migrationResp.config.target_id
-
+    const associatedDataset = migrationResp.config.target_id
 
     const renderSeriesTask = (taskList) => {
         if (!Array.isArray(taskList) || taskList.length > 0) {
