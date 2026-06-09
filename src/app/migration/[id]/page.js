@@ -28,6 +28,8 @@ export default async function MigrationOverview({ params }) {
     }
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
+        const associatedDataset = migrationResp.config.target_id
+
 
     const renderSeriesTask = (taskList) => {
         if (!Array.isArray(taskList) || taskList.length > 0) {
@@ -50,8 +52,6 @@ export default async function MigrationOverview({ params }) {
         }
 
         const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks`);
-        const associatedDataset = migrationTasksResp.items[0].target.dataset_id
-
         if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
             return (
                 <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
