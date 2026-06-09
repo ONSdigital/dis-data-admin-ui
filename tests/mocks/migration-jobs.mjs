@@ -12,6 +12,9 @@ const automatedMigrationJobs = () => {
             },
             source_id: "/economy/test/datasets/mock/data",
             state: ["approved", "submitted", "in_review", "reverted"][i % 4],
+            "config": {
+                "target_id": "new-dataset",
+            },
             type: "static_dataset",
             label: `Mock job ${i}`
         });
@@ -43,6 +46,9 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "in_review",
+            "config": {
+                "target_id": "new-dataset",
+            },
             "type": "static_dataset",
             "label": "CPIH"
         },
@@ -64,6 +70,9 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "submitted",
+            "config": {
+                "target_id": "new-dataset",
+            },
             "type": "static_dataset",
             "label": "Consumer price inflation"
         },
@@ -85,6 +94,9 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "approved",
+            "config": {
+                "target_id": "new-dataset",
+            },
             "type": "static_dataset",
             "label": "Labour market"
         },
@@ -106,6 +118,9 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "reverted",
+            "config": {
+                "target_id": "new-dataset",
+            },
             "type": "static_dataset",
             "label": "Population estimates"
         },
@@ -127,6 +142,9 @@ export const migrationJobsList = {
             },
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "submitted",
+            "config": {
+                "target_id": "new-dataset",
+            },
             "type": "static_dataset",
             "label": "Crime statistics"
         },
