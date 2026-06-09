@@ -10,7 +10,6 @@ export default async function reject({ params }) {
         <>
             <h1>Are you sure you want to reject {associatedDataset} ?</h1>
             <StateChangeButton
-                classes="ons-u-mt-m ons-u-pt-m"
                 dataTestId="migration-reject-button"
                 id="migration-reject-button"
                 text="Reject"
@@ -25,9 +24,8 @@ export default async function reject({ params }) {
                 text="Cancel"
                 link={`/migration/${id}`}
                 variants="secondary"
-                classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                classes="ons-u-ml-xs"
             />
-
         </>
     );
 }

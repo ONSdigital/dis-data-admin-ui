@@ -49,7 +49,7 @@ export default async function MigrationOverview({ params }) {
             return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
         }
 
-        const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks?limit=50`);
+        const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks`);
         const associatedDataset = migrationTasksResp.items[0].target.dataset_id
 
         if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
@@ -86,14 +86,14 @@ export default async function MigrationOverview({ params }) {
                     />
                 </>
             );
-        } else {
-            return (
-                <>
-                    {renderSeriesTask(migrationTasksResp.items)}
-                    <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
-                </>
-            );
         }
+
+        return (
+            <>
+                {renderSeriesTask(migrationTasksResp.items)}
+                <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
+            </>
+        );
     };
 
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
