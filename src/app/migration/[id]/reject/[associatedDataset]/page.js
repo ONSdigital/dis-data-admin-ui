@@ -12,7 +12,7 @@ export default async function reject({ params }) {
             <StateChangeButton
                 dataTestId="migration-reject-button"
                 id="migration-reject-button"
-                text="Reject"
+                text="Reject Migration"
                 jobID={id}
                 jobState={"rejected"}
                 series={associatedDataset}
