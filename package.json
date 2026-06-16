@@ -47,6 +47,8 @@
     "ts-node": "^10.9.2"
   },
   "overrides": {
+    "@babel/core": "7.29.7",
+    "js-yaml": "4.2.0",
     "author-design-system-react": {
       "react": "19.2.7",
       "react-router": "6.30.4",
