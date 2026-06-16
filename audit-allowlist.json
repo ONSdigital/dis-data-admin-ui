@@ -7,6 +7,10 @@
         {
             "id" : "CVE-2026-27904",
             "reason" : "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
+        },
+        {
+            "id" : "CVE-2026-6991",
+            "reason": "Zod v4 and zod-mini appear only as bundled internal copies inside tooling (e.g., ESLint/Next.js). They are not part of the dependency graph and are not used by application code. The vulnerable CUID handler exists only in Zod v4, while the project depends solely on Zod v3."
         }
     ]
 }
