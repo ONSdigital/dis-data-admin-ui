@@ -29,5 +29,12 @@ describe("setActiveNavItems", () => {
         expect(setActiveNavItem("/series")).toBe("/data-admin/series");
         expect(setActiveNavItem("/series/dataset-id")).toBe("/data-admin/series");
         expect(setActiveNavItem("/series/foo/bar/test")).toBe("/data-admin/series");
+        expect(setActiveNavItem("/series/migration")).toBe("/data-admin/series");
+        expect(setActiveNavItem("/series/migration-test-1")).toBe("/data-admin/series");
+        expect(setActiveNavItem("/migration")).toBe("/data-admin/migration");
+        expect(setActiveNavItem("/migration/migration-id")).toBe("/data-admin/migration");
+        expect(setActiveNavItem("/migration/test")).toBe("/data-admin/migration");
+        expect(setActiveNavItem("/migration/series")).toBe("/data-admin/migration");
+        expect(setActiveNavItem("/migration/series-test-1")).toBe("/data-admin/migration");
     });
 });
