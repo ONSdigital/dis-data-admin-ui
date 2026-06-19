@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import PageHeading from "./PageHeading";
 
 import { useRouter } from "next/navigation";
-import { expect } from "@playwright/test";
 
 jest.mock("next/navigation", () => ({ 
     useRouter: jest.fn().mockReturnValue({ 
