@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import MultiContentItems from "./MultiContentItems";
-import { expect } from "@playwright/test";
 
 describe("MultiContentItems", () => {
     it("renders correctly when type=input", () => {

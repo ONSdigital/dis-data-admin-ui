@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import SeriesListForm from "./SeriesListForm";
 
 import { useRouter } from "next/navigation";
-import { expect } from "@playwright/test";
 
 jest.mock("next/navigation", () => ({ 
     useRouter: jest.fn().mockReturnValue({ 
