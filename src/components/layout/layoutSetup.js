@@ -26,7 +26,9 @@ const setActiveNavItem = (currentPath) => {
     let activeLink = null;
     NAVIGATION_OPTIONS.forEach(item => {
         const navOptionRoot = item.url.split("/data-admin")[1];
-        if (currentPath.includes(navOptionRoot) && navOptionRoot.length) {
+        const isMatch = navOptionRoot.length &&
+            (currentPath === navOptionRoot || currentPath.startsWith(`${navOptionRoot}/`));
+        if (isMatch) {
             activeLink = item.url;
         }
     });
