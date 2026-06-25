@@ -33,7 +33,9 @@ export const getAllTopics = async (reqCfg) => {
                 return mapTopic(t, subTopic);
             }
         })
-    );
+    ).then(results => {
+        return results.sort((a, b) => a.label.localeCompare(b.label))
+    });
 };
 
 /**
@@ -79,6 +81,6 @@ const mapTopic = (topic, subTopics) => {
         id: topic.id,
         label: topic.title || "No label available",
     };
-    if (subTopics) mappedTopic.subtopics = subTopics;
+    if (subTopics) mappedTopic.subtopics = subTopics.sort((a, b) => a.label.localeCompare(b.label));
     return mappedTopic;
 };

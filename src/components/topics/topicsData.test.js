@@ -29,7 +29,7 @@ describe("getAllTopics", () => {
         expect(httpGet).toHaveBeenCalledWith(reqCfg, "/topics");
     });
 
-    it("maps topics and nested subtopics from linked endpoints", async () => {
+    it("maps topics and nested subtopics from linked endpoints alphabetically", async () => {
         const subtopicsHref = "https://api.example.com/v1/topics/2945/subtopics";
 
         httpGet.mockResolvedValueOnce({
@@ -58,8 +58,8 @@ describe("getAllTopics", () => {
                 id: "2945",
                 label: "Business",
                 subtopics: [
-                    { id: "sub-1", label: "Retail" },
                     { id: "sub-2", label: "Manufacturing" },
+                    { id: "sub-1", label: "Retail" },
                 ],
             },
         ]);
@@ -94,7 +94,7 @@ describe("getAllTopics", () => {
         ]);
     });
 
-    it("resolves nested subtopics recursively", async () => {
+    it("resolves nested subtopics recursively and alphabetically", async () => {
         httpGet.mockResolvedValueOnce({
             items: [
                 {
@@ -129,11 +129,11 @@ describe("getAllTopics", () => {
                 id: "1",
                 label: "Topic",
                 subtopics: [
+                    { id: "3", label: "Nested subtopic" },
                     {
                         id: "2",
                         label: "Subtopic",
-                    },
-                    { id: "3", label: "Nested subtopic" },
+                    }
                 ],
             },
         ]);
