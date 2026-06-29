@@ -91,9 +91,8 @@ export async function createDatasetSeries(currentstate, formData) {
     return createResponse(datasetSeriesSubmission, validation, url, httpPost);
 }
 
-export async function updateDatasetSeries(currentstate, formData) {
-    const datasetSeriesSubmissionID = formData.get("dataset-series-id");
-    const url = "/datasets/" + datasetSeriesSubmissionID;
+export async function updateDatasetSeries(originalId, currentstate, formData) {
+    const url = "/datasets/" + originalId;
 
     const datasetSeriesSubmission = getFormData(formData);
     const validation = editSchema.safeParse(datasetSeriesSubmission);

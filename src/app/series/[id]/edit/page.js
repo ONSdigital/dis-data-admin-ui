@@ -66,7 +66,7 @@ export default async function createPage({params}) {
                         currentContacts={dataset.contacts}
                         listOfAllTopics={topics}
                         isPublished={datasetResp?.current?.state === "published"}
-                        action={updateDatasetSeries}
+                        action={updateDatasetSeries.bind(null, id)}
                     />
                 </>
                 : renderErrorPanel()
