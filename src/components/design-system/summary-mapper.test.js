@@ -5,11 +5,11 @@ import { migrationTasksList } from "../../../tests/mocks/migration-tasks.mjs";
 
 describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
-        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"], true);
         const mappedItems = mapped[0].groups[0].rows;
 
         expect(mappedItems).toHaveLength(12);
-        // expect "Series ID" to have single value and not have "edit" action
+        // expect "Series ID" to have single value and not have "edit" action when published
         expect(mappedItems[0].rowTitle).toBe("Series ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "mock-quarterly"});
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
@@ -90,6 +90,20 @@ describe("mapSeriesSummary", () => {
             id: "action-link-contacts",
             visuallyHiddenText: "Edit Contacts",
             url: "test/foo/edit#dataset-series-contacts"
+        });
+    });
+
+    test("Series ID has an edit action when the series is not published", () => {
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"], false);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        // expect "Series ID" to have single value and have "edit" action when not published
+        expect(mappedItems[0].rowTitle).toBe("Series ID");
+        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "mock-quarterly"});
+        expect(mappedItems[0].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-series-id",
+            visuallyHiddenText: "Edit Series ID",
+            url: "test/foo/edit#dataset-series-series-id"
         });
     });
 
