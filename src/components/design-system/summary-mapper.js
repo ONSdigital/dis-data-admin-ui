@@ -133,7 +133,7 @@ const mapRow = (itemName, value, multiValue, action, rows) => {
  * @param {Array} [topicTitles] - Resolved topic titles for the series topics
  * @returns {Array} Summary model for series metadata
  */
-const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
+const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
     const contentBody = getBaseSummaryModel("series-metadata");
     const rows = contentBody[0].groups[0].rows;
     const action = {
@@ -147,7 +147,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles) => {
         contacts.push(contact.name);
     });
 
-    mapRow("Series ID", data.id, null, null, rows);
+    mapRow("Series ID", data.id, null, isPublished ? null : action, rows);
     mapRow("Type", data.type, null, null, rows);
     mapRow("Title", data.title, null, action, rows);
     mapRow("Description", data.description, null, action, rows);

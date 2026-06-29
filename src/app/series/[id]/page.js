@@ -64,7 +64,8 @@ export default async function Dataset({ params, searchParams }) {
     const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles);
+    const isPublished = datasetResp?.current?.state === "published";
+    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, isPublished);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
     const userRoles = (await headers()).get(HEADER_USER_ROLES);
