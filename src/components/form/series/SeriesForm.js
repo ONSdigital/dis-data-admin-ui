@@ -65,8 +65,8 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
             <form className="ons-u-mt-m" action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government License v3.0" />
-                {currentID != "" ? <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} /> : null}
-                {currentID == "" ?
+                {isPublished && <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />}
+                {!isPublished &&
                     <TextInput
                         id="dataset-series-id"
                         dataTestId="dataset-series-id"
@@ -79,7 +79,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                         error={(formState.errors && formState.errors.id) ? { id: "dataset-series-id-error", text: formState.errors.id } : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
-                    /> : null
+                    />
                 }
                 <TextInput
                     id="dataset-series-title"
