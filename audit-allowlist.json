@@ -7,6 +7,10 @@
         {
             "id" : "CVE-2026-27904",
             "reason" : "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
+        },
+        {
+            "id" : "CVE-2026-13149",
+            "reason" : "brace-expansion is an indirect import used in ESLint, AuditJS, Jest, etc. Waiting for those packages to update dependencies."
         }
     ]
 }
