@@ -61,12 +61,13 @@ export default async function MigrationOverview({ params }) {
 
         const migrationTaskTableItems = mapMigrationJobTable(migrationTasksResp.items);
 
-        if (migrationResp.state == "in_review") {
-            return (
-                <>
-                    {renderSeriesTask(migrationTasksResp.items)}
-                    <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
-                    <StateChangeButton
+        return (
+            <>
+                {renderSeriesTask(migrationTasksResp.items)}
+                <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
+                {
+                    migrationResp.state === "in_review" &&
+                    <><StateChangeButton
                         classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
                         dataTestId="migration-approve-button"
                         id="migration-approve-button"
@@ -82,15 +83,8 @@ export default async function MigrationOverview({ params }) {
                         link={`/migration/${id}/reject/${associatedDataset}`}
                         variants={["secondary"]}
                         classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
-                    />
-                </>
-            );
-        }
-
-        return (
-            <>
-                {renderSeriesTask(migrationTasksResp.items)}
-                <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
+                    /></>
+                }
             </>
         );
     };
