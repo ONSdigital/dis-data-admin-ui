@@ -29,6 +29,40 @@ export default async function MigrationOverview({ params }) {
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
     const associatedDataset = migrationResp.config.target_id
+    const isStateInReview = migrationResp.state === "in_review";
+
+    const renderPreviewPanel = () => {
+        return (
+            <Panel title="Migration job preview" variant="info" dataTestId="migration-job-preview-panel">
+                <p><b>Preview</b><br/>
+                <a href={`/series/${associatedDataset}`} target="_blank">View this series</a> as it will appear on the ONS website</p>
+            </Panel>
+        );
+    }
+
+    const renderButtons = () => {
+        return (
+            <>
+                <StateChangeButton
+                    classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                    dataTestId="migration-approve-button"
+                    id="migration-approve-button"
+                    text="Approve"
+                    jobID={id}
+                    jobState={"approved"}
+                    series={associatedDataset}
+                    onClick={updateMigrationJobState}
+                />
+                <LinkButton
+                    dataTestId="migration-reject-button"
+                    text="Reject"
+                    link={`/migration/${id}/reject/${associatedDataset}`}
+                    variants={["secondary"]}
+                    classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
+                />
+            </>
+        );
+    }
 
     const renderSeriesTask = (taskList) => {
         if (!Array.isArray(taskList) || taskList.length > 0) {
@@ -65,26 +99,6 @@ export default async function MigrationOverview({ params }) {
             <>
                 {renderSeriesTask(migrationTasksResp.items)}
                 <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
-                {
-                    migrationResp.state === "in_review" &&
-                    <><StateChangeButton
-                        classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
-                        dataTestId="migration-approve-button"
-                        id="migration-approve-button"
-                        text="Approve"
-                        jobID={id}
-                        jobState={"approved"}
-                        series={associatedDataset}
-                        onClick={updateMigrationJobState}
-                    />
-                    <LinkButton
-                        dataTestId="migration-reject-button"
-                        text="Reject"
-                        link={`/migration/${id}/reject/${associatedDataset}`}
-                        variants={["secondary"]}
-                        classes="ons-u-ml-xs ons-u-mt-m ons-u-pt-m"
-                    /></>
-                }
             </>
         );
     };
@@ -103,7 +117,9 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
+                    {isStateInReview && renderPreviewPanel()}
                     {renderTaskList()}
+                    {isStateInReview && renderButtons()}
                 </div>
             </div>
         </>
