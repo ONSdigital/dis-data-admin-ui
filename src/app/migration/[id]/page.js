@@ -28,7 +28,7 @@ export default async function MigrationOverview({ params }) {
     }
 
     const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
-    const associatedDataset = migrationResp.config.target_id
+    const associatedDataset = migrationResp.config?.target_id;
     const isStateInReview = migrationResp.state === "in_review";
 
     const renderPreviewPanel = () => {
@@ -38,7 +38,7 @@ export default async function MigrationOverview({ params }) {
                 <a href={`/series/${associatedDataset}`} target="_blank">View this series</a> as it will appear on the ONS website</p>
             </Panel>
         );
-    }
+    };
 
     const renderButtons = () => {
         return (
@@ -62,7 +62,7 @@ export default async function MigrationOverview({ params }) {
                 />
             </>
         );
-    }
+    };
 
     const renderSeriesTask = (taskList) => {
         if (!Array.isArray(taskList) || taskList.length > 0) {
