@@ -119,7 +119,7 @@ export const migrationJobsList = {
             "source_id": "/economy/inflationandpriceindices/datasets/consumerpriceinflation/data",
             "state": "reverted",
             "config": {
-                "target_id": "new-dataset",
+                "target_id": "cpih",
             },
             "type": "static_dataset",
             "label": "Population estimates"
