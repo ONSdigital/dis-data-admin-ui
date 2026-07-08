@@ -123,7 +123,7 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
-                    {isStateInReview && canonicalTopic && renderPreviewPanel()}
+                    {displayMigrationJobDetails && canonicalTopic && renderPreviewPanel()}
                     {renderTaskList()}
                     {isStateInReview && renderButtons()}
                 </div>
