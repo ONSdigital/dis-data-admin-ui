@@ -33,7 +33,7 @@ export default async function MigrationOverview({ params }) {
 
     const renderPreviewPanel = () => {
         return (
-            <Panel title="Migration job preview" variant="info" dataTestId="migration-job-preview-panel">
+            <Panel dataTestId="migration-job-preview-panel" classes="ons-u-mb-l">
                 <p><b>Preview</b><br/>
                 <a href={`/series/${associatedDataset}`} target="_blank">View this series</a> as it will appear on the ONS website</p>
             </Panel>
