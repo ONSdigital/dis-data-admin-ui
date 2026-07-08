@@ -103,6 +103,20 @@ test.describe("Migration overview page", () => {
         await expect(page.getByTestId("success-panel")).toContainText("Migration for new-dataset reverted.");
     });
 
+    test.describe("Preview panel", () => {
+        test("Shows when expected", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./migration/4");
+            await expect(page.getByTestId("migration-job-preview-panel")).toBeVisible();
+        });
+
+        test("Doesn't show when expected", async ({ page, context }) => {
+            setValidAuthCookies(context);
+            await page.goto("./migration/1");
+            await expect(page.getByTestId("migration-job-preview-panel")).not.toBeVisible();
+        });
+    });
+
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);
