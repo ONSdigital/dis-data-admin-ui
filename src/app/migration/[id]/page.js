@@ -16,9 +16,9 @@ import { updateMigrationJobState } from "@/app/actions/migrationJob";
 
 export default async function MigrationOverview({ params }) {
     const { id } = await params;
-    const reqCfg = await SSRequestConfig(cookies, "migration-service");
+    const msReqCfg = await SSRequestConfig(cookies, "migration-service");
 
-    const migrationResp = await httpGet(reqCfg, `/migration-jobs/${id}`);
+    const migrationResp = await httpGet(msReqCfg, `/migration-jobs/${id}`);
     if (migrationResp.ok != null && !migrationResp.ok) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
@@ -27,15 +27,21 @@ export default async function MigrationOverview({ params }) {
         );
     }
 
-    const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
     const associatedDataset = migrationResp.config?.target_id;
+
+    const dsReqCfg = await SSRequestConfig(cookies, "api-router");
+    const datasetResp = await httpGet(dsReqCfg, `/datasets/${associatedDataset}`);
+    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const canonicalTopic = dataset?.topics?.[0] || null;
+
+    const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
     const isStateInReview = migrationResp.state === "in_review";
 
     const renderPreviewPanel = () => {
         return (
             <Panel dataTestId="migration-job-preview-panel" classes="ons-u-mb-l">
                 <p><b>Preview</b><br/>
-                <a href={`/series/${associatedDataset}`} target="_blank">View this series</a> as it will appear on the ONS website</p>
+                <a href={`/${canonicalTopic}/datasets/${associatedDataset}`} target="_blank">View this series</a> as it will appear on the ONS website</p>
             </Panel>
         );
     };
@@ -84,7 +90,7 @@ export default async function MigrationOverview({ params }) {
             return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
         }
 
-        const migrationTasksResp = await httpGet(reqCfg, `/migration-jobs/${id}/tasks`);
+        const migrationTasksResp = await httpGet(msReqCfg, `/migration-jobs/${id}/tasks`);
         if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
             return (
                 <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
@@ -117,7 +123,7 @@ export default async function MigrationOverview({ params }) {
             />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-8@m">
-                    {isStateInReview && renderPreviewPanel()}
+                    {isStateInReview && canonicalTopic && renderPreviewPanel()}
                     {renderTaskList()}
                     {isStateInReview && renderButtons()}
                 </div>
