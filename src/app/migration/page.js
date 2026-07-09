@@ -25,8 +25,6 @@ export default async function MigrationList({ searchParams }) {
         migrationsRespError = true;
     }
 
-    console.log(migrationsResp);
-
     if (migrationsRespError) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
