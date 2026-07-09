@@ -1,3 +1,25 @@
+const stateIdToLabel = (id) =>
+    id
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/^./, (char) => char.toUpperCase());
+
+const buildStatesFromItems = (items) => {
+    const counts = {};
+
+    for (const item of items) {
+        counts[item.state] = (counts[item.state] || 0) + 1;
+    }
+
+    return Object.entries(counts)
+        .map(([id, count]) => ({
+            id,
+            label: stateIdToLabel(id),
+            count
+        }))
+        .sort((a, b) => b.count - a.count);
+};
+
 const automatedMigrationJobs = () => {
     const list = [];
     for (let i = 6; i <= 120; i++) {
@@ -22,12 +44,7 @@ const automatedMigrationJobs = () => {
     return list;
 };
 
-export const migrationJobsList = {
-    "count": 120,
-    "limit": 50,
-    "offset": 0,
-    "total_count": 120,
-    "items": [
+const staticMigrationJobs = [
         {
             "id": "17166cd8-c17d-4da2-8abb-3a33f510790f",
             "job_number": "1",
@@ -148,6 +165,15 @@ export const migrationJobsList = {
             "type": "static_dataset",
             "label": "Crime statistics"
         },
-        ...automatedMigrationJobs()
-    ]
+];
+
+const items = [...staticMigrationJobs, ...automatedMigrationJobs()];
+
+export const migrationJobsList = {
+    "count": 120,
+    "limit": 50,
+    "offset": 0,
+    "total_count": 120,
+    "states": buildStatesFromItems(items),
+    "items": items
 };
