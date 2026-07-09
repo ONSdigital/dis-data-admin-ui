@@ -27,34 +27,34 @@ test.describe("Migration list page", () => {
         await expect(page.getByTestId("migration-list-table-cell-2-3")).toContainText("Approved");
     });
 
-    // test("Filters results by state", async ({ page, context }) => {
-    //     setValidAuthCookies(context);
+    test("Filters results by state", async ({ page, context }) => {
+        setValidAuthCookies(context);
 
-    //     await page.goto("./migration");
+        await page.goto("./migration");
 
-    //     const approvedCheckbox = page.getByLabel("Approved");
-    //     await approvedCheckbox.check();
+        const approvedCheckbox = page.getByLabel("Approved");
+        await approvedCheckbox.check();
 
-    //     await page.getByTestId("migration-filter-apply-button").click();
-    //     await expect(page).toHaveURL(/state=approved/);
-    //     await expect(page.getByTestId("migration-list-table")).toBeVisible();
+        await page.getByTestId("migration-filter-apply-button").click();
+        await expect(page).toHaveURL(/state=approved/);
+        await expect(page.getByTestId("migration-list-table")).toBeVisible();
 
-    //     const statuses = await page.getByTestId(/migration-list-table-cell-\d-3/).all();
-    //     for (const cell of statuses) {
-    //         await expect(cell).toContainText("Approved");
-    //     }
-    // });
+        const statuses = await page.getByTestId(/migration-list-table-cell-\d-3/).all();
+        for (const cell of statuses) {
+            await expect(cell).toContainText("Approved");
+        }
+    });
 
-    // test("Filter options are populated by returned jobs", async ({ page, context }) => {
-    //     setValidAuthCookies(context);
+    test("Filter options are populated by returned jobs", async ({ page, context }) => {
+        setValidAuthCookies(context);
 
-    //     await page.goto("./migration");
+        await page.goto("./migration");
 
-    //     await expect(page.getByLabel("Approved")).toBeVisible();
-    //     await expect(page.getByLabel("In review")).toBeVisible();
-    //     await expect(page.getByLabel("Reverted")).toBeVisible();
-    //     await expect(page.getByLabel("Submitted")).toBeVisible();
-    // });
+        await expect(page.getByLabel("Approved")).toBeVisible();
+        await expect(page.getByLabel("In review")).toBeVisible();
+        await expect(page.getByLabel("Reverted")).toBeVisible();
+        await expect(page.getByLabel("Submitted")).toBeVisible();
+    });
 
     test("Traverse through pagination", async ({ page, context }) => {
         setValidAuthCookies(context);
