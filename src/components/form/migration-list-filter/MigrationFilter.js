@@ -41,7 +41,7 @@ export default function MigrationFilter({ states = []}) {
                     id: "checkbox-" + state.id,
                     name: state.id,
                     dataTestId: "migration-filter-list-checkbox-" + state.id,
-                    label: { text: state.label },
+                    label: { text: `${state.label} (${state.count})` },
                     checked: stateFilters.includes(state.id),
                     onChange: (e) => { stateFilterOnChange(e.target.value); },
                     value: state.id,
@@ -49,7 +49,7 @@ export default function MigrationFilter({ states = []}) {
             }
         });
         return checkboxOptions;
-    }
+    };
 
     return (
         <BoxContainer
