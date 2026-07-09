@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 
 import { httpGet, SSRequestConfig } from "@/utils/request/request";
 
-import { BoxContainer, Panel } from "@/components/design-system/DesignSystem";
-
+import MigrationFilter from "@/components/form/migration-list-filter/MigrationFilter";
+import { Panel } from "@/components/design-system/DesignSystem";
 import LinkButton from "@/components/link-button/LinkButton";
 import Table from "@/components/table/Table";
 import Pagination from "@/components/pagination/Pagination";
@@ -24,6 +24,8 @@ export default async function MigrationList({ searchParams }) {
     if (migrationsResp.ok != null && !migrationsResp.ok) {
         migrationsRespError = true;
     }
+
+    console.log(migrationsResp);
 
     if (migrationsRespError) {
         return (
@@ -70,15 +72,7 @@ export default async function MigrationList({ searchParams }) {
             <SuccessPanel query={pageParams} contentType={pageParams.series} />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <BoxContainer
-                        borderColor="ons-color-grey-15"
-                        borderWidth={1}
-                        classes="ons-grid__col ons-u-pl-no"
-                        id="box-container"
-                        title="Search and filter"
-                    >
-                        <p className="ons-u-mt-m">Search and filters coming soon</p>
-                    </BoxContainer>
+                    <MigrationFilter states={migrationsResp.states}></MigrationFilter>
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
                     {renderListArea()}

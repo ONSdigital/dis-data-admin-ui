@@ -22,7 +22,7 @@ export default function MigrationFilter({ states }) {
         }
     };
 
-    const filterByState = () => {
+    const handleFilterButtonPress = () => {
         if (stateFilters.length === 0) {
             push(pathname);
             return;
@@ -32,27 +32,26 @@ export default function MigrationFilter({ states }) {
         push(url);
     };
 
-    function createCheckboxes() {
+
+    const createCheckboxes = () => {
         const checkboxOptions = [];
+        if (!(states.length > 0)) {
+            return checkboxOptions;
+        }
         states.forEach(state => {
-            const spaceReplacement = state.replace(/_/g, " ");
-            const formattedLabel = spaceReplacement.charAt(0).toUpperCase() + spaceReplacement.slice(1);
-
-            checkboxOptions.push({
-                id: "checkbox-" + state,
-                name: state,
-                dataTestId: "checkbox-" + state,
-                label: {
-                    text: formattedLabel
-                },
-                onChange: (e) => { stateFilterOnChange(e.target.value); },
-                value: state,
-            });
+            if (state.count > 0) {
+                checkboxOptions.push({
+                    id: "checkbox-" + state.id,
+                    name: state.id,
+                    dataTestId: "checkbox-" + state.id,
+                    label: { text: state.label },
+                    onChange: (e) => { stateFilterOnChange(e.target.value); },
+                    value: state.id,
+                });
+            }
         });
-        return ({ itemsList: checkboxOptions });
+        return checkboxOptions;
     }
-
-    const checkboxOptionsItems = createCheckboxes();
 
     return (
         <>
@@ -61,29 +60,23 @@ export default function MigrationFilter({ states }) {
                 borderWidth={1}
                 classes="ons-grid__col ons-u-pl-no"
                 id="box-container"
-                title="Filter"
+                title="Filter results"
             >
-                {states.length > 0 ? (
-                    <>
-                        <Checkbox
-                            id="state-filter"
-                            dataTestId="state-filter"
-                            items={checkboxOptionsItems}
-                            legend="Filter by state"
-                            borderless
-                            classes="ons-u-mt-m ons-u-mb-m"
-                        />
-                        <Button
-                            dataTestId="migration-filter-apply-button"
-                            id="migration-filter-apply-button"
-                            text="Apply"
-                            variants={["small"]}
-                            onClick={filterByState}
-                        />
-                    </>
-                ) : (
-                    <p className="ons-u-mt-m ons-u-mb-m">No migration jobs found</p>
-                )}
+                <Checkbox
+                    id="state-filter"
+                    dataTestId="state-filter"
+                    items={{ itemsList: createCheckboxes() }}
+                    legend="State"
+                    borderless
+                    classes="ons-u-mt-m ons-u-mb-m"
+                />
+                <Button
+                dataTestId="migration-filter-apply-button"
+                id="migration-filter-apply-button"
+                text="Apply"
+                variants={["small"]}
+                onClick={handleFilterButtonPress}
+            />
             </BoxContainer>
         </>
     );
