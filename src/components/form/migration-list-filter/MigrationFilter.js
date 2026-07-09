@@ -36,7 +36,6 @@ export default function MigrationFilter({ states = []}) {
         push(url);
     };
 
-
     const createCheckboxes = () => {
         const checkboxOptions = [];
         if ((!states.length)) {
@@ -59,30 +58,28 @@ export default function MigrationFilter({ states = []}) {
     }
 
     return (
-        <>
-            <BoxContainer
-                borderColor="ons-color-grey-15"
-                borderWidth={1}
-                classes="ons-grid__col ons-u-pl-no"
-                id="box-container"
-                title="Filter results"
-            >
-                <Checkbox
-                    id="state-filter"
-                    dataTestId="state-filter"
-                    items={{ itemsList: createCheckboxes() }}
-                    legend="State"
-                    borderless
-                    classes="ons-u-mt-m ons-u-mb-m"
-                />
-                <Button
-                dataTestId="migration-filter-apply-button"
-                id="migration-filter-apply-button"
-                text="Apply"
-                variants={["small"]}
-                onClick={handleFilterButtonPress}
+        <BoxContainer
+            borderColor="ons-color-grey-15"
+            borderWidth={1}
+            classes="ons-grid__col ons-u-pl-no"
+            id="box-container"
+            title="Filter results"
+        >
+            <Checkbox
+                id="state-filter"
+                dataTestId="state-filter"
+                items={{ itemsList: createCheckboxes() }}
+                legend="State"
+                borderless
+                classes="ons-u-mt-m ons-u-mb-m"
             />
-            </BoxContainer>
-        </>
+            <Button
+            dataTestId="migration-filter-apply-button"
+            id="migration-filter-apply-button"
+            text="Apply"
+            variants={["small"]}
+            onClick={handleFilterButtonPress}
+        />
+        </BoxContainer>
     );
 }
