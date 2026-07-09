@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
 
 export default function MigrationFilter({ states }) {
-    const [stateFilters, setStateFilters] = useState([]);
+    const searchParams = useSearchParams();
+    const [stateFilters, setStateFilters] = useState(() => {
+        const state = searchParams.get("state");
+        return state ? state.split(",") : [];
+    });
 
     const { push } = useRouter();
     const pathname = usePathname();
@@ -45,6 +49,7 @@ export default function MigrationFilter({ states }) {
                     name: state.id,
                     dataTestId: "checkbox-" + state.id,
                     label: { text: state.label },
+                    checked: stateFilters.includes(state.id),
                     onChange: (e) => { stateFilterOnChange(e.target.value); },
                     value: state.id,
                 });
