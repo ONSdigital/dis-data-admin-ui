@@ -15,15 +15,9 @@ export default function MigrationFilter({ states = []}) {
     const pathname = usePathname();
 
     const stateFilterOnChange = (state) => {
-        if (!stateFilters.includes(state)) {
-            setStateFilters([...stateFilters, state]);
-        } else {
-            setStateFilters(
-                stateFilters.filter(s =>
-                    s !== state
-                )
-            );
-        }
+        setStateFilters((prev) =>
+            prev.includes(state) ? prev.filter((s) => s !== state) : [...prev, state]
+        );
     };
 
     const handleFilterButtonPress = () => {
