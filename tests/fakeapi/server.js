@@ -326,15 +326,25 @@ app.get("/topics/:id/subtopics", (req, res) => {
 app.get("/v1/migration-jobs", (req, res) => {
     log("Handling GET '/migration-jobs'", req.url, null);
 
-    const state = req.query?.state;
+    const parseStateParam = (stateParam) => {
+        if (!stateParam) {
+            return [];
+        }
+
+        const values = Array.isArray(stateParam) ? stateParam : [stateParam];
+
+        return values
+            .flatMap((value) => value.split(","))
+            .map((state) => state.trim())
+            .filter(Boolean);
+    };
+
+    const states = parseStateParam(req.query?.state);
     const offset = Number(req.query?.offset || 0);
     const limit = Number(req.query?.limit || 10);
+    const filters = migrationJobsList.states
 
-    if (state) {
-        // Normalise state to an array:
-        const states = Array.isArray(state) ? state : [state];
-
-        // Filter the items based on the selected states
+    if (states.length > 0) {
         const filteredItems = migrationJobsList.items.filter(item =>
             states.includes(item.state)
         );
@@ -346,7 +356,8 @@ app.get("/v1/migration-jobs", (req, res) => {
             count: paginatedFiltered.length,
             total_count: filteredItems.length,
             offset,
-            limit
+            limit,
+            states: filters
         });
     }
 
@@ -357,7 +368,8 @@ app.get("/v1/migration-jobs", (req, res) => {
         offset,
         limit,
         count: items.length,
-        total_count: migrationJobsList.total_count
+        total_count: migrationJobsList.total_count,
+        states: filters
     });
 });
 
