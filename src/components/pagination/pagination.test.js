@@ -17,7 +17,6 @@ usePathname.mockReturnValue("test.com")
 
 describe("Pagination", () => {
     test("Maps the expected number of pages", () => {
-
         const totalNumberOfPages = 5
         const currentPage = 3
         const limit = 25
@@ -42,6 +41,15 @@ describe("Pagination", () => {
         const pageFive = screen.getByTestId("pagination-5");
         const pageFiveLink = within(pageFive).getByRole("link")
         expect(pageFiveLink).toHaveAttribute("href", "test.com?limit=25&offset=100")
+    })
 
+    test("Renders nothing when total number of pages is less than 1", () => {
+        const totalNumberOfPages = 0
+        const currentPage = 1
+        const limit = 25
+
+        const { container } = render(<Pagination totalNumberOfPages={totalNumberOfPages} currentPage={currentPage} limit={limit}/>)
+
+        expect(container.firstChild).toBeNull()
     })
 })
