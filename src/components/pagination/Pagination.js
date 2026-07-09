@@ -4,13 +4,13 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Pagination } from "author-design-system-react";
 
 export default function PaginationDisDataAdmin({totalNumberOfPages, currentPage, limit}){
+    const { push } = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
     if (totalNumberOfPages < 1) {
         return null;
     }
-    const { push } = useRouter();
-
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     const mapPages = () => {
         const pages = [];
