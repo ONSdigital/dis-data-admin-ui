@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
 
-export default function MigrationFilter({ states }) {
+export default function MigrationFilter({ states = []}) {
     const searchParams = useSearchParams();
     const [stateFilters, setStateFilters] = useState(() => {
         const state = searchParams.get("state");
@@ -39,7 +39,7 @@ export default function MigrationFilter({ states }) {
 
     const createCheckboxes = () => {
         const checkboxOptions = [];
-        if (!(states.length > 0)) {
+        if ((!states.length)) {
             return checkboxOptions;
         }
         states.forEach(state => {
