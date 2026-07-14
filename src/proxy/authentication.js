@@ -9,7 +9,7 @@ const PUBLIC_ROUTES = ["/florence/login", "/florence/logout"];
 
 const ID_TOKEN_COOKIE_NAME = "id_token";
 
-export async function authenticationMiddleware(req) {
+export async function authenticationProxy(req) {
     const path = req.nextUrl.pathname;
     const isPublicRoute = PUBLIC_ROUTES.includes(path);
     const logData = {
@@ -18,19 +18,19 @@ export async function authenticationMiddleware(req) {
     };
 
     if (isPublicRoute) {
-        logInfo("authentication middleware: skipping authentication. accessing public route", logData, null);
+        logInfo("authentication proxy: skipping authentication. accessing public route", logData, null);
         return NextResponse.next();
     }
     
     const cookie = (await cookies()).get(ID_TOKEN_COOKIE_NAME)?.value;
     if (!cookie) {
-        logInfo("authentication middleware: no auth cookie found. redirecting to login", logData, null);
+        logInfo("authentication proxy: no auth cookie found. redirecting to login", logData, null);
         const loginPath = getLoginURLWithRedirect(path);
         return NextResponse.redirect(new URL(loginPath, req.url));
     }
     
     if (!validateCookie(cookie)) {
-        logInfo("authentication middleware: invalid cookie. redirecting to login", logData, null);
+        logInfo("authentication proxy: invalid cookie. redirecting to login", logData, null);
         const loginPath = getLoginURLWithRedirect(path);
         return NextResponse.redirect(new URL(loginPath, req.url));
     }
@@ -40,7 +40,7 @@ export async function authenticationMiddleware(req) {
     const rolesString = Array.isArray(userRoles) ? userRoles.join(",") : (userRoles || "");
     requestHeaders.set(HEADER_USER_ROLES, rolesString);
 
-    logInfo("authentication middleware: cookie found and validated", logData, null);
+    logInfo("authentication proxy: cookie found and validated", logData, null);
     return NextResponse.next({
         request: {
             headers: requestHeaders,
