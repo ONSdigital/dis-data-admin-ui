@@ -1,7 +1,7 @@
-import { multipleMiddlewares } from "./middleware/multipleMiddleware";
-import { authenticationMiddleware } from "./middleware/authentication";
-import { routeLoggingMiddleware } from "./middleware/routeLogging";
-import { urlValueHeaders } from "./middleware/urlValueHeaders";
+import { multipleMiddlewares } from "./proxy/multipleMiddleware";
+import { authenticationMiddleware } from "./proxy/authentication";
+import { routeLoggingMiddleware } from "./proxy/routeLogging";
+import { urlValueHeaders } from "./proxy/urlValueHeaders";
 
 export const middleware = multipleMiddlewares([
     routeLoggingMiddleware,
