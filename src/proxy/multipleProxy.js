@@ -49,9 +49,10 @@ export const multipleProxies = (proxies) => async (req, event, response) => {
             mergedHeaders.set(key, value);
 
             // check if its a custom header added by one of the proxies
-            if (key.startsWith("x-proxy-request-")) {
+            // Next.js still uses the x-middleware-request- prefix internally for request header overrides
+            if (key.startsWith("x-middleware-request-")) {
                 // remove the prefix to get the original key
-                const fixedKey = key.replace("x-proxy-request-", "");
+                const fixedKey = key.replace("x-middleware-request-", "");
 
                 // add the original key to the transmitted headers
                 // Use set instead of append to avoid comma-separated duplicates
@@ -61,7 +62,7 @@ export const multipleProxies = (proxies) => async (req, event, response) => {
     });
 
     // Merge transmittedHeaders with allRequestHeaders
-    // transmittedHeaders takes precedence for x-proxy-request-* headers
+    // transmittedHeaders takes precedence for x-middleware-request-* headers
     for (const [key, value] of allRequestHeaders.entries()) {
         if (!transmittedHeaders.has(key)) {
             transmittedHeaders.set(key, value);
