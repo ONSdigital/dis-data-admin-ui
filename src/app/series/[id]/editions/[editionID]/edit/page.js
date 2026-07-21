@@ -29,13 +29,14 @@ export default async function EditEdition({ params }) {
     }
 
     const edition = editionResp?.current || editionResp?.next || editionResp;
+    const showEditionIDField = edition?.state !== "published" || !edition?.is_migrating;
     return (
         <>
             <PageHeading 
                 title={"Edit edition: " + edition.edition_title}
             /> 
             <> 
-                <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state !== "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
+                <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={showEditionIDField} action={ updateDatasetEdition } accessToken={accessToken}/>
             </>
         </>
     );
