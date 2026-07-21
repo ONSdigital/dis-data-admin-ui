@@ -29,7 +29,7 @@ export default async function EditEdition({ params }) {
     }
 
     const edition = editionResp?.current || editionResp?.next || editionResp;
-    const showEditionIDField = edition?.state !== "published" || !edition?.is_migrating;
+    const showEditionIDField = edition?.state !== "published" || !edition?.is_migration;
     return (
         <>
             <PageHeading 
