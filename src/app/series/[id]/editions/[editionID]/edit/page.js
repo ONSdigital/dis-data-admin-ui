@@ -20,15 +20,13 @@ export default async function EditEdition({ params }) {
         editionError = true;
     }
 
-    const renderErrorPanel = () => {
+    if (editionError) {
         return (
-            <>
-                <Panel title="Error" variant="error">
-                    <p>There was a problem retreiving data for this page. Please try again later.</p>
-                </Panel>
-            </>
+            <Panel title="Error" variant="error" dataTestId="dataset-edition-response-error">
+                <p>There was a problem retreiving data for this page. Please try again later.</p>
+            </Panel>
         );
-    };
+    }
 
     const edition = editionResp?.current || editionResp?.next || editionResp;
     return (
@@ -36,12 +34,9 @@ export default async function EditEdition({ params }) {
             <PageHeading 
                 title={"Edit edition: " + edition.edition_title}
             /> 
-            { !editionError ?  
-                <> 
-                    <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state !== "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
-                </>
-                : renderErrorPanel()
-            }
+            <> 
+                <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state !== "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
+            </>
         </>
     );
 }
