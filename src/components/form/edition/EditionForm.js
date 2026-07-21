@@ -54,7 +54,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
                 <input id="current-edition-id" name="current-edition-id" type="hidden" value={edition?.edition} />
-                { !showEditionIDField ? 
+                { showEditionIDField ? 
                     <TextInput id="edition-id" 
                         name="edition-id" 
                         label={{text: `Edition ID`, description: `E.g "january-2025" or "time-series"`}} 

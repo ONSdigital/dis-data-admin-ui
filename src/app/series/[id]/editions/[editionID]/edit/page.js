@@ -38,7 +38,7 @@ export default async function EditEdition({ params }) {
             /> 
             { !editionError ?  
                 <> 
-                    <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state === "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
+                    <EditionForm datasetID={ id } edition={ edition } isNewEdition={ false } showEditionIDField={edition?.state !== "published"} action={ updateDatasetEdition } accessToken={accessToken}/>
                 </>
                 : renderErrorPanel()
             }
