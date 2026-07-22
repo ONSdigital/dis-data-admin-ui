@@ -44,9 +44,11 @@ export default async function createPage({params}) {
             </>
         );
     }
-        
 
-    const dataset = datasetResp?.next;
+    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const isPublished = datasetResp?.current?.state === "published";
+    const showSeriesIDField = !isPublished && !dataset?.is_migration;
+
     return (
         <>
             <PageHeading 
@@ -62,7 +64,8 @@ export default async function createPage({params}) {
                 currentKeywords={dataset.keywords}
                 currentContacts={dataset.contacts}
                 listOfAllTopics={topics}
-                isPublished={datasetResp?.current?.state === "published"}
+                isPublished={isPublished}
+                showSeriesIDField={showSeriesIDField}
                 action={updateDatasetSeries.bind(null, id)}
             />
         </>
