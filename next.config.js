@@ -1,6 +1,13 @@
 /** @type {import("next").NextConfig} */
 
+const path = require("path");
+
 module.exports = {
+  // Pin project root so Turbopack does not walk up to a parent lockfile.
+  turbopack: {
+    root: path.join(__dirname),
+  },
+  outputFileTracingRoot: path.join(__dirname),
   output: "standalone",
   basePath: "/data-admin",
   experimental: {
