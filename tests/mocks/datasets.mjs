@@ -168,21 +168,21 @@ export const datasetList = {
             "title": "Foobar test dataset",
             "description": "A test dataset",
             "id": "foo-bar"
-          },
-          {
+        },
+        {
             "next": {
-              "title": "Test associated",
-              "description": "A test dataset",
-              "id": "test-publish-message-dataset",
-              "state": "associated"
+                "title": "Test associated",
+                "description": "A test dataset",
+                "id": "test-publish-message-dataset",
+                "state": "associated"
             },
             "current": {
-              "title": "Test published",
-              "description": "A test dataset",
-              "id": "test-publish-message-dataset",
-              "state": "published"
+                "title": "Test published",
+                "description": "A test dataset",
+                "id": "test-publish-message-dataset",
+                "state": "published"
             }
-          }
+        }
     ],
     "count": 20,
     "total_count": 130
