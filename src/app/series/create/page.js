@@ -32,6 +32,7 @@ export default async function createPage() {
                     listOfAllTopics={topics} 
                     action={createDatasetSeries}
                     isPublished={false}
+                    showSeriesIDField={true}
                 />
             </>
         );
