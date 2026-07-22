@@ -182,7 +182,14 @@ export const datasetList = {
                 "id": "test-publish-message-dataset",
                 "state": "published"
             }
-        }
+        },
+        {
+            "title": "Migration test dataset",
+            "description": "A test dataset",
+            "id": "migration-test-dataset",
+            "state": "associated",
+            "is_migration": true
+        },
     ],
     "count": 20,
     "total_count": 130
