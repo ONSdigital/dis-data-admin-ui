@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 import { setExpiredAuthCookies, setValidAuthCookies } from "../utils/utils";
 
-test.describe("Auth middleware", () => {
+test.describe("Auth proxy", () => {
     test("When no cookie is set, doesn't allow access and redirects to login page", async ({ page, context }) => {
         await page.goto("./series")
         await expect(page).toHaveURL(/.*\/florence\/login\?redirect=%2Fdata-admin%2F%2Fseries/);
