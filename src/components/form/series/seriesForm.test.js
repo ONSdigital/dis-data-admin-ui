@@ -49,6 +49,13 @@ describe("Series Form", () => {
         expect(description.value).toBe("This is a mock dataset test description")
     });
 
+    test("does not render series ID field when showSeriesIDField is false", () => {
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={false}/>);
+
+        expect(screen.queryByTestId("dataset-series-id")).not.toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
+    });
+
     it("onChange handler updates text input state", () => {
         render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
         

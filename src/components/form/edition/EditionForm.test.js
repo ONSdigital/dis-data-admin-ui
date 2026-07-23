@@ -58,4 +58,11 @@ describe("Edition form", () => {
         expect(screen.getByTestId("edition-save-button")).toBeInTheDocument();
         expect(screen.getByTestId("edition-cancel-button")).toBeInTheDocument();
     });
+
+    test("does not render edition ID field when showEditionIDField is false", () => {
+        render(<EditionForm datasetID={ "test-dataset" } edition={{edition: "test-edition", edition_title: "Test Edition"}} isNewEdition={ false } showEditionIDField={ false } />);
+
+        expect(screen.queryByTestId("edition-id")).not.toBeInTheDocument();
+        expect(screen.getByTestId("edition-title")).toBeInTheDocument();
+    });
 });
