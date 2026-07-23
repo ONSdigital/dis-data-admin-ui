@@ -20,7 +20,7 @@ describe("Series Form", () => {
     const dataset = datasetList.items[2]
 
     test("Series form renders correctly", () => {
-        render(<SeriesForm listOfAllTopics={listOfAllTopics} action={mockAction}/>);
+        render(<SeriesForm listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={true}/>);
 
         expect(screen.getByTestId("dataset-series-id")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe("Series Form", () => {
     });
 
     test("Series form renders props correctly", () => {
-        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={true}/>);
 
         const title = screen.getByTestId("dataset-series-title");
         expect(title.value).toBe("Mock Dataset");

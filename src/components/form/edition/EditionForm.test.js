@@ -18,7 +18,7 @@ jest.mock("next/navigation", () => ({
 
 describe("Edition form", () => {
     test("renders correctly when isNewEdition is false", () => {
-        render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ false }  />);
+        render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ false } showEditionIDField={ true } />);
 
         expect(screen.getByTestId("edition-id")).toBeInTheDocument();
         expect(screen.getByTestId("edition-title")).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe("Edition form", () => {
     });
 
     test("renders correctly when isNewEdition is true", () => {
-        render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ true }  />);
+        render(<EditionForm datasetID={ "test-dataset" } isNewEdition={ true } showEditionIDField={ true } />);
 
         expect(screen.getByTestId("edition-id")).toBeInTheDocument();
         expect(screen.getByTestId("edition-title")).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe("Edition form", () => {
     });
 
     test("renders correctly when edition data is passed in", () => {
-        render(<EditionForm datasetID={ "test-dataset" } edition={{edition: "test-edition", edition_title: "Test Edition"}} isNewEdition={ false }  />);
+        render(<EditionForm datasetID={ "test-dataset" } edition={{edition: "test-edition", edition_title: "Test Edition"}} isNewEdition={ false } showEditionIDField={ true } />);
 
         expect(screen.getByTestId("edition-id").value).toBe("test-edition");
         expect(screen.getByTestId("edition-title").value).toBe("Test Edition");
