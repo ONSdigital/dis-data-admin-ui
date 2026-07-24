@@ -49,6 +49,6 @@ describe("SuccessPanel", () => {
         render(<SuccessPanel query={{display_job_create_success: "true" }} contentType={"Barfoo contentType"} />);
 
         expect(screen.getByTestId("success-panel")).toBeInTheDocument();
-        expect(screen.getByText("Barfoo contentType created.")).toBeInTheDocument();
+        expect(screen.getByText("Migration job Barfoo contentType created.")).toBeInTheDocument();
     });
 });
