@@ -10,7 +10,11 @@
         },
         {
             "id" : "CVE-2026-13149",
-            "reason" : "brace-expansion is an indirect import used in ESLint, AuditJS, Jest, etc. Waiting for those packages to update dependencies."
+            "reason" : "brace-expansion is an indirect import used in ESLint, AuditJS, Jest, etc. Waiting for those packages to update dependencies. Upgrading to latest versions of ESLint 10 causes some compatibility issues with Next"
+        },
+        {
+            "id" : "CVE-2026-14257",
+            "reason" : "brace-expansion is an indirect import used in ESLint, AuditJS, Jest, etc. Waiting for those packages to update dependencies. Upgrading to latest versions of ESLint 10 causes some compatibility issues with Next"
         }
     ]
 }
