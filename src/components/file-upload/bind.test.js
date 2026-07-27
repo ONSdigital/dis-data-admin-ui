@@ -11,15 +11,35 @@ const mockResumableOptions = {
     path: "test-path",
 }
 
-test("onFileAdded begins upload and sets correct state", () => {
-    const onStart = jest.fn();
-    expect(uploadFunc.mock.calls).toHaveLength(0);
-    expect(onStart.mock.calls).toHaveLength(0);
+describe("onFileAdded", () => {
+    it("begins upload and sets the correct state", () => {
+        const onStart = jest.fn();
+        expect(uploadFunc.mock.calls).toHaveLength(0);
+        expect(onStart.mock.calls).toHaveLength(0);
 
-    onFileAdded(mockResumable, mockResumableOptions, {}, onStart);
-    expect(uploadFunc.mock.calls).toHaveLength(1);
-    expect(onStart.mock.calls).toHaveLength(1);
-});
+        onFileAdded(mockResumable, mockResumableOptions, {}, onStart);
+        expect(uploadFunc.mock.calls).toHaveLength(1);
+        expect(onStart.mock.calls).toHaveLength(1);
+    })
+
+    it("sets the correct MIME type for all supported file types", () => {
+        const onStart = jest.fn();
+        const testFiles = [
+            { fileName: "test.csv", expectedMimeType: "text/csv" },
+            { fileName: "test.sdmx", expectedMimeType: "application/vnd.sdmx.structurespecificdata+xml" },
+            { fileName: "test.xls", expectedMimeType: "application/vnd.ms-excel" },
+            { fileName: "test.xlsx", expectedMimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+            { fileName: "test.csdb", expectedMimeType: "text/plain" },
+            { fileName: "test.csvw", expectedMimeType: "application/ld+json" }
+        ];
+
+        testFiles.forEach(testFile => {
+            mockResumable.opts.query = {};
+            onFileAdded(mockResumable, mockResumableOptions, testFile, onStart);
+            expect(mockResumable.opts.query.resumableType).toBe(testFile.expectedMimeType);
+        });
+    })
+})
 
 test("onFileProgress sets the correct state ", () => {
     const progressFunc = jest.fn(() => 0.5);

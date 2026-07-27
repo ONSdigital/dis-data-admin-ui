@@ -3,6 +3,16 @@ import { logError } from "@/utils/log/log";
 
 const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
+// Mapping of file extensions to MIME types which are defined in the dataset API.
+const EXTENSION_TO_MIME_TYPE = {
+    csv: "text/csv",
+    sdmx: "application/vnd.sdmx.structurespecificdata+xml",
+    xls: "application/vnd.ms-excel",
+    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    csdb: "text/plain",
+    csvw: "application/ld+json"
+};
+
 const RESUMABLE_OPTIONS = {
     isPublishable: true,
     licence: "Open Government Licence v3.0",
@@ -53,7 +63,17 @@ const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, accessTok
 };
 
 const onFileAdded = (resumable, resumableOptions, file, handleFileStart) => {
-    resumable.opts.query = resumableOptions;
+    // ResumableJS uses the browser's File.type to set `resumableType` and will default to an empty string if the type is not recognised.
+    // As many file types supported by the dataset API are not recognised by the browser,
+    // EXTENSION_TO_MIME_TYPE is used to map the file extension to the correct MIME type.
+    const extension = formatFromFilename(file.fileName || "").toLowerCase();
+    const mimeType = EXTENSION_TO_MIME_TYPE[extension];
+
+    resumable.opts.query = {
+        ...resumableOptions,
+        resumableType: mimeType,
+    };
+
     resumable.upload();
     handleFileStart();
 };
