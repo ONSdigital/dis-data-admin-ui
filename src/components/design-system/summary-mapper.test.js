@@ -49,7 +49,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
         // expect "Licence" to have single value and have "edit" action
         expect(mappedItems[6].rowTitle).toBe("Licence");
-        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "My License"});
+        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "My Licence"});
         expect(mappedItems[6].rowItems[0].actions).toBeFalsy();
         // expect "Next release" to have single value and have "edit" action
         expect(mappedItems[7].rowTitle).toBe("Next release");

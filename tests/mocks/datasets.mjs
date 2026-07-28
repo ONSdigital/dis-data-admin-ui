@@ -27,7 +27,7 @@ export const datasetList = {
                 "unit_of_measure": "Percentage",
                 "topics": ["1001", "2002"],
                 "last_updated": "2000-01-01T07:00:00.000Z",
-                "license": "My License",
+                "license": "My Licence",
                 "publisher": {
                     "href": "https://www.ons.gov.uk",
                     "name": "ONS"
@@ -56,7 +56,7 @@ export const datasetList = {
                 "unit_of_measure": "Percentage",
                 "topics": ["1001", "2002"],
                 "last_updated": "2000-01-01T07:00:00.000Z",
-                "license": "My License",
+                "license": "My Licence",
                 "publisher": {
                     "href": "https://www.ons.gov.uk",
                     "name": "ONS"
@@ -104,7 +104,7 @@ export const datasetList = {
                 }
             ],
             "last_updated": "2000-01-01T07:00:00.000Z",
-            "license": "My License",
+            "license": "My Licence",
             "publisher": {
                 "href": "https://www.ons.gov.uk",
                 "name": "ONS"
@@ -137,7 +137,7 @@ export const datasetList = {
                     }
                 ],
                 "last_updated": "2000-01-01T07:00:00.000Z",
-                "license": "My License",
+                "license": "My Licence",
                 "publisher": {
                     "href": "https://www.ons.gov.uk",
                     "name": "ONS"
@@ -160,7 +160,7 @@ export const datasetList = {
                 }
             ],
             "last_updated": "invalid/missing date",
-            "license": "My Minimal License",
+            "license": "My Minimal Licence",
             "type": "static"
         },
         ...automatedDatasetList(),

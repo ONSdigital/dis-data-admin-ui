@@ -27,7 +27,7 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#topics")).toContainText("Business");
         await expect(page.getByTestId("action-link-topics")).toBeVisible();
         await expect(page.locator("#last-updated")).toContainText("1 January 2000");
-        await expect(page.locator("#licence")).toContainText("My License");
+        await expect(page.locator("#licence")).toContainText("My Licence");
         await expect(page.locator("#next-release")).toContainText("TBC");
         await expect(page.locator("#keywords")).toContainText("mock");
         await expect(page.locator("#keywords")).toContainText("test");
