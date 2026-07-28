@@ -56,7 +56,7 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest, 
             return err.toString();
         }
         if (response.success == true && response.jobNumber) {
-            redirect(`/migration/${response.jobNumber}`);
+            redirect(`/migration/${response.jobNumber}?display_job_create_success=true&jobNumber=${response.jobNumber}`);
         } else if (response.success == true && migrationJobSubmission.state == "approved") {
             redirect(`/migration?display_approve_success=true&series=${series}`);
         } else if (response.success == true && migrationJobSubmission.state == "rejected") {

@@ -8,14 +8,16 @@ import { Panel } from "@/components/design-system/DesignSystem";
 import PageHeading from "@/components/page-heading/PageHeading";
 import LinkButton from "@/components/link-button/LinkButton";
 import StateChangeButton from "@/components/state-change-button/StateChangeButton";
+import SuccessPanel from "@/components/success-panel/SuccessPanel";
 
 import { mapMigrationJobTable } from "@/components/table/mapper";
 import Table from "@/components/table/Table";
 
 import { updateMigrationJobState } from "@/app/actions/migrationJob";
 
-export default async function MigrationOverview({ params }) {
+export default async function MigrationOverview({ params, searchParams }) {
     const { id } = await params;
+    const query = await searchParams;
     const msReqCfg = await SSRequestConfig(cookies, "migration-service");
 
     const migrationResp = await httpGet(msReqCfg, `/migration-jobs/${id}`);
@@ -114,6 +116,7 @@ export default async function MigrationOverview({ params }) {
 
     return (
         <>
+            <SuccessPanel query={query} contentType={query.jobNumber}/>
             <PageHeading
                 subtitle="Series"
                 title={migrationResp.label}
