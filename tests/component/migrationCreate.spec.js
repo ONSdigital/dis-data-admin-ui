@@ -25,6 +25,7 @@ test.describe("Create migration page", () => {
 
         await page.waitForURL("**/migration/6**");
         await expect(page.url().toString()).toContain("/migration/6");
+        await expect(page.getByText("Migration job 6 created.")).toBeVisible()
     });
 
     test("Show errors on mandatory fields", async ({ page, context }) => {
