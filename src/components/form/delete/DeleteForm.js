@@ -4,12 +4,12 @@ import { useActionState } from "react";
 
 import { Panel, Checkbox } from "author-design-system-react";
 
-export default function DeleteForm({ datasetID, editionID = "", versionID = "", action }) {
+export default function DeleteForm({ datasetID, editionID = "", versionID = "", seriesTitle, editionTitle = "", action }) {
     const [formState, formAction, isPending] = useActionState(action, {});
 
-    let titleOfContentToDelete = datasetID;
-    if (editionID && versionID) {
-        titleOfContentToDelete += `: ${editionID} - Version ${versionID}`;
+    let titleOfContentToDelete = seriesTitle;
+    if (editionTitle && versionID) {
+        titleOfContentToDelete += `: ${editionTitle} - Version ${versionID}`;
     }
 
     if(isPending){
