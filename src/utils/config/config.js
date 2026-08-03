@@ -1,24 +1,8 @@
-/**
- * Map API_ROUTER_URL environment variable
- * @param {object} envVars - environment variables
- * @return {string} - API Router value or null
- */
-const getAPIRouterURL = (envVars) => {
-    return envVars.API_ROUTER_URL ? envVars.API_ROUTER_URL : null;
-};
-
-/**
- * Get upload base url for upload component. 
- * @param {object} envVars - environment variables
- * @return {string} - empty if we're in an environment, use API_ROUTER_URL if local
- */
-const getUploadBaseURL = (envVars) => {
-    const envName = envVars.ENV_NAME;
-    if (envName === "sandbox" || envName === "staging" || envName === "prod") {
-        return "/api/v1";
-    } else {
-        return getAPIRouterURL(envVars);
-    }
+const defaults = {
+    API_ROUTER_URL: "http://localhost:23200/v1",
+    API_ROUTER_URL_FOR_CLIENT: "http://localhost:23200/v1",
+    ENV_NAME: "dev",
+    MIGRATION_SERVICE_URL: "http://localhost:30100/",
 };
 
 /**
@@ -27,14 +11,12 @@ const getUploadBaseURL = (envVars) => {
  * @return {object} - mapped variables for use throughout app
  */
 const getAppConfig = (envVars) => {
-    const apiRouterURL = getAPIRouterURL(envVars);
-    const uploadBaseURL = getUploadBaseURL(envVars);
     return {
-        apiRouterURL,
-        uploadBaseURL
+        apiRouterURL: envVars.API_ROUTER_URL || defaults.API_ROUTER_URL,
+        apiRouterURLForClient: envVars.API_ROUTER_URL_FOR_CLIENT || defaults.API_ROUTER_URL_FOR_CLIENT,
+        envName: envVars.ENV_NAME || defaults.ENV_NAME,
+        migrationServiceURL: envVars.MIGRATION_SERVICE_URL || defaults.MIGRATION_SERVICE_URL,
     };
 };
 
 export default getAppConfig;
-// for testing
-export { getAPIRouterURL, getUploadBaseURL };
