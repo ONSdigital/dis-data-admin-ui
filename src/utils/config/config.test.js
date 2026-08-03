@@ -1,11 +1,12 @@
-import getAppConfig, { getAPIRouterURL, getUploadBaseURL } from "./config";
+import getAppConfig from "./config";
 
 const setupMockEnv = () => {
     return {
         API_ROUTER_URL: "test.com/api",
-        ENV_NAME: "",
-        TEST_VALUE: "testing"
-    }
+        API_ROUTER_URL_FOR_CLIENT: "test.com/api/client",
+        ENV_NAME: "dev",
+        MIGRATION_SERVICE_URL: "test.com/migration/",
+    };
 };
 
 let mockEnv = setupMockEnv();
@@ -14,40 +15,41 @@ afterEach(() => {
     mockEnv = setupMockEnv();
 });
 
-describe("getAPIRouter", () => {
-    it("returns null if no 'API_ROUTER_URL' value", () => {
+describe("getAppConfig", () => {
+    it("returns expected object when all env vars are set", () => {
+        const config = getAppConfig(mockEnv);
+
+        expect(config.apiRouterURL).toBe("test.com/api");
+        expect(config.apiRouterURLForClient).toBe("test.com/api/client");
+        expect(config.envName).toBe("dev");
+        expect(config.migrationServiceURL).toBe("test.com/migration/");
+    });
+
+    it("falls back to default 'API_ROUTER_URL' when not set", () => {
         mockEnv.API_ROUTER_URL = "";
-        expect(getAPIRouterURL(mockEnv)).toBe(null);
+        const config = getAppConfig(mockEnv);
+
+        expect(config.apiRouterURL).toBe("http://localhost:23200/v1");
     });
 
-    it("returns value if 'API_ROUTER_URL' is set", () => {;
-        expect(getAPIRouterURL(mockEnv)).toBe(mockEnv.API_ROUTER_URL);
-    });
-});
+    it("falls back to default 'API_ROUTER_URL_FOR_CLIENT' when not set", () => {
+        mockEnv.API_ROUTER_URL_FOR_CLIENT = "";
+        const config = getAppConfig(mockEnv);
 
-describe("getUploadBaseURL", () => {
-    it("returns 'API_ROUTER_URL' value if 'ENV_NAME' is empty", () => {
-        expect(getUploadBaseURL(mockEnv)).toBe(mockEnv.API_ROUTER_URL);
+        expect(config.apiRouterURLForClient).toBe("http://localhost:23200/v1");
     });
 
-    it("return an API proxy url string if 'ENV_NAME' is set to 'sandbox'", () => {
-        mockEnv.ENV_NAME = "sandbox";
-        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
+    it("falls back to default 'ENV_NAME' when not set", () => {
+        mockEnv.ENV_NAME = "";
+        const config = getAppConfig(mockEnv);
+
+        expect(config.envName).toBe("dev");
     });
 
-    it("return an API proxy url string if 'ENV_NAME' is set to 'staging'", () => {
-        mockEnv.ENV_NAME = "staging";
-        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
-    });
+    it("falls back to default 'MIGRATION_SERVICE_URL' when not set", () => {
+        mockEnv.MIGRATION_SERVICE_URL = "";
+        const config = getAppConfig(mockEnv);
 
-    it("return an API proxy url string if 'ENV_NAME' is set to 'prod'", () => {
-        mockEnv.ENV_NAME = "prod";
-        expect(getUploadBaseURL(mockEnv)).toBe("/api/v1");
+        expect(config.migrationServiceURL).toBe("http://localhost:30100/");
     });
-});
-
-test("getAppConfig returns expected object", () => {
-    const config = getAppConfig(mockEnv);
-    expect(config.apiRouterURL).toBe("test.com/api");
-    expect(config.uploadBaseURL).toBe("test.com/api");
 });
