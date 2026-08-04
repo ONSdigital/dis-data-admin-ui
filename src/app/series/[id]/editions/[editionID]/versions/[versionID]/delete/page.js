@@ -3,7 +3,7 @@ import { deleteDatasetOrVersion } from "@/app/actions/delete";
 import PageHeading from "@/components/page-heading/PageHeading";
 import DeleteForm from "@/components/form/delete/DeleteForm";
 
-export default async function DeleteVersion({ params }) {
+export default async function DeleteVersion({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const query = await searchParams;
     const seriesTitle = query.seriesTitle

@@ -8,7 +8,7 @@ test.describe("Version delete page", () => {
 
         await page.goto("./series/mock-quarterly/editions/time-series/versions/1/delete?seriesTitle=Mock%20Dataset&editionTitle=This%20is%20an%20edition%20title%20for%20version%201");
         await expect(page.getByTestId("page-heading-title")).toHaveText("Delete version");
-        await expect(page.getByTestId("page-heading-subtitle")).toHaveText("mock-quarterly: time-series - Version 1");
+        await expect(page.getByTestId("page-heading-subtitle")).toHaveText("Mock Dataset: This is an edition title for version 1 - Version 1");
         await expect(page.getByTestId("fieldset-confirm-delete-legend")).toHaveText("Are you sure you want to delete this item? (mock-quarterly: time-series - Version 1)");
         await expect(page.getByTestId("confirm-delete-item-yes-input")).toBeVisible();
         await expect(page.getByRole("button", { name: "Delete" })).toBeVisible();
