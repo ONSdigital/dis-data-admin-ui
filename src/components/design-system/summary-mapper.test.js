@@ -107,6 +107,16 @@ describe("mapSeriesSummary", () => {
         });
     });
 
+    test("Series ID does not have an edit action when the series is a migration", () => {
+        const data = { ...datasetList.items[2], is_migration: true };
+        const mapped = mapSeriesSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"], false);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        expect(mappedItems[0].rowTitle).toBe("Series ID");
+        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "mock-quarterly"});
+        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
+    });
+
     test("returns expected object of mapped content items when no publisher is passed in", () => {
         const items = datasetList.items[2];
         items.publisher = null;
@@ -186,6 +196,16 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[2].rowTitle).toBe("Release date");
         expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+    });
+
+    it("when edition is marked as migration", () => {
+        const data = { ...versions.items[0], state: "draft", is_migration: true };
+        const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        expect(mappedItems[0].rowTitle).toBe("Edition ID");
+        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
+        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
     });
 });
 

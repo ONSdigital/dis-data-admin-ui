@@ -147,7 +147,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
         contacts.push(contact.name);
     });
 
-    mapRow("Series ID", data.id, null, isPublished ? null : action, rows);
+    mapRow("Series ID", data.id, null, isPublished || data.is_migration ? null : action, rows);
     mapRow("Type", data.type, null, null, rows);
     mapRow("Title", data.title, null, action, rows);
     mapRow("Description", data.description, null, action, rows);
@@ -190,7 +190,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
     };
     const isPublished = edition?.state === "published";
 
-    mapRow("Edition ID", edition.edition, null, !isPublished ? action : null, rows);
+    mapRow("Edition ID", edition.edition, null, isPublished || edition?.is_migration ? null : action, rows);
     mapRow("Edition title", edition.edition_title, null, action, rows);
     mapRow("Release date", formatDate(edition.release_date), null, null, rows);
     return contentBody;
