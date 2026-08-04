@@ -15,13 +15,15 @@ describe("Delete Form", () => {
     const mockAction = jest.fn()
 
     const mockDatasetID = "Mock Dataset"
+    const seriesTitle = "Mock Series Title"
     const mockEditionID = "Mock Edition"
+    const editionTitle = "Mock Edition Title"
     const mockVersionID = "1"
-    const mockDatasetDeleteTitle = mockDatasetID
-    const mockVersionDeleteTitle = `${mockDatasetID}: ${mockEditionID} - Version ${mockVersionID}`
+    const mockDatasetDeleteTitle = seriesTitle
+    const mockVersionDeleteTitle = `${seriesTitle}: ${editionTitle} - Version ${mockVersionID}`
 
     test("renders correctly with all params", () => {
-        render(<DeleteForm datasetID={mockDatasetID} editionID={mockEditionID} versionID={mockVersionID} action={mockAction}/>);
+        render(<DeleteForm datasetID={mockDatasetID} editionID={mockEditionID} versionID={mockVersionID} seriesTitle={seriesTitle} editionTitle={editionTitle} action={mockAction}/>);
 
         expect(screen.getByTestId("hidden-dataset-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-edition-id")).toHaveAttribute("type", "hidden");
@@ -45,7 +47,7 @@ describe("Delete Form", () => {
     });
 
     test("renders correctly with only datasetID", () => {
-        render(<DeleteForm datasetID={mockDatasetID} action={mockAction}/>);
+        render(<DeleteForm datasetID={mockDatasetID} seriesTitle={seriesTitle} action={mockAction}/>);
 
         expect(screen.getByTestId("hidden-dataset-id")).toHaveAttribute("type", "hidden");
         expect(screen.getByTestId("hidden-edition-id")).toHaveAttribute("type", "hidden");
