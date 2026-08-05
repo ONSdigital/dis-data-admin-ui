@@ -93,6 +93,19 @@ test.describe("Edit edition page", () => {
         });
     });
 
+    test.describe("When editing a migrated edition", () => {
+        test("Renders as expected", async ({ page, context }) => {
+            setValidAuthCookies(context);
+
+            await page.goto("./series/mock-quarterly/editions/migrationed-edition/edit");
+            await expect(page.getByTestId("page-heading-title")).toContainText("Edit edition: Migrated edition");
+
+            await expect(page.getByTestId("edition-id")).not.toBeVisible();
+            await expect(page.getByTestId("edition-title")).toBeVisible();
+            await expect(page.getByTestId("edition-save-button")).toBeVisible();
+        });
+    });
+
     test.describe("Handles API error", () => {
         test("When 404 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);

@@ -54,10 +54,20 @@ test.describe("Edit series page", () => {
 
         await page.goto("./series/cpih/edit");
 
-
         await expect(page.getByTestId("main-topic-selector-radios-item-1001-input")).toBeDisabled();
         await expect(page.getByTestId("main-topic-selector-radios-item-2002-input")).toBeDisabled();
 
+    });
+
+    test.describe("When editing a migrated series", () => {
+        test("Renders as expected", async ({ page, context }) => {
+            setValidAuthCookies(context);
+
+            await page.goto("./series/migration-test-dataset");
+
+            await expect(page.getByTestId("page-heading-title")).toContainText("Migration test dataset");
+            await expect(page.getByTestId("dataset-series-id")).not.toBeVisible();
+        });
     });
 
     test.describe("Handles API error", () => {

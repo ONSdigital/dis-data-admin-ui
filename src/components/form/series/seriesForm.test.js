@@ -20,7 +20,7 @@ describe("Series Form", () => {
     const dataset = datasetList.items[2]
 
     test("Series form renders correctly", () => {
-        render(<SeriesForm listOfAllTopics={listOfAllTopics} action={mockAction}/>);
+        render(<SeriesForm listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={true}/>);
 
         expect(screen.getByTestId("dataset-series-id")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe("Series Form", () => {
     });
 
     test("Series form renders props correctly", () => {
-        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction}/>);
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={true}/>);
 
         const title = screen.getByTestId("dataset-series-title");
         expect(title.value).toBe("Mock Dataset");
@@ -47,6 +47,13 @@ describe("Series Form", () => {
 
         const description = screen.getByTestId("dataset-series-description");
         expect(description.value).toBe("This is a mock dataset test description")
+    });
+
+    test("does not render series ID field when showSeriesIDField is false", () => {
+        render(<SeriesForm currentTitle={dataset.title} currentID={dataset.id} currentDescription={dataset.description} listOfAllTopics={listOfAllTopics} action={mockAction} showSeriesIDField={false}/>);
+
+        expect(screen.queryByTestId("dataset-series-id")).not.toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-title")).toBeInTheDocument();
     });
 
     it("onChange handler updates text input state", () => {

@@ -9,7 +9,7 @@ import Topics from "@/components/topics/Topics";
 import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
 
-export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentNextRelease = "", currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, action }) {
+export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentNextRelease = "", currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, showSeriesIDField, action }) {
     const [id, setID] = useState(currentID);
     const [title, setTitle] = useState(currentTitle);
     const [description, setDescription] = useState(currentDescription);
@@ -65,8 +65,7 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
             <form className="ons-u-mt-m" action={formAction}>
                 <input id="dataset-series-type" name="dataset-series-type" type="hidden" value="static" />
                 <input id="dataset-series-license" name="dataset-series-license" type="hidden" value="Open Government Licence v3.0" />
-                {isPublished && <input id="dataset-series-id" data-testid="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />}
-                {!isPublished &&
+                {showSeriesIDField ? 
                     <TextInput
                         id="dataset-series-id"
                         dataTestId="dataset-series-id"
@@ -79,7 +78,8 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                         error={(formState.errors && formState.errors.id) ? { id: "dataset-series-id-error", text: formState.errors.id } : null}
                         value={id}
                         onChange={e => setID(e.target.value)}
-                    />
+                    /> :
+                    <input id="dataset-series-id" name="dataset-series-id" type="hidden" value={id} />
                 }
                 <TextInput
                     id="dataset-series-title"
