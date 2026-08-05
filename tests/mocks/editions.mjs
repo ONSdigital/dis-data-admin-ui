@@ -88,9 +88,16 @@ export const editions = {
                     byte_size: 265000
                 }
             ]
+        },
+        {
+            edition: "migrationed-edition",
+            state: "created",
+            is_migration: true,
+            edition_title: "Migrated edition",
+            release_date: "2025-05-25T07:00:00.000Z",
         }
     ],
     limit: 20,
     offset: 0,
-    total_count: 4
+    total_count: 5
 }

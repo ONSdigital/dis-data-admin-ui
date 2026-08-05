@@ -24,53 +24,50 @@ export default async function createPage({params}) {
         topicsError = true;
     }
 
-    const renderErrorPanel = () => {
-        if (datasetError) {
-            return (
-                <>
-                    <Panel title="Error" variant="error">
-                        <p>There was a problem retreiving data for this page. Please try again later.</p>
-                    </Panel>
-                </>
-            );
-        }
 
-        if (topicsError) {
-            return (
-                <>
-                    <Panel title="Topics service error" variant="error">
-                        <p>There was a problem connecting to the topics API which is required for this form. Please try again later.</p>
-                    </Panel>
-                </>
-            );
-        }
-        
-    };
+    if (datasetError) {
+        return (
+            <>
+                <Panel title="Error" variant="error">
+                    <p>There was a problem retreiving data for this page. Please try again later.</p>
+                </Panel>
+            </>
+        );
+    }
 
-    const dataset = datasetResp?.next;
+    if (topicsError) {
+        return (
+            <>
+                <Panel title="Topics service error" variant="error">
+                    <p>There was a problem connecting to the topics API which is required for this form. Please try again later.</p>
+                </Panel>
+            </>
+        );
+    }
+
+    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const isPublished = datasetResp?.current?.state === "published";
+    const showSeriesIDField = !isPublished && !dataset?.is_migration;
+
     return (
         <>
             <PageHeading 
                 title="Edit dataset series"
-            /> 
-            { !datasetError && !topicsError ? 
-                <> 
-                    <SeriesForm 
-                        currentTitle={dataset.title} 
-                        currentID={dataset.id} 
-                        currentDescription={dataset.description} 
-                        currentTopics={dataset.topics}
-                        currentNextRelease={dataset.next_release}
-                        currentQMI={dataset.qmi?.href}
-                        currentKeywords={dataset.keywords}
-                        currentContacts={dataset.contacts}
-                        listOfAllTopics={topics}
-                        isPublished={datasetResp?.current?.state === "published"}
-                        action={updateDatasetSeries.bind(null, id)}
-                    />
-                </>
-                : renderErrorPanel()
-            }
+            />
+            <SeriesForm 
+                currentTitle={dataset.title} 
+                currentID={dataset.id} 
+                currentDescription={dataset.description} 
+                currentTopics={dataset.topics}
+                currentNextRelease={dataset.next_release}
+                currentQMI={dataset.qmi?.href}
+                currentKeywords={dataset.keywords}
+                currentContacts={dataset.contacts}
+                listOfAllTopics={topics}
+                isPublished={isPublished}
+                showSeriesIDField={showSeriesIDField}
+                action={updateDatasetSeries.bind(null, id)}
+            />
         </>
     );
 }
