@@ -26,6 +26,7 @@ test.describe("Edit series page", () => {
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
         await page.getByLabel("Name").fill("test edit name");
         await page.getByLabel("Email").fill("test-email-edit@test.com");
+        await page.getByLabel("Telephone number").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save changes/i }).click();
 
