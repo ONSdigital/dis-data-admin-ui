@@ -72,10 +72,13 @@ export default function Contact({contactsList, contactsError}) {
                                 <div className="ons-grid__col ons-col-3@m">
                                     <span className="ons-u-fw">{contact.name}</span>
                                 </div>
-                                <div className="ons-grid__col ons-col-3@m ons-push-1@m">
+                                <div className="ons-grid__col ons-col-4@m">
                                     <span className="ons-u-fw">{contact.email}</span>
                                 </div>
-                                <div className="ons-grid__col ons-col-2@m ons-push-5@m">
+                                <div className="ons-grid__col ons-col-3@m">
+                                    <span className="ons-u-fw">{contact.telephone}</span>
+                                </div>
+                                <div className="ons-grid__col ons-col-1@m ons-push-1@m">
                                     <a
                                         data-testid={"dataset-remove-contact-" + index}
                                         id={"dataset-remove-contact-" + index}
