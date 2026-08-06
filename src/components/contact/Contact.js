@@ -15,42 +15,26 @@ export default function Contact({contactsList, contactsError}) {
     const [contactTelephoneError, setContactTelephoneError] = useState("");
 
     const addContact = () => {
-        setContactNameError("");
-        setContactEmailError("");
-        setContactTelephoneError("");
-        let error = false;
-
         const name = contactName.trim();
         const email = contactEmail.trim();
-        const telephone = contactTelephone.trim();  
+        const telephone = contactTelephone.trim();
+        const validationErrors = {};
 
-        if (!name.length) {
-            setContactNameError("Name is required");
-            error = true;
-        }
-        if (!email.length) {
-            setContactEmailError("Email is required");
-            error = true;
-        }
-        if (email.length && !isEmailValid(email)) {
-            setContactEmailError("Invalid email");
-            error = true;
-        }
-        if (!telephone.length) {
-            setContactTelephoneError("Number is required");
-            error = true;
-        }
-        if (error) {
-            return;
-        }
+        if (!name) validationErrors.name = "Name is required";
+        if (!email) validationErrors.email = "Email is required";
+        else if (!isEmailValid(email)) validationErrors.email = "Invalid email";
+        if (!telephone) validationErrors.telephone = "Number is required";
 
-        setContacts([
-            ...contacts,
-            { name, email, telephone }
-        ]);
+        setContactNameError(validationErrors.name || "");
+        setContactEmailError(validationErrors.email || "");
+        setContactTelephoneError(validationErrors.telephone || "");
 
+        if (validationErrors.name || validationErrors.email || validationErrors.telephone) return;
+
+        setContacts([...contacts, { name, email, telephone }]);
         setContactName("");
         setContactEmail("");
+        setContactTelephone("");
     };
 
     const removeContact = (email) => {
