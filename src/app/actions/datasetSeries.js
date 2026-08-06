@@ -16,7 +16,8 @@ const createSchema = z.object({
     next_release: z.string().min(1, { message: "Next release is required" }),
     contacts: z.array(z.object({
         name: z.string(),
-        email: z.string()
+        email: z.string(),
+        telephone: z.string()
     })).min(1, { message: "Contact is required" })
 });
 
