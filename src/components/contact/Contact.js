@@ -11,13 +11,13 @@ export default function Contact({contactsList, contactsError}) {
     const [contactNameError, setContactNameError] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
-    const [contactPhone, setContactPhone] = useState("");
-    const [contactPhoneError, setContactPhoneError] = useState("");
+    const [contactTelephone, setContactTelephone] = useState("");
+    const [contactTelephoneError, setContactTelephoneError] = useState("");
 
     const addContact = () => {
         setContactNameError("");
         setContactEmailError("");
-        setContactPhoneError("");
+        setContactTelephoneError("");
         let error = false;
 
         if (!contactName.length) {
@@ -32,8 +32,8 @@ export default function Contact({contactsList, contactsError}) {
             setContactEmailError("Invalid email");
             error = true;
         }
-        if (!contactPhone.length) {
-            setContactPhoneError("Number is required");
+        if (!contactTelephone.length) {
+            setContactTelephoneError("Number is required");
             error = true;
         }
         if (error) {
@@ -42,7 +42,7 @@ export default function Contact({contactsList, contactsError}) {
 
         setContacts([
             ...contacts,
-            { name: contactName, email: contactEmail }
+            { name: contactName, email: contactEmail, telephone: contactTelephone }
         ]);
 
         setContactName("");
@@ -134,16 +134,16 @@ export default function Contact({contactsList, contactsError}) {
                     </div>
                     <div className="ons-grid__col ons-col-4@m">
                         <TextInput
-                            id="dataset-series-contact-phone"
-                            dataTestId="dataset-series-contact-phone"
-                            name="dataset-series-contact-phone"
+                            id="dataset-series-contact-telephone"
+                            dataTestId="dataset-series-contact-telephone"
+                            name="dataset-series-contact-telephone"
                             classes="ons-input--block"
                             label={{
-                                text: "Phone number",
+                                text: "Telephone number",
                             }}
-                            value={contactPhone}
-                            onChange={e => setContactPhone(e.target.value)}
-                            error={ contactPhoneError ? {id:"contact-phone-error", text: contactPhoneError} : null}
+                            value={contactTelephone}
+                            onChange={e => setContactTelephone(e.target.value)}
+                            error={ contactTelephoneError ? {id:"contact-telephone-error", text: contactTelephoneError} : null}
                         />
                     </div>
                 </div>
