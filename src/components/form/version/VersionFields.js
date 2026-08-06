@@ -91,7 +91,7 @@ export default function VersionFields(props) {
             <ResumableFileUpload id="dataset-upload"
                 label="File upload"
                 description="File types accepted are .csdb, .csv, .csvw, .sdmx, .xls and .xlsx"
-                uploadBaseURL={appConfig?.uploadBaseURL}
+                uploadBaseURL={appConfig?.apiRouterURLForClient}
                 accessToken={props.accessToken}
                 validationError={(props.errors && props.errors.distributions) ? { id: "dataset-upload-error", text: props.errors.distributions } : null}
                 uploadedFiles={props.fieldValues?.distributions}
