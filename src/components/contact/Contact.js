@@ -17,6 +17,7 @@ export default function Contact({contactsList, contactsError}) {
     const addContact = () => {
         setContactNameError("");
         setContactEmailError("");
+        setContactPhoneError("");
         let error = false;
 
         if (!contactName.length) {
@@ -29,6 +30,10 @@ export default function Contact({contactsList, contactsError}) {
         }
         if (contactEmail.length && !isEmailValid(contactEmail)) {
             setContactEmailError("Invalid email");
+            error = true;
+        }
+        if (!contactPhone.length) {
+            setContactPhoneError("Number is required");
             error = true;
         }
         if (error) {
