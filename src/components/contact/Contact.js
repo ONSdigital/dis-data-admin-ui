@@ -11,6 +11,8 @@ export default function Contact({contactsList, contactsError}) {
     const [contactNameError, setContactNameError] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
+    const [contactPhone, setContactPhone] = useState("");
+    const [contactPhoneError, setContactPhoneError] = useState("");
 
     const addContact = () => {
         setContactNameError("");
@@ -93,30 +95,50 @@ export default function Contact({contactsList, contactsError}) {
         <>
             <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:"dataset-series-contacts-error", text: contactsError} : null} classes={["ons-u-mt-xl ons-u-mb-l"]}>
                 <h2 className="ons-u-mb-no">Add Contacts</h2>
-                <TextInput
-                    id="dataset-series-contact-name"
-                    dataTestId="dataset-series-contact-name"
-                    name="dataset-series-contact-name"
-                    label={{
-                        text: "Name",
-                    }}
-                    value={contactName}
-                    onChange={e => setContactName(e.target.value)}
-                    fieldClasses="ons-u-dib"
-                    error={ contactNameError ? {id:"contact-name-error", text: contactNameError} : null}
-                />
-                <TextInput
-                    id="dataset-series-contact-email"
-                    dataTestId="dataset-series-contact-email"
-                    name="dataset-series-contact-email"
-                    label={{
-                        text: "Email",
-                    }}
-                    value={contactEmail}
-                    onChange={e => setContactEmail(e.target.value)}
-                    error={ contactEmailError ? {id:"contact-email-error", text: contactEmailError} : null}
-                    fieldClasses="ons-u-dib ons-u-ml-xs"
-                />
+                <div className="ons-grid ons-u-mt-s">
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-name"
+                            dataTestId="dataset-series-contact-name"
+                            name="dataset-series-contact-name"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Name",
+                            }}
+                            value={contactName}
+                            onChange={e => setContactName(e.target.value)}
+                            error={ contactNameError ? {id:"contact-name-error", text: contactNameError} : null}
+                        />
+                    </div>
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-email"
+                            dataTestId="dataset-series-contact-email"
+                            name="dataset-series-contact-email"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Email",
+                            }}
+                            value={contactEmail}
+                            onChange={e => setContactEmail(e.target.value)}
+                            error={ contactEmailError ? {id:"contact-email-error", text: contactEmailError} : null}
+                        />
+                    </div>
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-phone"
+                            dataTestId="dataset-series-contact-phone"
+                            name="dataset-series-contact-phone"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Phone number",
+                            }}
+                            value={contactPhone}
+                            onChange={e => setContactPhone(e.target.value)}
+                            error={ contactPhoneError ? {id:"contact-phone-error", text: contactPhoneError} : null}
+                        />
+                    </div>
+                </div>
                 <Button
                     classes="ons-u-mt-m"
                     dataTestId="dataset-series-add-contact-button"
