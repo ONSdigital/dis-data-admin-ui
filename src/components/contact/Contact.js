@@ -20,19 +20,23 @@ export default function Contact({contactsList, contactsError}) {
         setContactTelephoneError("");
         let error = false;
 
-        if (!contactName.length) {
+        const name = contactName.trim();
+        const email = contactEmail.trim();
+        const telephone = contactTelephone.trim();  
+
+        if (!name.length) {
             setContactNameError("Name is required");
             error = true;
         }
-        if (!contactEmail.length) {
+        if (!email.length) {
             setContactEmailError("Email is required");
             error = true;
         }
-        if (contactEmail.length && !isEmailValid(contactEmail)) {
+        if (email.length && !isEmailValid(email)) {
             setContactEmailError("Invalid email");
             error = true;
         }
-        if (!contactTelephone.length) {
+        if (!telephone.length) {
             setContactTelephoneError("Number is required");
             error = true;
         }
@@ -42,7 +46,7 @@ export default function Contact({contactsList, contactsError}) {
 
         setContacts([
             ...contacts,
-            { name: contactName, email: contactEmail, telephone: contactTelephone }
+            { name, email, telephone }
         ]);
 
         setContactName("");
