@@ -37,10 +37,12 @@ export default function Contact({contactsList, contactsError}) {
         setContactTelephone("");
     };
 
-    const removeContact = (email) => {
+    const removeContact = (contact) => {
         setContacts(
             contacts.filter(c =>
-                c.email !== email
+                !(c.name === contact.name &&
+                  c.email === contact.email &&
+                  c.telephone === contact.telephone)
             )
         );
     };
@@ -73,7 +75,7 @@ export default function Contact({contactsList, contactsError}) {
                                         href="#"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            removeContact(contact.email);
+                                            removeContact(contact);
                                         }}
                                     >
                                         Remove
