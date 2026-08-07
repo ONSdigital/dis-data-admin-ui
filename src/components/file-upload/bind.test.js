@@ -29,8 +29,7 @@ describe("onFileAdded", () => {
             { fileName: "test.sdmx", expectedMimeType: "application/vnd.sdmx.structurespecificdata+xml" },
             { fileName: "test.xls", expectedMimeType: "application/vnd.ms-excel" },
             { fileName: "test.xlsx", expectedMimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-            { fileName: "test.csdb", expectedMimeType: "text/plain" },
-            { fileName: "test.csvw", expectedMimeType: "application/ld+json" }
+            { fileName: "test.csdb", expectedMimeType: "text/plain" }
         ];
 
         testFiles.forEach(testFile => {
