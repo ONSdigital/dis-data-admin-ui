@@ -74,6 +74,8 @@ export default async function Dataset({ params, searchParams }) {
     // if current is "published" and next is "associated" infer that they are unpublished changes to a series
     const showPublishChangesMessage = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated";
 
+    const deleteLink = `/series/${id}/delete?seriesTitle=${dataset.title}`;
+
     return (
         <>
             <SuccessPanel query={query} contentType={"Dataset series"}/>
@@ -102,7 +104,7 @@ export default async function Dataset({ params, searchParams }) {
                             text="Delete series"
                             iconType="DeleteIcon"
                             iconPosition="before"
-                            link={`/series/${id}/delete`}
+                            link={deleteLink}
                             variants={["secondary"]}
                             classes="ons-u-mt-l"
                         />

@@ -6,10 +6,10 @@ test.describe("Series delete page", () => {
     test("Renders as expected", async ({ page, context }) => {
         setValidAuthCookies(context);
 
-        await page.goto("./series/mock-quarterly/delete");
+        await page.goto("./series/mock-quarterly/delete?seriesTitle=Mock%20Dataset");
         await expect(page.getByTestId("page-heading-title")).toHaveText("Delete series");
-        await expect(page.getByTestId("page-heading-subtitle")).toHaveText("mock-quarterly");
-        await expect(page.getByTestId("fieldset-confirm-delete-legend")).toHaveText("Are you sure you want to delete this item? (mock-quarterly)");
+        await expect(page.getByTestId("page-heading-subtitle")).toHaveText("Mock Dataset");
+        await expect(page.getByTestId("fieldset-confirm-delete-legend")).toHaveText("Are you sure you want to delete this item? (Mock Dataset)");
         await expect(page.getByTestId("confirm-delete-item-yes-input")).toBeVisible();
         await expect(page.getByRole("button", { name: "Delete" })).toBeVisible();
     });
