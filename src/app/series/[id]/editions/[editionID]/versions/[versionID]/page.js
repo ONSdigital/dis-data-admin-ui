@@ -34,7 +34,7 @@ export default async function Version({ params, searchParams }) {
     const editURL = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}/edit`;
     const versionSummary = mapVersionSummary(metadata, editURL);
 
-    const deleteLink = `/series/${id}/delete?seriesTitle=${versionSummary.title}&editionTitle=${versionSummary.edition_title}`;
+    const deleteLink = `/series/${id}/editions/${editionID}/versions/${versionID}/delete?seriesTitle=${versionSummary.title}&editionTitle=${versionSummary.edition_title}`;
 
     return (
         <>
