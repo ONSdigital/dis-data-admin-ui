@@ -11,41 +11,38 @@ export default function Contact({contactsList, contactsError}) {
     const [contactNameError, setContactNameError] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
+    const [contactTelephone, setContactTelephone] = useState("");
+    const [contactTelephoneError, setContactTelephoneError] = useState("");
 
     const addContact = () => {
-        setContactNameError("");
-        setContactEmailError("");
-        let error = false;
+        const name = contactName.trim();
+        const email = contactEmail.trim();
+        const telephone = contactTelephone.trim();
+        const validationErrors = {};
 
-        if (!contactName.length) {
-            setContactNameError("Name is required");
-            error = true;
-        }
-        if (!contactEmail.length) {
-            setContactEmailError("Email is required");
-            error = true;
-        }
-        if (contactEmail.length && !isEmailValid(contactEmail)) {
-            setContactEmailError("Invalid email");
-            error = true;
-        }
-        if (error) {
-            return;
-        }
+        if (!name) validationErrors.name = "Name is required";
+        if (!email) validationErrors.email = "Email is required";
+        else if (!isEmailValid(email)) validationErrors.email = "Invalid email";
+        if (!telephone) validationErrors.telephone = "Number is required";
 
-        setContacts([
-            ...contacts,
-            { name: contactName, email: contactEmail }
-        ]);
+        setContactNameError(validationErrors.name || "");
+        setContactEmailError(validationErrors.email || "");
+        setContactTelephoneError(validationErrors.telephone || "");
 
+        if (validationErrors.name || validationErrors.email || validationErrors.telephone) return;
+
+        setContacts([...contacts, { name, email, telephone }]);
         setContactName("");
         setContactEmail("");
+        setContactTelephone("");
     };
 
-    const removeContact = (email) => {
+    const removeContact = (contact) => {
         setContacts(
             contacts.filter(c =>
-                c.email !== email
+                !(c.name === contact.name &&
+                  c.email === contact.email &&
+                  c.telephone === contact.telephone)
             )
         );
     };
@@ -65,17 +62,20 @@ export default function Contact({contactsList, contactsError}) {
                                 <div className="ons-grid__col ons-col-3@m">
                                     <span className="ons-u-fw">{contact.name}</span>
                                 </div>
-                                <div className="ons-grid__col ons-col-3@m ons-push-1@m">
+                                <div className="ons-grid__col ons-col-4@m">
                                     <span className="ons-u-fw">{contact.email}</span>
                                 </div>
-                                <div className="ons-grid__col ons-col-2@m ons-push-5@m">
+                                <div className="ons-grid__col ons-col-3@m">
+                                    <span className="ons-u-fw">{contact.telephone}</span>
+                                </div>
+                                <div className="ons-grid__col ons-col-1@m ons-push-1@m">
                                     <a
                                         data-testid={"dataset-remove-contact-" + index}
                                         id={"dataset-remove-contact-" + index}
                                         href="#"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            removeContact(contact.email);
+                                            removeContact(contact);
                                         }}
                                     >
                                         Remove
@@ -93,30 +93,50 @@ export default function Contact({contactsList, contactsError}) {
         <>
             <Field dataTestId="field-dataset-series-contacts" error={contactsError ? {id:"dataset-series-contacts-error", text: contactsError} : null} classes={["ons-u-mt-xl ons-u-mb-l"]}>
                 <h2 className="ons-u-mb-no">Add Contacts</h2>
-                <TextInput
-                    id="dataset-series-contact-name"
-                    dataTestId="dataset-series-contact-name"
-                    name="dataset-series-contact-name"
-                    label={{
-                        text: "Name",
-                    }}
-                    value={contactName}
-                    onChange={e => setContactName(e.target.value)}
-                    fieldClasses="ons-u-dib"
-                    error={ contactNameError ? {id:"contact-name-error", text: contactNameError} : null}
-                />
-                <TextInput
-                    id="dataset-series-contact-email"
-                    dataTestId="dataset-series-contact-email"
-                    name="dataset-series-contact-email"
-                    label={{
-                        text: "Email",
-                    }}
-                    value={contactEmail}
-                    onChange={e => setContactEmail(e.target.value)}
-                    error={ contactEmailError ? {id:"contact-email-error", text: contactEmailError} : null}
-                    fieldClasses="ons-u-dib ons-u-ml-xs"
-                />
+                <div className="ons-grid ons-u-mt-s">
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-name"
+                            dataTestId="dataset-series-contact-name"
+                            name="dataset-series-contact-name"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Name",
+                            }}
+                            value={contactName}
+                            onChange={e => setContactName(e.target.value)}
+                            error={ contactNameError ? {id:"contact-name-error", text: contactNameError} : null}
+                        />
+                    </div>
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-email"
+                            dataTestId="dataset-series-contact-email"
+                            name="dataset-series-contact-email"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Email",
+                            }}
+                            value={contactEmail}
+                            onChange={e => setContactEmail(e.target.value)}
+                            error={ contactEmailError ? {id:"contact-email-error", text: contactEmailError} : null}
+                        />
+                    </div>
+                    <div className="ons-grid__col ons-col-4@m">
+                        <TextInput
+                            id="dataset-series-contact-telephone"
+                            dataTestId="dataset-series-contact-telephone"
+                            name="dataset-series-contact-telephone"
+                            classes="ons-input--block"
+                            label={{
+                                text: "Telephone number",
+                            }}
+                            value={contactTelephone}
+                            onChange={e => setContactTelephone(e.target.value)}
+                            error={ contactTelephoneError ? {id:"contact-telephone-error", text: contactTelephoneError} : null}
+                        />
+                    </div>
+                </div>
                 <Button
                     classes="ons-u-mt-m"
                     dataTestId="dataset-series-add-contact-button"

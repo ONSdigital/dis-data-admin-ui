@@ -9,8 +9,7 @@ const EXTENSION_TO_MIME_TYPE = {
     sdmx: "application/vnd.sdmx.structurespecificdata+xml",
     xls: "application/vnd.ms-excel",
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    csdb: "text/plain",
-    csvw: "application/ld+json"
+    csdb: "text/plain"
 };
 
 const RESUMABLE_OPTIONS = {
@@ -36,7 +35,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, accessTok
         query: {
             aliasName: "",
         },
-        fileType: ["csdb", "csv", "csvw", "sdmx", "xls", "xlsx"],
+        fileType: ["csdb", "csv", "sdmx", "xls", "xlsx"],
         forceChunkSize: true,
         simultaneousUploads: 1,
         permanentErrors: [400, 404, 409, 415, 500, 501],
