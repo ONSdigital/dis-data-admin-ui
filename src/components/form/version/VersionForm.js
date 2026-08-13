@@ -13,7 +13,9 @@ export default function VersionForm({ datasetID, editionID, version, isNewVersio
     const [formState, formAction, isPending] = useActionState(action, {});
 
     const params = useSearchParams();
-    const editionTitle = version?.edition_title || params.get("edition_title");
+    // Fall back to "" so the controlled hidden input never receives null 
+    // (e.g. when creating a version with no edition_title query param)
+    const editionTitle = version?.edition_title || params.get("edition_title") || "";
 
     let listOfErrors = [];
     if (formState) {
