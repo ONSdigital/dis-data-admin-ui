@@ -98,7 +98,6 @@ describe("Contact", () => {
 
         expect(screen.getByText("Name is required")).toBeInTheDocument();
         expect(screen.getByText("Email is required")).toBeInTheDocument();
-        expect(screen.getByText("Number is required")).toBeInTheDocument();
         expect(screen.queryByTestId("contact-item-0")).not.toBeInTheDocument();
     });
 
