@@ -126,7 +126,7 @@ export default function Contact({contactsList, contactsError}) {
                             name="dataset-series-contact-telephone"
                             classes="ons-input--block"
                             label={{
-                                text: "Telephone number",
+                                text: "Phone number (optional)",
                             }}
                             value={contactTelephone}
                             onChange={e => setContactTelephone(e.target.value)}
