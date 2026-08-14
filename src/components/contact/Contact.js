@@ -12,7 +12,6 @@ export default function Contact({contactsList, contactsError}) {
     const [contactEmail, setContactEmail] = useState("");
     const [contactEmailError, setContactEmailError] = useState("");
     const [contactTelephone, setContactTelephone] = useState("");
-    const [contactTelephoneError, setContactTelephoneError] = useState("");
 
     const addContact = () => {
         const name = contactName.trim();
@@ -23,13 +22,11 @@ export default function Contact({contactsList, contactsError}) {
         if (!name) validationErrors.name = "Name is required";
         if (!email) validationErrors.email = "Email is required";
         else if (!isEmailValid(email)) validationErrors.email = "Invalid email";
-        if (!telephone) validationErrors.telephone = "Number is required";
 
         setContactNameError(validationErrors.name || "");
         setContactEmailError(validationErrors.email || "");
-        setContactTelephoneError(validationErrors.telephone || "");
 
-        if (validationErrors.name || validationErrors.email || validationErrors.telephone) return;
+        if (validationErrors.name || validationErrors.email) return;
 
         setContacts([...contacts, { name, email, telephone }]);
         setContactName("");
@@ -133,7 +130,6 @@ export default function Contact({contactsList, contactsError}) {
                             }}
                             value={contactTelephone}
                             onChange={e => setContactTelephone(e.target.value)}
-                            error={ contactTelephoneError ? {id:"contact-telephone-error", text: contactTelephoneError} : null}
                         />
                     </div>
                 </div>
