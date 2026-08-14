@@ -21,10 +21,6 @@
             "reason" : "nanoid is an indirect import via postcss/next. Overridden to 3.3.17 which backports the fix; Sonatype CVE ranges incorrectly flag all versions before 5.x. Cannot upgrade to 5.x as postcss requires CommonJS nanoid 3.x."
         },
         {
-            "id" : "CVE-2026-67214",
-            "reason" : "nanoid is an indirect import via postcss/next. Overridden to 3.3.17 which backports the fix; Sonatype CVE ranges incorrectly flag all versions before 5.x. Cannot upgrade to 5.x as postcss requires CommonJS nanoid 3.x."
-        },
-        {
             "id" : "CVE-2026-73088",
             "reason" : "browserslist vulnerability affects the latest version"
         }
