@@ -15,14 +15,6 @@
         {
             "id" : "CVE-2026-14257",
             "reason" : "brace-expansion is an indirect import used in ESLint, AuditJS, Jest, etc. Waiting for those packages to update dependencies. Upgrading to latest versions of ESLint 10 causes some compatibility issues with Next"
-        },
-        {
-            "id" : "CVE-2026-67213",
-            "reason" : "nanoid is an indirect import via postcss/next. Overridden to 3.3.17 which backports the fix; Sonatype CVE ranges incorrectly flag all versions before 5.x. Cannot upgrade to 5.x as postcss requires CommonJS nanoid 3.x."
-        },
-        {
-            "id" : "CVE-2026-67214",
-            "reason" : "nanoid is an indirect import via postcss/next. Overridden to 3.3.17 which backports the fix; Sonatype CVE ranges incorrectly flag all versions before 5.x. Cannot upgrade to 5.x as postcss requires CommonJS nanoid 3.x."
         }
     ]
 }
