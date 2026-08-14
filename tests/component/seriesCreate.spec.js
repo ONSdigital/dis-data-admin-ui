@@ -38,9 +38,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByLabel("Name").fill("test name");
-        await page.getByLabel("Email").fill("test-email@test.com");
-        await page.getByLabel("Telephone number").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contact-name").fill("test name");
+        await page.getByTestId("dataset-series-contact-email").fill("test-email@test.com");
+        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Create dataset series/i }).click();
         
@@ -85,9 +85,9 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
 
-        await page.getByLabel("Name").fill("test name");
-        await page.getByLabel("Email").fill("test-email");
-        await page.getByLabel("Telephone number").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contact-name").fill("test name");
+        await page.getByTestId("dataset-series-contact-email").fill("test-email");
+        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await expect(page.getByTestId("field-dataset-series-contact-email-error").getByText("Invalid email")).toBeVisible();
     });
@@ -104,9 +104,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByLabel("Name").fill("test name");
-        await page.getByLabel("Email").fill("tes-email@test.com");
-        await page.getByLabel("Telephone number").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contact-name").fill("test name");
+        await page.getByTestId("dataset-series-contact-email").fill("tes-email@test.com");
+        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Create dataset series/i }).click();
 
@@ -125,9 +125,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByLabel("Name").fill("test name");
-        await page.getByLabel("Email").fill("test@email.com");
-        await page.getByLabel("Telephone number").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contact-name").fill("test name");
+        await page.getByTestId("dataset-series-contact-email").fill("test@email.com");
+        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Create dataset series/i }).click();
 

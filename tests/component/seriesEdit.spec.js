@@ -24,9 +24,9 @@ test.describe("Edit series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByLabel("Name").fill("test edit name");
-        await page.getByLabel("Email").fill("test-email-edit@test.com");
-        await page.getByLabel("Telephone number").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contact-name").fill("test edit name");
+        await page.getByTestId("dataset-series-contact-email").fill("test-email-edit@test.com");
+        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Save changes/i }).click();
 
