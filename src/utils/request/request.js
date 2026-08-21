@@ -73,12 +73,10 @@ const request = async (cfg, url, method, body) => {
     }
 
     const response = await fetch(cfg.baseURL + url, fetchConfig);
-    console.log(...response.headers);
 
     if (response.status >= 400) {
         logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
         response.errorMessage = await response.text();
-        console.log("CUSTOMER ERROR >>>>", createResponse(response, response.ok, response.status));
         return response;
     }
 
@@ -93,7 +91,6 @@ const request = async (cfg, url, method, body) => {
 
     const endedAt = new Date(Date.now()).toISOString();
     logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
-    console.log("CUSTOMER ERROR >>>>", createResponse(json, response.ok, response.status));
     return json;
 };
 
