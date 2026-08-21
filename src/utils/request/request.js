@@ -72,7 +72,13 @@ const request = async (cfg, url, method, body) => {
         fetchConfig.headers.append("Content-Type", "application/json");
     }
 
-    const response = await fetch(cfg.baseURL + url, fetchConfig);
+    let response;
+    try {
+        response = await fetch(cfg.baseURL + url, fetchConfig);
+    } catch (error) {
+        logError("http request failed", { error: error }, { requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null });
+        return createResponse({ errorMessage: error.message }, false, 0);
+    }
 
     if (response.status >= 400) {
         logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
