@@ -28,25 +28,27 @@ const setHeaders = (authToken) => {
 //     status
 // }
 
+const parseErrorMessage = (errMsg) => {
+    try {
+        return JSON.parse(errMsg)?.errors?.[0]?.description || errMsg || "Error message not available";
+    } catch (e) {
+        return errMsg || "Error message not available";
+    }
+};
+
 const createResponse = (res, ok, status) => {
     let customError = {};
     if (!ok) {
-        console.log("in here")
-        let errorMessage = "";
-        try {
-            errorMessage = JSON.parse(res.errorMessage)?.errors?.[0]?.description;
-        } catch (e) {
-            errorMessage = res.errorMessage || "Error message not available";
-        }
-        customError.errorMessage = errorMessage;
+        const errMsg = parseErrorMessage(res.errorMessage);
+        customError.errorMessage = errMsg;
     } else {
         customError = null;
     }
     return {
-        ...res,
         error: customError,
         ok: ok,
-        status: status
+        status: status,
+        ...res
     };
 };
 
