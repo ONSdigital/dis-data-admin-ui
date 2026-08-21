@@ -18,6 +18,38 @@ const setHeaders = (authToken) => {
     return headers;
 };
 
+// const model = {
+//     response
+//     error; {
+//         error:
+//         errorMessage:
+//     }
+//     ok
+//     status
+// }
+
+const createResponse = (res, ok, status) => {
+    let customError = {};
+    if (!ok) {
+        console.log("in here")
+        let errorMessage = "";
+        try {
+            errorMessage = JSON.parse(res.errorMessage)?.errors?.[0]?.description;
+        } catch (e) {
+            errorMessage = res.errorMessage || "Error message not available";
+        }
+        customError.errorMessage = errorMessage;
+    } else {
+        customError = null;
+    }
+    return {
+        ...res,
+        error: customError,
+        ok: ok,
+        status: status
+    };
+};
+
 // work in progress/place holder request func
 const request = async (cfg, url, method, body) => {
     const startedAt = new Date(Date.now()).toISOString();
@@ -35,10 +67,12 @@ const request = async (cfg, url, method, body) => {
     }
 
     const response = await fetch(cfg.baseURL + url, fetchConfig);
+    console.log(...response.headers);
 
     if (response.status >= 400) {
         logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
         response.errorMessage = await response.text();
+        console.log("CUSTOMER ERROR >>>>", createResponse(response, response.ok, response.status));
         return response;
     }
 
@@ -53,6 +87,7 @@ const request = async (cfg, url, method, body) => {
 
     const endedAt = new Date(Date.now()).toISOString();
     logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+    console.log("CUSTOMER ERROR >>>>", createResponse(json, response.ok, response.status));
     return json;
 };
 
