@@ -37,18 +37,22 @@ const parseErrorMessage = (errMsg) => {
 };
 
 const createResponse = (res, ok, status) => {
-    let customError = {};
     if (!ok) {
         const errMsg = parseErrorMessage(res.errorMessage);
-        customError.errorMessage = errMsg;
-    } else {
-        customError = null;
+        return {
+            error: { errorMessage: errMsg },
+            ok: ok,
+            response: null,
+            status: status,
+            statusText: res.statusText
+        }
     }
     return {
-        error: customError,
+        error: null,
         ok: ok,
+        response: res,
         status: status,
-        ...res
+        statusText: "Success"
     };
 };
 
