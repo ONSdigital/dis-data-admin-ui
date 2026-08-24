@@ -58,26 +58,34 @@ const request = async (cfg, url, method, body) => {
         response = await fetch(cfg.baseURL + url, fetchConfig);
         etag = response.headers.get("etag");
     } catch (error) {
-        logError("http request failed", { error: error }, { requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null });
+        const endedAt = new Date().toISOString();
+        logError("http request failed", { error: error }, { requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: endedAt });
         return createResponse(null, false, 0, error.message, error.message, null);
     }
 
     if (response.status >= 400) {
-        logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
+        const endedAt = new Date().toISOString();
+        logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
         const errorMessage = await response.text();
         return createResponse(null, response.ok, response.status, response.statusText, errorMessage, etag);
     }
 
     if (response.status === 204) {
-        const endedAt = new Date(Date.now()).toISOString();
+        const endedAt = new Date().toISOString();
         logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
         return createResponse(null, response.ok, response.status, response.statusText, null, etag);
     }
 
-    // Assuming all other responses have JSON body
-    const json = await response.json();
+    let json;
+    try {
+        json = await response.json();
+    } catch (error) {
+        const endedAt = new Date().toISOString();
+        logError("failed to parse JSON response", { error }, { requestID: "", method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+        return createResponse(null, false, response.status, response.statusText, "Response body was not valid JSON", etag);
+    }
 
-    const endedAt = new Date(Date.now()).toISOString();
+    const endedAt = new Date().toISOString();
     logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
     return createResponse(json, response.ok, response.status, "Success", null, etag);
 };
