@@ -18,16 +18,6 @@ const setHeaders = (authToken) => {
     return headers;
 };
 
-// const model = {
-//     response
-//     error; {
-//         error:
-//         errorMessage:
-//     }
-//     ok
-//     status
-// }
-
 const parseErrorMessage = (errMsg) => {
     try {
         return JSON.parse(errMsg)?.errors?.[0]?.description || errMsg || "Error message not available";
@@ -36,23 +26,13 @@ const parseErrorMessage = (errMsg) => {
     }
 };
 
-const createResponse = (res, ok, status) => {
-    if (!ok) {
-        const errMsg = parseErrorMessage(res.errorMessage);
-        return {
-            error: { errorMessage: errMsg },
-            ok: ok,
-            response: null,
-            status: status,
-            statusText: res.statusText
-        }
-    }
+const createResponse = (res, ok, status, statusText, errorMessage) => {
     return {
-        error: null,
+        error: !ok ? { errorMessage: parseErrorMessage(errorMessage) } : null,
         ok: ok,
         response: res,
         status: status,
-        statusText: "Success"
+        statusText: statusText
     };
 };
 
@@ -77,19 +57,19 @@ const request = async (cfg, url, method, body) => {
         response = await fetch(cfg.baseURL + url, fetchConfig);
     } catch (error) {
         logError("http request failed", { error: error }, { requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: null });
-        return createResponse({ errorMessage: error.message }, false, 0);
+        return createResponse(null, false, 0, error.message, error.message);
     }
 
     if (response.status >= 400) {
         logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
-        response.errorMessage = await response.text();
-        return response;
+        const errorMessage = await response.text();
+        return createResponse(null, response.ok, response.status, response.statusText, errorMessage);
     }
 
     if (response.status === 204) {
         const endedAt = new Date(Date.now()).toISOString();
         logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
-        return response;
+        return createResponse(null, response.ok, response.status, response.statusText, null);
     }
 
     // Assuming all other responses have JSON body
@@ -97,7 +77,7 @@ const request = async (cfg, url, method, body) => {
 
     const endedAt = new Date(Date.now()).toISOString();
     logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
-    return json;
+    return createResponse(json, response.ok, response.status, "Success", null);
 };
 
 /**
