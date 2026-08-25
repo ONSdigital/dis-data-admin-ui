@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { logInfo, logError } from "../log/log";
 
 const xFlorenceHeaderKey = "X-Florence-Token";
@@ -18,17 +19,32 @@ const setHeaders = (authToken) => {
     return headers;
 };
 
-const parseErrorMessage = (errMsg) => {
+/**
+ * Extracts a human-readable message from an error response body.
+ * @param {string} errMsg - raw error response body (JSON string or plain text)
+ * @return {string} parsed error description, or a fallback when unavailable
+ */
+const parseErrorMessage = (errMsg, statusText) => {
     try {
         return JSON.parse(errMsg)?.errors?.[0]?.description || errMsg || "Error message not available";
     } catch (e) {
-        return errMsg || "Error message not available";
+        return errMsg || statusText || "Error message not available";
     }
 };
 
+/**
+ * Builds a standardised request result.
+ * @param {object|string|null} res - parsed response body on success, otherwise null
+ * @param {boolean} ok - whether the request succeeded
+ * @param {number} status - HTTP status code (0 when unavailable, e.g. network failure)
+ * @param {string} statusText - HTTP status text or a synthetic failure label
+ * @param {string|null} errorMessage - raw error body to parse when ok is false
+ * @param {string|null} [etag] - ETag header value when present
+ * @return {object} - standardised request object
+ */
 const createResponse = (res, ok, status, statusText, errorMessage, etag = null) => {
     return {
-        error: !ok ? { errorMessage: parseErrorMessage(errorMessage) } : null,
+        error: !ok ? { errorMessage: parseErrorMessage(errorMessage, statusText) } : null,
         ok: ok,
         response: res,
         status: status,
@@ -37,12 +53,34 @@ const createResponse = (res, ok, status, statusText, errorMessage, etag = null) 
     };
 };
 
-// work in progress/place holder request func
-const request = async (cfg, url, method, body) => {
-    const startedAt = new Date(Date.now()).toISOString();
-    logInfo("http request started", null, { requestID: "", method: method, path: url, statusCode: 0, startedAt: startedAt, endedAt: null });
+/**
+ * Logs an HTTP request lifecycle event for the request helper.
+ * @param {boolean} ok - whether to log as success (info) or failure (error)
+ * @param {object} options - http log options
+ * @return {void}
+ */
+const log = (ok, { requestID, method, path, statusCode, startedAt, event, finished = true, error = null }) => {
+    const endedAt = finished ? new Date().toISOString() : null;
+    const http = { requestID, method, path, statusCode, startedAt, endedAt };
+    const resolvedEvent = event ?? (
+        !finished ? "http request started" : ok ? "http request completed" : "http request failed"
+    );
 
-    const headers = setHeaders(cfg.authToken);
+    if (!finished || ok) {
+        logInfo(resolvedEvent, null, http);
+        return;
+    }
+
+    logError(resolvedEvent, error ? { error } : null, http);
+};
+
+// work in progress/place holder request func
+const request = async (url, accessToken, method, body) => {
+    const requestID = uuidv4();
+    const startedAt = new Date().toISOString();
+    log(true, { requestID, method, path: url, statusCode: 0, startedAt, finished: false });
+
+    const headers = setHeaders(accessToken);
     const fetchConfig = {
         method,
         headers
@@ -55,24 +93,28 @@ const request = async (cfg, url, method, body) => {
 
     let response, etag;
     try {
-        response = await fetch(cfg.baseURL + url, fetchConfig);
+        response = await fetch(url, fetchConfig);
         etag = response.headers.get("etag");
     } catch (error) {
-        const endedAt = new Date().toISOString();
-        logError("http request failed", { error: error }, { requestID: "", method: method, path: url, statusCode: 0, startedAt, endedAt: endedAt });
+        log(false, { requestID, method, path: url, statusCode: 0, startedAt, error });
         return createResponse(null, false, 0, error.message, error.message, null);
     }
 
     if (response.status >= 400) {
-        const endedAt = new Date().toISOString();
-        logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
         const errorMessage = await response.text();
+        log(false, {
+            requestID,
+            method,
+            path: url,
+            statusCode: response.status,
+            startedAt,
+            error: { message: errorMessage }
+        });
         return createResponse(null, response.ok, response.status, response.statusText, errorMessage, etag);
     }
 
     if (response.status === 204) {
-        const endedAt = new Date().toISOString();
-        logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+        log(true, { requestID, method, path: url, statusCode: response.status, startedAt });
         return createResponse(null, response.ok, response.status, response.statusText, null, etag);
     }
 
@@ -80,13 +122,19 @@ const request = async (cfg, url, method, body) => {
     try {
         json = await response.json();
     } catch (error) {
-        const endedAt = new Date().toISOString();
-        logError("failed to parse JSON response", { error }, { requestID: "", method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+        log(false, {
+            requestID,
+            method,
+            path: url,
+            statusCode: response.status,
+            startedAt,
+            event: "failed to parse JSON response",
+            error
+        });
         return createResponse(null, false, response.status, response.statusText, "Response body was not valid JSON", etag);
     }
 
-    const endedAt = new Date().toISOString();
-    logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
+    log(true, { requestID, method, path: url, statusCode: response.status, startedAt });
     return createResponse(json, response.ok, response.status, "Success", null, etag);
 };
 
@@ -132,8 +180,8 @@ const CSRequestConfig = (appConfig) => {
  * @param {string} url - relative path to api router
  * @return {Promise} fetch response body in JSON format
  */
-const httpGet = (cfg, url) => {
-    return request(cfg, url, "GET");
+const httpGet = (url, accessToken) => {
+    return request(url, accessToken, "GET");
 };
 
 /**
@@ -142,8 +190,8 @@ const httpGet = (cfg, url) => {
  * @param {object} body - body contents of request
  * @return {Promise} fetch response body in JSON format
  */
-const httpPost = (cfg, url, body) => {
-    return request(cfg, url, "POST", body);
+const httpPost = (url, accessToken, body) => {
+    return request(url, accessToken, "POST", body);
 };
 
 /**
@@ -152,8 +200,8 @@ const httpPost = (cfg, url, body) => {
  * @param {object} body - body contents of request
  * @return {Promise} fetch response body in JSON format
  */
-const httpPut = (cfg, url, body) => {
-    return request(cfg, url, "PUT", body);
+const httpPut = (url, accessToken, body) => {
+    return request(url, accessToken, "PUT", body);
 };
 
 /**
@@ -161,8 +209,8 @@ const httpPut = (cfg, url, body) => {
  * @param {string} url - relative path to api router
  * @return {Promise} fetch response body in JSON format
  */
-const httpDelete = (cfg, url) => {
-    return request(cfg, url, "DELETE");
+const httpDelete = (url, accessToken) => {
+    return request(url, accessToken, "DELETE");
 };
 
 export { httpGet, httpPost, httpPut, httpDelete, SSRequestConfig, CSRequestConfig };
