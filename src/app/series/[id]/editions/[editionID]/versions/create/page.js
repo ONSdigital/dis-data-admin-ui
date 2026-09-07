@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getDataset } from "@/utils/request/api-clients/datasets";
 
 import { createDatasetVersion } from "@/app/actions/datasetVersion";
 
@@ -9,25 +11,18 @@ import VersionForm from "@/components/form/version/VersionForm";
 
 export default async function CreateVersion({ params }) {
     const { id, editionID } = await params;
-    const reqCfg = await SSRequestConfig(cookies);
-    const accessToken = reqCfg.authToken;
-    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-        
-    let datasetError = false;
-    if (datasetResp.ok != null && !datasetResp.ok) {
-        datasetError = true;
-    }
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const datasetResp = await getDataset(id, accessToken);
     
-    const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
+    const dataset = datasetResp?.response?.current || datasetResp?.response?.next || datasetResp?.response;
 
     let datasetTitle;
-    if (datasetError) {
+    if (datasetResp.error) {
         datasetTitle = "Error retrieving name of dataset";
     } else {
         datasetTitle = dataset.title;
     }
     
-
     return (
         <>
             <PageHeading 

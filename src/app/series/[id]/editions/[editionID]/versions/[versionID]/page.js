@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getMetadata } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel, Summary } from "@/components/design-system/DesignSystem";
@@ -12,15 +13,10 @@ import { mapVersionSummary } from "@/components/design-system/summary-mapper";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
-    const reqCfg = await SSRequestConfig(cookies);
-    const metadata = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}/metadata`);
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const metadata = await getMetadata(id, editionID, versionID, accessToken);
 
-    let metadataError = false;
-    if (metadata.ok != null && !metadata.ok) {
-        metadataError = true;
-    }
-
-    if (metadataError) {
+    if (metadata.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
@@ -30,11 +26,11 @@ export default async function Version({ params, searchParams }) {
 
     const query = await searchParams;
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
-    const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.title, metadata.edition_title);
+    const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.response?.title, metadata.response?.edition_title);
     const editURL = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}/edit`;
-    const versionSummary = mapVersionSummary(metadata, editURL);
+    const versionSummary = mapVersionSummary(metadata.response, editURL);
 
-    const deleteLink = `/series/${id}/editions/${editionID}/versions/${versionID}/delete?seriesTitle=${metadata.title}&editionTitle=${metadata.edition_title}`;
+    const deleteLink = `/series/${id}/editions/${editionID}/versions/${versionID}/delete?seriesTitle=${metadata.response?.title}&editionTitle=${metadata.response?.edition_title}`;
 
     return (
         <>
@@ -42,7 +38,7 @@ export default async function Version({ params, searchParams }) {
             <PageHeading 
                 subtitle="Version"
                 title={`Version: ${versionID}`} 
-                buttonURL={`./create?edition_title=${metadata.edition_title}`}
+                buttonURL={`./create?edition_title=${metadata.response?.edition_title}`}
                 buttonText="Create new version" 
                 linkURL="../"
                 linkText="Back to edition overview"
@@ -52,7 +48,7 @@ export default async function Version({ params, searchParams }) {
             <div className="ons-grid ons-u-mt-xl">
                 <div className="ons-grid__col ons-col-8@m ">
                     <Summary summaries={versionSummary} />
-                    {metadata.state !== "published" && (
+                    {metadata.response?.state !== "published" && (
                         <LinkButton
                             dataTestId="delete-version-button"
                             text="Delete version"

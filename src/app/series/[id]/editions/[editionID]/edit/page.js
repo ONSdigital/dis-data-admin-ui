@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getEdition } from "@/utils/request/api-clients/datasets";
 import { updateDatasetEdition } from "@/app/actions/datasetEdition";
 
 import PageHeading from "@/components/page-heading/PageHeading";
@@ -9,18 +10,11 @@ import EditionForm from "@/components/form/edition/EditionForm";
 
 
 export default async function EditEdition({ params }) {
-    const reqCfg = await SSRequestConfig(cookies);
-    const accessToken = reqCfg.authToken;
-
     const { id, editionID } = await params;
-    const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const editionResp = await getEdition(id, editionID, accessToken);
 
-    let editionError = false;
-    if (editionResp.ok != null && !editionResp.ok) {
-        editionError = true;
-    }
-
-    if (editionError) {
+    if (editionResp.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-edition-response-error">
                 <p>There was a problem retreiving data for this page. Please try again later.</p>
@@ -28,7 +22,7 @@ export default async function EditEdition({ params }) {
         );
     }
 
-    const edition = editionResp?.current || editionResp?.next || editionResp;
+    const edition = editionResp?.response?.current || editionResp?.response?.next || editionResp.response;
     const showEditionIDField = edition?.state !== "published" && !edition?.is_migration;
     return (
         <>

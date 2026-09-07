@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getDataset, getEditionsList } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import List from "@/components/list/List";
@@ -18,17 +19,11 @@ export default async function Dataset({ params, searchParams }) {
     const { id } = await params;
     const query = await searchParams;
 
-    const reqCfg = await SSRequestConfig(cookies);
-    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-    const editions = await httpGet(reqCfg, `/datasets/${id}/editions`);
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const datasetResp = await getDataset(id, accessToken);
+    const editions = await getEditionsList(id, accessToken);
 
-    let datasetError, editionsError = false;
-    const listItems = [];
-    if (datasetResp.ok != null && !datasetResp.ok) {
-        datasetError = true;
-    }
-
-    if (datasetError) {
+    if (datasetResp.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
@@ -36,15 +31,14 @@ export default async function Dataset({ params, searchParams }) {
         );
     }
 
-    if (editions.ok != null && !editions.ok) {
-        editionsError = true;
-    } else {
-        listItems.push(...mapListItems(editions.items, id));
+    const listItems = [];
+    if (editions.response) {
+        listItems.push(...mapListItems(editions.response.items, id));
     }
 
     const renderEditionsList = () => {
         // if no error, or 404 error because we assume 404 means no editions exist yet
-        if (!editionsError || (editionsError && editions.status === 404)) {
+        if (!editions.error || (editions.error && editions.status === 404)) {
             return (
                 <>
                     <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
@@ -61,10 +55,10 @@ export default async function Dataset({ params, searchParams }) {
     const createURL = `${id}/editions/create`;
     const editURL = `${id}/edit`;
     const publishLink = `${id}/publish`;
-    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
 
-    const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, reqCfg);
-    const isPublished = datasetResp?.current?.state === "published";
+    const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, accessToken);
+    const isPublished = datasetResp?.response?.current?.state === "published";
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, isPublished);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
@@ -72,7 +66,7 @@ export default async function Dataset({ params, searchParams }) {
     const isAdmin = userIsAdmin(userRoles);
 
     // if current is "published" and next is "associated" infer that they are unpublished changes to a series
-    const showPublishChangesMessage = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated";
+    const showPublishChangesMessage = datasetResp?.response?.current?.state === "published" && datasetResp?.response?.next?.state === "associated";
 
     const deleteLink = `/series/${id}/delete?seriesTitle=${dataset.title}`;
 
@@ -98,7 +92,7 @@ export default async function Dataset({ params, searchParams }) {
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
                     <Summary summaries={seriesSummaryItems} />
 
-                    {dataset.state !== "published" && (
+                    {datasetResp?.response?.current?.state !== "published" && (
                         <LinkButton
                             dataTestId="delete-series-button"
                             text="Delete series"

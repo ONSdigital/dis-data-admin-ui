@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getVersion } from "@/utils/request/api-clients/datasets";
 
 import { updateDatasetVersion } from "@/app/actions/datasetVersion";
 
@@ -9,26 +11,25 @@ import { Panel } from "@/components/design-system/DesignSystem";
 
 export default async function EditVersion({ params }) {
     const { id, editionID, versionID } = await params;
-    const reqCfg = await SSRequestConfig(cookies);
-    const accessToken = reqCfg.authToken;
-    const response = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions/${versionID}`);
-    const version = response.next || response.current || response;
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const versionResp = await getVersion(id, editionID, versionID, accessToken);
 
-    let versionError;
-    if (response.ok != null && !response.ok) {
-        versionError = true;
+    if (versionResp.error) {
+        return (
+            <Panel title="Error" variant="error">
+                <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
+            </Panel>
+        );
     }
+
+    const version = versionResp?.response?.current || versionResp?.response?.next || versionResp.response;
 
     return (
         <>
-            { !versionError ?
-                <>
-                    <PageHeading 
-                        title={`Edit version ${versionID}`}
-                    /> 
-                    <VersionForm datasetID={id} editionID={editionID} version={version} isNewVersion={false} action={updateDatasetVersion} accessToken={accessToken} />
-                </>
-            : <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel> }
+            <PageHeading 
+                title={`Edit version ${versionID}`}
+            /> 
+            <VersionForm datasetID={id} editionID={editionID} version={version} isNewVersion={false} action={updateDatasetVersion} accessToken={accessToken} />
         </>
     );
 }

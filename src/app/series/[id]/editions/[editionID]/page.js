@@ -2,7 +2,8 @@ import { cookies, headers } from "next/headers";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getDataset, getEdition, getVersionsList } from "@/utils/request/api-clients/datasets";
 
 import PageHeading from "@/components/page-heading/PageHeading";
 import List from "@/components/list/List";
@@ -13,39 +14,26 @@ import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import { mapListItems } from "./mapper";
 
 export default async function Edition({ params, searchParams }) {
-    const reqCfg = await SSRequestConfig(cookies);
-
     const { id, editionID } = await params;
     const query = await searchParams;
-    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
-    const editionResp = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}`);
-    const versions = await httpGet(reqCfg, `/datasets/${id}/editions/${editionID}/versions`);
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const datasetResp = await getDataset(id, accessToken);
+    const editionResp = await getEdition(id, editionID, accessToken);
+    const versions = await getVersionsList(id, editionID, accessToken);
 
-    let datasetError, editionError, versionsError = false;
+    if (datasetResp.error || editionResp.error) {
+        return (
+            <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel>
+        );
+    }
+
     const listItems = [];
-    if (datasetResp.ok != null && !datasetResp.ok) {
-        datasetError = true;
+    if (versions.response) {
+        listItems.push(...mapListItems(versions.response?.items, id, editionID));
     }
-
-    if (editionResp.ok != null && !editionResp.ok) {
-        editionError = true;
-    }
-
-    if (versions.ok != null && !versions.ok) {
-        versionsError = true;
-    } else {
-        listItems.push(...mapListItems(versions.items, id, editionID));
-    }
-
-    let unpublishedVersion = false;
-    versions?.items?.forEach(item => {
-        if (item.state !== "published") {
-            unpublishedVersion = true;
-        }
-    });
 
     const renderVersionsList = () => {
-        if (versionsError) {
+        if (versions.error) {
             return (
                 <Panel title="Error" variant="error"><p>There was an issue retrieving the list of versions for this dataset. Try refreshing the page.</p></Panel>
             );
@@ -58,19 +46,20 @@ export default async function Edition({ params, searchParams }) {
         );
     };
 
-    const dataset = datasetResp?.current || datasetResp?.next || datasetResp;
-    const edition = editionResp?.current || editionResp?.next || editionResp;
+    let unpublishedVersion = false;
+    versions?.response?.items?.forEach(item => {
+        if (item.state !== "published") {
+            unpublishedVersion = true;
+        }
+    });
+    
+    const dataset = datasetResp?.response?.current || datasetResp?.response?.next || datasetResp.response;
+    const edition = editionResp?.response?.current || editionResp?.response?.next || editionResp.response;
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     const editURL = `/data-admin/series/${id}/editions/${editionID}/edit`;
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, edition.edition_title);
     const editionSummaryItems = mapEditionSummary(edition, editURL);
-
-    if (datasetError || editionError) {
-        return (
-            <Panel title="Error" variant="error"><p>There was an issue retrieving the data for this page. Try refreshing the page.</p></Panel>
-        );
-    }
 
     return (
         <>
