@@ -3,7 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { SSRequestConfig, httpPut } from "@/utils/request/request";
+import { httpPut } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo, logError } from "@/utils/log/log";
 
 /**
@@ -18,7 +19,7 @@ export const publishAction = async (currentState, formData) => {
         errors: {}
     };
 
-    const reqCfg = await SSRequestConfig(cookies);
+    const accessToken = await getAcessTokenFromCookie(cookies);
 
     const datasetInput = formData.get("dataset");
     const dataset = JSON.parse(datasetInput);
@@ -32,7 +33,7 @@ export const publishAction = async (currentState, formData) => {
     dataset.state = "published";
 
     try {
-        const request = await httpPut(reqCfg, url, dataset);
+        const request = await httpPut(url, accessToken, dataset);
         if (request.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = request.status;

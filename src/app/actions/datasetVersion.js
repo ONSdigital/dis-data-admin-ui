@@ -3,7 +3,9 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { httpPut } from "@/utils/request/request";
+import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
 import { getDistributionPath } from "@/utils/url/url";
 
@@ -60,7 +62,7 @@ const parseMutliContentField = (multiItem) => {
  *   Resolves with a summary of any failed updates.
  */
 
-const updateDistributionsMetadata = async (reqCfg, distributions = [], datasetID, editionID, versionID) => {
+const updateDistributionsMetadata = async (accessToken, distributions = [], datasetID, editionID, versionID) => {
     const fileMetadataUpdateRequests = distributions.map(async (distribution) => {
         const filePath = getDistributionPath(distribution?.download_url);
 
@@ -70,7 +72,7 @@ const updateDistributionsMetadata = async (reqCfg, distributions = [], datasetID
         }
 
         try {
-            const response = await httpPut(reqCfg, `/files/${filePath}`, {
+            const response = await httpPut(`/files/${filePath}`, accessToken, {
                 content_item: {
                     dataset_id: datasetID,
                     edition: editionID,
@@ -80,7 +82,7 @@ const updateDistributionsMetadata = async (reqCfg, distributions = [], datasetID
 
             if (response.status >= 400) {
                 logError("failed to update file metadata", distribution, response.status, null);
-                return { success: false, distribution, status: response.status, error: response.errorMessage };
+                return { success: false, distribution, status: response.status, error: response.error?.errorMessage };
             }
 
             return { success: true, distribution };
@@ -97,15 +99,12 @@ const updateDistributionsMetadata = async (reqCfg, distributions = [], datasetID
     return { success: failures.length === 0, failures };
 };
 
-const doSubmission = async (datasetVersionSubmission, makeRequest) => {
-    const reqCfg = await SSRequestConfig(cookies);
-
-    let url = `/datasets/${datasetVersionSubmission.dataset_id}/editions/${datasetVersionSubmission.edition}/versions`;
-    if (datasetVersionSubmission.version_id) { url = url + `/${datasetVersionSubmission.version_id}`; }
+const doSubmission = async (datasetVersionSubmission, doRequest) => {
+    const accessToken = await getAcessTokenFromCookie(cookies);
 
     let versionResponse = {};
     try {
-        versionResponse = await makeRequest(reqCfg, url, datasetVersionSubmission);
+        versionResponse = await doRequest(accessToken);
         if (versionResponse.status >= 400) {
             return { success: false, code: versionResponse.status };
         }
@@ -115,10 +114,10 @@ const doSubmission = async (datasetVersionSubmission, makeRequest) => {
         return { success: false, code: 500 };
     }
 
-    const versionID = versionResponse.version || datasetVersionSubmission.version_id;
+    const versionID = versionResponse.response?.version || datasetVersionSubmission.version_id;
     try {
         const distributionUpdateResponse = await updateDistributionsMetadata(
-            reqCfg,
+            accessToken,
             datasetVersionSubmission.distributions,
             datasetVersionSubmission.dataset_id,
             datasetVersionSubmission.edition,
@@ -187,7 +186,11 @@ const createDatasetVersion = async (currentstate, formData) => {
     if (!validation.success) {
         return await handleFailedValidation(validation, datasetVersionSubmission);
     }
-    return doSubmission(datasetVersionSubmission, httpPost);
+    const { dataset_id: datasetID, edition: editionID } = datasetVersionSubmission;
+    return doSubmission(
+        datasetVersionSubmission,
+        (token) => createVersion(datasetID, editionID, datasetVersionSubmission, token)
+    );
 };
 
 const updateDatasetVersion = async (currentstate, formData) => {
@@ -197,7 +200,11 @@ const updateDatasetVersion = async (currentstate, formData) => {
     if (!validation.success) {
         return await handleFailedValidation(validation, datasetVersionSubmission);
     }
-    return doSubmission(datasetVersionSubmission, httpPut);
+    const { dataset_id: datasetID, edition: editionID, version_id: versionID } = datasetVersionSubmission;
+    return doSubmission(
+        datasetVersionSubmission,
+        (token) => updateVersion(datasetID, editionID, versionID, datasetVersionSubmission, token)
+    );
 };
 
 export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata };

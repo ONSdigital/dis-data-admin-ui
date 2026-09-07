@@ -3,7 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { createMigration, updateMigration } from "@/utils/request/api-clients/migration";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
@@ -27,7 +28,7 @@ const getFormData = (formData) => {
     return migrationJobSubmission;
 };
 
-const createResponse = async (migrationJobSubmission, result, url, makeRequest, series = null) => {
+const createResponse = async (migrationJobSubmission, result, doRequest, series = null) => {
     const response = {};
     response.success = result.success;
     if (!result.success) {
@@ -35,21 +36,20 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest, 
         response.submission = migrationJobSubmission;
         logInfo("failed create/update migration validation", null, null);
     } else {
-        const reqCfg = await SSRequestConfig(cookies, "migration-service");
+        const accessToken = await getAcessTokenFromCookie(cookies);
         try {
-            const data = await makeRequest(reqCfg, url, migrationJobSubmission);
+            const data = await doRequest(accessToken);
             if (data.status >= 400) {
                 response.success = false;
                 response.recentlySubmitted = false;
                 response.code = data.status;
 
-                const parsedError = JSON.parse(data.errorMessage);
-                const rawError = parsedError.errors[0].description.trim();
+                const rawError = (data.error?.errorMessage || "").trim();
                 // Capitalise first letter of returned error description
                 response.httpError = rawError.charAt(0).toUpperCase() + rawError.slice(1);
             } else {
                 response.recentlySubmitted = true;
-                response.jobNumber = data.job_number;
+                response.jobNumber = data.response?.job_number;
                 logInfo("migration job created/updated successfully");
             }
         } catch (err) {
@@ -67,22 +67,27 @@ const createResponse = async (migrationJobSubmission, result, url, makeRequest, 
 };
 
 export async function createMigrationJob(currentstate, formData) {
-    const url = "/migration-jobs";
-
     const migrationJobSubmission = getFormData(formData);
     const validation = createSchema.safeParse(migrationJobSubmission);
 
-    return createResponse(migrationJobSubmission, validation, url, httpPost);
+    return createResponse(
+        migrationJobSubmission,
+        validation,
+        (token) => createMigration(migrationJobSubmission, token)
+    );
 }
 
 export async function updateMigrationJobState(jobID, newState, series) {
-    const url = "/migration-jobs/" + jobID + "/state";
-
     const stateUpdate = {
         state: newState
     };
 
     const validation = stateSchema.safeParse(stateUpdate);
 
-    return createResponse(stateUpdate, validation, url, httpPut, series);
+    return createResponse(
+        stateUpdate,
+        validation,
+        (token) => updateMigration(jobID, stateUpdate, token),
+        series
+    );
 }
