@@ -37,13 +37,12 @@ const getFormData = (formData) => {
         qmi: { 
             href: formData.get("dataset-series-qmi") 
         },
+        keywords: [],
     };
 
     const keywords = (formData.get("dataset-series-keywords") || "").trim();
     if (keywords) {
         datasetSeriesSubmission.keywords = keywords.split(",").map(keyword => keyword.trim()).filter(Boolean);
-    } else {
-        datasetSeriesSubmission.keywords = [];
     }
 
     datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
