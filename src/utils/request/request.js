@@ -20,15 +20,22 @@ const setHeaders = (authToken) => {
 };
 
 /**
- * Extracts a human-readable message from an error response body.
+ * Parses an error response body into a structured error object.
  * @param {string} errMsg - raw error response body (JSON string or plain text)
- * @return {string} parsed error description, or a fallback when unavailable
+ * @param {string} [statusText] - HTTP status text used as a fallback when the body is unavailable
+ * @return {object} - standardised request error object
  */
-const parseErrorMessage = (errMsg, statusText) => {
+const parseError = (errMsg, statusText) => {
     try {
-        return JSON.parse(errMsg)?.errors?.[0]?.description || errMsg || "Error message not available";
+        const err = JSON.parse(errMsg)?.errors?.[0];
+        return { 
+            errorMessage: err?.description || errMsg || "Error message not available",
+            code: err?.code || null};
     } catch (e) {
-        return errMsg || statusText || "Error message not available";
+        return { 
+            errorMessage: errMsg || statusText || "Error message not available", 
+            code: null 
+        };
     }
 };
 
@@ -44,7 +51,7 @@ const parseErrorMessage = (errMsg, statusText) => {
  */
 const createResponse = (res, ok, status, statusText, errorMessage, etag = null) => {
     return {
-        error: !ok ? { errorMessage: parseErrorMessage(errorMessage, statusText) } : null,
+        error: !ok ? parseError(errorMessage, statusText) : null,
         ok: ok,
         response: res,
         status: status,
