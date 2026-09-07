@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getMigrationsList } from "@/utils/request/api-clients/migration";
 
 import MigrationFilter from "@/components/form/migration-list-filter/MigrationFilter";
 import { Panel } from "@/components/design-system/DesignSystem";
@@ -17,24 +18,19 @@ export default async function MigrationList({ searchParams }) {
     pageParams.offset = pageParams.offset ? Number(pageParams.offset) : 0;
 
     const requestURL = createRequestURL(pageParams);
-    const reqCfg = await SSRequestConfig(cookies, "migration-service");
-    const migrationsResp = await httpGet(reqCfg, requestURL);
+    const accessToken = await getAcessTokenFromCookie(cookies);
+    const migrationsResp = await getMigrationsList(requestURL, accessToken);
 
-    let migrationsRespError = false;
-    if (migrationsResp.ok != null && !migrationsResp.ok) {
-        migrationsRespError = true;
-    }
-
-    if (migrationsRespError) {
+    if (migrationsResp.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
             </Panel>
         );
     }
-    const mappedTable = mapMigrationListTable(migrationsResp.items);
+    const mappedTable = mapMigrationListTable(migrationsResp.response?.items);
 
-    const totalCount = migrationsResp.total_count;
+    const totalCount = migrationsResp.response?.total_count;
     const totalNumberOfPages = Math.ceil(totalCount / pageParams.limit);
     const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
 
@@ -44,7 +40,7 @@ export default async function MigrationList({ searchParams }) {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing {migrationsResp.offset + 1} to {migrationsResp.offset + migrationsResp.count} of {migrationsResp.total_count} jobs
+                            Showing {migrationsResp.response?.offset + 1} to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs
                         </div>
                         <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
@@ -70,7 +66,7 @@ export default async function MigrationList({ searchParams }) {
             <SuccessPanel query={pageParams} contentType={pageParams.series} />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <MigrationFilter states={migrationsResp.states}></MigrationFilter>
+                    <MigrationFilter states={migrationsResp.response?.states}></MigrationFilter>
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
                     {renderListArea()}
@@ -81,7 +77,7 @@ export default async function MigrationList({ searchParams }) {
 }
 
 const createRequestURL = (params) => {
-    let url = `/migration-jobs?limit=${params.limit}&sort=job_number:desc`;
+    let url = `limit=${params.limit}&sort=job_number:desc`;
 
     if (params.state) {
         url = `${url}&state=${params.state}`;
