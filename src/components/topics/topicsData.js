@@ -1,4 +1,4 @@
-import { getTopics, getTopic } from "@/utils/request/api-clients/topics";
+import { getTopics, getTopic, getSubTopics as getST } from "@/utils/request/api-clients/topics";
 
 // Topic slug's that we want to appear in Topic Selector UI
 const INCLUDE_TOPIC_SLUGS = new Set([
@@ -45,7 +45,7 @@ export const getAllTopics = async (accessToken) => {
  * @returns {<Array>}
  */
 const getSubTopics = async (topicID, accessToken) => {
-    const subTopics = await getTopic(topicID, accessToken);
+    const subTopics = await getST(topicID, accessToken);
     if (subTopics.error || subTopics?.response?.items.length === 0) return [];
 
     const rows = await Promise.all(
