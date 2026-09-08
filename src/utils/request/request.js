@@ -61,31 +61,42 @@ const createResponse = (res, ok, status, statusText, errorMessage, etag = null) 
 };
 
 /**
- * Logs an HTTP request lifecycle event for the request helper.
- * @param {boolean} ok - whether to log as success (info) or failure (error)
- * @param {object} options - http log options
- * @return {void}
+ * Creates a logger scoped to a single HTTP request.
+ * @param {{ requestID: string, method: string, path: string, startedAt: string }} ctx
+ * @return {{ start: function, success: function, failure: function }}
  */
-const log = (ok, { requestID, method, path, statusCode, startedAt, event, finished = true, error = null }) => {
-    const endedAt = finished ? new Date().toISOString() : null;
-    const http = { requestID, method, path, statusCode, startedAt, endedAt };
-    const resolvedEvent = event ?? (
-        !finished ? "http request started" : ok ? "http request completed" : "http request failed"
-    );
+const createHttpLogger = ({ requestID, method, path, startedAt }) => {
+    const buildHttp = (statusCode, finished) => ({
+        requestID,
+        method,
+        path,
+        statusCode,
+        startedAt,
+        endedAt: finished ? new Date().toISOString() : null,
+    });
 
-    if (!finished || ok) {
-        logInfo(resolvedEvent, null, http);
-        return;
-    }
+    return {
+        start() {
+            logInfo("http request started", null, buildHttp(0, false));
+        },
 
-    logError(resolvedEvent, error ? { error } : null, http);
+        success(statusCode) {
+            logInfo("http request completed", null, buildHttp(statusCode, true));
+        },
+
+        failure(statusCode, error = null, event = "http request failed") {
+            logError(event, error ? { error } : null, buildHttp(statusCode, true));
+        },
+    };
 };
 
 // work in progress/place holder request func
 const request = async (url, accessToken, method, body) => {
     const requestID = uuidv4();
     const startedAt = new Date().toISOString();
-    log(true, { requestID, method, path: url, statusCode: 0, startedAt, finished: false });
+    const httpLog = createHttpLogger({ requestID, method, path: url, startedAt });
+
+    httpLog.start();
 
     const headers = setHeaders(accessToken);
     const fetchConfig = {
@@ -103,25 +114,18 @@ const request = async (url, accessToken, method, body) => {
         response = await fetch(url, fetchConfig);
         etag = response.headers.get("etag");
     } catch (error) {
-        log(false, { requestID, method, path: url, statusCode: 0, startedAt, error });
+        httpLog.failure(0, error);
         return createResponse(null, false, 0, error.message, error.message, null);
     }
 
     if (response.status >= 400) {
         const errorMessage = await response.text();
-        log(false, {
-            requestID,
-            method,
-            path: url,
-            statusCode: response.status,
-            startedAt,
-            error: { message: errorMessage }
-        });
+        httpLog.failure(response.status, { message: errorMessage });
         return createResponse(null, response.ok, response.status, response.statusText, errorMessage, etag);
     }
 
     if (response.status === 204) {
-        log(true, { requestID, method, path: url, statusCode: response.status, startedAt });
+        httpLog.success(response.status);
         return createResponse(null, response.ok, response.status, response.statusText, null, etag);
     }
 
@@ -129,57 +133,12 @@ const request = async (url, accessToken, method, body) => {
     try {
         json = await response.json();
     } catch (error) {
-        log(false, {
-            requestID,
-            method,
-            path: url,
-            statusCode: response.status,
-            startedAt,
-            event: "failed to parse JSON response",
-            error
-        });
+        httpLog.failure(response.status, error, "failed to parse JSON response");
         return createResponse(null, false, response.status, response.statusText, "Response body was not valid JSON", etag);
     }
 
-    log(true, { requestID, method, path: url, statusCode: response.status, startedAt });
+    httpLog.success(response.status);
     return createResponse(json, response.ok, response.status, "Success", null, etag);
-};
-
-/**
- * @param {function} cookies - NextJS cookies getter function
- * @param {string} service - service to make the request to
- * @return {object} response config object contain base url and authorisation values
- */
-const SSRequestConfig = async (cookies, service = "api-router") => {
-    let baseURL;
-    switch (service) {
-        case "api-router":
-            baseURL = process.env.API_ROUTER_URL;
-            break;
-        case "migration-service":
-            baseURL = process.env.MIGRATION_SERVICE_URL;
-            break;
-        default:
-            baseURL = process.env.API_ROUTER_URL;
-    }
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get("access_token");
-    const cleanAuthToken = authToken.value.replace(/"/g, "");
-    return { baseURL: baseURL, authToken: cleanAuthToken };
-};
-
-/**
- * @param {object} appConfig - appConfig object, see: utils/config
- * @return {object} response config object contain base url and authorisation values
- */
-const CSRequestConfig = (appConfig) => {
-    const cookies = document.cookie.split(";");
-    let authToken;
-    cookies.forEach(cookie => {
-        const c = cookie.split("=");
-        if (c[0] == "id_token") { authToken = bearerPrefix + c[1]; }
-    });
-    return { baseURL: appConfig.apiRouterURL, authToken: authToken };
 };
 
 /**
