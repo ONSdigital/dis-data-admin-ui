@@ -140,10 +140,11 @@ describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items when no keywords are present", () => {
         const mapped = mapSeriesSummary(datasetList.items[0].current, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(11);
-        mappedItems.forEach(item => {
-            expect(item.rowTitle).not.toBe("Keywords");
-        });
+        expect(mappedItems).toHaveLength(12);
+        const keywordsRow = mappedItems.find(item => item.rowTitle === "Keywords");
+        expect(keywordsRow).toBeDefined();
+        expect(keywordsRow.rowItems[0].valueList[0]).toMatchObject({text: "No keywords"});
+        expect(keywordsRow.rowItems[0].actions[0]).toBeDefined();
     });
 });
 

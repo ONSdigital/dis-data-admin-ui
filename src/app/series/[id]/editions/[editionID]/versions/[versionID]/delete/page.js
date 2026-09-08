@@ -6,8 +6,8 @@ import DeleteForm from "@/components/form/delete/DeleteForm";
 export default async function DeleteVersion({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const query = await searchParams;
-    const seriesTitle = query.seriesTitle
-    const editionTitle = query.editionTitle
+    const seriesTitle = query.seriesTitle;
+    const editionTitle = query.editionTitle;
 
     return (
         <>

@@ -34,7 +34,7 @@ export const getAllTopics = async (reqCfg) => {
             }
         })
     ).then(results => {
-        return results.sort((a, b) => a.label.localeCompare(b.label))
+        return results.sort((a, b) => a.label.localeCompare(b.label));
     });
 };
 
