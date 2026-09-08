@@ -1,4 +1,4 @@
-import { getTopics, getTopic, getSubTopics as getST } from "@/utils/request/api-clients/topics";
+import { getTopics, getSubTopics as getST } from "@/utils/request/api-clients/topics";
 
 // Topic slug's that we want to appear in Topic Selector UI
 const INCLUDE_TOPIC_SLUGS = new Set([

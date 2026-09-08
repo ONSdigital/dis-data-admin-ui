@@ -1,10 +1,10 @@
 jest.mock("@/utils/request/api-clients/topics", () => ({
     getTopics: jest.fn(),
-    getTopic: jest.fn(),
+    getSubTopics: jest.fn(),
 }));
 
 import { getAllTopics } from "./topicsData";
-import { getTopics, getTopic } from "@/utils/request/api-clients/topics";
+import { getTopics, getSubTopics } from "@/utils/request/api-clients/topics";
 
 describe("getAllTopics", () => {
     const accessToken = { token: "test" };
@@ -49,7 +49,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [
                     { id: "sub-1", title: "Retail" },
@@ -72,8 +72,8 @@ describe("getAllTopics", () => {
         ]);
         expect(getTopics).toHaveBeenCalledTimes(1);
         expect(getTopics).toHaveBeenCalledWith(accessToken);
-        expect(getTopic).toHaveBeenCalledTimes(1);
-        expect(getTopic).toHaveBeenCalledWith("2945", accessToken);
+        expect(getSubTopics).toHaveBeenCalledTimes(1);
+        expect(getSubTopics).toHaveBeenCalledWith("2945", accessToken);
     });
 
     it("uses an empty subtopics array when the subtopics response has no items", async () => {
@@ -91,7 +91,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({ response: { items: [] } });
+        getSubTopics.mockResolvedValueOnce({ response: { items: [] } });
 
         const result = await getAllTopics(accessToken);
 
@@ -119,7 +119,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [
                     {
@@ -132,7 +132,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [{ id: "3", title: "Nested subtopic" }],
             },
@@ -154,9 +154,9 @@ describe("getAllTopics", () => {
             },
         ]);
         expect(getTopics).toHaveBeenCalledTimes(1);
-        expect(getTopic).toHaveBeenCalledTimes(2);
-        expect(getTopic).toHaveBeenNthCalledWith(1, "1", accessToken);
-        expect(getTopic).toHaveBeenNthCalledWith(2, "1", accessToken);
+        expect(getSubTopics).toHaveBeenCalledTimes(2);
+        expect(getSubTopics).toHaveBeenNthCalledWith(1, "1", accessToken);
+        expect(getSubTopics).toHaveBeenNthCalledWith(2, "1", accessToken);
     });
 
     it("omits parent subtopic when it has subtopics metadata and flattens children", async () => {
@@ -174,7 +174,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [
                     {
@@ -188,7 +188,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [{ id: "3", title: "Nested subtopic" }],
             },
@@ -204,9 +204,9 @@ describe("getAllTopics", () => {
             },
         ]);
         expect(getTopics).toHaveBeenCalledTimes(1);
-        expect(getTopic).toHaveBeenCalledTimes(2);
-        expect(getTopic).toHaveBeenNthCalledWith(1, "1", accessToken);
-        expect(getTopic).toHaveBeenNthCalledWith(2, "1", accessToken);
+        expect(getSubTopics).toHaveBeenCalledTimes(2);
+        expect(getSubTopics).toHaveBeenNthCalledWith(1, "1", accessToken);
+        expect(getSubTopics).toHaveBeenNthCalledWith(2, "1", accessToken);
     });
 
     it("includes only topics whose slug matches include list and does not fetch subtopics for excluded slugs", async () => {
@@ -234,7 +234,7 @@ describe("getAllTopics", () => {
                 ],
             },
         });
-        getTopic.mockResolvedValueOnce({
+        getSubTopics.mockResolvedValueOnce({
             response: {
                 items: [{ id: "sub-1", title: "Retail" }],
             },
@@ -250,8 +250,8 @@ describe("getAllTopics", () => {
             },
         ]);
         expect(getTopics).toHaveBeenCalledTimes(1);
-        expect(getTopic).toHaveBeenCalledTimes(1);
+        expect(getSubTopics).toHaveBeenCalledTimes(1);
         expect(getTopics).toHaveBeenCalledWith(accessToken);
-        expect(getTopic).toHaveBeenCalledWith("2945", accessToken);
+        expect(getSubTopics).toHaveBeenCalledWith("2945", accessToken);
     });
 });
