@@ -92,7 +92,7 @@ export default async function Dataset({ params, searchParams }) {
                 <div className="ons-grid__col ons-col-7@m ons-push-1@m">
                     <Summary summaries={seriesSummaryItems} />
 
-                    {datasetResp?.response?.current?.state !== "published" && (
+                    {dataset.state !== "published" && (
                         <LinkButton
                             dataTestId="delete-series-button"
                             text="Delete series"
