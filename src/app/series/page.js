@@ -20,7 +20,6 @@ export default async function Series({ searchParams }) {
 
     const urlParams = createURLParams(pageParams);
     const dataList = await getDatasetsList(urlParams, accessToken);
-    console.log(dataList)
 
     const listItems = [];
     const [ datasetFetchError, noSearchResults ] = checkErrors(dataList, pageParams);
