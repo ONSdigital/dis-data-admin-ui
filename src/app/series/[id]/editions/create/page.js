@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { createDatasetEdition } from "@/app/actions/datasetEdition";
-import { SSRequestConfig } from "@/utils/request/request";
+import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import EditionForm from "@/components/form/edition/EditionForm";
@@ -9,8 +9,7 @@ import PageHeading from "@/components/page-heading/PageHeading";
 
 export default async function CreateEditionPage({ params }) {
     const { id } = await params;
-    const reqCfg = await SSRequestConfig(cookies);
-    const accessToken = reqCfg.authToken;
+    const accessToken = getAcessTokenFromCookie(cookies);
 
     return (
         <>
