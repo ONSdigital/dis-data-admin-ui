@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { cookies, headers } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
 import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { getMigrationJob, getMigrationJobTasks } from "@/utils/request/api-clients/migration";
 import { getDataset } from "@/utils/request/api-clients/datasets";
