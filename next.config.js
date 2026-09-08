@@ -15,8 +15,9 @@ module.exports = {
       allowedOrigins: [
         "localhost:29500", // local when running in dataset-catalogue stack
         "publishing.eks.dp.aws.onsdigital.uk", // sandbox
-        "publishing.eks.dp-staging.aws.onsdigital.uk" // staging
-        ],
+        "publishing.eks.dp-staging.aws.onsdigital.uk", // staging
+        "publishing.eks.dp-prod.aws.onsdigital.uk" // prod
+      ],
     },
   },
   allowedDevOrigins: ["127.0.0.1"], // for component tests
