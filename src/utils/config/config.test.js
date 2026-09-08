@@ -50,6 +50,6 @@ describe("getAppConfig", () => {
         mockEnv.MIGRATION_SERVICE_URL = "";
         const config = getAppConfig(mockEnv);
 
-        expect(config.migrationServiceURL).toBe("http://localhost:30100/");
+        expect(config.migrationServiceURL).toBe("http://localhost:30100/v1");
     });
 });
