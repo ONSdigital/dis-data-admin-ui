@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPut } from "@/utils/request/request";
+import { updateDataset } from "@/utils/request/api-clients/datasets";
 import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo, logError } from "@/utils/log/log";
 
@@ -29,11 +29,10 @@ export const publishAction = async (currentState, formData) => {
         return actionResponse;
     }
 
-    const url = `/datasets/${dataset.id}`;
     dataset.state = "published";
 
     try {
-        const request = await httpPut(url, accessToken, dataset);
+        const request = await updateDataset(dataset.id, dataset, accessToken);
         if (request.status >= 400) {
             actionResponse.success = false;
             actionResponse.code = request.status;

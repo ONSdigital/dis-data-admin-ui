@@ -3,9 +3,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import getAppConfig from "@/utils/config/config";
 import { httpPut } from "@/utils/request/request";
-import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
 import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
+
 import { logError, logInfo } from "@/utils/log/log";
 import { getDistributionPath } from "@/utils/url/url";
 
@@ -72,7 +74,8 @@ const updateDistributionsMetadata = async (accessToken, distributions = [], data
         }
 
         try {
-            const response = await httpPut(`/files/${filePath}`, accessToken, {
+            const apiRouterURL = getAppConfig().apiRouterURL;
+            const response = await httpPut(`${apiRouterURL}/files/${filePath}`, accessToken, {
                 content_item: {
                     dataset_id: datasetID,
                     edition: editionID,

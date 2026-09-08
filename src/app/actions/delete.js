@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpDelete } from "@/utils/request/request";
+import { deleteDataset, deleteVersion } from "@/utils/request/api-clients/datasets";
 import { getAcessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo, logError } from "@/utils/log/log";
 
@@ -22,14 +22,11 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
     }
 
     const accessToken = await getAcessTokenFromCookie(cookies);
-    
-    let url = `/datasets/${datasetID}`;
-    if (editionID && versionID) {
-        url += `/editions/${editionID}/versions/${versionID}`;
-    }
 
     try {
-        const response = await httpDelete(url, accessToken);
+        const response = (editionID && versionID)
+            ? await deleteVersion(datasetID, editionID, versionID, accessToken)
+            : await deleteDataset(datasetID, accessToken);
         // dp-dataset-api returns 200 when deleting a version and 204 when deleting a dataset
         if (![200, 204].includes(response.status)) {
             return {
