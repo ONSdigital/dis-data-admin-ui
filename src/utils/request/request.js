@@ -88,8 +88,12 @@ const createHttpLogger = ({ requestID, method, path, startedAt }) => {
     };
 };
 
-// work in progress/place holder request func
-const request = async (url, accessToken, method, body) => {
+/**
+ * Performs an HTTP request and returns a standardised result.
+ * @param {{ url: string, accessToken?: string, method: string, body?: object }} options
+ * @return {Promise<object>} - standardised request object from createResponse
+ */
+const request = async ({ url, accessToken, method, body }) => {
     const requestID = uuidv4();
     const startedAt = new Date().toISOString();
     const httpLog = createHttpLogger({ requestID, method, path: url, startedAt });
@@ -152,7 +156,7 @@ const request = async (url, accessToken, method, body) => {
  * @return {Promise<object>} - standardised request object from createResponse
  */
 const httpGet = (url, accessToken) => {
-    return request(url, accessToken, "GET");
+    return request({ url, accessToken, method: "GET" });
 };
 
 /**
@@ -163,7 +167,7 @@ const httpGet = (url, accessToken) => {
  * @return {Promise<object>} - standardised request object from createResponse
  */
 const httpPost = (url, accessToken, body) => {
-    return request(url, accessToken, "POST", body);
+    return request({ url, accessToken, method: "POST", body });
 };
 
 /**
@@ -174,7 +178,7 @@ const httpPost = (url, accessToken, body) => {
  * @return {Promise<object>} - standardised request object from createResponse
  */
 const httpPut = (url, accessToken, body) => {
-    return request(url, accessToken, "PUT", body);
+    return request({ url, accessToken, method: "PUT", body });
 };
 
 /**
@@ -184,7 +188,7 @@ const httpPut = (url, accessToken, body) => {
  * @return {Promise<object>} - standardised request object from createResponse
  */
 const httpDelete = (url, accessToken) => {
-    return request(url, accessToken, "DELETE");
+    return request({ url, accessToken, method: "DELETE" });
 };
 
 export { httpGet, httpPost, httpPut, httpDelete };
