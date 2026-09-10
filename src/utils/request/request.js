@@ -107,7 +107,14 @@ const request = async ({ url, accessToken, method, body }) => {
     };
 
     if (method === "POST" || method === "PUT") {
-        fetchConfig.body = JSON.stringify(body || {});
+        let parsedBody;
+        try {
+            parsedBody = JSON.stringify(body || {});
+        } catch (error) {
+            httpLog.failure(0, error, "failed to stringify request body");
+            return createResponse(null, false, 0, "Failed to stringify request body", error.message, null);
+        }
+        fetchConfig.body = parsedBody;
         fetchConfig.headers.append("Content-Type", "application/json");
     }
 
