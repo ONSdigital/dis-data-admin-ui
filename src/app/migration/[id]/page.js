@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { cookies, headers } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
+import { getMigrationJob, getMigrationJobTasks } from "@/utils/request/api-clients/migration";
+import { getDataset } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { Panel } from "@/components/design-system/DesignSystem";
@@ -18,10 +20,10 @@ import { updateMigrationJobState } from "@/app/actions/migrationJob";
 export default async function MigrationOverview({ params, searchParams }) {
     const { id } = await params;
     const query = await searchParams;
-    const msReqCfg = await SSRequestConfig(cookies, "migration-service");
+    const accessToken = await getAccessTokenFromCookie(cookies);
+    const migrationResp = await getMigrationJob(id, accessToken);
 
-    const migrationResp = await httpGet(msReqCfg, `/migration-jobs/${id}`);
-    if (migrationResp.ok != null && !migrationResp.ok) {
+    if (migrationResp.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
@@ -29,15 +31,14 @@ export default async function MigrationOverview({ params, searchParams }) {
         );
     }
 
-    const associatedDataset = migrationResp.config?.target_id;
+    const associatedDataset = migrationResp.response?.config?.target_id;
 
-    const dsReqCfg = await SSRequestConfig(cookies, "api-router");
-    const datasetResp = await httpGet(dsReqCfg, `/datasets/${associatedDataset}`);
-    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
+    const datasetResp = await getDataset(associatedDataset, accessToken);
+    const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
     const canonicalTopic = dataset?.topics?.[0] || null;
 
-    const displayMigrationJobDetails = migrationResp.state !== "submitted" && migrationResp.state !== "migrating";
-    const isStateInReview = migrationResp.state === "in_review";
+    const displayMigrationJobDetails = migrationResp.response?.state !== "submitted" && migrationResp.response?.state !== "migrating";
+    const isStateInReview = migrationResp.response?.state === "in_review";
 
     const renderPreviewPanel = () => {
         return (
@@ -80,7 +81,7 @@ export default async function MigrationOverview({ params, searchParams }) {
                 return (
                     <div className="ons-u-mb-m">
                         <p className="ons-u-mb-no ons-u-fw-b">Series</p>
-                        <Link data-testid="migration-series-link" href={`/series/${datasetID}`} target="_blank">{migrationResp.label}</Link>
+                        <Link data-testid="migration-series-link" href={`/series/${datasetID}`} target="_blank">{migrationResp.response?.label}</Link>
                     </div>
                 );
             }
@@ -92,8 +93,8 @@ export default async function MigrationOverview({ params, searchParams }) {
             return (<p>Dataset series migration is still in progress. Try refreshing the page.</p>);
         }
 
-        const migrationTasksResp = await httpGet(msReqCfg, `/migration-jobs/${id}/tasks`);
-        if (migrationTasksResp.ok != null && !migrationTasksResp.ok) {
+        const migrationTasksResp = await getMigrationJobTasks(id, accessToken);
+        if (migrationTasksResp.error) {
             return (
                 <Panel title="Error" variant="error" dataTestId="migrations-job-overview-response-error">
                     <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
@@ -101,11 +102,11 @@ export default async function MigrationOverview({ params, searchParams }) {
             );
         }
 
-        const migrationTaskTableItems = mapMigrationJobTable(migrationTasksResp.items);
+        const migrationTaskTableItems = mapMigrationJobTable(migrationTasksResp.response?.items);
 
         return (
             <>
-                {renderSeriesTask(migrationTasksResp.items)}
+                {renderSeriesTask(migrationTasksResp.response?.items)}
                 <Table contents={migrationTaskTableItems} dataTestId={"migration-overview-task-table"} />
             </>
         );
@@ -119,7 +120,7 @@ export default async function MigrationOverview({ params, searchParams }) {
             <SuccessPanel query={query} contentType={query.jobNumber}/>
             <PageHeading
                 subtitle="Series"
-                title={migrationResp.label}
+                title={migrationResp.response?.label}
                 breadcrumbs={breadcrumbs}
                 linkURL="/migration"
                 linkText="Back to migration jobs list"

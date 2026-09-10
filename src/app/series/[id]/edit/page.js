@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
+import { getDataset } from "@/utils/request/api-clients/datasets";
 
 import { updateDatasetSeries } from "@/app/actions/datasetSeries";
 
@@ -11,21 +12,16 @@ import { getAllTopics } from "@/components/topics/topicsData";
 export default async function createPage({params}) {
     const { id } = await params;
 
-    const reqCfg = await SSRequestConfig(cookies);
-    const topics = await getAllTopics(reqCfg);
-    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const accessToken = await getAccessTokenFromCookie(cookies);
+    const topics = await getAllTopics(accessToken);
+    const datasetResp = await getDataset(id, accessToken);
 
-    let datasetError, topicsError = false;
-    if (datasetResp.ok != null && !datasetResp.ok) {
-        datasetError = true;
-    }
-
+    let topicsError = false;
     if(Object.keys(topics).length === 0) {
         topicsError = true;
     }
 
-
-    if (datasetError) {
+    if (datasetResp.error) {
         return (
             <>
                 <Panel title="Error" variant="error">
@@ -45,8 +41,8 @@ export default async function createPage({params}) {
         );
     }
 
-    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
-    const isPublished = datasetResp?.current?.state === "published";
+    const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
+    const isPublished = datasetResp?.response?.current?.state === "published";
     const showSeriesIDField = !isPublished && !dataset?.is_migration;
 
     return (

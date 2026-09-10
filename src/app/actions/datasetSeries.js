@@ -3,7 +3,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { createDataset, updateDataset } from "@/utils/request/api-clients/datasets";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
@@ -49,7 +50,7 @@ const getFormData = (formData) => {
     return datasetSeriesSubmission;
 };
 
-const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)  =>  {
+const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
     const response = {};
     response.success = result.success;
     if (!result.success) {
@@ -57,20 +58,21 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
         response.submission = datasetSeriesSubmission;
         logInfo("failed dataset series validation", null, null);
     } else {
-        const reqCfg = await SSRequestConfig(cookies);
+        const accessToken = await getAccessTokenFromCookie(cookies);
         try {
-            const data = await makeRequest(reqCfg, url, datasetSeriesSubmission);
+            const data = await doRequest(accessToken);
             if (data.status >= 400) {
                 response.success = false;
                 response.recentlySubmitted = false;
                 response.code = data.status;
+                const errorMessage = data.error?.errorMessage?.trim() || "";
                 
-                if (data.errorMessage.trim() === "dataset already exists") {
+                if (errorMessage === "dataset already exists") {
                     response.httpError = `A dataset series with an ID of ${datasetSeriesSubmission.id} already exists`;
-                } else if (data.errorMessage.trim() === "dataset title already exists") {
+                } else if (errorMessage === "dataset title already exists") {
                     response.httpError = `A dataset series titled ${datasetSeriesSubmission.title} already exists`;
                 } else {
-                    response.httpError = data.errorMessage;
+                    response.httpError = errorMessage;
                 }
             } else {
                 response.recentlySubmitted = true;
@@ -87,22 +89,26 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
 };
 
 export async function createDatasetSeries(currentstate, formData) {
-    const url = "/datasets";
-
     const datasetSeriesSubmission = getFormData(formData);
     const validation = createSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, validation, url, httpPost);
+    return createResponse(
+        datasetSeriesSubmission,
+        validation,
+        (token) => createDataset(datasetSeriesSubmission, token)
+    );
 }
 
 export async function updateDatasetSeries(originalId, currentstate, formData) {
-    const url = "/datasets/" + originalId;
-
     const datasetSeriesSubmission = getFormData(formData);
     const validation = editSchema.safeParse(datasetSeriesSubmission);
     // editing a series without explicity setting the state to 
     // "associated" will mean the state returns to "created" 
     datasetSeriesSubmission.state = "associated";
 
-    return createResponse(datasetSeriesSubmission, validation, url, httpPut);
+    return createResponse(
+        datasetSeriesSubmission,
+        validation,
+        (token) => updateDataset(originalId, datasetSeriesSubmission, token)
+    );
 }

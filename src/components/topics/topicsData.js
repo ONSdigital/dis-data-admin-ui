@@ -1,4 +1,4 @@
-import { httpGet } from "@/utils/request/request";
+import { getTopics, getSubTopics as getST } from "@/utils/request/api-clients/topics";
 
 // Topic slug's that we want to appear in Topic Selector UI
 const INCLUDE_TOPIC_SLUGS = new Set([
@@ -12,14 +12,14 @@ const INCLUDE_TOPIC_SLUGS = new Set([
 /**
  * Returns mapped topics with subtopics
  *
- * @param {any} reqCfg - Request configuration forwarded to {@link httpGet}.
+ * @param {any} accessToken - Auth token forwarded to {@link getTopics} / {@link getTopic}.
  * @returns {<Array>}
  */
-export const getAllTopics = async (reqCfg) => {
-    const topics = await httpGet(reqCfg, "/topics");
-    if (topics.ok != null && !topics.ok || topics?.items.length === 0) return [];
+export const getAllTopics = async (accessToken) => {
+    const topics = await getTopics(accessToken);
+    if (topics.error || topics?.response?.items.length === 0) return [];
 
-    const includedItems = topics.items.filter((topic) => {
+    const includedItems = topics.response.items.filter((topic) => {
         const t = topic.current || topic.next || topic;
         return INCLUDE_TOPIC_SLUGS.has(String(t.slug));
     });
@@ -28,8 +28,7 @@ export const getAllTopics = async (reqCfg) => {
         includedItems.map(async (topic) => {
             const t = topic.current || topic.next || topic;
             if (t.links?.subtopics?.href) {
-                const subTubTopicURL = new URL(t.links.subtopics.href);
-                const subTopic = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
+                const subTopic = await getSubTopics(t.id, accessToken);
                 return mapTopic(t, subTopic);
             }
         })
@@ -39,23 +38,22 @@ export const getAllTopics = async (reqCfg) => {
 };
 
 /**
- * Returns mapped subtopics for a given topics.
+ * Returns mapped subtopics for a given topic.
  *
- * @param {any} reqCfg - Request configuration forwarded to {@link httpGet}.
- * @param {string} url - Endpoint path passed to {@link httpGet}.
+ * @param {string} topicID - Topic ID passed to {@link getTopic}.
+ * @param {any} accessToken - Auth token forwarded to {@link getTopic}.
  * @returns {<Array>}
  */
-const getSubTopics = async (reqCfg, url) => {
-    const subTopics = await httpGet(reqCfg, url);
-    if (subTopics.ok != null && !subTopics.ok || !subTopics?.items?.length) return [];
+const getSubTopics = async (topicID, accessToken) => {
+    const subTopics = await getST(topicID, accessToken);
+    if (subTopics.error || subTopics?.response?.items.length === 0) return [];
 
     const rows = await Promise.all(
-        subTopics.items.map(async (subTopic) => {
+        subTopics.response.items.map(async (subTopic) => {
             const st = subTopic.current || subTopic.next || subTopic;
             let nested = [];
             if (st.links?.subtopics?.href) {
-                const subTubTopicURL = new URL(st.links.subtopics.href);
-                nested = await getSubTopics(reqCfg, subTubTopicURL.pathname.substring(3));
+                nested = await getSubTopics(topicID, accessToken);
             }
 
             // Subtopics that expose nested subtopics metadata are omitted
