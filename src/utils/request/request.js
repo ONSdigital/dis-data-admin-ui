@@ -3,6 +3,7 @@ import { logInfo, logError } from "../log/log";
 
 const xFlorenceHeaderKey = "X-Florence-Token";
 const authHeaderKey = "Authorization";
+const defaultTimeoutMs = 10000;
 
 /**
  * @param {string} authToken - user auth token obtained from access_token cookie
@@ -39,21 +40,16 @@ const parseError = (errMsg, statusText) => {
 
 /**
  * Builds a standardised request result.
- * @param {object|string|null} res - parsed response body on success, otherwise null
- * @param {boolean} ok - whether the request succeeded
- * @param {number} status - HTTP status code (0 when unavailable, e.g. network failure)
- * @param {string} statusText - HTTP status text or a synthetic failure label
- * @param {string|null} errorMessage - raw error body to parse when ok is false
- * @param {string|null} [etag] - ETag header value when present
+ * @param {{res?: object|string|null, ok: boolean, status: number, statusText: string, errorMessage?: string|null, etag?: string|null}} [options]
  * @return {object} - standardised request object
  */
-const createResponse = (res, ok, status, statusText, errorMessage, etag = null) => {
+const createResponse = ({ res = null, ok, status, statusText, errorMessage = null, etag = null } = {}) => {
     return {
         error: !ok ? parseError(errorMessage, statusText) : null,
-        ok: ok,
+        ok,
         response: res,
-        status: status,
-        statusText: statusText,
+        status,
+        statusText,
         etag
     };
 };
@@ -90,10 +86,10 @@ const createHttpLogger = ({ requestID, method, path, startedAt }) => {
 
 /**
  * Performs an HTTP request and returns a standardised result.
- * @param {{ url: string, accessToken?: string, method: string, body?: object }} options
+ * @param {{ url: string, accessToken?: string, method: string, body?: object, timeoutMs?: number }} options
  * @return {Promise<object>} - standardised request object from createResponse
  */
-const request = async ({ url, accessToken, method, body }) => {
+const request = async ({ url, accessToken, method, body, timeoutMs = defaultTimeoutMs, }) => {
     const requestID = uuidv4();
     const startedAt = new Date().toISOString();
     const httpLog = createHttpLogger({ requestID, method, path: url, startedAt });
@@ -101,30 +97,56 @@ const request = async ({ url, accessToken, method, body }) => {
     httpLog.start();
 
     const headers = setHeaders(accessToken);
-    const fetchConfig = {
-        method,
-        headers
-    };
+    const controller = new AbortController();
 
+    let serializedBody;
     if (method === "POST" || method === "PUT") {
-        let parsedBody;
         try {
-            parsedBody = JSON.stringify(body || {});
+            serializedBody = JSON.stringify(body || {});
+            headers.set("Content-Type", "application/json");
         } catch (error) {
             httpLog.failure(0, error, "failed to stringify request body");
-            return createResponse(null, false, 0, "Failed to stringify request body", error.message, null);
+            return createResponse({
+                ok: false,
+                status: 0,
+                statusText: "Failed to stringify request body",
+                errorMessage: error.message,
+            });
         }
-        fetchConfig.body = parsedBody;
-        fetchConfig.headers.append("Content-Type", "application/json");
     }
+
+    const timeout = setTimeout(() => { controller.abort(); }, timeoutMs);
+    const fetchConfig = {
+        method,
+        headers,
+        signal: controller.signal,
+        body: serializedBody,
+    };
 
     let response, etag;
     try {
         response = await fetch(url, fetchConfig);
         etag = response.headers.get("etag");
     } catch (error) {
+        if (error.name === "AbortError") {
+            const message = `Request timed out after ${timeoutMs}ms`;
+            httpLog.failure(0, error, "http request timed out");
+            return createResponse({
+                ok: false,
+                status: 0,
+                statusText: "Request timed out",
+                errorMessage: message,
+            });
+        }
         httpLog.failure(0, error);
-        return createResponse(null, false, 0, error.message, error.message, null);
+        return createResponse({
+            ok: false,
+            status: 0,
+            statusText: error.message,
+            errorMessage: error.message,
+        });
+    } finally {
+        clearTimeout(timeout);
     }
 
     if (!response.ok) {
@@ -133,15 +155,31 @@ const request = async ({ url, accessToken, method, body }) => {
             errorMessage = await response.text();
         } catch (error) {
             httpLog.failure(response.status, error, "failed to read error response body");
-            return createResponse(null, false, response.status, response.statusText, null, etag);
+            return createResponse({
+                ok: false,
+                status: response.status,
+                statusText: response.statusText,
+                etag,
+            });
         }
         httpLog.failure(response.status, { message: errorMessage });
-        return createResponse(null, response.ok, response.status, response.statusText, errorMessage, etag);
+        return createResponse({
+            ok: response.ok,
+            status: response.status,
+            statusText: response.statusText,
+            errorMessage,
+            etag,
+        });
     }
 
     if (response.status === 204) {
         httpLog.success(response.status);
-        return createResponse(null, response.ok, response.status, response.statusText, null, etag);
+        return createResponse({
+            ok: response.ok,
+            status: response.status,
+            statusText: response.statusText || "Success",
+            etag,
+        });
     }
 
     let json;
@@ -149,11 +187,23 @@ const request = async ({ url, accessToken, method, body }) => {
         json = await response.json();
     } catch (error) {
         httpLog.failure(response.status, error, "failed to parse JSON response");
-        return createResponse(null, false, response.status, response.statusText, "Response body was not valid JSON", etag);
+        return createResponse({
+            ok: false,
+            status: response.status,
+            statusText: response.statusText,
+            errorMessage: "Response body was not valid JSON",
+            etag,
+        });
     }
 
     httpLog.success(response.status);
-    return createResponse(json, response.ok, response.status, "Success", null, etag);
+    return createResponse({
+        res: json,
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText || "Success",
+        etag,
+    });
 };
 
 /**
