@@ -116,8 +116,14 @@ const request = async (url, accessToken, method, body) => {
         return createResponse(null, false, 0, error.message, error.message, null);
     }
 
-    if (response.status >= 400) {
-        const errorMessage = await response.text();
+    if (!response.ok) {
+        let errorMessage = null;
+        try {
+            errorMessage = await response.text();
+        } catch (error) {
+            httpLog.failure(response.status, error, "failed to read error response body");
+            return createResponse(null, false, response.status, response.statusText, null, etag);
+        }
         httpLog.failure(response.status, { message: errorMessage });
         return createResponse(null, response.ok, response.status, response.statusText, errorMessage, etag);
     }
