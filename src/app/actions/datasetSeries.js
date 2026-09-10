@@ -24,7 +24,6 @@ const createSchema = z.object({
 const editSchema = createSchema.omit({ id: true });
 
 const getFormData = (formData) => {
-    // keywords and next_release is placeholder until a ticket is made, possibly with design, to implement these fields properly.
     const datasetSeriesSubmission = {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
@@ -39,8 +38,13 @@ const getFormData = (formData) => {
         qmi: { 
             href: formData.get("dataset-series-qmi") 
         },
-        keywords: [ formData.get("dataset-series-keywords") ],
+        keywords: [],
     };
+
+    const keywords = (formData.get("dataset-series-keywords") || "").trim();
+    if (keywords) {
+        datasetSeriesSubmission.keywords = keywords.split(",").map(keyword => keyword.trim()).filter(Boolean);
+    }
 
     datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
     return datasetSeriesSubmission;
