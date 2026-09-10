@@ -1,19 +1,19 @@
 import { v4 as uuidv4 } from "uuid";
 import { logInfo, logError } from "../log/log";
 
-const xFlorenceHeaderKey = "X-Florence-Token";
-const authHeaderKey = "Authorization";
-const defaultTimeoutMs = 10000;
+const X_FLORENCE_HEADER_KEY = "X-Florence-Token";
+const AUTH_HEADER_KEY = "Authorization";
+const DEFAULT_TIMEOUT_MS = 10000;
 
 /**
- * @param {string} authToken - user auth token obtained from access_token cookie
+ * @param {string} accessToken - user auth token obtained from access_token cookie
  * @return {array} headers array or empty array
  */
 const setHeaders = (accessToken) => {
     const headers = new Headers();
-    if (authToken) {
-        headers.set(xFlorenceHeaderKey, accessToken);
-        headers.set(authHeaderKey, accessToken);
+    if (accessToken) {
+        headers.set(X_FLORENCE_HEADER_KEY, accessToken);
+        headers.set(AUTH_HEADER_KEY, accessToken);
     }
     return headers;
 };
@@ -89,7 +89,7 @@ const createHttpLogger = ({ requestID, method, path, startedAt }) => {
  * @param {{ url: string, accessToken?: string, method: string, body?: object, timeoutMs?: number }} options
  * @return {Promise<object>} - standardised request object from createResponse
  */
-const request = async ({ url, accessToken, method, body, timeoutMs = defaultTimeoutMs, }) => {
+const request = async ({ url, accessToken, method, body, timeoutMs = DEFAULT_TIMEOUT_MS, }) => {
     const requestID = uuidv4();
     const startedAt = new Date().toISOString();
     const httpLog = createHttpLogger({ requestID, method, path: url, startedAt });
