@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 
-import { getAccessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie, HEADER_USER_ROLES, userIsAdmin } from "@/utils/auth/auth";
 import { getDataset, getEditionsList } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
@@ -13,7 +13,6 @@ import PageHeading from "@/components/page-heading/PageHeading";
 import { mapListItems } from "./mapper";
 import { mapSeriesSummary } from "@/components/design-system/summary-mapper";
 import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
-import { HEADER_USER_ROLES, userIsAdmin } from "@/utils/auth/auth";
 
 export default async function Dataset({ params, searchParams }) {
     const { id } = await params;

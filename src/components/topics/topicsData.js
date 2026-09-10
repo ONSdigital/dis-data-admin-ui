@@ -33,7 +33,7 @@ export const getAllTopics = async (accessToken) => {
             }
         })
     ).then(results => {
-        return results.sort((a, b) => a.label.localeCompare(b.label))
+        return results.sort((a, b) => a.label.localeCompare(b.label));
     });
 };
 

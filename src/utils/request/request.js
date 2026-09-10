@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { logInfo, logError } from "../log/log";
+import { logInfo, logWarn, logError } from "../log/log";
 
 const X_FLORENCE_HEADER_KEY = "X-Florence-Token";
 const AUTH_HEADER_KEY = "Authorization";
@@ -31,6 +31,7 @@ const parseError = (errMsg, statusText) => {
             errorMessage: err?.description || errMsg || "Error message not available",
             code: err?.code || null};
     } catch (e) {
+        logWarn("failed to parse JSON response or didn't get JSON response. using fallback error.", null, null, { message: e.message });
         return { 
             errorMessage: errMsg || statusText || "Error message not available", 
             code: null 

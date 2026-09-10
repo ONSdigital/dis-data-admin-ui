@@ -9,7 +9,7 @@ const getMigrationJob = async (jobID, accessToken) => {
 
 const getMigrationJobTasks = async (jobID, accessToken) => {
     return await httpGet(`${getMigrationServiceURL()}/migration-jobs/${jobID}/tasks`, accessToken);
-}
+};
 
 const getMigrationsList = async (query, accessToken) => {
     return await httpGet(`${getMigrationServiceURL()}/migration-jobs?${query}`, accessToken);
