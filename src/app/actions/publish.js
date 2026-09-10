@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { updateDataset } from "@/utils/request/api-clients/datasets";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo, logError } from "@/utils/log/log";
 
 /**
@@ -19,7 +19,7 @@ export const publishAction = async (currentState, formData) => {
         errors: {}
     };
 
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     const datasetInput = formData.get("dataset");
     const dataset = JSON.parse(datasetInput);

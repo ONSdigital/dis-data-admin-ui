@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createDataset, updateDataset } from "@/utils/request/api-clients/datasets";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
@@ -54,7 +54,7 @@ const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
         response.submission = datasetSeriesSubmission;
         logInfo("failed dataset series validation", null, null);
     } else {
-        const accessToken = await getAcessTokenFromCookie(cookies);
+        const accessToken = await getAccessTokenFromCookie(cookies);
         try {
             const data = await doRequest(accessToken);
             if (data.status >= 400) {

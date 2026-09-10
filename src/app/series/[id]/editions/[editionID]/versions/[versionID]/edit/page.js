@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getVersion } from "@/utils/request/api-clients/datasets";
 
 import { updateDatasetVersion } from "@/app/actions/datasetVersion";
@@ -11,7 +11,7 @@ import { Panel } from "@/components/design-system/DesignSystem";
 
 export default async function EditVersion({ params }) {
     const { id, editionID, versionID } = await params;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const versionResp = await getVersion(id, editionID, versionID, accessToken);
 
     if (versionResp.error) {

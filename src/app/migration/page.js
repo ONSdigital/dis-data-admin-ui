@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getMigrationsList } from "@/utils/request/api-clients/migration";
 
 import MigrationFilter from "@/components/form/migration-list-filter/MigrationFilter";
@@ -18,7 +18,7 @@ export default async function MigrationList({ searchParams }) {
     pageParams.offset = pageParams.offset ? Number(pageParams.offset) : 0;
 
     const requestURL = createRequestURL(pageParams);
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const migrationsResp = await getMigrationsList(requestURL, accessToken);
 
     if (migrationsResp.error) {

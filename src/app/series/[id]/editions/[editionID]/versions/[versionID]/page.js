@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getMetadata } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
@@ -13,7 +13,7 @@ import { mapVersionSummary } from "@/components/design-system/summary-mapper";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const metadata = await getMetadata(id, editionID, versionID, accessToken);
 
     if (metadata.error) {

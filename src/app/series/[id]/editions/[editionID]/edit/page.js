@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getEdition } from "@/utils/request/api-clients/datasets";
 import { updateDatasetEdition } from "@/app/actions/datasetEdition";
 
@@ -11,7 +11,7 @@ import EditionForm from "@/components/form/edition/EditionForm";
 
 export default async function EditEdition({ params }) {
     const { id, editionID } = await params;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const editionResp = await getEdition(id, editionID, accessToken);
 
     if (editionResp.error) {

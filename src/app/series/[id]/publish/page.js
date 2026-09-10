@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDataset } from "@/utils/request/api-clients/datasets";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
@@ -15,7 +15,7 @@ import PublishForm from "@/components/form/publish/PublishForm";
 export default async function PublishDataset({ params }) {
     const { id } = await params;
 
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetResp = await getDataset(id, accessToken);
 
     if (datasetResp.error) {

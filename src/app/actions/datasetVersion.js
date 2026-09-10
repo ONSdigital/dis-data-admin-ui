@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import getAppConfig from "@/utils/config/config";
 import { httpPut } from "@/utils/request/request";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
 
 import { logError, logInfo } from "@/utils/log/log";
@@ -103,7 +103,7 @@ const updateDistributionsMetadata = async (accessToken, distributions = [], data
 };
 
 const doSubmission = async (datasetVersionSubmission, doRequest) => {
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     let versionResponse = {};
     try {

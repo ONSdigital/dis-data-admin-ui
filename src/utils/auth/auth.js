@@ -42,7 +42,7 @@ const getLoginURLWithRedirect = (redirectPath) => {
  * @param  {Function} cookies - Async function that returns the cookie store (e.g. next/headers cookies)
  * @return {Promise<string|null>} - Cleaned access token value, or null if cookies is falsy
  */
-const getAcessTokenFromCookie = async (cookies) => {
+const getAccessTokenFromCookie = async (cookies) => {
     if (!cookies) {
         return null;
     }
@@ -147,5 +147,5 @@ export { HEADER_USER_ROLES,
     getUserRoles, 
     userIsAdmin, 
     userIsPublisher,
-    getAcessTokenFromCookie
+    getAccessTokenFromCookie
 };

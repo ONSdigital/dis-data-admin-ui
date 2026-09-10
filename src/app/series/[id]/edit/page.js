@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDataset } from "@/utils/request/api-clients/datasets";
 
 import { updateDatasetSeries } from "@/app/actions/datasetSeries";
@@ -12,7 +12,7 @@ import { getAllTopics } from "@/components/topics/topicsData";
 export default async function createPage({params}) {
     const { id } = await params;
 
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const topics = await getAllTopics(accessToken);
     const datasetResp = await getDataset(id, accessToken);
 

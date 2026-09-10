@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getAllTopics } from "@/components/topics/topicsData";
 
 import { createDatasetSeries } from "@/app/actions/datasetSeries";
@@ -10,7 +10,7 @@ import { Panel } from "@/components/design-system/DesignSystem";
 import SeriesForm from "@/components/form/series/SeriesForm";
 
 export default async function createPage() {
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const topics = await getAllTopics(accessToken);
 
     if(Object.keys(topics).length === 0){

@@ -1,6 +1,6 @@
 import { cookies, headers } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDataset, getEditionsList } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
@@ -19,7 +19,7 @@ export default async function Dataset({ params, searchParams }) {
     const { id } = await params;
     const query = await searchParams;
 
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetResp = await getDataset(id, accessToken);
     const editions = await getEditionsList(id, accessToken);
 

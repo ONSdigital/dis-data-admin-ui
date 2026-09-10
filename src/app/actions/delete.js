@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { deleteDataset, deleteVersion } from "@/utils/request/api-clients/datasets";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo, logError } from "@/utils/log/log";
 
 export const deleteDatasetOrVersion = async (currentState, formData) => {
@@ -21,7 +21,7 @@ export const deleteDatasetOrVersion = async (currentState, formData) => {
         return actionResponse;
     }
 
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     try {
         const response = (editionID && versionID)

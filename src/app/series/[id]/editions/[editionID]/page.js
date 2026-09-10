@@ -2,7 +2,7 @@ import { cookies, headers } from "next/headers";
 
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDataset, getEdition, getVersionsList } from "@/utils/request/api-clients/datasets";
 
 import PageHeading from "@/components/page-heading/PageHeading";
@@ -16,7 +16,7 @@ import { mapListItems } from "./mapper";
 export default async function Edition({ params, searchParams }) {
     const { id, editionID } = await params;
     const query = await searchParams;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetResp = await getDataset(id, accessToken);
     const editionResp = await getEdition(id, editionID, accessToken);
     const versions = await getVersionsList(id, editionID, accessToken);

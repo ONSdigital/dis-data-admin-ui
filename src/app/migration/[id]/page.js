@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies, headers } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getMigrationJob, getMigrationJobTasks } from "@/utils/request/api-clients/migration";
 import { getDataset } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
@@ -20,7 +20,7 @@ import { updateMigrationJobState } from "@/app/actions/migrationJob";
 export default async function MigrationOverview({ params, searchParams }) {
     const { id } = await params;
     const query = await searchParams;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const migrationResp = await getMigrationJob(id, accessToken);
 
     if (migrationResp.error) {

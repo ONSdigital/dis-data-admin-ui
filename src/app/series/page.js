@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDatasetsList } from "@/utils/request/api-clients/datasets";
 
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
@@ -13,7 +13,7 @@ import { Panel, Select } from "@/components/design-system/DesignSystem";
 import { mapListItems } from "./mapper";
 
 export default async function Series({ searchParams }) {
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     const pageParams = await searchParams;
     pageParams.limit = 20;

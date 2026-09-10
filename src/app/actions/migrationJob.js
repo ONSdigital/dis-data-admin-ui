@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createMigration, updateMigration } from "@/utils/request/api-clients/migration";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
@@ -36,7 +36,7 @@ const createResponse = async (migrationJobSubmission, result, doRequest, series 
         response.submission = migrationJobSubmission;
         logInfo("failed create/update migration validation", null, null);
     } else {
-        const accessToken = await getAcessTokenFromCookie(cookies);
+        const accessToken = await getAccessTokenFromCookie(cookies);
         try {
             const data = await doRequest(accessToken);
             if (data.status >= 400) {

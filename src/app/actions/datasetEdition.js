@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
 import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata } from "./datasetVersion";
 
@@ -31,7 +31,7 @@ const editionWithVersionSchema = z.object({
 });
 
 const doSubmission = async (datasetEditionSubmission, doRequest) => {
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetID = datasetEditionSubmission.dataset_id;
 
     let editionResponse = {};

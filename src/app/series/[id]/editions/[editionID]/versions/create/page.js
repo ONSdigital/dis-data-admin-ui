@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { getAcessTokenFromCookie } from "@/utils/auth/auth";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getDataset } from "@/utils/request/api-clients/datasets";
 
 import { createDatasetVersion } from "@/app/actions/datasetVersion";
@@ -11,7 +11,7 @@ import VersionForm from "@/components/form/version/VersionForm";
 
 export default async function CreateVersion({ params }) {
     const { id, editionID } = await params;
-    const accessToken = await getAcessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetResp = await getDataset(id, accessToken);
     
     const dataset = datasetResp?.response?.current || datasetResp?.response?.next || datasetResp?.response;
