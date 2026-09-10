@@ -3,19 +3,17 @@ import { logInfo, logError } from "../log/log";
 
 const xFlorenceHeaderKey = "X-Florence-Token";
 const authHeaderKey = "Authorization";
-const bearerPrefix = "Bearer ";
 
 /**
  * @param {string} authToken - user auth token obtained from access_token cookie
  * @return {array} headers array or empty array
  */
 const setHeaders = (authToken) => {
-    if (!authToken) {
-        return [];
-    }
     const headers = new Headers();
-    headers.set(xFlorenceHeaderKey, authToken);
-    headers.set(authHeaderKey, authToken);
+    if (authToken) {
+        headers.set(xFlorenceHeaderKey, authToken);
+        headers.set(authHeaderKey, authToken);
+    }
     return headers;
 };
 
