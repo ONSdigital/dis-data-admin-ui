@@ -249,4 +249,4 @@ const httpDelete = (url, accessToken) => {
     return request({ url, accessToken, method: "DELETE" });
 };
 
-export { httpGet, httpPost, httpPut, httpDelete };
+export { setHeaders, parseError, createResponse, request, httpGet, httpPost, httpPut, httpDelete };
