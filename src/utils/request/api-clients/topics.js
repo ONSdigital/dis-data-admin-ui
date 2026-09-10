@@ -3,16 +3,16 @@ import getAppConfig from "../../config/config";
 
 const getApiRouterURL = () => getAppConfig().apiRouterURL;
 
-const getTopics = async (authToken) => {
-    return await httpGet(`${getApiRouterURL()}/topics`, authToken);
+const getTopics = async (accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/topics`, accessToken);
 };
 
-const getTopic = async (topicID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/topics/${topicID}`, authToken);
+const getTopic = async (topicID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/topics/${topicID}`, accessToken);
 };
 
-const getSubTopics = async (topicID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/topics/${topicID}/subtopics`, authToken);
+const getSubTopics = async (topicID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/topics/${topicID}/subtopics`, accessToken);
 };
 
 export { getTopics, getTopic, getSubTopics };

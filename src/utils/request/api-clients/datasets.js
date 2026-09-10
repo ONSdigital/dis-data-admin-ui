@@ -3,64 +3,64 @@ import getAppConfig from "../../config/config";
 
 const getApiRouterURL = () => getAppConfig().apiRouterURL;
 
-const getDataset = async (datasetID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}`, authToken);
+const getDataset = async (datasetID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}`, accessToken);
 };
 
-const getDatasetsList = async (query, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets?${query}`, authToken);
+const getDatasetsList = async (query, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets?${query}`, accessToken);
 };
 
-const createDataset = async (datasetBody, authToken) => {
-    return await httpPost(`${getApiRouterURL()}/datasets`, authToken, datasetBody);
+const createDataset = async (datasetBody, accessToken) => {
+    return await httpPost(`${getApiRouterURL()}/datasets`, accessToken, datasetBody);
 };
 
-const updateDataset = async (datasetID, datasetBody, authToken) => {
-    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}`, authToken, datasetBody);
+const updateDataset = async (datasetID, datasetBody, accessToken) => {
+    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}`, accessToken, datasetBody);
 };
 
-const deleteDataset = async (datasetID, authToken) => {
-    return await httpDelete(`${getApiRouterURL()}/datasets/${datasetID}`, authToken);
+const deleteDataset = async (datasetID, accessToken) => {
+    return await httpDelete(`${getApiRouterURL()}/datasets/${datasetID}`, accessToken);
 };
 
-const getEditionsList = async (datasetID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions`, authToken);
+const getEditionsList = async (datasetID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions`, accessToken);
 };
 
-const getEdition = async (datasetID, editionID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}`, authToken);
+const getEdition = async (datasetID, editionID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}`, accessToken);
 };
 
-const createEdition = async (datasetID, editionBody, authToken ) => {
-    return await httpPost(`${getApiRouterURL()}/datasets/${datasetID}/editions`, authToken, editionBody);
+const createEdition = async (datasetID, editionBody, accessToken ) => {
+    return await httpPost(`${getApiRouterURL()}/datasets/${datasetID}/editions`, accessToken, editionBody);
 };
 
-const updateEdition = async (datasetID, editionID, editionBody, authToken) => {
-    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}`, authToken, editionBody);
+const updateEdition = async (datasetID, editionID, editionBody, accessToken) => {
+    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}`, accessToken, editionBody);
 };
 
-const getVersionsList = async (datasetID, editionID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions`, authToken);
+const getVersionsList = async (datasetID, editionID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions`, accessToken);
 };
 
-const getVersion = async (datasetID, editionID, versionID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, authToken);
+const getVersion = async (datasetID, editionID, versionID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, accessToken);
 };
 
-const createVersion = async (datasetID, editionID, versionBody, authToken) => {
-    return await httpPost(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions`, authToken, versionBody);
+const createVersion = async (datasetID, editionID, versionBody, accessToken) => {
+    return await httpPost(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions`, accessToken, versionBody);
 };
 
-const updateVersion = async (datasetID, editionID, versionID, versionBody, authToken ) => {
-    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, authToken, versionBody);
+const updateVersion = async (datasetID, editionID, versionID, versionBody, accessToken ) => {
+    return await httpPut(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, accessToken, versionBody);
 };
 
-const deleteVersion = async (datasetID, editionID, versionID, authToken) => {
-    return await httpDelete(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, authToken);
+const deleteVersion = async (datasetID, editionID, versionID, accessToken) => {
+    return await httpDelete(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}`, accessToken);
 };
 
-const getMetadata = async (datasetID, editionID, versionID, authToken) => {
-    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}/metadata`, authToken);
+const getMetadata = async (datasetID, editionID, versionID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}/versions/${versionID}/metadata`, accessToken);
 };
 
 export {

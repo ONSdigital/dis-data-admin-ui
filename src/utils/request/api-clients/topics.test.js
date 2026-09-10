@@ -13,24 +13,24 @@ import { httpGet } from "../request";
 import { getTopics, getTopic, getSubTopics } from "./topics";
 
 describe("topics api client", () => {
-    const authToken = "token";
+    const accessToken = "token";
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     it("getTopics calls httpGet with the correct URL and auth token", async () => {
-        await getTopics(authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics", authToken);
+        await getTopics(accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics", accessToken);
     });
 
     it("getTopic calls httpGet with the correct URL and auth token", async () => {
-        await getTopic("topic-1", authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics/topic-1", authToken);
+        await getTopic("topic-1", accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics/topic-1", accessToken);
     });
 
     it("getSubTopics calls httpGet with the correct URL and auth token", async () => {
-        await getSubTopics("topic-1", authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics/topic-1/subtopics", authToken);
+        await getSubTopics("topic-1", accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://api.test/topics/topic-1/subtopics", accessToken);
     });
 });

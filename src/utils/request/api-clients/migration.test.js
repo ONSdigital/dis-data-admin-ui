@@ -21,7 +21,7 @@ import {
 } from "./migration";
 
 describe("migration api client", () => {
-    const authToken = "token";
+    const accessToken = "token";
     const migrationBody = { status: "complete" };
 
     afterEach(() => {
@@ -29,40 +29,40 @@ describe("migration api client", () => {
     });
 
     it("getMigrationJob calls httpGet with the correct URL and auth token", async () => {
-        await getMigrationJob("job-1", authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://migration.test/migration-jobs/job-1", authToken);
+        await getMigrationJob("job-1", accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://migration.test/migration-jobs/job-1", accessToken);
     });
 
     it("getMigrationJobTasks calls httpGet with the correct URL and auth token", async () => {
-        await getMigrationJobTasks("job-1", authToken);
+        await getMigrationJobTasks("job-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://migration.test/migration-jobs/job-1/tasks",
-            authToken
+            accessToken
         );
     });
 
     it("getMigrationsList calls httpGet with the correct URL and auth token", async () => {
-        await getMigrationsList("status=active", authToken);
+        await getMigrationsList("status=active", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://migration.test/migration-jobs?status=active",
-            authToken
+            accessToken
         );
     });
 
     it("createMigration calls httpPost with the correct URL, auth token and body", async () => {
-        await createMigration(migrationBody, authToken);
+        await createMigration(migrationBody, accessToken);
         expect(httpPost).toHaveBeenCalledWith(
             "http://migration.test/migration-jobs",
-            authToken,
+            accessToken,
             migrationBody
         );
     });
 
     it("updateMigration calls httpPut with the correct URL, auth token and body", async () => {
-        await updateMigration("job-1", migrationBody, authToken);
+        await updateMigration("job-1", migrationBody, accessToken);
         expect(httpPut).toHaveBeenCalledWith(
             "http://migration.test/migration-jobs/job-1/state",
-            authToken,
+            accessToken,
             migrationBody
         );
     });

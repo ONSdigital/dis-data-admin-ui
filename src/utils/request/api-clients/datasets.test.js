@@ -32,7 +32,7 @@ import {
 } from "./datasets";
 
 describe("datasets api client", () => {
-    const authToken = "token";
+    const accessToken = "token";
     const datasetBody = { title: "Dataset" };
     const editionBody = { title: "Edition" };
     const versionBody = { title: "Version" };
@@ -42,115 +42,115 @@ describe("datasets api client", () => {
     });
 
     it("getDataset calls httpGet with the correct URL and auth token", async () => {
-        await getDataset("dataset-1", authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://api.test/datasets/dataset-1", authToken);
+        await getDataset("dataset-1", accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://api.test/datasets/dataset-1", accessToken);
     });
 
     it("getDatasetsList calls httpGet with the correct URL and auth token", async () => {
-        await getDatasetsList("limit=10", authToken);
-        expect(httpGet).toHaveBeenCalledWith("http://api.test/datasets?limit=10", authToken);
+        await getDatasetsList("limit=10", accessToken);
+        expect(httpGet).toHaveBeenCalledWith("http://api.test/datasets?limit=10", accessToken);
     });
 
     it("createDataset calls httpPost with the correct URL, auth token and body", async () => {
-        await createDataset(datasetBody, authToken);
-        expect(httpPost).toHaveBeenCalledWith("http://api.test/datasets", authToken, datasetBody);
+        await createDataset(datasetBody, accessToken);
+        expect(httpPost).toHaveBeenCalledWith("http://api.test/datasets", accessToken, datasetBody);
     });
 
     it("updateDataset calls httpPut with the correct URL, auth token and body", async () => {
-        await updateDataset("dataset-1", datasetBody, authToken);
+        await updateDataset("dataset-1", datasetBody, accessToken);
         expect(httpPut).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1",
-            authToken,
+            accessToken,
             datasetBody
         );
     });
 
     it("deleteDataset calls httpDelete with the correct URL and auth token", async () => {
-        await deleteDataset("dataset-1", authToken);
-        expect(httpDelete).toHaveBeenCalledWith("http://api.test/datasets/dataset-1", authToken);
+        await deleteDataset("dataset-1", accessToken);
+        expect(httpDelete).toHaveBeenCalledWith("http://api.test/datasets/dataset-1", accessToken);
     });
 
     it("getEditionsList calls httpGet with the correct URL and auth token", async () => {
-        await getEditionsList("dataset-1", authToken);
+        await getEditionsList("dataset-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions",
-            authToken
+            accessToken
         );
     });
 
     it("getEdition calls httpGet with the correct URL and auth token", async () => {
-        await getEdition("dataset-1", "edition-1", authToken);
+        await getEdition("dataset-1", "edition-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1",
-            authToken
+            accessToken
         );
     });
 
     it("createEdition calls httpPost with the correct URL, auth token and body", async () => {
-        await createEdition("dataset-1", editionBody, authToken);
+        await createEdition("dataset-1", editionBody, accessToken);
         expect(httpPost).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions",
-            authToken,
+            accessToken,
             editionBody
         );
     });
 
     it("updateEdition calls httpPut with the correct URL, auth token and body", async () => {
-        await updateEdition("dataset-1", "edition-1", editionBody, authToken);
+        await updateEdition("dataset-1", "edition-1", editionBody, accessToken);
         expect(httpPut).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1",
-            authToken,
+            accessToken,
             editionBody
         );
     });
 
     it("getVersionsList calls httpGet with the correct URL and auth token", async () => {
-        await getVersionsList("dataset-1", "edition-1", authToken);
+        await getVersionsList("dataset-1", "edition-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions",
-            authToken
+            accessToken
         );
     });
 
     it("getVersion calls httpGet with the correct URL and auth token", async () => {
-        await getVersion("dataset-1", "edition-1", "version-1", authToken);
+        await getVersion("dataset-1", "edition-1", "version-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions/version-1",
-            authToken
+            accessToken
         );
     });
 
     it("createVersion calls httpPost with the correct URL, auth token and body", async () => {
-        await createVersion("dataset-1", "edition-1", versionBody, authToken);
+        await createVersion("dataset-1", "edition-1", versionBody, accessToken);
         expect(httpPost).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions",
-            authToken,
+            accessToken,
             versionBody
         );
     });
 
     it("updateVersion calls httpPut with the correct URL, auth token and body", async () => {
-        await updateVersion("dataset-1", "edition-1", "version-1", versionBody, authToken);
+        await updateVersion("dataset-1", "edition-1", "version-1", versionBody, accessToken);
         expect(httpPut).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions/version-1",
-            authToken,
+            accessToken,
             versionBody
         );
     });
 
     it("deleteVersion calls httpDelete with the correct URL and auth token", async () => {
-        await deleteVersion("dataset-1", "edition-1", "version-1", authToken);
+        await deleteVersion("dataset-1", "edition-1", "version-1", accessToken);
         expect(httpDelete).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions/version-1",
-            authToken
+            accessToken
         );
     });
 
     it("getMetadata calls httpGet with the correct URL and auth token", async () => {
-        await getMetadata("dataset-1", "edition-1", "version-1", authToken);
+        await getMetadata("dataset-1", "edition-1", "version-1", accessToken);
         expect(httpGet).toHaveBeenCalledWith(
             "http://api.test/datasets/dataset-1/editions/edition-1/versions/version-1/metadata",
-            authToken
+            accessToken
         );
     });
 });

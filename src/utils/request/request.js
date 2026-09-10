@@ -9,11 +9,11 @@ const defaultTimeoutMs = 10000;
  * @param {string} authToken - user auth token obtained from access_token cookie
  * @return {array} headers array or empty array
  */
-const setHeaders = (authToken) => {
+const setHeaders = (accessToken) => {
     const headers = new Headers();
     if (authToken) {
-        headers.set(xFlorenceHeaderKey, authToken);
-        headers.set(authHeaderKey, authToken);
+        headers.set(xFlorenceHeaderKey, accessToken);
+        headers.set(authHeaderKey, accessToken);
     }
     return headers;
 };
