@@ -73,4 +73,17 @@ test.describe("Create edition page", () => {
         await expect(page.getByTestId("fieldset-quality-designation-radios-error").getByText("Quality designation is required")).toBeVisible();
         await expect(page.getByTestId("field-dataset-upload-input-error").getByText("File upload is required")).toBeVisible();
     });
+
+    test("Show error when edition ID contains invalid characters", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly/editions/create");
+
+        await page.getByTestId("edition-id").fill("id with spaces");
+        
+        await page.getByRole("button", { name: /Create edition/i }).click();
+
+        await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("Edition ID can only contain letters, numbers and dashes")).toBeVisible();
+    });
 });

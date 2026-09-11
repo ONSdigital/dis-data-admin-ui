@@ -92,6 +92,19 @@ test.describe("Create series page", () => {
         await expect(page.getByTestId("field-dataset-series-contact-email-error").getByText("Invalid email")).toBeVisible();
     });
 
+    test("Show error when series ID contains invalid characters", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/create")
+
+        await page.getByLabel("Series ID", {exact: true}).fill("id with spaces");
+        
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
+
+        await expect(page.getByText("There was a problem submitting your form")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("ID can only contain letters, numbers and dashes")).toBeVisible();
+    });
+
     test("Does not allow duplicate dataset series to be created", async ({ page, context }) => {
         setValidAuthCookies(context);
 
@@ -118,7 +131,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("duplicate-title");
-        await page.getByLabel("Series ID", {exact: true}).fill("test ID");
+        await page.getByLabel("Series ID", {exact: true}).fill("test-id");
         await page.getByTestId("field-dataset-series-description").getByRole("textbox").fill("test description");
         await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();

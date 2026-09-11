@@ -50,6 +50,19 @@ test.describe("Edit edition page", () => {
             await expect(page.getByLabel("There was a problem").getByText("Edition ID is required")).toBeVisible();
             await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
         });
+
+        test("Show error when edition ID contains invalid characters", async ({ page, context }) => {
+            setValidAuthCookies(context);
+
+            await page.goto("./series/mock-quarterly/editions/test-edition/edit");
+
+            await page.getByTestId("edition-id").fill("id with spaces");
+            
+            await page.getByRole("button", { name: /Save edition/i }).click();
+
+            await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
+            await expect(page.getByLabel("There was a problem").getByText("Edition ID can only contain letters, numbers and dashes")).toBeVisible();
+        });
     });
 
     test.describe("When editing a published edition", () => {
