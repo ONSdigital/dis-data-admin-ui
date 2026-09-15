@@ -9,7 +9,7 @@ import PageHeading from "@/components/page-heading/PageHeading";
 
 export default async function CreateEditionPage({ params }) {
     const { id } = await params;
-    const accessToken = getAccessTokenFromCookie(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     return (
         <>
