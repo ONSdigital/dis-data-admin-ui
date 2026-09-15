@@ -39,50 +39,54 @@ export default async function Series({ searchParams }) {
     };
 
     const renderListArea = () => {
-        if (noSearchResults) {
-            return (
-                <p>No results found for {pageParams?.id}</p>
-            );
-        }
         return (
             <>
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
-                            <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                                Showing {data.offset + 1} to {data.offset + data.count} of {totalCount} series
-                            </div>
-                            <div className="ons-grid__col ons-col-2@m ons-push-1@m">
-                                <LinkButton
-                                    text="Create new series"
-                                    link="series/create"          
-                                />   
-                            </div>
+                        <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
+                            <p>
+                                {noSearchResults 
+                                    ? `No results found for ${pageParams?.id}` 
+                                    : `Showing ${data.offset + 1} to ${data.offset + data.count} of ${totalCount} series`
+                                }
+                            </p>
+                        </div>
+                        <div className="ons-grid__col ons-col-2@m ons-push-1@m">
+                            <LinkButton
+                                text="Create new series"
+                                link="series/create"          
+                            />   
+                        </div>
                     </div>
                 </div>
-                <div className="ons-u-mt-m ons-u-mb-l">
-                    <Select
-                        classes="ons-u-ml-m"
-                        dataTestId="select-series-sort-by"
-                        id="select-series-sort-by"
-                        label={{
-                            for: 'select-series-sort-by',
-                            text: 'Sort By:'
-                        }}
-                        options={[
-                            {
-                            text: 'Series ID',
-                            value: 'seriesID'
-                            }
-                        ]}
-                        variants="inline"
-                    />
-                </div>
-                <List items={listItems} type="series"/>
-                <Pagination
-                    totalNumberOfPages = {totalNumberOfPages}
-                    currentPage = {currentPage}
-                    limit = {pageParams.limit}
-                />
+                {!noSearchResults && (
+                    <>
+                        <div className="ons-u-mt-m ons-u-mb-l">
+                            <Select
+                                classes="ons-u-ml-m"
+                                dataTestId="select-series-sort-by"
+                                id="select-series-sort-by"
+                                label={{
+                                    for: 'select-series-sort-by',
+                                    text: 'Sort By:'
+                                }}
+                                options={[
+                                    {
+                                        text: 'Series ID',
+                                        value: 'seriesID'
+                                    }
+                                ]}
+                                variants="inline"
+                            />
+                        </div>
+                        <List items={listItems} type="series"/>
+                        <Pagination
+                            totalNumberOfPages = {totalNumberOfPages}
+                            currentPage = {currentPage}
+                            limit = {pageParams.limit}
+                        />
+                    </>
+                )}
             </>
         );
     };
