@@ -94,7 +94,7 @@ const getFormData = (formData) => {
     return {
         dataset_id: formData.get("dataset-id"),
         edition_id: formData.get("current-edition-id"),
-        edition: formData.get("edition-id"),
+        edition: formData.get("edition-id")?.trim(),
         edition_title: formData.get("edition-title"),
         type: "static",
     };

@@ -27,7 +27,7 @@ const getFormData = (formData) => {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
-        id: formData.get("dataset-series-id"),
+        id: formData.get("dataset-series-id")?.trim(),
         // we store original topic field so this can be returned to create/edit form
         // in it's raw/original format
         originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
