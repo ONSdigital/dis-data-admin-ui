@@ -9,9 +9,11 @@ import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
 
-const createSchema = z.object({
+const datasetSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
-    id: z.string().min(1, { message: "ID is required" }),
+    id: z.string()
+        .min(1, { message: "ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "ID can only contain letters, numbers and dashes" }),
     description: z.string().min(1, { message: "Description is required" }),
     topics: z.string().array().nonempty({ message: "Topic is required" }),
     next_release: z.string().min(1, { message: "Next release is required" }),
@@ -21,14 +23,12 @@ const createSchema = z.object({
     })).min(1, { message: "Contact is required" })
 });
 
-const editSchema = createSchema.omit({ id: true });
-
 const getFormData = (formData) => {
     const datasetSeriesSubmission = {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
-        id: formData.get("dataset-series-id"),
+        id: formData.get("dataset-series-id")?.trim(),
         // we store original topic field so this can be returned to create/edit form
         // in it's raw/original format
         originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
@@ -90,7 +90,7 @@ const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
 
 export async function createDatasetSeries(currentstate, formData) {
     const datasetSeriesSubmission = getFormData(formData);
-    const validation = createSchema.safeParse(datasetSeriesSubmission);
+    const validation = datasetSchema.safeParse(datasetSeriesSubmission);
 
     return createResponse(
         datasetSeriesSubmission,
@@ -101,7 +101,7 @@ export async function createDatasetSeries(currentstate, formData) {
 
 export async function updateDatasetSeries(originalId, currentstate, formData) {
     const datasetSeriesSubmission = getFormData(formData);
-    const validation = editSchema.safeParse(datasetSeriesSubmission);
+    const validation = datasetSchema.safeParse(datasetSeriesSubmission);
     // editing a series without explicity setting the state to 
     // "associated" will mean the state returns to "created" 
     datasetSeriesSubmission.state = "associated";

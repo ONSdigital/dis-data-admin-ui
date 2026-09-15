@@ -11,12 +11,16 @@ import { getFormData as getEditionWithVersionFormData, handleFailedValidation as
 import { z } from "zod";
  
 const editionSchema = z.object({
-    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition: z.string()
+        .min(1, { message: "Edition ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
     edition_title: z.string().min(1, { message: "Edition title is required" })
 });
 
 const editionWithVersionSchema = z.object({
-    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition: z.string()
+        .min(1, { message: "Edition ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
     edition_title: z.string().min(1, { message: "Edition title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
     release_day: z.string().min(1, { message: "Day is required" }),
@@ -85,7 +89,7 @@ const getFormData = (formData) => {
     return {
         dataset_id: formData.get("dataset-id"),
         edition_id: formData.get("current-edition-id"),
-        edition: formData.get("edition-id"),
+        edition: formData.get("edition-id")?.trim(),
         edition_title: formData.get("edition-title"),
         type: "static",
     };

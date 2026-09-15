@@ -39,6 +39,17 @@ test.describe("Edit series page", () => {
         await expect(page.locator("#title")).toContainText("Mock Dataset");
     });
 
+    test("Show error when series ID contains invalid characters", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly/edit")
+        await page.getByTestId("dataset-series-id").fill("id with spaces");
+        await page.getByRole("button", { name: /Save changes/i }).click();
+
+        await expect(page.getByText("There was a problem submitting your form")).toBeVisible();
+        await expect(page.getByLabel("There was a problem").getByText("ID can only contain letters, numbers and dashes")).toBeVisible();
+    });
+
     test("Does not allow duplicate dataset series title to be created", async ({ page, context }) => {
         setValidAuthCookies(context);
 
