@@ -33,7 +33,7 @@ export const publishAction = async (currentState, formData) => {
 
     try {
         const request = await updateDataset(dataset.id, dataset, accessToken);
-        if (request.status >= 400) {
+        if (request.error) {
             actionResponse.success = false;
             actionResponse.code = request.status;
             return actionResponse;

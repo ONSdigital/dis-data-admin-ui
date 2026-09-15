@@ -37,7 +37,7 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     let editionResponse = {};
     try {
         editionResponse = await doRequest(accessToken);
-        if (editionResponse.status >= 400) {
+        if (editionResponse.error) {
             let httpError;
             if (editionResponse.error?.code === "ErrVersionAlreadyExists") {
                 httpError = "A edition with this ID already exists within this series";

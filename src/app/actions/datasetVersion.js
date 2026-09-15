@@ -83,7 +83,7 @@ const updateDistributionsMetadata = async (accessToken, distributions = [], data
                 },
             });
 
-            if (response.status >= 400) {
+            if (response.error) {
                 logError("failed to update file metadata", distribution, response.status, null);
                 return { success: false, distribution, status: response.status, error: response.error?.errorMessage };
             }
@@ -108,7 +108,7 @@ const doSubmission = async (datasetVersionSubmission, doRequest) => {
     let versionResponse = {};
     try {
         versionResponse = await doRequest(accessToken);
-        if (versionResponse.status >= 400) {
+        if (versionResponse.error) {
             return { success: false, code: versionResponse.status };
         }
         logInfo("created dataset version successfully", null, null);

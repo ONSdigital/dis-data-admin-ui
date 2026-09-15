@@ -61,7 +61,7 @@ const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
         const accessToken = await getAccessTokenFromCookie(cookies);
         try {
             const data = await doRequest(accessToken);
-            if (data.status >= 400) {
+            if (data.error) {
                 response.success = false;
                 response.recentlySubmitted = false;
                 response.code = data.status;
