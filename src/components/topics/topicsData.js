@@ -28,8 +28,8 @@ export const getAllTopics = async (accessToken) => {
         includedItems.map(async (topic) => {
             const t = topic.current || topic.next || topic;
             if (t.links?.subtopics?.href) {
-                const subTopic = await getSubTopics(t.id, accessToken);
-                return mapTopic(t, subTopic);
+                const subTopics = await getSubTopics(t.id, accessToken);
+                return mapTopic(t, subTopics);
             }
         })
     ).then(results => {
@@ -53,7 +53,7 @@ const getSubTopics = async (topicID, accessToken) => {
             const st = subTopic.current || subTopic.next || subTopic;
             let nested = [];
             if (st.links?.subtopics?.href) {
-                nested = await getSubTopics(topicID, accessToken);
+                nested = await getSubTopics(st.id, accessToken);
             }
 
             // Subtopics that expose nested subtopics metadata are omitted

@@ -156,7 +156,7 @@ describe("getAllTopics", () => {
         expect(getTopics).toHaveBeenCalledTimes(1);
         expect(getSubTopics).toHaveBeenCalledTimes(2);
         expect(getSubTopics).toHaveBeenNthCalledWith(1, "1", accessToken);
-        expect(getSubTopics).toHaveBeenNthCalledWith(2, "1", accessToken);
+        expect(getSubTopics).toHaveBeenNthCalledWith(2, "2", accessToken);
     });
 
     it("omits parent subtopic when it has subtopics metadata and flattens children", async () => {
@@ -206,7 +206,7 @@ describe("getAllTopics", () => {
         expect(getTopics).toHaveBeenCalledTimes(1);
         expect(getSubTopics).toHaveBeenCalledTimes(2);
         expect(getSubTopics).toHaveBeenNthCalledWith(1, "1", accessToken);
-        expect(getSubTopics).toHaveBeenNthCalledWith(2, "1", accessToken);
+        expect(getSubTopics).toHaveBeenNthCalledWith(2, "2", accessToken);
     });
 
     it("includes only topics whose slug matches include list and does not fetch subtopics for excluded slugs", async () => {
