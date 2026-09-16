@@ -152,7 +152,7 @@ const getFormData = async (formData) => {
     const parsedAlerts = parseMutliContentField(alerts);
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
-        edition: formData.get("edition-id"),
+        edition: formData.get("edition-id")?.trim(),
         version_id: formData.get("version-id"),
         edition_title: formData.get("edition-title"),
         quality_designation: formData.get("quality-designation-value"),

@@ -30,7 +30,7 @@ test.describe("Create series page", () => {
 
         await page.goto("./series/create")
         await page.getByLabel("Title").fill("test title");
-        await page.getByLabel("Series ID", {exact: true}).fill("mock-quarterly");
+        await page.getByLabel("Series ID", {exact: true}).fill(" mock-quarterly ");
         await page.getByTestId("topics-selector-accordion-accordion-item-1000").getByRole("button").click();
         await page.getByTestId("dataset-series-topic-1001-checkbox").getByRole("checkbox").check();
         

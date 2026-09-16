@@ -21,7 +21,7 @@ test.describe("Create edition page", () => {
         setValidAuthCookies(context);
 
         await page.goto("./series/mock-quarterly/editions/create");
-        await page.getByTestId("edition-id").fill("test-edition");
+        await page.getByTestId("edition-id").fill(" test-edition ");
         await page.getByTestId("edition-title").fill("Test title");
         await page.getByTestId("release-date-day").fill("1");
         await page.getByTestId("release-date-month").fill("1");

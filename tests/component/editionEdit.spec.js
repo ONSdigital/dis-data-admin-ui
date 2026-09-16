@@ -19,7 +19,7 @@ test.describe("Edit edition page", () => {
             setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/test-edition/edit");
-            await page.getByTestId("edition-id").fill("test-id");
+            await page.getByTestId("edition-id").fill(" test-id ");
             await page.getByTestId("edition-title").fill("Test title");
 
 
