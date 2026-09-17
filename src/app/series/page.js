@@ -48,7 +48,7 @@ export default async function Series({ searchParams }) {
                             <p>
                                 {noSearchResults 
                                     ? `No results found for ${pageParams?.id}` 
-                                    : `Showing ${data.offset + 1} to ${data.offset + data.count} of ${totalCount} series`
+                                    : `Showing ${dataList.response?.offset + 1} to ${dataList.response?.offset + dataList.response?.count} of ${totalCount} series`
                                 }
                             </p>
                         </div>
