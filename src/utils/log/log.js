@@ -19,7 +19,7 @@ const severity = {
  * @param {Date} endedAt - end time of request 
  * @return {httpEvent} - object that matches our http logging standards
  */
-const mapHTTPEvent = ({method, path, statusCode, startedAt, endedAt}) => {
+const mapHTTPEvent = ({requestID, method, path, statusCode, startedAt, endedAt}) => {
     // we use "https://www.ons.gov.uk" as a base URL as Javascript's URL API 
     // doesn't support relative URL's. we can't use `document.location` as 
     // logging can also be called from server componeents. 
@@ -28,6 +28,7 @@ const mapHTTPEvent = ({method, path, statusCode, startedAt, endedAt}) => {
     const url = new URL(path, "https://www.ons.gov.uk");
 
     const httpEvent = {
+        request_id: requestID,
         method: method,
         path: url.pathname || null,
         query: url.search || null,

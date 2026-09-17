@@ -1,134 +1,252 @@
-import { logInfo, logError } from "../log/log";
+import { v4 as uuidv4 } from "uuid";
+import { logInfo, logWarn, logError } from "../log/log";
 
-const xFlorenceHeaderKey = "X-Florence-Token";
-const authHeaderKey = "Authorization";
-const bearerPrefix = "Bearer ";
+const X_FLORENCE_HEADER_KEY = "X-Florence-Token";
+const AUTH_HEADER_KEY = "Authorization";
+const DEFAULT_TIMEOUT_MS = 10000;
 
 /**
- * @param {string} authToken - user auth token obtained from access_token cookie
+ * @param {string} accessToken - user auth token obtained from access_token cookie
  * @return {array} headers array or empty array
  */
-const setHeaders = (authToken) => {
-    if (!authToken) {
-        return [];
-    }
+const setHeaders = (accessToken) => {
     const headers = new Headers();
-    headers.set(xFlorenceHeaderKey, authToken);
-    headers.set(authHeaderKey, authToken);
+    if (accessToken) {
+        headers.set(X_FLORENCE_HEADER_KEY, accessToken);
+        headers.set(AUTH_HEADER_KEY, accessToken);
+    }
     return headers;
 };
 
-// work in progress/place holder request func
-const request = async (cfg, url, method, body) => {
-    const startedAt = new Date(Date.now()).toISOString();
-    logInfo("http request started", null, { requestID: "", method: method, path: url, statusCode: 0, startedAt: startedAt, endedAt: null });
+/**
+ * Parses an error response body into a structured error object.
+ * @param {string} errMsg - raw error response body (JSON string or plain text)
+ * @param {string} [statusText] - HTTP status text used as a fallback when the body is unavailable
+ * @return {object} - standardised request error object
+ */
+const parseError = (errMsg, statusText) => {
+    try {
+        const err = JSON.parse(errMsg)?.errors?.[0];
+        return { 
+            errorMessage: err?.description || errMsg || "Error message not available",
+            code: err?.code || null};
+    } catch (e) {
+        logWarn("failed to parse JSON response or didn't get JSON response. using fallback error.", null, null, { message: e.message });
+        return { 
+            errorMessage: errMsg || statusText || "Error message not available", 
+            code: null 
+        };
+    }
+};
 
-    const headers = setHeaders(cfg.authToken);
-    const fetchConfig = {
-        method,
-        headers
+/**
+ * Builds a standardised request result.
+ * @param {{res?: object|string|null, ok: boolean, status: number, statusText: string, errorMessage?: string|null, etag?: string|null}} [options]
+ * @return {object} - standardised request object
+ */
+const createResponse = ({ res = null, ok, status, statusText, errorMessage = null, etag = null } = {}) => {
+    return {
+        error: !ok ? parseError(errorMessage, statusText) : null,
+        ok,
+        response: res,
+        status,
+        statusText,
+        etag
     };
+};
 
+/**
+ * Creates a logger scoped to a single HTTP request.
+ * @param {{ requestID: string, method: string, path: string, startedAt: string }} ctx
+ * @return {{ start: function, success: function, failure: function }}
+ */
+const createHttpLogger = ({ requestID, method, path, startedAt }) => {
+    const buildHttp = (statusCode, finished) => ({
+        requestID,
+        method,
+        path,
+        statusCode,
+        startedAt,
+        endedAt: finished ? new Date().toISOString() : null,
+    });
+
+    return {
+        start() {
+            logInfo("http request started", null, buildHttp(0, false));
+        },
+
+        success(statusCode) {
+            logInfo("http request completed", null, buildHttp(statusCode, true));
+        },
+
+        failure(statusCode, error = null, event = "http request failed") {
+            logError(event, error ? { error } : null, buildHttp(statusCode, true));
+        },
+    };
+};
+
+/**
+ * Performs an HTTP request and returns a standardised result.
+ * @param {{ url: string, accessToken?: string, method: string, body?: object, timeoutMs?: number }} options
+ * @return {Promise<object>} - standardised request object from createResponse
+ */
+const request = async ({ url, accessToken, method, body, timeoutMs = DEFAULT_TIMEOUT_MS, }) => {
+    const requestID = uuidv4();
+    const startedAt = new Date().toISOString();
+    const httpLog = createHttpLogger({ requestID, method, path: url, startedAt });
+
+    httpLog.start();
+
+    const headers = setHeaders(accessToken);
+    const controller = new AbortController();
+
+    let serializedBody;
     if (method === "POST" || method === "PUT") {
-        fetchConfig.body = JSON.stringify(body || {});
-        fetchConfig.headers.append("Content-Type", "application/json");
+        try {
+            serializedBody = JSON.stringify(body || {});
+            headers.set("Content-Type", "application/json");
+        } catch (error) {
+            httpLog.failure(0, error, "failed to stringify request body");
+            return createResponse({
+                ok: false,
+                status: 0,
+                statusText: "Failed to stringify request body",
+                errorMessage: error.message,
+            });
+        }
     }
 
-    const response = await fetch(cfg.baseURL + url, fetchConfig);
+    const timeout = setTimeout(() => { controller.abort(); }, timeoutMs);
+    const fetchConfig = {
+        method,
+        headers,
+        signal: controller.signal,
+        body: serializedBody,
+    };
 
-    if (response.status >= 400) {
-        logError("http request failed", { error: response }, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: null });
-        response.errorMessage = await response.text();
-        return response;
+    let response, etag;
+    try {
+        response = await fetch(url, fetchConfig);
+        etag = response.headers.get("etag");
+    } catch (error) {
+        if (error.name === "AbortError") {
+            const message = `Request timed out after ${timeoutMs}ms`;
+            httpLog.failure(0, error, "http request timed out");
+            return createResponse({
+                ok: false,
+                status: 0,
+                statusText: "Request timed out",
+                errorMessage: message,
+            });
+        }
+        httpLog.failure(0, error);
+        return createResponse({
+            ok: false,
+            status: 0,
+            statusText: error.message,
+            errorMessage: error.message,
+        });
+    } finally {
+        clearTimeout(timeout);
+    }
+
+    if (!response.ok) {
+        let errorMessage = null;
+        try {
+            errorMessage = await response.text();
+        } catch (error) {
+            httpLog.failure(response.status, error, "failed to read error response body");
+            return createResponse({
+                ok: false,
+                status: response.status,
+                statusText: response.statusText,
+                etag,
+            });
+        }
+        httpLog.failure(response.status, { message: errorMessage });
+        return createResponse({
+            ok: response.ok,
+            status: response.status,
+            statusText: response.statusText,
+            errorMessage,
+            etag,
+        });
     }
 
     if (response.status === 204) {
-        const endedAt = new Date(Date.now()).toISOString();
-        logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
-        return response;
+        httpLog.success(response.status);
+        return createResponse({
+            ok: response.ok,
+            status: response.status,
+            statusText: response.statusText || "Success",
+            etag,
+        });
     }
 
-    // Assuming all other responses have JSON body
-    const json = await response.json();
-
-    const endedAt = new Date(Date.now()).toISOString();
-    logInfo("http request completed", null, { requestID: "", method: method, path: url, statusCode: response.status, startedAt, endedAt: endedAt });
-    return json;
-};
-
-/**
- * @param {function} cookies - NextJS cookies getter function
- * @param {string} service - service to make the request to
- * @return {object} response config object contain base url and authorisation values
- */
-const SSRequestConfig = async (cookies, service = "api-router") => {
-    let baseURL;
-    switch (service) {
-        case "api-router":
-            baseURL = process.env.API_ROUTER_URL;
-            break;
-        case "migration-service":
-            baseURL = process.env.MIGRATION_SERVICE_URL;
-            break;
-        default:
-            baseURL = process.env.API_ROUTER_URL;
+    let json;
+    try {
+        json = await response.json();
+    } catch (error) {
+        httpLog.failure(response.status, error, "failed to parse JSON response");
+        return createResponse({
+            ok: false,
+            status: response.status,
+            statusText: response.statusText,
+            errorMessage: "Response body was not valid JSON",
+            etag,
+        });
     }
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get("access_token");
-    const cleanAuthToken = authToken.value.replace(/"/g, "");
-    return { baseURL: baseURL, authToken: cleanAuthToken };
-};
 
-/**
- * @param {object} appConfig - appConfig object, see: utils/config
- * @return {object} response config object contain base url and authorisation values
- */
-const CSRequestConfig = (appConfig) => {
-    const cookies = document.cookie.split(";");
-    let authToken;
-    cookies.forEach(cookie => {
-        const c = cookie.split("=");
-        if (c[0] == "id_token") { authToken = bearerPrefix + c[1]; }
+    httpLog.success(response.status);
+    return createResponse({
+        res: json,
+        ok: response.ok,
+        status: response.status,
+        statusText: response.statusText || "Success",
+        etag,
     });
-    return { baseURL: appConfig.apiRouterURL, authToken: authToken };
 };
 
 /**
- * @param {object} cfg - request config object generated by SSRequestConfig function
- * @param {string} url - relative path to api router
- * @return {Promise} fetch response body in JSON format
+ * Performs an authenticated HTTP GET request.
+ * @param {string} url - request URL
+ * @param {string} accessToken - user auth token obtained from access_token cookie
+ * @return {Promise<object>} - standardised request object from createResponse
  */
-const httpGet = (cfg, url) => {
-    return request(cfg, url, "GET");
+const httpGet = (url, accessToken) => {
+    return request({ url, accessToken, method: "GET" });
 };
 
 /**
- * @param {object} cfg - request config object generated by SSRequestConfig function
- * @param {string} url - relative path to api router
- * @param {object} body - body contents of request
- * @return {Promise} fetch response body in JSON format
+ * Performs an authenticated HTTP POST request.
+ * @param {string} url - request URL
+ * @param {string} accessToken - user auth token obtained from access_token cookie
+ * @param {object} [body] - JSON-serialisable request body
+ * @return {Promise<object>} - standardised request object from createResponse
  */
-const httpPost = (cfg, url, body) => {
-    return request(cfg, url, "POST", body);
+const httpPost = (url, accessToken, body) => {
+    return request({ url, accessToken, method: "POST", body });
 };
 
 /**
- * @param {object} cfg - request config object generated by SSRequestConfig function
- * @param {string} url - relative path to api router
- * @param {object} body - body contents of request
- * @return {Promise} fetch response body in JSON format
+ * Performs an authenticated HTTP PUT request.
+ * @param {string} url - request URL
+ * @param {string} accessToken - user auth token obtained from access_token cookie
+ * @param {object} [body] - JSON-serialisable request body
+ * @return {Promise<object>} - standardised request object from createResponse
  */
-const httpPut = (cfg, url, body) => {
-    return request(cfg, url, "PUT", body);
+const httpPut = (url, accessToken, body) => {
+    return request({ url, accessToken, method: "PUT", body });
 };
 
 /**
- * @param {object} cfg - request config object generated by SSRequestConfig function
- * @param {string} url - relative path to api router
- * @return {Promise} fetch response body in JSON format
+ * Performs an authenticated HTTP DELETE request.
+ * @param {string} url - request URL
+ * @param {string} accessToken - user auth token obtained from access_token cookie
+ * @return {Promise<object>} - standardised request object from createResponse
  */
-const httpDelete = (cfg, url) => {
-    return request(cfg, url, "DELETE");
+const httpDelete = (url, accessToken) => {
+    return request({ url, accessToken, method: "DELETE" });
 };
 
-export { httpGet, httpPost, httpPut, httpDelete, SSRequestConfig, CSRequestConfig };
+export { setHeaders, parseError, createResponse, request, httpGet, httpPost, httpPut, httpDelete };

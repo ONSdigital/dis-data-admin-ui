@@ -32,10 +32,10 @@ export async function GET() {
 
     let apiRouterHealthResponse;
 
-    const reqCfg = { baseURL: process.env.API_ROUTER_URL};
+    const apiRouterHealthURL = process.env.API_ROUTER_URL + "/health";
     try {
-         apiRouterHealthResponse = await httpGet(reqCfg, "/health");
-         apiRouterHealthCheck.status = apiRouterHealthResponse.status;
+         apiRouterHealthResponse = await httpGet(apiRouterHealthURL, null);
+         apiRouterHealthCheck.status = apiRouterHealthResponse.response?.status;
     }
     catch(err) {
         apiRouterHealthCheck.status = "CRITICAL";
