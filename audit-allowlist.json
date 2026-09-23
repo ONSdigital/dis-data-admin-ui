@@ -2,7 +2,7 @@
     "ignore": [
         {
             "id": "CVE-2025-64756",
-            "reason": "Glob is an indirect import used in Jest and author-design-system-react. Overridng this package causes breakages"
+            "reason": "Glob is an indirect import used in Jest and author-design-system-react. Overriding this package causes breakages."
         },
         {
             "id": "CVE-2026-27904",
@@ -14,7 +14,19 @@
         },
         {
             "id": "CVE-2026-73088",
-            "reason": "browserslist vulnerability affects the latest version"
+            "reason": "browserslist vulnerability affects the latest version."
+        },
+        {
+            "id": "CVE-2026-93687",
+            "reason": "braces is an indirect import via @next/eslint-plugin-next."
+        },
+        {
+            "id": "CVE-2026-93753",
+            "reason": "deepmerge is an indirect import via author-design-system-react and jest."
+        },
+        {
+            "id": "CVE-2026-93749",
+            "reason": "source-map-js is an indirect import via next."
         }
     ]
 }
