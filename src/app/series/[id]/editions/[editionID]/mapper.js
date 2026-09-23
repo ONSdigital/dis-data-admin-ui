@@ -8,6 +8,8 @@ const mapStateToUserFriendlyString = (state) => {
             return "Ready to publish";
         case "published":
             return "Published";
+        case "publish_failed":
+            return "Publish Failed";
         default:
             return "Unable to get state";
     }
