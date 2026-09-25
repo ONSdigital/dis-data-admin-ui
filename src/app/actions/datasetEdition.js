@@ -14,7 +14,12 @@ const editionSchema = z.object({
     edition: z.string()
         .min(1, { message: "Edition ID is required" })
         .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
-    edition_title: z.string().min(1, { message: "Edition title is required" })
+    edition_title: z.string().min(1, { message: "Edition title is required" }),
+    related_content: z.array(z.object({
+        title: z.string().min(1, { message: "Related content title is required" }),
+        href: z.string().min(1, { message: "Related content URL is required" }),
+        description: z.string().optional(),
+    })).optional(),
 });
 
 const editionWithVersionSchema = z.object({
@@ -85,13 +90,25 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
 };
 
+// check and parse "MultiContent" (e.g. related content) fields 
+const parseMutliContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    return multiItem.map(item => JSON.parse(item))
+        .filter(parsed => parsed.title || parsed.href || parsed.description);
+};
+
 const getFormData = (formData) => {
+    const relatedContent = formData.getAll("related-content");
+    console.log(relatedContent);
+    const parsedRelatedContent = parseMutliContentField(relatedContent);
     return {
         dataset_id: formData.get("dataset-id"),
         edition_id: formData.get("current-edition-id"),
         edition: formData.get("edition-id")?.trim(),
         edition_title: formData.get("edition-title"),
         type: "static",
+        related_content: parsedRelatedContent,
     };
 };
 
