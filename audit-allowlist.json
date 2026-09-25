@@ -15,6 +15,18 @@
         {
             "id": "CVE-2026-73088",
             "reason": "browserslist vulnerability affects the latest version"
+        },
+        {
+            "id": "CVE-2026-93687",
+            "reason": "braces is an indirect import via @next/eslint-plugin-next."
+        },
+        {
+            "id": "CVE-2026-93753",
+            "reason": "deepmerge is an indirect import via author-design-system-react and jest."
+        },
+        {
+            "id": "CVE-2026-93749",
+            "reason": "source-map-js is an indirect import via next."
         }
     ]
 }
