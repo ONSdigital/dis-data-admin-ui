@@ -82,6 +82,23 @@ const mapFileDownloads = (items) => {
 };
 
 /**
+ * Maps related content items into JSX content with links.
+ * @param {Array} items - Related content objects
+ * @returns {Array} Renderable content for related content
+ */
+const mapRelatedContent = (items) => {
+    return items.map((item, index) => {
+        const dataTestIDPrefix = `related-content-${index}`;
+        return (
+            <span key={index}>
+                <p className="ons-u-mb-xs" data-testid={`${dataTestIDPrefix}-title-${index}`}>{item.title}</p>
+                <p className="ons-u-fw-n ons-u-mb-l" data-testid={`${dataTestIDPrefix}-description-${index}`}>{item.description}</p>
+            </span>
+        );
+    });
+};
+
+/**
  * Maps a single row into the Summary component row format and pushes it onto rows.
  * @param {string} itemName - Row label/title
  * @param {string|Array} value - Row value, or array of values when multiValue is true
@@ -190,6 +207,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
     mapRow("Edition ID", edition.edition, null, isPublished || edition?.is_migration ? null : action, rows);
     mapRow("Edition title", edition.edition_title, null, action, rows);
     mapRow("Release date", formatDate(edition.release_date), null, null, rows);
+    mapRow("Related content", mapRelatedContent(edition.related_content || []), true, action, rows);
     return contentBody;
 };
 
