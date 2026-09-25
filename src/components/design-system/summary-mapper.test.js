@@ -208,6 +208,49 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
     });
+
+    it("when edition has related content", () => {
+        const data = {
+            ...versions.items[0],
+            related_content: [
+                {
+                    title: "Methodology",
+                    description: "Read the methodology for this edition"
+                },
+                {
+                    title: "Quality information",
+                    description: "Review the quality information"
+                }
+            ]
+        };
+        const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mappedItems = mapped[0].groups[0].rows;
+
+        expect(mappedItems).toHaveLength(4);
+        expect(mappedItems[3].rowTitle).toBe("Related content");
+        expect(mappedItems[3].rowItems[0].valueList).toHaveLength(2);
+        expect(mappedItems[3].rowItems[0].valueList[0].text.props.children[0].props).toMatchObject({
+            "data-testid": "related-content-0-title-0",
+            children: "Methodology"
+        });
+        expect(mappedItems[3].rowItems[0].valueList[0].text.props.children[1].props).toMatchObject({
+            "data-testid": "related-content-0-description-0",
+            children: "Read the methodology for this edition"
+        });
+        expect(mappedItems[3].rowItems[0].valueList[1].text.props.children[0].props).toMatchObject({
+            "data-testid": "related-content-1-title-1",
+            children: "Quality information"
+        });
+        expect(mappedItems[3].rowItems[0].valueList[1].text.props.children[1].props).toMatchObject({
+            "data-testid": "related-content-1-description-1",
+            children: "Review the quality information"
+        });
+        expect(mappedItems[3].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-related-content",
+            visuallyHiddenText: "Edit Related content",
+            url: "test/foo/edit#related-content"
+        });
+    });
 });
 
 describe("mapVersionSummary returns expected object of mapped content items", () => {
