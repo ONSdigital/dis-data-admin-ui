@@ -7,7 +7,7 @@ import TextArea from "../textarea/Textarea";
 
 export default function MultiContentFieldsRelatedContent({ id, index, field, onFieldsHaveContent }) {
     const [contentTitle, setContentTitle] = useState(field?.title || "");
-    const [contentURL, setContentURL] = useState(field?.url || "");
+    const [contentURL, setContentURL] = useState(field?.href || "");
     const [contentDescription, setContentDescription] = useState(field?.description || "");
 
     const titleInputID = id + "-title-" + index;
