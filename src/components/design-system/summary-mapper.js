@@ -207,7 +207,9 @@ const mapEditionSummary = (edition, editBaseURL) => {
     mapRow("Edition ID", edition.edition, null, isPublished || edition?.is_migration ? null : action, rows);
     mapRow("Edition title", edition.edition_title, null, action, rows);
     mapRow("Release date", formatDate(edition.release_date), null, null, rows);
-    mapRow("Related content", mapRelatedContent(edition.related_content || []), true, action, rows);
+    if (edition.related_content && edition.related_content.length > 0) {
+        mapRow("Related content", mapRelatedContent(edition.related_content), true, action, rows);
+    }
     return contentBody;
 };
 
