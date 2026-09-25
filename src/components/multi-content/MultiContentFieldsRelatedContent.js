@@ -33,7 +33,7 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
 
     return (
         <div className="ons-u-mb-m">
-            <input id={id} name={id} type="hidden" value={JSON.stringify({title: contentTitle, url: contentURL, description: contentDescription})} />
+            <input id={id} name={id} type="hidden" value={JSON.stringify({title: contentTitle, href: contentURL, description: contentDescription})} />
             <TextInput
                 id={titleInputID}
                 dataTestId={titleInputID}
