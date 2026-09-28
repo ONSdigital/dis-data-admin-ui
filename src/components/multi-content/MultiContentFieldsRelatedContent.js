@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRelatedContent({ id, index, field, onFieldsHaveContent }) {
+export default function MultiContentFieldsRelatedContent({ id, index, field, onFieldsHaveContent, errors }) {
     const [contentTitle, setContentTitle] = useState(field?.title || "");
     const [contentURL, setContentURL] = useState(field?.href || "");
     const [contentDescription, setContentDescription] = useState(field?.description || "");
@@ -42,6 +42,7 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
                 label={{
                     text: "Title",
                 }}
+                error={errors?.[titleInputID] ? { id: `${titleInputID}-error`, text: errors[titleInputID] } : null}
                 value={contentTitle}
                 onChange={e => handleInputChange(setContentTitle, e.target.value)}
                 key={titleInputID}
@@ -54,6 +55,7 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
                 label={{
                     text: "URL",
                 }}
+                error={errors?.[urlInputID] ? { id: `${urlInputID}-error`, text: errors[urlInputID] } : null}
                 value={contentURL}
                 onChange={e => handleInputChange(setContentURL, e.target.value)}
                 key={urlInputID}

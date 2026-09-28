@@ -47,6 +47,7 @@ export default function MultiContentItems(props) {
                         id={props.id} 
                         index={i}
                         field={props.contentItems?.length ? props.contentItems[i] : null}
+                        errors={props?.errors}
                     />);
                     break;
                 default:

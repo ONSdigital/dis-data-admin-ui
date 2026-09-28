@@ -90,32 +90,51 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
 };
 
-// check and parse "MultiContent" (e.g. related content) fields 
+// check and parse "MultiContent" (e.g. related content) fields, keeping the index
+// each item was rendered at so errors can be mapped back to the right inputs
 const parseMutliContentField = (multiItem) => {
     if (!multiItem || !multiItem.length) return [];
 
-    return multiItem.map(item => JSON.parse(item))
-        .filter(parsed => parsed.title || parsed.href || parsed.description);
+    return multiItem.map((item, index) => ({ index, content: JSON.parse(item) }))
+        .filter(({ content }) => content.title || content.href || content.description);
 };
 
 const getFormData = (formData) => {
-    const relatedContent = formData.getAll("related-content");
-    console.log(relatedContent);
-    const parsedRelatedContent = parseMutliContentField(relatedContent);
+    const relatedContent = parseMutliContentField(formData.getAll("related-content"));
     return {
-        dataset_id: formData.get("dataset-id"),
-        edition_id: formData.get("current-edition-id"),
-        edition: formData.get("edition-id")?.trim(),
-        edition_title: formData.get("edition-title"),
-        type: "static",
-        related_content: parsedRelatedContent,
+        submission: {
+            dataset_id: formData.get("dataset-id"),
+            edition_id: formData.get("current-edition-id"),
+            edition: formData.get("edition-id")?.trim(),
+            edition_title: formData.get("edition-title"),
+            type: "static",
+            related_content: relatedContent.map(item => item.content),
+        },
+        relatedContentIndexes: relatedContent.map(item => item.index),
     };
 };
 
-const handleFailedValidation = (validation, datasetEditionSubmission) => {
+// maps Zod issues such as { path: ["related_content", 1, "href"] } to input IDs,
+// e.g. { "related-content-url-2": ["Related content URL is required"] }
+const getRelatedContentErrors = (issues, relatedContentIndexes) => {
+    const errors = {};
+    issues.forEach(issue => {
+        const [field, itemIndex, key] = issue.path;
+        if (field !== "related_content") return;
+        const inputName = key === "href" ? "url" : key;
+        errors[`related-content-${inputName}-${relatedContentIndexes[itemIndex]}`] = [issue.message];
+    });
+    return errors;
+};
+
+const handleFailedValidation = (validation, datasetEditionSubmission, relatedContentIndexes) => {
+    const { related_content: _relatedContent, ...fieldErrors } = validation.error.flatten().fieldErrors;
     const actionResponse = {};
     actionResponse.success = validation.success;
-    actionResponse.errors = validation.error.flatten().fieldErrors;
+    actionResponse.errors = {
+        ...fieldErrors,
+        ...getRelatedContentErrors(validation.error.issues, relatedContentIndexes),
+    };
     actionResponse.submission = datasetEditionSubmission;
     logInfo("failed dataset edition validation", null, null);
     return actionResponse;
@@ -137,11 +156,11 @@ const createDatasetEdition = async (currentstate, formData) => {
 };
 
 const updateDatasetEdition = async (currentstate, formData) => {
-    const datasetEditionSubmission = getFormData(formData);
+    const { submission: datasetEditionSubmission, relatedContentIndexes } = getFormData(formData);
     const validation = editionSchema.safeParse(datasetEditionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetEditionSubmission);
+        return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes);
     }
     const datasetID = datasetEditionSubmission.dataset_id;
     const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
