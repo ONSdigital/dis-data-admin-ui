@@ -40,15 +40,12 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.2.9",
     "eslint-plugin-testing-library": "^7.16.2",
-    "jest": "^30.4.2",
+    "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-fixed-jsdom": "^0.0.11",
     "ts-node": "^10.9.2"
   },
   "overrides": {
-    "brace-expansion@1.1.17": "1.1.18",
-    "brace-expansion@2.1.1": "2.1.4",
-    "brace-expansion@5.0.8": "5.0.9",
     "author-design-system-react": {
       "react": "19.2.8",
       "react-dom": "19.2.8",
@@ -56,9 +53,8 @@
       "react-router-dom": "7.18.1",
       "@remix-run/router": "1.23.2"
     },
-    "nanoid": "3.3.17",
-    "next": {
-      "postcss": "8.5.12"
+    "jest": {
+      "sprintf-js": "1.1.3"
     }
   }
 }
