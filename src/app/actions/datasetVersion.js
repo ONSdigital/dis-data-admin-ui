@@ -175,7 +175,7 @@ const handleFailedValidation = async (validation, datasetVersionSubmission) => {
     const actionResponse = {};
     actionResponse.success = validation.success;
     actionResponse.errors = validation.error.flatten().fieldErrors;
-    actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
+    actionResponse.errors = await addUploadFileErrorMessage(actionResponse.errors);
     actionResponse.submission = datasetVersionSubmission;
     logInfo("failed dataset version validation", null, null);
     return actionResponse;
