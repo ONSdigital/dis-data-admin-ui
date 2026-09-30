@@ -28,7 +28,7 @@ const versionSchema = z.object({
 
 // check for an error on distrubution and update error message
 // zod replies with "Required" for objects
-const addUploadFileErrorMessage = (errors) => {
+const addUploadFileErrorMessage = async (errors) => {
     if (!errors) {
         return;
     } 
@@ -39,7 +39,7 @@ const addUploadFileErrorMessage = (errors) => {
 };
 
 // check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
-const parseMutliContentField = (multiItem) => {
+const parseMultiContentField = async (multiItem) => {
     if (!multiItem || !multiItem.length) return [];
 
     const parsedItems = [];
@@ -63,7 +63,6 @@ const parseMutliContentField = (multiItem) => {
  * @returns {Promise<{success: boolean, failures: Array<{download_url: string, status: number|null, error: string|null}>}>}
  *   Resolves with a summary of any failed updates.
  */
-
 const updateDistributionsMetadata = async (accessToken, distributions = [], datasetID, editionID, versionID) => {
     const fileMetadataUpdateRequests = distributions.map(async (distribution) => {
         const filePath = getDistributionPath(distribution?.download_url);
@@ -149,9 +148,9 @@ const doSubmission = async (datasetVersionSubmission, doRequest) => {
 
 const getFormData = async (formData) => {
     const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = parseMutliContentField(usageNotes);
+    const parsedUsageNotes = await parseMultiContentField(usageNotes);
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = parseMutliContentField(alerts);
+    const parsedAlerts = await parseMultiContentField(alerts);
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
         edition: formData.get("edition-id")?.trim(),
@@ -210,4 +209,4 @@ const updateDatasetVersion = async (currentstate, formData) => {
     );
 };
 
-export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata };
+export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata, parseMultiContentField, addUploadFileErrorMessage };
