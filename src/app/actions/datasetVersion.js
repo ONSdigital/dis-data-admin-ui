@@ -52,6 +52,12 @@ const parseMultiContentField = async (multiItem) => {
     return parsedItems;
 };
 
+// check and parse related content fields 
+const parseRelatedContent = (relatedContent) => {
+    if (!relatedContent || !relatedContent.length) return [];
+    return JSON.parse(relatedContent)
+};
+
 /**
  * Updates file metadata for each distribution in a dataset version.
  *
@@ -151,6 +157,10 @@ const getFormData = async (formData) => {
     const parsedUsageNotes = await parseMultiContentField(usageNotes);
     const alerts = formData.getAll("alerts");
     const parsedAlerts = await parseMultiContentField(alerts);
+    const relatedContent = formData.getAll("related-content-version");
+    console.log("Related content is", relatedContent)
+    const parsedRelatedContent = parseRelatedContent(relatedContent);
+    console.log("Parsed related content is", parsedRelatedContent)
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
         edition: formData.get("edition-id")?.trim(),
@@ -166,8 +176,10 @@ const getFormData = async (formData) => {
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: JSON.parse(formData.get("dataset-upload-value")),
+        related_content: parsedRelatedContent,
         type: "static",
     };
+    console.log("datasetVersion is", datasetVersion)
     return datasetVersion;
 };
 
