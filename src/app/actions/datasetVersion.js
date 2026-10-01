@@ -54,8 +54,13 @@ const parseMultiContentField = async (multiItem) => {
 
 // check and parse related content fields 
 const parseRelatedContent = (relatedContent) => {
+    console.log("relatedContent is", relatedContent)
     if (!relatedContent || !relatedContent.length) return [];
-    return JSON.parse(relatedContent)
+    try {
+        return JSON.parse(relatedContent);
+    } catch (err) {
+        return [];
+    }
 };
 
 /**
