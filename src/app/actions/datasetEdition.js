@@ -90,7 +90,7 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
 };
 
-// check and parse "MultiContent" (e.g. related content) fields, keeping the index
+// check and parse related content fields, keeping the index
 // each item was rendered at so errors can be mapped back to the right inputs
 const parseRelatedContent = (multiItem) => {
     if (!multiItem || !multiItem.length) return [];
@@ -119,14 +119,15 @@ const getCreateEditionFormData = async (formData) => {
     const parsedUsageNotes = await parseMultiContentField(usageNotes);
     const alerts = formData.getAll("alerts");
     const parsedAlerts = await parseMultiContentField(alerts);
-    const relatedContent = parseRelatedContent(formData.getAll("related-content"));
+    const relatedContent = formData.getAll("related-content");
+    const parsedRelatedContent = parseRelatedContent(relatedContent);
     return {
         submission: {
             dataset_id: formData.get("dataset-id"),
             edition_id: formData.get("current-edition-id"),
             edition: formData.get("edition-id")?.trim(),
             edition_title: formData.get("edition-title"),
-            related_content: relatedContent.map(item => item.content),
+            related_content: parsedRelatedContent.map(item => item.content),
             quality_designation: formData.get("quality-designation-value"),
             release_day: formData.get("release-date-day"),
             release_month: formData.get("release-date-month"),
@@ -139,7 +140,7 @@ const getCreateEditionFormData = async (formData) => {
             distributions: JSON.parse(formData.get("dataset-upload-value")),
             type: "static",
         },
-        relatedContentIndexes: relatedContent.map(item => item.index),
+        relatedContentIndexes: parsedRelatedContent.map(item => item.index),
     };
 };
 
