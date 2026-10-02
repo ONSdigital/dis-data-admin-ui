@@ -3,19 +3,24 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
 import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata } from "./datasetVersion";
 
 import { z } from "zod";
  
 const editionSchema = z.object({
-    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition: z.string()
+        .min(1, { message: "Edition ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
     edition_title: z.string().min(1, { message: "Edition title is required" })
 });
 
 const editionWithVersionSchema = z.object({
-    edition: z.string().min(1, { message: "Edition ID is required" }),
+    edition: z.string()
+        .min(1, { message: "Edition ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
     edition_title: z.string().min(1, { message: "Edition title is required" }),
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
     release_day: z.string().min(1, { message: "Day is required" }),
@@ -29,24 +34,18 @@ const editionWithVersionSchema = z.object({
     })).min(1, { message: "A file upload is required" })
 });
 
-const doSubmission = async (datasetEditionSubmission, makeRequest) => {
-    const reqCfg = await SSRequestConfig(cookies);
-
+const doSubmission = async (datasetEditionSubmission, doRequest) => {
+    const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetID = datasetEditionSubmission.dataset_id;
-    const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
-
-    let url = `/datasets/${datasetID}/editions/${editionID}/versions`;
-    if (datasetEditionSubmission.edition_id) { url = url + `/1`; }
 
     let editionResponse = {};
     try {
-        editionResponse = await makeRequest(reqCfg, url, datasetEditionSubmission);
-        if (editionResponse.status >= 400) {
-            const errorMessage = JSON.parse(editionResponse.errorMessage);
+        editionResponse = await doRequest(accessToken);
+        if (editionResponse.error) {
             let httpError;
-            if (errorMessage.errors[0].code === "ErrVersionAlreadyExists") {
+            if (editionResponse.error?.code === "ErrVersionAlreadyExists") {
                 httpError = "A edition with this ID already exists within this series";
-            } else if (errorMessage.errors[0].code === "ErrEditionTitleAlreadyExists") {
+            } else if (editionResponse.error?.code === "ErrEditionTitleAlreadyExists") {
                 httpError = "A edition with this Title already exists within this series";
             }
             return { success: false, code: editionResponse.status, httpError };
@@ -59,8 +58,8 @@ const doSubmission = async (datasetEditionSubmission, makeRequest) => {
 
     try {
         const distributionUpdateResponse = await updateDistributionsMetadata(
-            reqCfg,
-            editionResponse.distributions,
+            accessToken,
+            editionResponse.response?.distributions,
             datasetEditionSubmission.dataset_id,
             datasetEditionSubmission.edition,
             1
@@ -90,7 +89,7 @@ const getFormData = (formData) => {
     return {
         dataset_id: formData.get("dataset-id"),
         edition_id: formData.get("current-edition-id"),
-        edition: formData.get("edition-id"),
+        edition: formData.get("edition-id")?.trim(),
         edition_title: formData.get("edition-title"),
         type: "static",
     };
@@ -112,7 +111,12 @@ const createDatasetEdition = async (currentstate, formData) => {
     if (!validation.success) {
         return await handleWithVersionFailedValidation(validation, datasetEditionSubmission);
     }
-    return doSubmission(datasetEditionSubmission, httpPost);
+    const datasetID = datasetEditionSubmission.dataset_id;
+    const editionID = datasetEditionSubmission.edition;
+    return doSubmission(
+        datasetEditionSubmission,
+        (token) => createVersion(datasetID, editionID, datasetEditionSubmission, token)
+    );
 };
 
 const updateDatasetEdition = async (currentstate, formData) => {
@@ -122,7 +126,12 @@ const updateDatasetEdition = async (currentstate, formData) => {
     if (!validation.success) {
         return handleFailedValidation(validation, datasetEditionSubmission);
     }
-    return doSubmission(datasetEditionSubmission, httpPut);
+    const datasetID = datasetEditionSubmission.dataset_id;
+    const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
+    return doSubmission(
+        datasetEditionSubmission,
+        (token) => updateVersion(datasetID, editionID, 1, datasetEditionSubmission, token)
+    );
 };
 
 export { createDatasetEdition, updateDatasetEdition };

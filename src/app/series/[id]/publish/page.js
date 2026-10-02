@@ -1,6 +1,8 @@
 import { cookies, headers } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
+import { getDataset } from "@/utils/request/api-clients/datasets";
+
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import { publishAction } from "@/app/actions/publish";
@@ -13,15 +15,10 @@ import PublishForm from "@/components/form/publish/PublishForm";
 export default async function PublishDataset({ params }) {
     const { id } = await params;
 
-    const reqCfg = await SSRequestConfig(cookies);
-    const datasetResp = await httpGet(reqCfg, `/datasets/${id}`);
+    const accessToken = await getAccessTokenFromCookie(cookies);
+    const datasetResp = await getDataset(id, accessToken);
 
-    let datasetError = false;
-    if (datasetResp.ok != null && !datasetResp.ok) {
-        datasetError = true;
-    }
-
-    if (datasetError) {
+    if (datasetResp.error) {
         return (
             <Panel title="Error" variant="error" dataTestId="dataset-series-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
@@ -29,8 +26,8 @@ export default async function PublishDataset({ params }) {
         );
     }
 
-    const dataset = datasetResp?.next || datasetResp?.current || datasetResp;
-    const seriesIsPublishable = datasetResp?.current?.state === "published" && datasetResp?.next?.state === "associated";
+    const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
+    const seriesIsPublishable = datasetResp?.response?.current?.state === "published" && datasetResp?.response?.next?.state === "associated";
 
     if (!seriesIsPublishable) {
         return (

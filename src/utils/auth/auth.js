@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 
 import { logInfo, logError } from "../log/log";
 
+const ACCESS_TOKEN_COOKIE_NAME = "access_token";
 const HEADER_USER_ROLES = "x-user-roles";
 const ROLE_ADMIN = "role-admin";
 const ROLE_PUBLISHER = "role-publisher";
@@ -34,6 +35,21 @@ const getLoginURLWithRedirect = (redirectPath) => {
     const redirect = redirectPath || "";
     const redirectTo = encodeURIComponent(basePath + redirect);
     return `${LOGIN_URL}?redirect=${redirectTo}`;
+};
+
+/**
+ * Reads the access token from the cookie store and strips surrounding quotes
+ * @param  {Function} cookies - Async function that returns the cookie store (e.g. next/headers cookies)
+ * @return {Promise<string|null>} - Cleaned access token value, or null if cookies is falsy
+ */
+const getAccessTokenFromCookie = async (cookies) => {
+    if (!cookies) {
+        return null;
+    }
+    const cookieStore = await cookies();
+    const authToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME);
+    const cleanAuthToken = authToken.value.replace(/"/g, "");
+    return cleanAuthToken;
 };
 
 /**
@@ -122,4 +138,14 @@ const userIsAdmin = (roleHeader) => userHasRole(roleHeader, ROLE_ADMIN);
  */
 const userIsPublisher = (roleHeader) => userHasRole(roleHeader, ROLE_PUBLISHER);
 
-export { HEADER_USER_ROLES, logout, getLoginURLWithRedirect, decodeToken, validateCookie, getUserName, getUserRoles, userIsAdmin, userIsPublisher };
+export { HEADER_USER_ROLES, 
+    logout, 
+    getLoginURLWithRedirect, 
+    decodeToken, 
+    validateCookie, 
+    getUserName, 
+    getUserRoles, 
+    userIsAdmin, 
+    userIsPublisher,
+    getAccessTokenFromCookie
+};

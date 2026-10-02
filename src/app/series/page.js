@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { httpGet, SSRequestConfig } from "@/utils/request/request";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
+import { getDatasetsList } from "@/utils/request/api-clients/datasets";
 
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
 import List from "@/components/list/List";
@@ -12,21 +13,21 @@ import { Panel, Select } from "@/components/design-system/DesignSystem";
 import { mapListItems } from "./mapper";
 
 export default async function Series({ searchParams }) {
-    const reqCfg = await SSRequestConfig(cookies);
+    const accessToken = await getAccessTokenFromCookie(cookies);
 
     const pageParams = await searchParams;
     pageParams.limit = 20;
 
-    const requestURL = createRequestURL(pageParams);
-    const data = await httpGet(reqCfg, requestURL);
+    const urlParams = createURLParams(pageParams);
+    const dataList = await getDatasetsList(urlParams, accessToken);
 
     const listItems = [];
-    const [ datasetFetchError, noSearchResults ] = checkErrors(data, pageParams);
+    const [ datasetFetchError, noSearchResults ] = checkErrors(dataList, pageParams);
     if (!datasetFetchError && !noSearchResults) {
-        listItems.push(...mapListItems(data.items));
+        listItems.push(...mapListItems(dataList?.response?.items));
     }
 
-    const totalCount = data.total_count;
+    const totalCount = dataList.response?.total_count;
     const totalNumberOfPages = Math.ceil(totalCount/pageParams.limit);
     const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
 
@@ -39,50 +40,54 @@ export default async function Series({ searchParams }) {
     };
 
     const renderListArea = () => {
-        if (noSearchResults) {
-            return (
-                <p>No results found for {pageParams?.id}</p>
-            );
-        }
         return (
             <>
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
-                            <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                                Showing {data.offset + 1} to {data.offset + data.count} of {totalCount} series
-                            </div>
-                            <div className="ons-grid__col ons-col-2@m ons-push-1@m">
-                                <LinkButton
-                                    text="Create new series"
-                                    link="series/create"          
-                                />   
-                            </div>
+                        <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
+                            <p>
+                                {noSearchResults 
+                                    ? `No results found for ${pageParams?.id}` 
+                                    : `Showing ${dataList.response?.offset + 1} to ${dataList.response?.offset + dataList.response?.count} of ${totalCount} series`
+                                }
+                            </p>
+                        </div>
+                        <div className="ons-grid__col ons-col-2@m ons-push-1@m">
+                            <LinkButton
+                                text="Create new series"
+                                link="series/create"          
+                            />   
+                        </div>
                     </div>
                 </div>
-                <div className="ons-u-mt-m ons-u-mb-l">
-                    <Select
-                        classes="ons-u-ml-m"
-                        dataTestId="select-series-sort-by"
-                        id="select-series-sort-by"
-                        label={{
-                            for: 'select-series-sort-by',
-                            text: 'Sort By:'
-                        }}
-                        options={[
-                            {
-                            text: 'Series ID',
-                            value: 'seriesID'
-                            }
-                        ]}
-                        variants="inline"
-                    />
-                </div>
-                <List items={listItems} type="series"/>
-                <Pagination
-                    totalNumberOfPages = {totalNumberOfPages}
-                    currentPage = {currentPage}
-                    limit = {pageParams.limit}
-                />
+                {!noSearchResults && (
+                    <>
+                        <div className="ons-u-mt-m ons-u-mb-l">
+                            <Select
+                                classes="ons-u-ml-m"
+                                dataTestId="select-series-sort-by"
+                                id="select-series-sort-by"
+                                label={{
+                                    for: 'select-series-sort-by',
+                                    text: 'Sort By:'
+                                }}
+                                options={[
+                                    {
+                                        text: 'Series ID',
+                                        value: 'seriesID'
+                                    }
+                                ]}
+                                variants="inline"
+                            />
+                        </div>
+                        <List items={listItems} type="series"/>
+                        <Pagination
+                            totalNumberOfPages = {totalNumberOfPages}
+                            currentPage = {currentPage}
+                            limit = {pageParams.limit}
+                        />
+                    </>
+                )}
             </>
         );
     };
@@ -108,11 +113,11 @@ export default async function Series({ searchParams }) {
 }
 
 // return errors based on request response
-const checkErrors = (data, params) => {
-    if (data.ok != null && !data.ok) {
+const checkErrors = (dataList, params) => {
+    if (dataList.error) {
         // if we get a 404 and there's a dataset id param 
         // assume the search has returned zero results
-        if (data.status === 404 && params.id) {
+        if (dataList.status === 404 && params.id) {
             return [false, true];
         }
     return [true, false];
@@ -121,8 +126,8 @@ return [false, false];
 };
 
 // build URL (with various params) to make request to dataset-api
-const createRequestURL = (params) => {
-    let url = `/datasets?type=static&sort_order=ASC&limit=${params.limit}`;
+const createURLParams = (params) => {
+    let url = `type=static&sort_order=ASC&limit=${params.limit}`;
     if (params.id && params.id.length > 0) {
         url = `${url}&id=${params.id}`;
     }

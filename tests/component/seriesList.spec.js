@@ -69,5 +69,6 @@ test.describe("Filtering on series list page", () => {
         await page.getByTestId("icon-search").click();
         await page.waitForURL("**/series?id=bar-foo");
         await expect(page.getByText("No results found for bar-foo")).toBeVisible();
+        await expect(page.getByRole("button", { name: "Create new series" })).toBeVisible();
     });
 })

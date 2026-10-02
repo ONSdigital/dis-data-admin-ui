@@ -3,14 +3,17 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { httpPost, httpPut, SSRequestConfig } from "@/utils/request/request";
+import { createDataset, updateDataset } from "@/utils/request/api-clients/datasets";
+import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logInfo } from "@/utils/log/log";
 
 import { z } from "zod";
 
-const createSchema = z.object({
+const datasetSchema = z.object({
     title: z.string().min(1, { message: "Title is required" }),
-    id: z.string().min(1, { message: "ID is required" }),
+    id: z.string()
+        .min(1, { message: "ID is required" })
+        .regex(/^[a-zA-Z0-9-]*$/, { message: "ID can only contain letters, numbers and dashes" }),
     description: z.string().min(1, { message: "Description is required" }),
     topics: z.string().array().nonempty({ message: "Topic is required" }),
     next_release: z.string().min(1, { message: "Next release is required" }),
@@ -20,14 +23,12 @@ const createSchema = z.object({
     })).min(1, { message: "Contact is required" })
 });
 
-const editSchema = createSchema.omit({ id: true });
-
 const getFormData = (formData) => {
     const datasetSeriesSubmission = {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
         title: formData.get("dataset-series-title"),
-        id: formData.get("dataset-series-id"),
+        id: formData.get("dataset-series-id")?.trim(),
         // we store original topic field so this can be returned to create/edit form
         // in it's raw/original format
         originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
@@ -49,7 +50,7 @@ const getFormData = (formData) => {
     return datasetSeriesSubmission;
 };
 
-const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)  =>  {
+const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
     const response = {};
     response.success = result.success;
     if (!result.success) {
@@ -57,20 +58,21 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
         response.submission = datasetSeriesSubmission;
         logInfo("failed dataset series validation", null, null);
     } else {
-        const reqCfg = await SSRequestConfig(cookies);
+        const accessToken = await getAccessTokenFromCookie(cookies);
         try {
-            const data = await makeRequest(reqCfg, url, datasetSeriesSubmission);
-            if (data.status >= 400) {
+            const data = await doRequest(accessToken);
+            if (data.error) {
                 response.success = false;
                 response.recentlySubmitted = false;
                 response.code = data.status;
+                const errorMessage = data.error?.errorMessage?.trim() || "";
                 
-                if (data.errorMessage.trim() === "dataset already exists") {
+                if (errorMessage === "dataset already exists") {
                     response.httpError = `A dataset series with an ID of ${datasetSeriesSubmission.id} already exists`;
-                } else if (data.errorMessage.trim() === "dataset title already exists") {
+                } else if (errorMessage === "dataset title already exists") {
                     response.httpError = `A dataset series titled ${datasetSeriesSubmission.title} already exists`;
                 } else {
-                    response.httpError = data.errorMessage;
+                    response.httpError = errorMessage;
                 }
             } else {
                 response.recentlySubmitted = true;
@@ -87,22 +89,26 @@ const createResponse = async (datasetSeriesSubmission, result, url, makeRequest)
 };
 
 export async function createDatasetSeries(currentstate, formData) {
-    const url = "/datasets";
-
     const datasetSeriesSubmission = getFormData(formData);
-    const validation = createSchema.safeParse(datasetSeriesSubmission);
+    const validation = datasetSchema.safeParse(datasetSeriesSubmission);
 
-    return createResponse(datasetSeriesSubmission, validation, url, httpPost);
+    return createResponse(
+        datasetSeriesSubmission,
+        validation,
+        (token) => createDataset(datasetSeriesSubmission, token)
+    );
 }
 
 export async function updateDatasetSeries(originalId, currentstate, formData) {
-    const url = "/datasets/" + originalId;
-
     const datasetSeriesSubmission = getFormData(formData);
-    const validation = editSchema.safeParse(datasetSeriesSubmission);
+    const validation = datasetSchema.safeParse(datasetSeriesSubmission);
     // editing a series without explicity setting the state to 
     // "associated" will mean the state returns to "created" 
     datasetSeriesSubmission.state = "associated";
 
-    return createResponse(datasetSeriesSubmission, validation, url, httpPut);
+    return createResponse(
+        datasetSeriesSubmission,
+        validation,
+        (token) => updateDataset(originalId, datasetSeriesSubmission, token)
+    );
 }
