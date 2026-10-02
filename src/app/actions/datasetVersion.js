@@ -54,10 +54,10 @@ const parseMultiContentField = async (multiItem) => {
 
 // check and parse related content fields 
 const parseRelatedContent = (relatedContent) => {
-    console.log("relatedContent is", relatedContent)
     if (!relatedContent || !relatedContent.length) return [];
     try {
         return JSON.parse(relatedContent);
+    /* eslint-disable-next-line no-unused-vars */
     } catch (err) {
         return [];
     }
@@ -163,9 +163,7 @@ const getFormData = async (formData) => {
     const alerts = formData.getAll("alerts");
     const parsedAlerts = await parseMultiContentField(alerts);
     const relatedContent = formData.getAll("related-content-version");
-    console.log("Related content is", relatedContent)
     const parsedRelatedContent = parseRelatedContent(relatedContent);
-    console.log("Parsed related content is", parsedRelatedContent)
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
         edition: formData.get("edition-id")?.trim(),
@@ -184,7 +182,6 @@ const getFormData = async (formData) => {
         related_content: parsedRelatedContent,
         type: "static",
     };
-    console.log("datasetVersion is", datasetVersion)
     return datasetVersion;
 };
 

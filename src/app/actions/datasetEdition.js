@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
 import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
-import { handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata, parseMultiContentField } from "./datasetVersion";
+import { updateDistributionsMetadata, parseMultiContentField } from "./datasetVersion";
 
 import { z } from "zod";
  
@@ -171,21 +171,15 @@ const handleFailedValidation = (validation, datasetEditionSubmission, relatedCon
 };
 
 const createDatasetEdition = async (currentstate, formData) => {
-    console.log("here 1")
     const { submission: datasetEditionSubmission, relatedContentIndexes } = await getCreateEditionFormData(formData);
     const validation = editionWithVersionSchema.safeParse(datasetEditionSubmission);
-
-    console.log("here 2")
-    console.log("datasetEditionSubmission", datasetEditionSubmission);
 
     if (!validation.success) {
         return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes);
     }
 
-    console.log("here 3")
     const datasetID = datasetEditionSubmission.dataset_id;
     const editionID = datasetEditionSubmission.edition;
-    console.log("datasetEditionSubmission", datasetEditionSubmission);
 
     return doSubmission(
         datasetEditionSubmission,
@@ -202,7 +196,6 @@ const updateDatasetEdition = async (currentstate, formData) => {
     }
     const datasetID = datasetEditionSubmission.dataset_id;
     const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
-    console.log("datasetEditionSubmission", datasetEditionSubmission);
     return doSubmission(
         datasetEditionSubmission,
         (token) => updateVersion(datasetID, editionID, 1, datasetEditionSubmission, token)
