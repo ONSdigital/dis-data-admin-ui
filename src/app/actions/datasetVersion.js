@@ -28,7 +28,7 @@ const versionSchema = z.object({
 
 // check for an error on distrubution and update error message
 // zod replies with "Required" for objects
-const addUploadFileErrorMessage = (errors) => {
+const addUploadFileErrorMessage = async (errors) => {
     if (!errors) {
         return;
     } 
@@ -39,7 +39,7 @@ const addUploadFileErrorMessage = (errors) => {
 };
 
 // check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
-const parseMutliContentField = (multiItem) => {
+const parseMultiContentField = async (multiItem) => {
     if (!multiItem || !multiItem.length) return [];
 
     const parsedItems = [];
@@ -50,6 +50,17 @@ const parseMutliContentField = (multiItem) => {
         }
     });
     return parsedItems;
+};
+
+// check and parse related content fields 
+const parseRelatedContent = (relatedContent) => {
+    console.log("relatedContent is", relatedContent)
+    if (!relatedContent || !relatedContent.length) return [];
+    try {
+        return JSON.parse(relatedContent);
+    } catch (err) {
+        return [];
+    }
 };
 
 /**
@@ -63,7 +74,6 @@ const parseMutliContentField = (multiItem) => {
  * @returns {Promise<{success: boolean, failures: Array<{download_url: string, status: number|null, error: string|null}>}>}
  *   Resolves with a summary of any failed updates.
  */
-
 const updateDistributionsMetadata = async (accessToken, distributions = [], datasetID, editionID, versionID) => {
     const fileMetadataUpdateRequests = distributions.map(async (distribution) => {
         const filePath = getDistributionPath(distribution?.download_url);
@@ -149,9 +159,13 @@ const doSubmission = async (datasetVersionSubmission, doRequest) => {
 
 const getFormData = async (formData) => {
     const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = parseMutliContentField(usageNotes);
+    const parsedUsageNotes = await parseMultiContentField(usageNotes);
     const alerts = formData.getAll("alerts");
-    const parsedAlerts = parseMutliContentField(alerts);
+    const parsedAlerts = await parseMultiContentField(alerts);
+    const relatedContent = formData.getAll("related-content-version");
+    console.log("Related content is", relatedContent)
+    const parsedRelatedContent = parseRelatedContent(relatedContent);
+    console.log("Parsed related content is", parsedRelatedContent)
     const datasetVersion = {
         dataset_id: formData.get("dataset-id"),
         edition: formData.get("edition-id")?.trim(),
@@ -167,8 +181,10 @@ const getFormData = async (formData) => {
         usage_notes: parsedUsageNotes,
         alerts: parsedAlerts,
         distributions: JSON.parse(formData.get("dataset-upload-value")),
+        related_content: parsedRelatedContent,
         type: "static",
     };
+    console.log("datasetVersion is", datasetVersion)
     return datasetVersion;
 };
 
@@ -176,7 +192,7 @@ const handleFailedValidation = async (validation, datasetVersionSubmission) => {
     const actionResponse = {};
     actionResponse.success = validation.success;
     actionResponse.errors = validation.error.flatten().fieldErrors;
-    actionResponse.errors = addUploadFileErrorMessage(actionResponse.errors);
+    actionResponse.errors = await addUploadFileErrorMessage(actionResponse.errors);
     actionResponse.submission = datasetVersionSubmission;
     logInfo("failed dataset version validation", null, null);
     return actionResponse;
@@ -210,4 +226,4 @@ const updateDatasetVersion = async (currentstate, formData) => {
     );
 };
 
-export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata };
+export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata, parseMultiContentField, addUploadFileErrorMessage };

@@ -6,6 +6,10 @@ export const editions = {
             state: "published",
             edition_title: "Timeseries",
             release_date: "2025-01-26T07:00:00.000Z",
+            related_content: [
+                { title: "Related article", href: "https://example.com/article", description: "About the article" },
+                { title: "Another article", href: "https://example.com/another", description: "" },
+            ],
             distributions: [
                 {
                     title: "Full Dataset (CSV)",

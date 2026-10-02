@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "author-design-system-react";
 import MultiContentFieldsInput from "./MultiContentFieldsInput";
 import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
+import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
 
 export default function MultiContentItems(props) {
     const [itemsNumber, setItemsNumber] = useState(props.contentItems?.length ? props.contentItems?.length : 1);
@@ -38,6 +39,15 @@ export default function MultiContentItems(props) {
                         id={props.id} 
                         index={i}
                         field={props.contentItems?.length ? props.contentItems[i] : null}
+                    />);
+                    break;
+                case "relatedContent":
+                    items.push(<MultiContentFieldsRelatedContent key={i} 
+                        onFieldsHaveContent={handleButtonStatus}
+                        id={props.id} 
+                        index={i}
+                        field={props.contentItems?.length ? props.contentItems[i] : null}
+                        errors={props?.errors}
                     />);
                     break;
                 default:

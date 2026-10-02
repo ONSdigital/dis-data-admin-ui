@@ -20,6 +20,9 @@ test.describe("Edition overview page", () => {
         await expect(page.locator("#edition-title")).toContainText("Timeseries");
         await expect(page.getByTestId("action-link-edition-title")).toBeVisible();
         await expect(page.locator("#release-date")).toContainText("26 January 2025"); 
+        await expect(page.getByTestId("related-content-0-title-0")).toContainText("Related article");
+        await expect(page.getByTestId("related-content-0-description-0")).toContainText("About the article");
+        await expect(page.getByTestId("related-content-1-title-1")).toContainText("Another article");
     });
 
     test("Page heading create button routes to create new version page", async ({ page, context }) => {

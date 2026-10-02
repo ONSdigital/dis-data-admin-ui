@@ -7,6 +7,7 @@ import LinkButton from "@/components/link-button/LinkButton";
 
 import { Panel } from "@/components/design-system/DesignSystem";
 import VersionFields from "@/components/form/version/VersionFields";
+import MultiContentItems from "@/components/multi-content/MultiContentItems";
 
 export default function EditionForm({ datasetID, edition, isNewEdition, showEditionIDField, action, accessToken }) {
     const [formState, formAction, isPending] = useActionState(action, {});
@@ -77,6 +78,17 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                 />
 
                 { isNewEdition ? <VersionFields errors={formState.errors} accessToken={accessToken} /> : null }
+
+                <div className="ons-u-mb-l">
+                    <h3 id="dataset-edition-related-content" className="ons-u-mt-xl">Related content (optional)</h3>
+                    <MultiContentItems
+                        fieldType="relatedContent"
+                        id="related-content"
+                        contentItems={edition?.related_content || []}
+                        buttonLabel="Add related content"
+                        errors={formState.errors}
+                    />
+                </div>
 
                 <button type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending} data-testid="edition-save-button">
                     <span className="ons-btn__inner">

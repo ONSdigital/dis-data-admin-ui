@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
 import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
-import { getFormData as getEditionWithVersionFormData, handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata } from "./datasetVersion";
+import { handleFailedValidation as handleWithVersionFailedValidation, updateDistributionsMetadata, parseMultiContentField } from "./datasetVersion";
 
 import { z } from "zod";
  
@@ -14,7 +14,12 @@ const editionSchema = z.object({
     edition: z.string()
         .min(1, { message: "Edition ID is required" })
         .regex(/^[a-zA-Z0-9-]*$/, { message: "Edition ID can only contain letters, numbers and dashes" }),
-    edition_title: z.string().min(1, { message: "Edition title is required" })
+    edition_title: z.string().min(1, { message: "Edition title is required" }),
+    related_content: z.array(z.object({
+        title: z.string().min(1, { message: "Related content title is required" }),
+        href: z.string().min(1, { message: "Related content URL is required" }),
+        description: z.string().optional(),
+    })).optional(),
 });
 
 const editionWithVersionSchema = z.object({
@@ -85,34 +90,103 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     redirect(`/series/${datasetID}/editions/${datasetEditionSubmission.edition}?display_success=true`);
 };
 
-const getFormData = (formData) => {
+// check and parse related content fields, keeping the index
+// each item was rendered at so errors can be mapped back to the right inputs
+const parseRelatedContent = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    return multiItem.map((item, index) => ({ index, content: JSON.parse(item) }))
+        .filter(({ content }) => content.title || content.href || content.description);
+};
+
+const getUpdateEditionFormData = (formData) => {
+    const relatedContent = parseRelatedContent(formData.getAll("related-content"));
     return {
-        dataset_id: formData.get("dataset-id"),
-        edition_id: formData.get("current-edition-id"),
-        edition: formData.get("edition-id")?.trim(),
-        edition_title: formData.get("edition-title"),
-        type: "static",
+        submission: {
+            dataset_id: formData.get("dataset-id"),
+            edition_id: formData.get("current-edition-id"),
+            edition: formData.get("edition-id")?.trim(),
+            edition_title: formData.get("edition-title"),
+            type: "static",
+            related_content: relatedContent.map(item => item.content),
+        },
+        relatedContentIndexes: relatedContent.map(item => item.index),
     };
 };
 
-const handleFailedValidation = (validation, datasetEditionSubmission) => {
+const getCreateEditionFormData = async (formData) => {
+    const usageNotes = formData.getAll("usage-notes");
+    const parsedUsageNotes = await parseMultiContentField(usageNotes);
+    const alerts = formData.getAll("alerts");
+    const parsedAlerts = await parseMultiContentField(alerts);
+    const relatedContent = formData.getAll("related-content");
+    const parsedRelatedContent = parseRelatedContent(relatedContent);
+    return {
+        submission: {
+            dataset_id: formData.get("dataset-id"),
+            edition_id: formData.get("current-edition-id"),
+            edition: formData.get("edition-id")?.trim(),
+            edition_title: formData.get("edition-title"),
+            related_content: parsedRelatedContent.map(item => item.content),
+            quality_designation: formData.get("quality-designation-value"),
+            release_day: formData.get("release-date-day"),
+            release_month: formData.get("release-date-month"),
+            release_year: formData.get("release-date-year"),
+            release_hour: formData.get("release-date-hour"),
+            release_minutes: formData.get("release-date-minutes"),
+            release_date: formData.get("release-date-value"),
+            usage_notes: parsedUsageNotes,
+            alerts: parsedAlerts,
+            distributions: JSON.parse(formData.get("dataset-upload-value")),
+            type: "static",
+        },
+        relatedContentIndexes: parsedRelatedContent.map(item => item.index),
+    };
+};
+
+// maps Zod issues such as { path: ["related_content", 1, "href"] } to input IDs,
+// e.g. { "related-content-url-2": ["Related content URL is required"] }
+const getRelatedContentErrors = (issues, relatedContentIndexes) => {
+    const errors = {};
+    issues.forEach(issue => {
+        const [field, itemIndex, key] = issue.path;
+        if (field !== "related_content") return;
+        const inputName = key === "href" ? "url" : key;
+        errors[`related-content-${inputName}-${relatedContentIndexes[itemIndex]}`] = [issue.message];
+    });
+    return errors;
+};
+
+const handleFailedValidation = (validation, datasetEditionSubmission, relatedContentIndexes) => {
+    const { related_content: _relatedContent, ...fieldErrors } = validation.error.flatten().fieldErrors;
     const actionResponse = {};
     actionResponse.success = validation.success;
-    actionResponse.errors = validation.error.flatten().fieldErrors;
+    actionResponse.errors = {
+        ...fieldErrors,
+        ...getRelatedContentErrors(validation.error.issues, relatedContentIndexes),
+    };
     actionResponse.submission = datasetEditionSubmission;
     logInfo("failed dataset edition validation", null, null);
     return actionResponse;
 };
 
 const createDatasetEdition = async (currentstate, formData) => {
-    const datasetEditionSubmission = await getEditionWithVersionFormData(formData);
+    console.log("here 1")
+    const { submission: datasetEditionSubmission, relatedContentIndexes } = await getCreateEditionFormData(formData);
     const validation = editionWithVersionSchema.safeParse(datasetEditionSubmission);
 
+    console.log("here 2")
+    console.log("datasetEditionSubmission", datasetEditionSubmission);
+
     if (!validation.success) {
-        return await handleWithVersionFailedValidation(validation, datasetEditionSubmission);
+        return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes);
     }
+
+    console.log("here 3")
     const datasetID = datasetEditionSubmission.dataset_id;
     const editionID = datasetEditionSubmission.edition;
+    console.log("datasetEditionSubmission", datasetEditionSubmission);
+
     return doSubmission(
         datasetEditionSubmission,
         (token) => createVersion(datasetID, editionID, datasetEditionSubmission, token)
@@ -120,14 +194,15 @@ const createDatasetEdition = async (currentstate, formData) => {
 };
 
 const updateDatasetEdition = async (currentstate, formData) => {
-    const datasetEditionSubmission = getFormData(formData);
+    const { submission: datasetEditionSubmission, relatedContentIndexes } = await getUpdateEditionFormData(formData);
     const validation = editionSchema.safeParse(datasetEditionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetEditionSubmission);
+        return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes);
     }
     const datasetID = datasetEditionSubmission.dataset_id;
     const editionID = datasetEditionSubmission.edition_id || datasetEditionSubmission.edition;
+    console.log("datasetEditionSubmission", datasetEditionSubmission);
     return doSubmission(
         datasetEditionSubmission,
         (token) => updateVersion(datasetID, editionID, 1, datasetEditionSubmission, token)

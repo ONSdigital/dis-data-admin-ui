@@ -39,6 +39,34 @@ describe("MultiContentItems", () => {
         });
     });
 
+    describe("renders correctly when type=relatedContent", () => {
+        it("and doesn't contain data e.g. 'create' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="relatedContent" buttonLabel="Add new related content"/>);
+            expect(screen.getByTestId("multi-content-test-title-0")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-url-0")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-description-0")).toBeInTheDocument();
+
+            const button = screen.getByTestId("multi-content-test-add-button");
+            expect(button).toBeInTheDocument();
+            expect(button.disabled).toBeTruthy();
+        });
+
+        it("and does contain data e.g. 'edit' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="relatedContent" buttonLabel="Add new related content" contentItems={[{title: "Methodology", href: "https://example.com", description: "Read the methodology"}]}/>);
+            expect(screen.getByTestId("multi-content-test-title-0")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("Methodology")).toBeInTheDocument();
+
+            expect(screen.getByTestId("multi-content-test-url-0")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("https://example.com")).toBeInTheDocument();
+
+            expect(screen.getByTestId("multi-content-test-description-0")).toBeInTheDocument();
+            expect(screen.getByDisplayValue("Read the methodology")).toBeInTheDocument();
+
+            const button = screen.getByTestId("multi-content-test-add-button");
+            expect(button).toBeInTheDocument();
+        });
+    });
+
     it("clicking button adds new item", async () => {
         render(<MultiContentItems id="multi-content-test" fieldType="input" buttonLabel="Add new test item"/>);
         const button = screen.getByTestId("multi-content-test-add-button");

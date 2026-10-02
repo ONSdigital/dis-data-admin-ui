@@ -23,6 +23,7 @@ export default function VersionFields(props) {
 
     return (
         <>
+            <input id="related-content-version" name="related-content-version" type="hidden" value={props.fieldValues?.related_content ? JSON.stringify(props.fieldValues?.related_content) : ""} />
             <DateTimePicker
                 id="dataset-version-release-date"
                 dataTestId="release-date"
