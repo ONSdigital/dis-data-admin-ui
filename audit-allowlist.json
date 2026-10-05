@@ -31,6 +31,10 @@
         {
             "id": "CVE-2026-97058",
             "reason": "vulnerability affects latest version of sprintf-js"
+        },
+        {
+            "id": "CVE-2023-54404",
+            "reason": "vulnerability affects latest version of zod"
         }
     ]
 }
