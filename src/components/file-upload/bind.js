@@ -5,11 +5,13 @@ const FIVE_MEGABYTES = 5 * 1024 * 1024;
 
 // Mapping of file extensions to MIME types which are defined in the dataset API.
 const EXTENSION_TO_MIME_TYPE = {
+    csdb: "text/plain",
     csv: "text/csv",
+    json: "application/json",
     sdmx: "application/vnd.sdmx.structurespecificdata+xml",
     xls: "application/vnd.ms-excel",
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    csdb: "text/plain"
+    xml: "application/xml",
 };
 
 const RESUMABLE_OPTIONS = {
@@ -35,7 +37,7 @@ const bindFileUploadInput = (elementID, uploadBaseURL, uploadFilePath, accessTok
         query: {
             aliasName: "",
         },
-        fileType: ["csdb", "csv", "sdmx", "xls", "xlsx"],
+        fileType: ["csdb", "csv", "json", "sdmx", "xls", "xlsx", "xml"],
         forceChunkSize: true,
         simultaneousUploads: 1,
         permanentErrors: [400, 404, 409, 415, 500, 501],

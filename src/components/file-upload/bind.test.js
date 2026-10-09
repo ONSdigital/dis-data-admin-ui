@@ -25,11 +25,13 @@ describe("onFileAdded", () => {
     it("sets the correct MIME type for all supported file types", () => {
         const onStart = jest.fn();
         const testFiles = [
+            { fileName: "test.csdb", expectedMimeType: "text/plain" },
             { fileName: "test.csv", expectedMimeType: "text/csv" },
+            { fileName: "test.json", expectedMimeType: "application/json" },
             { fileName: "test.sdmx", expectedMimeType: "application/vnd.sdmx.structurespecificdata+xml" },
             { fileName: "test.xls", expectedMimeType: "application/vnd.ms-excel" },
             { fileName: "test.xlsx", expectedMimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
-            { fileName: "test.csdb", expectedMimeType: "text/plain" }
+            { fileName: "test.xml", expectedMimeType: "application/xml" }
         ];
 
         testFiles.forEach(testFile => {
