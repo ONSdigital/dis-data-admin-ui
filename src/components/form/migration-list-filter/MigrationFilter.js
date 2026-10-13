@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
+import { BoxContainer, Checkbox, Button, TextInput } from "@/components/design-system/DesignSystem";
 
 export default function MigrationFilter({ states = []}) {
     const searchParams = useSearchParams();
@@ -10,6 +10,7 @@ export default function MigrationFilter({ states = []}) {
         const state = searchParams.get("state");
         return state ? state.split(",") : [];
     });
+    const [nameFilter, setNameFilter] = useState(searchParams.get("label") || "");
 
     const { push } = useRouter();
     const pathname = usePathname();
@@ -21,13 +22,17 @@ export default function MigrationFilter({ states = []}) {
     };
 
     const handleFilterButtonPress = () => {
-        if (stateFilters.length === 0) {
-            push(pathname);
-            return;
-        }
+        const filters = {
+            state: stateFilters.join(","),
+            label: nameFilter.trim(),
+        };
 
-        const url = `${pathname}?state=${stateFilters.join(",")}`;
-        push(url);
+        const params = new URLSearchParams(
+            Object.entries(filters).filter(([, value]) => value)
+        );
+
+        const query = params.toString();
+        push(query ? `${pathname}?${query}` : pathname);
     };
 
     const createCheckboxes = () => {
@@ -59,6 +64,16 @@ export default function MigrationFilter({ states = []}) {
             id="box-container"
             title="Filter results"
         >
+            <div className="ons-u-mt-s">
+                <TextInput id="migration-list-search-by-name" 
+                    dataTestId="migration-list-search-by-name" 
+                    label={{text: "Search by name", description: "E.g \"Labour market\""}}
+                    value={nameFilter}
+                    onChange={(e) => setNameFilter(e.target.value)}
+                    classes="ons-input--w-20"
+                />
+            </div>
+
             <Checkbox
                 id="state-filter"
                 dataTestId="state-filter"
