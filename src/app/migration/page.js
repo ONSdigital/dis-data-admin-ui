@@ -76,16 +76,15 @@ export default async function MigrationList({ searchParams }) {
     );
 }
 
-const createRequestURL = (params) => {
-    let url = `limit=${params.limit}&sort=job_number:desc`;
-
-    if (params.state) {
-        url = `${url}&state=${params.state}`;
-    }
-
-    if (params.offset) {
-        url = `${url}&offset=${params.offset}`;
-    }
-
-    return url;
+const createRequestURL = ({ limit, offset, state, label }) => {
+    const query = {
+        limit,
+        offset,
+        sort: "job_number:desc",
+        state,
+        label,
+    };
+    return new URLSearchParams(
+        Object.entries(query).filter(([, value]) => value)
+    ).toString();
 };
