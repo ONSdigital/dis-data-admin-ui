@@ -57,38 +57,40 @@ export default function MigrationFilter({ states = []}) {
     };
 
     return (
-        <BoxContainer
-            borderColor="ons-color-grey-15"
-            borderWidth={1}
-            classes="ons-grid__col ons-u-pl-no"
-            id="box-container"
-            title="Filter results"
-        >
-            <div className="ons-u-mt-s">
-                <TextInput id="migration-list-search-by-name" 
-                    dataTestId="migration-list-search-by-name" 
-                    label={{text: "Search by name", description: "E.g \"Labour market\""}}
-                    value={nameFilter}
-                    onChange={(e) => setNameFilter(e.target.value)}
-                    classes="ons-input--w-20"
-                />
-            </div>
+        <form id="migration-list-filter-form" data-testid="migration-list-filter-form">
+            <BoxContainer
+                borderColor="ons-color-grey-15"
+                borderWidth={1}
+                classes="ons-grid__col ons-u-pl-no"
+                id="box-container"
+                title="Filter results"
+            >
+                <div className="ons-u-mt-s">
+                    <TextInput id="migration-list-search-by-name" 
+                        dataTestId="migration-list-search-by-name" 
+                        label={{text: "Search by name", description: "E.g \"Labour market\""}}
+                        value={nameFilter}
+                        onChange={(e) => setNameFilter(e.target.value)}
+                        classes="ons-input--w-20"
+                    />
+                </div>
 
-            <Checkbox
-                id="state-filter"
-                dataTestId="state-filter"
-                items={{ itemsList: createCheckboxes() }}
-                legend="State"
-                borderless
-                classes="ons-u-mt-m ons-u-mb-m"
+                <Checkbox
+                    id="state-filter"
+                    dataTestId="state-filter"
+                    items={{ itemsList: createCheckboxes() }}
+                    legend="State"
+                    borderless
+                    classes="ons-u-mt-m ons-u-mb-m"
+                />
+                <Button
+                dataTestId="migration-filter-apply-button"
+                id="migration-filter-apply-button"
+                text="Apply"
+                variants={["small"]}
+                onClick={handleFilterButtonPress}
             />
-            <Button
-            dataTestId="migration-filter-apply-button"
-            id="migration-filter-apply-button"
-            text="Apply"
-            variants={["small"]}
-            onClick={handleFilterButtonPress}
-        />
-        </BoxContainer>
+            </BoxContainer>
+        </form>
     );
 }
