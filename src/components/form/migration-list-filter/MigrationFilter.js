@@ -63,7 +63,7 @@ export default function MigrationFilter({ states = []}) {
                 borderWidth={1}
                 classes="ons-grid__col ons-u-pl-no"
                 id="box-container"
-                title="Filter results"
+                title="Search and filter results"
             >
                 <div className="ons-u-mt-s">
                     <TextInput id="migration-list-search-by-name" 
@@ -74,7 +74,6 @@ export default function MigrationFilter({ states = []}) {
                         classes="ons-input--w-20"
                     />
                 </div>
-
                 <Checkbox
                     id="state-filter"
                     dataTestId="state-filter"
@@ -84,12 +83,12 @@ export default function MigrationFilter({ states = []}) {
                     classes="ons-u-mt-m ons-u-mb-m"
                 />
                 <Button
-                dataTestId="migration-filter-apply-button"
-                id="migration-filter-apply-button"
-                text="Apply"
-                variants={["small"]}
-                onClick={handleFilterButtonPress}
-            />
+                    dataTestId="migration-filter-apply-button"
+                    id="migration-filter-apply-button"
+                    text="Apply"
+                    variants={["small"]}
+                    onClick={handleFilterButtonPress}
+                />
             </BoxContainer>
         </form>
     );
