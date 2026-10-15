@@ -1,16 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { BoxContainer, Checkbox, Button, TextInput } from "@/components/design-system/DesignSystem";
 
-export default function MigrationFilter({ states = []}) {
-    const searchParams = useSearchParams();
-    const [stateFilters, setStateFilters] = useState(() => {
-        const state = searchParams.get("state");
-        return state ? state.split(",") : [];
-    });
-    const [nameFilter, setNameFilter] = useState(searchParams.get("label") || "");
+export default function MigrationFilter({ states = [], selectedStates = [], label = "" }) {
+    const [stateFilters, setStateFilters] = useState(selectedStates);
+    const [nameFilter, setNameFilter] = useState(label);
 
     const { push } = useRouter();
     const pathname = usePathname();

@@ -2,17 +2,15 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import MigrationFilter from "./MigrationFilter";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
     useRouter: jest.fn(),
     usePathname: jest.fn(),
-    useSearchParams: jest.fn(),
 }));
 
 describe("MigrationFilter", () => {
     let router;
-    let mockGet;
 
     const listOfStates = [
         { id: "approved", label: "Approved", count: 4 },
@@ -22,14 +20,10 @@ describe("MigrationFilter", () => {
     ];
 
     beforeEach(() => {
-        mockGet = jest.fn().mockReturnValue(null);
         useRouter.mockReturnValue({
             push: jest.fn(),
         });
         usePathname.mockReturnValue("/migration");
-        useSearchParams.mockReturnValue({
-            get: mockGet,
-        });
 
         router = useRouter();
         router.push.mockClear();
@@ -48,14 +42,18 @@ describe("MigrationFilter", () => {
             expect(screen.getByTestId("migration-filter-apply-button")).toBeInTheDocument();
         });
 
-        it("renders selected states from the search params", () => {
-            mockGet.mockReturnValue("approved,submitted");
-
-            render(<MigrationFilter states={listOfStates} />);
+        it("renders selected states from props", () => {
+            render(<MigrationFilter states={listOfStates} selectedStates={["approved", "submitted"]} />);
 
             expect(screen.getByLabelText("Approved (4)")).toBeChecked();
             expect(screen.getByLabelText("Submitted (2)")).toBeChecked();
             expect(screen.getByLabelText("In review (1)")).not.toBeChecked();
+        });
+
+        it("renders the label from props", () => {
+            render(<MigrationFilter states={listOfStates} label="Labour market" />);
+
+            expect(screen.getByTestId("migration-list-search-by-name")).toHaveValue("Labour market");
         });
     });
 
@@ -80,7 +78,7 @@ describe("MigrationFilter", () => {
             fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
 
             expect(router.push).toHaveBeenCalledTimes(1);
-            expect(router.push).toHaveBeenCalledWith("/migration?state=approved,submitted,in_review");
+            expect(router.push).toHaveBeenCalledWith("/migration?state=approved%2Csubmitted%2Cin_review");
         });
 
         it("removes a state when checkbox is unchecked", () => {
@@ -107,6 +105,17 @@ describe("MigrationFilter", () => {
 
             expect(router.push).toHaveBeenCalledTimes(1);
             expect(router.push).toHaveBeenCalledWith("/migration");
+        });
+
+        it("is called with the trimmed label and selected states", () => {
+            render(<MigrationFilter states={listOfStates} />);
+
+            fireEvent.change(screen.getByTestId("migration-list-search-by-name"), { target: { value: "  Labour & market " } });
+            fireEvent.click(screen.getByLabelText("Approved (4)"));
+            fireEvent.click(screen.getByTestId("migration-filter-apply-button"));
+
+            expect(router.push).toHaveBeenCalledTimes(1);
+            expect(router.push).toHaveBeenCalledWith("/migration?state=approved&label=Labour+%26+market");
         });
 
     });

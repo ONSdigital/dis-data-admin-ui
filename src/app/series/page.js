@@ -16,20 +16,24 @@ export default async function Series({ searchParams }) {
     const accessToken = await getAccessTokenFromCookie(cookies);
 
     const pageParams = await searchParams;
-    pageParams.limit = 20;
+    const query = {
+        limit: 20,
+        offset: Number(pageParams.offset) || 0,
+        id: pageParams.id || "",
+    };
 
-    const urlParams = createURLParams(pageParams);
+    const urlParams = createURLParams(query);
     const dataList = await getDatasetsList(urlParams, accessToken);
 
     const listItems = [];
-    const [ datasetFetchError, noSearchResults ] = checkErrors(dataList, pageParams);
+    const [ datasetFetchError, noSearchResults ] = checkErrors(dataList, query);
     if (!datasetFetchError && !noSearchResults) {
         listItems.push(...mapListItems(dataList?.response?.items));
     }
 
     const totalCount = dataList.response?.total_count;
-    const totalNumberOfPages = Math.ceil(totalCount/pageParams.limit);
-    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
+    const totalNumberOfPages = Math.ceil(totalCount/query.limit);
+    const currentPage = Math.floor(query.offset ? (query.offset / query.limit) + 1 : 1);
 
     const renderErrorPanel = () => {
         return (
@@ -47,7 +51,7 @@ export default async function Series({ searchParams }) {
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
                             <p>
                                 {noSearchResults 
-                                    ? `No results found for ${pageParams?.id}` 
+                                    ? `No results found for ${query.id}` 
                                     : `Showing ${dataList.response?.offset + 1} to ${dataList.response?.offset + dataList.response?.count} of ${totalCount} series`
                                 }
                             </p>
@@ -84,7 +88,8 @@ export default async function Series({ searchParams }) {
                         <Pagination
                             totalNumberOfPages = {totalNumberOfPages}
                             currentPage = {currentPage}
-                            limit = {pageParams.limit}
+                            limit = {query.limit}
+                            currentParams = {pageParams}
                         />
                     </>
                 )}
@@ -99,7 +104,7 @@ export default async function Series({ searchParams }) {
                     <SuccessPanel query={pageParams} contentType="Item" />
                     <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                         <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                            <SeriesListForm datasetID={pageParams.id} />
+                            <SeriesListForm key={query.id} datasetID={query.id} />
                         </div>
                         <div className="ons-grid__col ons-col-8@m">
                             { renderListArea() }
@@ -126,14 +131,15 @@ return [false, false];
 };
 
 // build URL (with various params) to make request to dataset-api
-const createURLParams = (params) => {
-    let url = `type=static&sort_order=ASC&limit=${params.limit}`;
-    if (params.id && params.id.length > 0) {
-        url = `${url}&id=${params.id}`;
-    }
-
-    if (params.offset) {
-        url = `${url}&offset=${params.offset}`;
-    }
-    return url;
+const createURLParams = ({ limit, offset, id }) => {
+    const query = {
+        type: "static",
+        sort_order: "ASC",
+        limit,
+        id,
+        offset,
+    };
+    return new URLSearchParams(
+        Object.entries(query).filter(([, value]) => value)
+    ).toString();
 };

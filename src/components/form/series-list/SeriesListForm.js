@@ -8,12 +8,14 @@ import { BoxContainer, TextInput } from "@/components/design-system/DesignSystem
 export default function SeriesListForm({datasetID}) {
     const [id, setID] = useState(datasetID || "");
     const { push } = useRouter();
-    const handleSearchCLick = () => {
-        if (id.length === 0) {
-            push(`/series`);
+    const handleSearchClick = () => {
+        const trimmedID = id.trim();
+        if (!trimmedID) {
+            push("/series");
             return;
         }
-        push(`/series?id=${id}`);
+        const params = new URLSearchParams({ id: trimmedID });
+        push(`/series?${params.toString()}`);
     };
     return (
         <BoxContainer
@@ -30,7 +32,7 @@ export default function SeriesListForm({datasetID}) {
                     value={id}
                     classes="ons-input--w-20"
                     onChange={e => setID(e.target.value)}
-                    searchButton={{text: "Search", onClick: handleSearchCLick}} 
+                    searchButton={{text: "Search", onClick: handleSearchClick}} 
                 />
             </div>
         </BoxContainer>

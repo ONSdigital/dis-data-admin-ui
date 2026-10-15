@@ -14,10 +14,15 @@ import { mapMigrationListTable } from "@/components/table/mapper";
 
 export default async function MigrationList({ searchParams }) {
     const pageParams = await searchParams;
-    pageParams.limit = pageParams.limit ? Number(pageParams.limit) : 10;
-    pageParams.offset = pageParams.offset ? Number(pageParams.offset) : 0;
+    const query = {
+        limit: Number(pageParams.limit) || 10,
+        offset: Number(pageParams.offset) || 0,
+        state: pageParams.state ? pageParams.state.split(",") : [],
+        label: pageParams.label || "",
+        sort: pageParams.sort,
+    };
 
-    const requestURL = createRequestURL(pageParams);
+    const requestURL = createRequestURL(query);
     const accessToken = await getAccessTokenFromCookie(cookies);
     const migrationsResp = await getMigrationsList(requestURL, accessToken);
 
@@ -31,8 +36,8 @@ export default async function MigrationList({ searchParams }) {
     const mappedTable = mapMigrationListTable(migrationsResp.response?.items);
 
     const totalCount = migrationsResp.response?.total_count;
-    const totalNumberOfPages = Math.ceil(totalCount / pageParams.limit);
-    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
+    const totalNumberOfPages = Math.ceil(totalCount / query.limit);
+    const currentPage = Math.floor(query.offset ? (query.offset / query.limit) + 1 : 1);
 
     const renderListArea = () => {
         return (
@@ -52,11 +57,12 @@ export default async function MigrationList({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={pageParams.sort}/>                
+                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort}/>                
                 <Pagination
                     totalNumberOfPages={totalNumberOfPages}
                     currentPage={currentPage}
-                    limit={pageParams.limit}
+                    limit={query.limit}
+                    currentParams={pageParams}
                 />
             </>
         );
@@ -66,7 +72,12 @@ export default async function MigrationList({ searchParams }) {
             <SuccessPanel query={pageParams} contentType={pageParams.series} />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <MigrationFilter states={migrationsResp.response?.states}></MigrationFilter>
+                    <MigrationFilter
+                        key={`${query.state.join(",")}-${query.label}`}
+                        states={migrationsResp.response?.states}
+                        selectedStates={query.state}
+                        label={query.label}
+                    />
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
                     {renderListArea()}
@@ -81,7 +92,7 @@ const createRequestURL = ({ limit, offset, state, label }) => {
         limit,
         offset,
         sort: "job_number:desc",
-        state,
+        state: state.join(","),
         label,
     };
     return new URLSearchParams(

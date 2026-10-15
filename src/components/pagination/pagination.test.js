@@ -2,16 +2,12 @@ import "@testing-library/jest-dom"
 import { render, screen, within } from "@testing-library/react"
 import Pagination from "./Pagination"
 
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 jest.mock("next/navigation");
 
 useRouter.mockReturnValue({
   push: jest.fn()
 })
-
-useSearchParams.mockReturnValue(
-    ""
-)
 
 usePathname.mockReturnValue("test.com")
 
@@ -41,6 +37,13 @@ describe("Pagination", () => {
         const pageFive = screen.getByTestId("pagination-5");
         const pageFiveLink = within(pageFive).getByRole("link")
         expect(pageFiveLink).toHaveAttribute("href", "test.com?limit=25&offset=100")
+    })
+
+    test("Keeps existing params and replaces offset", () => {
+        render(<Pagination totalNumberOfPages={2} currentPage={1} limit={10} currentParams={{ state: "approved", offset: "10" }}/>)
+
+        const pageOneLink = within(screen.getByTestId("pagination-1")).getByRole("link")
+        expect(pageOneLink).toHaveAttribute("href", "test.com?state=approved&offset=0&limit=10")
     })
 
     test("Renders nothing when total number of pages is less than 1", () => {
