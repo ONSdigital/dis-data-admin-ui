@@ -53,14 +53,14 @@ export default function MigrationFilter({ states = [], selectedStates = [], labe
     };
 
     return (
-        <form id="migration-list-filter-form" data-testid="migration-list-filter-form">
-            <BoxContainer
-                borderColor="ons-color-grey-15"
-                borderWidth={1}
-                classes="ons-grid__col ons-u-pl-no"
-                id="box-container"
-                title="Search and filter results"
-            >
+        <BoxContainer
+            borderColor="ons-color-grey-15"
+            borderWidth={1}
+            classes="ons-grid__col ons-u-pl-no"
+            id="box-container"
+            title="Search and filter results"
+        >
+            <form id="migration-list-filter-form" data-testid="migration-list-filter-form">
                 <div className="ons-u-mt-s">
                     <TextInput id="migration-list-search-by-name" 
                         dataTestId="migration-list-search-by-name" 
@@ -85,7 +85,7 @@ export default function MigrationFilter({ states = [], selectedStates = [], labe
                     variants={["small"]}
                     onClick={handleFilterButtonPress}
                 />
-            </BoxContainer>
-        </form>
+            </form>
+        </BoxContainer>
     );
 }
