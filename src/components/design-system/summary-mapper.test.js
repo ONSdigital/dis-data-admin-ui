@@ -1,92 +1,95 @@
 import { mapSeriesSummary, mapEditionSummary, mapVersionSummary, mapMigrationJobSummary } from "./summary-mapper";
 import { datasetList } from "../../../tests/mocks/datasets.mjs";
 import { versions } from "../../../tests/mocks/versions.mjs";
-import { migrationTasksList } from "../../../tests/mocks/migration-tasks.mjs";
 
 describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items", () => {
         const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", ["Topic Foo", "Topic Bar"], true);
         const mappedItems = mapped[0].groups[0].rows;
 
-        expect(mappedItems).toHaveLength(12);
+        expect(mappedItems).toHaveLength(13);
         // expect "Series ID" to have single value and not have "edit" action when published
         expect(mappedItems[0].rowTitle).toBe("Series ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "mock-quarterly"});
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
-        // expect "Type" to have single value and not have "edit" action
-        expect(mappedItems[1].rowTitle).toBe("Type");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "static"});
+        // expect "URL" to have single value and not have "edit" action
+        expect(mappedItems[1].rowTitle).toBe("URL");
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
+        // expect "Type" to have single value and not have "edit" action
+        expect(mappedItems[2].rowTitle).toBe("Type");
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "static"});
+        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
         // expect "Title" to have single value and have "edit" action
-        expect(mappedItems[2].rowTitle).toBe("Title");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
-        expect(mappedItems[2].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[3].rowTitle).toBe("Title");
+        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
+        expect(mappedItems[3].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-title",
             visuallyHiddenText: "Edit Title",
             url: "test/foo/edit#dataset-series-title"
         });
         // expect "Description" to have single value and have "edit" action
-        expect(mappedItems[3].rowTitle).toBe("Description");
-        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "This is a mock dataset test description"});
-        expect(mappedItems[3].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[4].rowTitle).toBe("Description");
+        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "This is a mock dataset test description"});
+        expect(mappedItems[4].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-description",
             visuallyHiddenText: "Edit Description",
             url: "test/foo/edit#dataset-series-description"
         });
         // expect "Topics" to have two values and have "edit" action
-        expect(mappedItems[4].rowTitle).toBe("Topics");
-        expect(mappedItems[4].rowItems[0].valueList).toHaveLength(2)
-        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "Topic Foo"});
-        expect(mappedItems[4].rowItems[0].valueList[1]).toMatchObject({text: "Topic Bar"});
-        expect(mappedItems[4].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[5].rowTitle).toBe("Topics");
+        expect(mappedItems[5].rowItems[0].valueList).toHaveLength(2)
+        expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "Topic Foo"});
+        expect(mappedItems[5].rowItems[0].valueList[1]).toMatchObject({text: "Topic Bar"});
+        expect(mappedItems[5].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-topics",
             visuallyHiddenText: "Edit Topics",
             url: "test/foo/edit#dataset-series-topics"
         });
         // expect "Last updated" to have single value and have "edit" action
-        expect(mappedItems[5].rowTitle).toBe("Last updated");
-        expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "1 January 2000"});
-        expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
-        // expect "Licence" to have single value and have "edit" action
-        expect(mappedItems[6].rowTitle).toBe("Licence");
-        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "My Licence"});
+        expect(mappedItems[6].rowTitle).toBe("Last updated");
+        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "1 January 2000"});
         expect(mappedItems[6].rowItems[0].actions).toBeFalsy();
+        // expect "Licence" to have single value and have "edit" action
+        expect(mappedItems[7].rowTitle).toBe("Licence");
+        expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "My Licence"});
+        expect(mappedItems[7].rowItems[0].actions).toBeFalsy();
         // expect "Next release" to have single value and have "edit" action
-        expect(mappedItems[7].rowTitle).toBe("Next release");
-        expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "TBC"});
-        expect(mappedItems[7].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[8].rowTitle).toBe("Next release");
+        expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "TBC"});
+        expect(mappedItems[8].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-next-release",
             visuallyHiddenText: "Edit Next release",
             url: "test/foo/edit#dataset-series-next-release"
         });
         // expect "Keywords" to have two values and have "edit" action
-        expect(mappedItems[8].rowTitle).toBe("Keywords");
-        expect(mappedItems[8].rowItems[0].valueList).toHaveLength(2)
-        expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "mock"});
-        expect(mappedItems[8].rowItems[0].valueList[1]).toMatchObject({text: "test"});
-        expect(mappedItems[8].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[9].rowTitle).toBe("Keywords");
+        expect(mappedItems[9].rowItems[0].valueList).toHaveLength(2)
+        expect(mappedItems[9].rowItems[0].valueList[0]).toMatchObject({text: "mock"});
+        expect(mappedItems[9].rowItems[0].valueList[1]).toMatchObject({text: "test"});
+        expect(mappedItems[9].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-keywords",
             visuallyHiddenText: "Edit Keywords",
             url: "test/foo/edit#dataset-series-keywords"
         });
         // expect "QMI" to have single value and have "edit" action
-        expect(mappedItems[9].rowTitle).toBe("QMI");
-        expect(mappedItems[9].rowItems[0].valueList[0]).toMatchObject({text: "https://www.ons.gov.uk/qmi"});
-        expect(mappedItems[9].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[10].rowTitle).toBe("QMI");
+        expect(mappedItems[10].rowItems[0].valueList[0]).toMatchObject({text: "https://www.ons.gov.uk/qmi"});
+        expect(mappedItems[10].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-qmi",
             visuallyHiddenText: "Edit QMI",
             url: "test/foo/edit#dataset-series-qmi"
         });
         // expect "Publisher" to have single value and not have "edit" action
-        expect(mappedItems[10].rowTitle).toBe("Publisher");
-        expect(mappedItems[10].rowItems[0].valueList[0]).toMatchObject({text: "ONS"});
-        expect(mappedItems[10].rowItems[0].actions).toBeFalsy();
+        expect(mappedItems[11].rowTitle).toBe("Publisher");
+        expect(mappedItems[11].rowItems[0].valueList[0]).toMatchObject({text: "ONS"});
+        expect(mappedItems[11].rowItems[0].actions).toBeFalsy();
         // expect "Contacts" to have two values and have "edit" action
-        expect(mappedItems[11].rowTitle).toBe("Contacts");
-        expect(mappedItems[11].rowItems[0].valueList).toHaveLength(2)
-        expect(mappedItems[11].rowItems[0].valueList[0]).toMatchObject({text: "First Contact"});
-        expect(mappedItems[11].rowItems[0].valueList[1]).toMatchObject({text: "Second Contact"});
-        expect(mappedItems[11].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[12].rowTitle).toBe("Contacts");
+        expect(mappedItems[12].rowItems[0].valueList).toHaveLength(2)
+        expect(mappedItems[12].rowItems[0].valueList[0]).toMatchObject({text: "First Contact"});
+        expect(mappedItems[12].rowItems[0].valueList[1]).toMatchObject({text: "Second Contact"});
+        expect(mappedItems[12].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-contacts",
             visuallyHiddenText: "Edit Contacts",
             url: "test/foo/edit#dataset-series-contacts"
@@ -122,7 +125,7 @@ describe("mapSeriesSummary", () => {
         items.publisher = null;
         const mapped = mapSeriesSummary(items, "test/foo/edit", []);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(10);
+        expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
             expect(item.rowTitle).not.toBe("Publisher");
         });
@@ -131,7 +134,7 @@ describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items when no topics are passed in", () => {
         const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", []);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(10);
+        expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
             expect(item.rowTitle).not.toBe("Topics");
         });
@@ -140,7 +143,7 @@ describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items when no keywords are present", () => {
         const mapped = mapSeriesSummary(datasetList.items[0].current, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(12);
+        expect(mappedItems).toHaveLength(13);
         const keywordsRow = mappedItems.find(item => item.rowTitle === "Keywords");
         expect(keywordsRow).toBeDefined();
         expect(keywordsRow.rowItems[0].valueList[0]).toMatchObject({text: "No keywords"});
@@ -152,23 +155,27 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
     it("when edition is published", () => {
         const mapped = mapEditionSummary(versions.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(3);
+        expect(mappedItems).toHaveLength(4);
         // expect "Edition ID" to have single value and not have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy()
+        // expect "URL" to have single value and not have "edit" action
+        expect(mappedItems[1].rowTitle).toBe("URL");
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series"});
+        expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Edition title" to have single value and have "edit" action
-        expect(mappedItems[1].rowTitle).toBe("Edition title");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
-        expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[2].rowTitle).toBe("Edition title");
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
+        expect(mappedItems[2].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-edition-title",
             visuallyHiddenText: "Edit Edition title",
             url: "test/foo/edit#edition-title"
         });
         // expect "Release date" to have single value and not have "edit" action
-        expect(mappedItems[2].rowTitle).toBe("Release date");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
-        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+        expect(mappedItems[3].rowTitle).toBe("Release date");
+        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
+        expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
     });
 
     it("when edition is not published", () => {
@@ -176,7 +183,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         data.state = "draft";
         const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(3);
+        expect(mappedItems).toHaveLength(4);
         // expect "Edition ID" to have single value and have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
@@ -185,18 +192,22 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
             visuallyHiddenText: "Edit Edition ID",
             url: "test/foo/edit#edition-id"
         });
+        // expect "URL" to have single value and not have "edit" action
+        expect(mappedItems[1].rowTitle).toBe("URL");
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series"});
+        expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Edition title" to have single value and have "edit" action
-        expect(mappedItems[1].rowTitle).toBe("Edition title");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
-        expect(mappedItems[1].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[2].rowTitle).toBe("Edition title");
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
+        expect(mappedItems[2].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-edition-title",
             visuallyHiddenText: "Edit Edition title",
             url: "test/foo/edit#edition-title"
         });
         // expect "Release date" to have single value and not have "edit" action
-        expect(mappedItems[2].rowTitle).toBe("Release date");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
-        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+        expect(mappedItems[3].rowTitle).toBe("Release date");
+        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
+        expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
     });
 
     it("when edition is marked as migration", () => {
@@ -226,26 +237,26 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
 
-        expect(mappedItems).toHaveLength(4);
-        expect(mappedItems[3].rowTitle).toBe("Related content");
-        expect(mappedItems[3].rowItems[0].valueList).toHaveLength(2);
-        expect(mappedItems[3].rowItems[0].valueList[0].text.props.children[0].props).toMatchObject({
+        expect(mappedItems).toHaveLength(5);
+        expect(mappedItems[4].rowTitle).toBe("Related content");
+        expect(mappedItems[4].rowItems[0].valueList).toHaveLength(2);
+        expect(mappedItems[4].rowItems[0].valueList[0].text.props.children[0].props).toMatchObject({
             "data-testid": "related-content-0-title-0",
             children: "Methodology"
         });
-        expect(mappedItems[3].rowItems[0].valueList[0].text.props.children[1].props).toMatchObject({
+        expect(mappedItems[4].rowItems[0].valueList[0].text.props.children[1].props).toMatchObject({
             "data-testid": "related-content-0-description-0",
             children: "Read the methodology for this edition"
         });
-        expect(mappedItems[3].rowItems[0].valueList[1].text.props.children[0].props).toMatchObject({
+        expect(mappedItems[4].rowItems[0].valueList[1].text.props.children[0].props).toMatchObject({
             "data-testid": "related-content-1-title-1",
             children: "Quality information"
         });
-        expect(mappedItems[3].rowItems[0].valueList[1].text.props.children[1].props).toMatchObject({
+        expect(mappedItems[4].rowItems[0].valueList[1].text.props.children[1].props).toMatchObject({
             "data-testid": "related-content-1-description-1",
             children: "Review the quality information"
         });
-        expect(mappedItems[3].rowItems[0].actions[0]).toMatchObject({
+        expect(mappedItems[4].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-related-content",
             visuallyHiddenText: "Edit Related content",
             url: "test/foo/edit#related-content"
@@ -263,28 +274,103 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
     it("when version is published", () => {
         const mapped = mapVersionSummary(publishedVersion, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
         const mappedItems = mapped[0].groups[0].rows;
+        expect(mappedItems).toHaveLength(12);
+        // expect "Version ID" to have single value and not have "edit" action
+        expect(mappedItems[0].rowTitle).toBe("Version ID");
+        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: 1});
+        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
+        // expect "URL" to have single value and not have "edit" action
+        expect(mappedItems[1].rowTitle).toBe("URL");
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series/versions/1"});
+        expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
+        // expect "Series" to have single value and not have "edit" action
+        expect(mappedItems[2].rowTitle).toBe("Series");
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
+        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
+        // expect "Edition" to have single value and not have "edit" action
+        expect(mappedItems[3].rowTitle).toBe("Edition");
+        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
+        expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
+        // expect "Edition title" to have single value and not have "edit" action
+        expect(mappedItems[4].rowTitle).toBe("Edition title");
+        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
+        expect(mappedItems[4].rowItems[0].actions).toBeFalsy();
+        // expect "State" to have single value and not have "edit" action
+        expect(mappedItems[5].rowTitle).toBe("State");
+        expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "Published"});
+        expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
+        // expect "Release date" to have single value and have "edit" action
+        expect(mappedItems[6].rowTitle).toBe("Release date");
+        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
+        expect(mappedItems[6].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-release-date",
+            visuallyHiddenText: "Edit Release date",
+            url: "test/foo/edit#dataset-version-release-date",
+        });
+        // expect "Last updated" to have single value and have "edit" action
+        expect(mappedItems[7].rowTitle).toBe("Last updated");
+        expect(mappedItems[7].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
+        expect(mappedItems[7].rowItems[0].actions).toBeFalsy();
+        // expect "Quality designation" to have single value and have "edit" action
+        expect(mappedItems[8].rowTitle).toBe("Quality designation");
+        expect(mappedItems[8].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
+        expect(mappedItems[8].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-quality-designation",
+            visuallyHiddenText: "Edit Quality designation",
+            url: "test/foo/edit#dataset-version-quality-designation",
+        });
+        // expect "Usage notes" to have JSX content and have "edit" action
+        expect(mappedItems[9].rowTitle).toBe("Usage notes");
+        expect(mappedItems[9].rowItems[0].valueList[0].text).toHaveLength(2);
+        expect(mappedItems[9].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-usage-notes",
+            visuallyHiddenText: "Edit Usage notes",
+            url: "test/foo/edit#dataset-version-usage-notes",
+        });
+        // expect "Alerts" to have JSX content and have "edit" action
+        expect(mappedItems[10].rowTitle).toBe("Alerts");
+        expect(mappedItems[10].rowItems[0].valueList[0].text).toHaveLength(2);
+        expect(mappedItems[10].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-alerts",
+            visuallyHiddenText: "Edit Alerts",
+            url: "test/foo/edit#dataset-version-alerts",
+        });
+        // expect "Downloads" to have JSX content and have "edit" action
+        expect(mappedItems[11].rowTitle).toBe("Downloads");
+        expect(mappedItems[11].rowItems[0].valueList[0].text).toHaveLength(2);
+        expect(mappedItems[11].rowItems[0].actions[0]).toMatchObject({
+            id: "action-link-downloads",
+            visuallyHiddenText: "Edit Downloads",
+            url: "test/foo/edit#dataset-version-downloads",
+        });
+    });
+
+    it("when version is not published", () => {
+        const data = { ...publishedVersion, state: "draft" };
+        const mapped = mapVersionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(11);
         // expect "Version ID" to have single value and not have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Version ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: 1});
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
-        // expect "Series" to have single value and not have "edit" action
-        expect(mappedItems[1].rowTitle).toBe("Series");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
+        // expect "URL" to have single value and not have "edit" action
+        expect(mappedItems[1].rowTitle).toBe("URL");
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series/versions/1"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
-        // expect "Edition" to have single value and not have "edit" action
-        expect(mappedItems[2].rowTitle).toBe("Edition");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
+        // expect "Series" to have single value and not have "edit" action
+        expect(mappedItems[2].rowTitle).toBe("Series");
+        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
         expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
-        // expect "Edition title" to have single value and not have "edit" action
-        expect(mappedItems[3].rowTitle).toBe("Edition title");
-        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
+        // expect "Edition" to have single value and not have "edit" action
+        expect(mappedItems[3].rowTitle).toBe("Edition");
+        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
         expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
-        // expect "State" to have single value and not have "edit" action
-        expect(mappedItems[4].rowTitle).toBe("State");
-        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "Published"});
+        // expect "Edition title" to have single value and not have "edit" action
+        expect(mappedItems[4].rowTitle).toBe("Edition title");
+        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
         expect(mappedItems[4].rowItems[0].actions).toBeFalsy();
-        // expect "Release date" to have single value and have "edit" action
+        // expect "Release date" to have single value and have "edit" action (no "State" row when not published)
         expect(mappedItems[5].rowTitle).toBe("Release date");
         expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[5].rowItems[0].actions[0]).toMatchObject({
@@ -324,73 +410,6 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         expect(mappedItems[10].rowTitle).toBe("Downloads");
         expect(mappedItems[10].rowItems[0].valueList[0].text).toHaveLength(2);
         expect(mappedItems[10].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-downloads",
-            visuallyHiddenText: "Edit Downloads",
-            url: "test/foo/edit#dataset-version-downloads",
-        });
-    });
-
-    it("when version is not published", () => {
-        const data = { ...publishedVersion, state: "draft" };
-        const mapped = mapVersionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
-        const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(10);
-        // expect "Version ID" to have single value and not have "edit" action
-        expect(mappedItems[0].rowTitle).toBe("Version ID");
-        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: 1});
-        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
-        // expect "Series" to have single value and not have "edit" action
-        expect(mappedItems[1].rowTitle).toBe("Series");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "Mock Dataset"});
-        expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
-        // expect "Edition" to have single value and not have "edit" action
-        expect(mappedItems[2].rowTitle).toBe("Edition");
-        expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
-        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
-        // expect "Edition title" to have single value and not have "edit" action
-        expect(mappedItems[3].rowTitle).toBe("Edition title");
-        expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
-        expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
-        // expect "Release date" to have single value and have "edit" action (no "State" row when not published)
-        expect(mappedItems[4].rowTitle).toBe("Release date");
-        expect(mappedItems[4].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
-        expect(mappedItems[4].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-release-date",
-            visuallyHiddenText: "Edit Release date",
-            url: "test/foo/edit#dataset-version-release-date",
-        });
-        // expect "Last updated" to have single value and have "edit" action
-        expect(mappedItems[5].rowTitle).toBe("Last updated");
-        expect(mappedItems[5].rowItems[0].valueList[0]).toMatchObject({text: "26 February 2025"});
-        expect(mappedItems[5].rowItems[0].actions).toBeFalsy();
-        // expect "Quality designation" to have single value and have "edit" action
-        expect(mappedItems[6].rowTitle).toBe("Quality designation");
-        expect(mappedItems[6].rowItems[0].valueList[0]).toMatchObject({text: "National Statistic"});
-        expect(mappedItems[6].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-quality-designation",
-            visuallyHiddenText: "Edit Quality designation",
-            url: "test/foo/edit#dataset-version-quality-designation",
-        });
-        // expect "Usage notes" to have JSX content and have "edit" action
-        expect(mappedItems[7].rowTitle).toBe("Usage notes");
-        expect(mappedItems[7].rowItems[0].valueList[0].text).toHaveLength(2);
-        expect(mappedItems[7].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-usage-notes",
-            visuallyHiddenText: "Edit Usage notes",
-            url: "test/foo/edit#dataset-version-usage-notes",
-        });
-        // expect "Alerts" to have JSX content and have "edit" action
-        expect(mappedItems[8].rowTitle).toBe("Alerts");
-        expect(mappedItems[8].rowItems[0].valueList[0].text).toHaveLength(2);
-        expect(mappedItems[8].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-alerts",
-            visuallyHiddenText: "Edit Alerts",
-            url: "test/foo/edit#dataset-version-alerts",
-        });
-        // expect "Downloads" to have JSX content and have "edit" action
-        expect(mappedItems[9].rowTitle).toBe("Downloads");
-        expect(mappedItems[9].rowItems[0].valueList[0].text).toHaveLength(2);
-        expect(mappedItems[9].rowItems[0].actions[0]).toMatchObject({
             id: "action-link-downloads",
             visuallyHiddenText: "Edit Downloads",
             url: "test/foo/edit#dataset-version-downloads",
