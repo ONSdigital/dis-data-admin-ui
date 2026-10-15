@@ -8,6 +8,7 @@ import { BoxContainer, TextInput } from "@/components/design-system/DesignSystem
 export default function SeriesListForm({datasetID}) {
     const [id, setID] = useState(datasetID || "");
     const { push } = useRouter();
+
     const handleSearchClick = () => {
         const trimmedID = id.trim();
         if (!trimmedID) {
@@ -17,6 +18,7 @@ export default function SeriesListForm({datasetID}) {
         const params = new URLSearchParams({ id: trimmedID });
         push(`/series?${params.toString()}`);
     };
+
     return (
         <BoxContainer
             borderColor="ons-color-grey-15"
@@ -25,16 +27,18 @@ export default function SeriesListForm({datasetID}) {
             id="box-container"
             title="Filter results"
         > 
-            <div className="ons-u-mt-xs">
-                <TextInput id="series-list-search-by-id" 
-                    dataTestId="series-list-search-by-id" 
-                    label={{text: "Search by ID", description: "E.g \"CPIH01\" or \"my-dataset-id\""}}
-                    value={id}
-                    classes="ons-input--w-20"
-                    onChange={e => setID(e.target.value)}
-                    searchButton={{text: "Search", onClick: handleSearchClick}} 
-                />
-            </div>
+            <form id="series-list-filter-form" data-testid="series-list-filter-form">
+                <div className="ons-u-mt-xs">
+                    <TextInput id="series-list-search-by-id" 
+                        dataTestId="series-list-search-by-id" 
+                        label={{text: "Search by ID", description: "E.g \"CPIH01\" or \"my-dataset-id\""}}
+                        value={id}
+                        classes="ons-input--w-20"
+                        onChange={e => setID(e.target.value)}
+                        searchButton={{text: "Search", onClick: handleSearchClick}} 
+                    />
+                </div>
+            </form>
         </BoxContainer>
     );
 }
