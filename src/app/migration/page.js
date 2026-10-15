@@ -26,16 +26,19 @@ export default async function MigrationList({ searchParams }) {
     const accessToken = await getAccessTokenFromCookie(cookies);
     const migrationsResp = await getMigrationsList(requestURL, accessToken);
 
-    if (migrationsResp.error) {
+    const [ migrationFetchError, noSearchResults ] = checkErrors(migrationsResp, query);
+
+    if (migrationFetchError) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
             </Panel>
         );
     }
+
     const mappedTable = mapMigrationListTable(migrationsResp.response?.items);
 
-    const totalCount = migrationsResp.response?.total_count;
+    const totalCount = migrationsResp.response?.total_count || 0;
     const totalNumberOfPages = Math.ceil(totalCount / query.limit);
     const currentPage = Math.floor(query.offset ? (query.offset / query.limit) + 1 : 1);
 
@@ -45,7 +48,10 @@ export default async function MigrationList({ searchParams }) {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing {migrationsResp.response?.offset + 1} to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs
+                            {noSearchResults 
+                                ? <p data-testid="migration-list-no-results">No results found for {query.label}</p> :
+                                <p>Showing {migrationsResp.response?.offset + 1 } to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs</p>
+                            }
                         </div>
                         <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
@@ -57,7 +63,7 @@ export default async function MigrationList({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort}/>                
+                {!noSearchResults && <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort} />}
                 <Pagination
                     totalNumberOfPages={totalNumberOfPages}
                     currentPage={currentPage}
@@ -87,6 +93,20 @@ export default async function MigrationList({ searchParams }) {
     );
 }
 
+// return errors based on request response
+const checkErrors = (migrationList, params) => {
+    if (migrationList.error) {
+        // if we get a 404 and there's a migration label param 
+        // assume the search has returned zero results
+        if (migrationList.status === 404 && params.label) {
+            return [false, true];
+        }
+        return [true, false];
+    }
+    return [false, false];
+};
+
+// build URL (with various params) to make request to migration service
 const createRequestURL = ({ limit, offset, state, label }) => {
     const query = {
         limit,
