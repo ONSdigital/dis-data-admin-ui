@@ -344,8 +344,8 @@ app.get("/v1/migration-jobs", (req, res) => {
     if (migrationName) {
         const foundMigrationJobs = migrationJobsList.items.filter((item) => item.label === migrationName);
         if (foundMigrationJobs.length === 0) {
-            log("Migration job not found", req.url, 404);
-            res.status(404).send("Migration job not found");
+            log("Migration job not found", req.url, 200);
+            res.status(200).send({count: 0, total_count: 0, items: []});
             return;
         }
         const result = {items: foundMigrationJobs, total_count: foundMigrationJobs.length};
