@@ -70,16 +70,19 @@ export default function MigrationFilter({ states = [], selectedStates = [], labe
                         classes="ons-input--w-20"
                     />
                 </div>
-                <Checkbox
-                    id="state-filter"
-                    dataTestId="state-filter"
-                    items={{ itemsList: createCheckboxes() }}
-                    legend="State"
-                    borderless
-                    classes="ons-u-mt-m ons-u-mb-m"
-                />
+                {states  && states.length > 0 ? 
+                    (<Checkbox
+                        id="state-filter"
+                        dataTestId="state-filter"
+                        items={{ itemsList: createCheckboxes() }}
+                        legend="State"
+                        borderless
+                        classes="ons-u-mt-m ons-u-mb-m"
+                    />) : null
+                }
                 <Button
                     dataTestId="migration-filter-apply-button"
+                    classes={!states.length ? "ons-u-mt-m" : ""}
                     id="migration-filter-apply-button"
                     text="Apply"
                     variants={["small"]}
