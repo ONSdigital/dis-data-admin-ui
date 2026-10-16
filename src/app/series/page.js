@@ -8,6 +8,7 @@ import List from "@/components/list/List";
 import Pagination from "@/components/pagination/Pagination";
 import SeriesListForm from "@/components/form/series-list/SeriesListForm";
 import LinkButton from "@/components/link-button/LinkButton";
+import NoResults from "@/components/no-results/NoResults";
 import { Panel, Select } from "@/components/design-system/DesignSystem";
 
 import { mapListItems } from "./mapper";
@@ -43,18 +44,61 @@ export default async function Series({ searchParams }) {
         );
     };
 
+    const renderSubHeading = () => {
+        if (noSearchResults) {
+            return ( <p data-testid="series-list-no-results">No results found for "{query.id}"</p> );
+        }
+        return (
+            <p>Showing {dataList.response?.offset + 1} to {dataList.response?.offset + dataList.response?.count} of {totalCount} series</p>
+        );
+    }
+
+    const renderBody = () => {
+        if (noSearchResults) {
+            return (
+                <>
+                    <NoResults searchQuery={query.id} createURL="series/create" />
+                </>
+            );
+        }
+        return (
+            <>
+                <div className="ons-u-mt-m ons-u-mb-l">
+                    <Select
+                        classes="ons-u-ml-m"
+                        dataTestId="select-series-sort-by"
+                        id="select-series-sort-by"
+                        label={{
+                            for: 'select-series-sort-by',
+                            text: 'Sort By:'
+                        }}
+                        options={[
+                            {
+                                text: 'Series ID',
+                                value: 'seriesID'
+                            }
+                        ]}
+                        variants="inline"
+                    />
+                </div>
+                <List items={listItems} type="series"/>
+                <Pagination
+                    totalNumberOfPages = {totalNumberOfPages}
+                    currentPage = {currentPage}
+                    limit = {query.limit}
+                    currentParams = {pageParams}
+                />
+            </>
+        );
+    }
+
     const renderListArea = () => {
         return (
             <>
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            <p>
-                                {noSearchResults 
-                                    ? `No results found for ${query.id}` 
-                                    : `Showing ${dataList.response?.offset + 1} to ${dataList.response?.offset + dataList.response?.count} of ${totalCount} series`
-                                }
-                            </p>
+                            { renderSubHeading() }
                         </div>
                         <div className="ons-grid__col ons-col-2@m ons-push-1@m">
                             <LinkButton
@@ -64,35 +108,7 @@ export default async function Series({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                {!noSearchResults && (
-                    <>
-                        <div className="ons-u-mt-m ons-u-mb-l">
-                            <Select
-                                classes="ons-u-ml-m"
-                                dataTestId="select-series-sort-by"
-                                id="select-series-sort-by"
-                                label={{
-                                    for: 'select-series-sort-by',
-                                    text: 'Sort By:'
-                                }}
-                                options={[
-                                    {
-                                        text: 'Series ID',
-                                        value: 'seriesID'
-                                    }
-                                ]}
-                                variants="inline"
-                            />
-                        </div>
-                        <List items={listItems} type="series"/>
-                        <Pagination
-                            totalNumberOfPages = {totalNumberOfPages}
-                            currentPage = {currentPage}
-                            limit = {query.limit}
-                            currentParams = {pageParams}
-                        />
-                    </>
-                )}
+                { renderBody() }
             </>
         );
     };

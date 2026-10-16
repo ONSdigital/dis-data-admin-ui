@@ -11,6 +11,7 @@ import Pagination from "@/components/pagination/Pagination";
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
 
 import { mapMigrationListTable } from "@/components/table/mapper";
+import NoResults from "@/components/no-results/NoResults";
 
 export default async function MigrationList({ searchParams }) {
     const pageParams = await searchParams;
@@ -42,16 +43,44 @@ export default async function MigrationList({ searchParams }) {
     const totalNumberOfPages = Math.ceil(totalCount / query.limit);
     const currentPage = Math.floor(query.offset ? (query.offset / query.limit) + 1 : 1);
 
+    const renderSubHeading = () => {
+        if (noSearchResults) {
+            return (
+                <p data-testid="migration-list-no-results">No results found for {query.label}</p>
+            );
+        }
+        return (
+            <p>Showing {migrationsResp.response?.offset + 1 } to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs</p>
+        );
+    }
+
+    const renderBody = () => {
+        if (noSearchResults) {
+            return (
+                <NoResults searchQuery={query.label} createURL="migration/create" />
+            );
+        }
+
+        return (
+            <>
+                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort} />
+                <Pagination
+                    totalNumberOfPages={totalNumberOfPages}
+                    currentPage={currentPage}
+                    limit={query.limit}
+                    currentParams={pageParams}
+                />
+            </>
+        );
+    };
+
     const renderListArea = () => {
         return (
             <>
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            {noSearchResults 
-                                ? <p data-testid="migration-list-no-results">No results found for {query.label}</p> :
-                                <p>Showing {migrationsResp.response?.offset + 1 } to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs</p>
-                            }
+                            { renderSubHeading() }
                         </div>
                         <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
@@ -63,13 +92,7 @@ export default async function MigrationList({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                {!noSearchResults && <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort} />}
-                <Pagination
-                    totalNumberOfPages={totalNumberOfPages}
-                    currentPage={currentPage}
-                    limit={query.limit}
-                    currentParams={pageParams}
-                />
+                { renderBody() }
             </>
         );
     };
@@ -95,15 +118,15 @@ export default async function MigrationList({ searchParams }) {
 
 // return errors based on request response
 const checkErrors = (migrationList, params) => {
-    if (migrationList.error) {
-        // if we get a 404 and there's a migration label param 
-        // assume the search has returned zero results
-        if (migrationList.status === 404 && params.label) {
+    if (!migrationList.error) {
+        // if we get 0 count, a 200 response and there's a migration  
+        // label param assume the search has returned zero results
+        if (migrationList.status === 200 && migrationList.response?.count === 0 && params.label) {
             return [false, true];
         }
-        return [true, false];
+        return [false, false];
     }
-    return [false, false];
+    return [true, false];
 };
 
 // build URL (with various params) to make request to migration service
