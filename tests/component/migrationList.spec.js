@@ -78,8 +78,24 @@ test.describe("Search and filters on migration list page", () => {
         await page.getByTestId("migration-list-search-by-name").fill("doesnt-exist");
         await page.getByTestId("migration-filter-apply-button").click();
         await page.waitForURL("**/migration?label=doesnt-exist");
-        await page.waitForTimeout(10000);
-        await expect(page.getByTestId("migration-list-no-results")).toContainText("No results found for doesnt-exist");
+
+        await expect(page.getByTestId("migration-list-no-results")).toContainText('No results found for "doesnt-exist"');
+        await expect(page.getByTestId("no-results-message")).toContainText("doesnt-exist");
+        await expect(page.getByTestId("no-results-list")).toBeVisible();
+        await expect(page.getByTestId("no-results-create-new-entry-link")).toHaveAttribute("href", "migration/create");
+        await expect(page.getByTestId("migration-list-table")).not.toBeVisible();
+    });
+
+    test("Empty search create link routes to create page", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration"); 
+        await page.getByTestId("migration-list-search-by-name").fill("bar-foo");
+        await page.getByTestId("migration-filter-apply-button").click();
+        await page.waitForURL("**/migration?label=bar-foo");
+
+        await page.getByTestId("no-results-create-new-entry-link").click();
+        await page.waitForURL("**/migration/create"); 
     });
 
     test("Filters results by state", async ({ page, context }) => {

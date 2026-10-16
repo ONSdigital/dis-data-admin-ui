@@ -46,7 +46,7 @@ export default async function MigrationList({ searchParams }) {
     const renderSubHeading = () => {
         if (noSearchResults) {
             return (
-                <p data-testid="migration-list-no-results">No results found for {query.label}</p>
+                <p data-testid="migration-list-no-results">No results found for "{query.label}"</p>
             );
         }
         return (

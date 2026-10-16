@@ -68,7 +68,23 @@ test.describe("Filtering on series list page", () => {
         await page.getByTestId("series-list-search-by-id").fill("bar-foo");
         await page.getByTestId("icon-search").click();
         await page.waitForURL("**/series?id=bar-foo");
-        await expect(page.getByText("No results found for bar-foo")).toBeVisible();
+        await expect(page.getByText('No results found for "bar-foo"')).toBeVisible();
+        await expect(page.getByTestId("series-list-no-results")).toContainText('No results found for "bar-foo"');
+        await expect(page.getByTestId("no-results-message")).toContainText("bar-foo");
+        await expect(page.getByTestId("no-results-list")).toBeVisible();
+        await expect(page.getByTestId("no-results-create-new-entry-link")).toHaveAttribute("href", "series/create");
         await expect(page.getByRole("button", { name: "Create new series" })).toBeVisible();
+        await expect(page.getByTestId("select-series-sort-by")).not.toBeVisible();
+    });
+
+    test("Empty search create link routes to create page", async ({ page, context }) => {
+        setValidAuthCookies(context);
+        await page.goto("./series"); 
+        await page.getByTestId("series-list-search-by-id").fill("bar-foo");
+        await page.getByTestId("icon-search").click();
+        await page.waitForURL("**/series?id=bar-foo");
+
+        await page.getByTestId("no-results-create-new-entry-link").click();
+        await page.waitForURL("**/series/create"); 
     });
 })
