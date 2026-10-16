@@ -27,24 +27,6 @@ test.describe("Migration list page", () => {
         await expect(page.getByTestId("migration-list-table-cell-2-3")).toContainText("Approved");
     });
 
-    test("Filters results by state", async ({ page, context }) => {
-        setValidAuthCookies(context);
-
-        await page.goto("./migration");
-
-        const approvedCheckbox = page.getByLabel("Approved");
-        await approvedCheckbox.check();
-
-        await page.getByTestId("migration-filter-apply-button").click();
-        await expect(page).toHaveURL(/state=approved/);
-        await expect(page.getByTestId("migration-list-table")).toBeVisible();
-
-        const statuses = await page.getByTestId(/migration-list-table-cell-\d-3/).all();
-        for (const cell of statuses) {
-            await expect(cell).toContainText("Approved");
-        }
-    });
-
     test("Filter options are populated by returned jobs", async ({ page, context }) => {
         setValidAuthCookies(context);
 
@@ -75,5 +57,62 @@ test.describe("Migration list page", () => {
         await page.getByRole("link", { name: /Go to the last page/ }).click();
         await expect(page.getByText("Page")).toContainText("of");
         await expect(page.getByTestId("migration-list-table")).toBeVisible();
+    });
+});
+
+test.describe("Search and filters on migration list page", () => {
+    test ("Filtering by a valid ID returns correct results", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration");
+        await page.getByTestId("migration-list-search-by-name").fill("CPIH");
+        await page.getByTestId("migration-filter-apply-button").click();
+        await page.waitForURL("**/migration?label=CPIH");
+        await expect(page.getByTestId("migration-list-table-cell-0-2")).toContainText("CPIH");
+    });
+
+    test ("Filtering by non existent ID handles returned 404", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration");
+        await page.getByTestId("migration-list-search-by-name").fill("doesnt-exist");
+        await page.getByTestId("migration-filter-apply-button").click();
+        await page.waitForURL("**/migration?label=doesnt-exist");
+
+        await expect(page.getByTestId("migration-list-no-results")).toContainText('No results found for "doesnt-exist"');
+        await expect(page.getByTestId("no-results-message")).toContainText("doesnt-exist");
+        await expect(page.getByTestId("no-results-list")).toBeVisible();
+        await expect(page.getByTestId("no-results-create-new-entry-link")).toHaveAttribute("href", "migration/create");
+        await expect(page.getByTestId("migration-list-table")).not.toBeVisible();
+    });
+
+    test("Empty search create link routes to create page", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration"); 
+        await page.getByTestId("migration-list-search-by-name").fill("bar-foo");
+        await page.getByTestId("migration-filter-apply-button").click();
+        await page.waitForURL("**/migration?label=bar-foo");
+
+        await page.getByTestId("no-results-create-new-entry-link").click();
+        await page.waitForURL("**/migration/create"); 
+    });
+
+    test("Filters results by state", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./migration");
+
+        const approvedCheckbox = page.getByLabel("Approved");
+        await approvedCheckbox.check();
+
+        await page.getByTestId("migration-filter-apply-button").click();
+        await expect(page).toHaveURL(/state=approved/);
+        await expect(page.getByTestId("migration-list-table")).toBeVisible();
+
+        const statuses = await page.getByTestId(/migration-list-table-cell-\d-3/).all();
+        for (const cell of statuses) {
+            await expect(cell).toContainText("Approved");
+        }
     });
 });

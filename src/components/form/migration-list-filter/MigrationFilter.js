@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { BoxContainer, Checkbox, Button } from "@/components/design-system/DesignSystem";
+import { useRouter, usePathname } from "next/navigation";
+import { BoxContainer, Checkbox, Button, TextInput } from "@/components/design-system/DesignSystem";
 
-export default function MigrationFilter({ states = []}) {
-    const searchParams = useSearchParams();
-    const [stateFilters, setStateFilters] = useState(() => {
-        const state = searchParams.get("state");
-        return state ? state.split(",") : [];
-    });
+export default function MigrationFilter({ states = [], selectedStates = [], label = "" }) {
+    const [stateFilters, setStateFilters] = useState(selectedStates);
+    const [nameFilter, setNameFilter] = useState(label);
 
     const { push } = useRouter();
     const pathname = usePathname();
@@ -21,13 +18,17 @@ export default function MigrationFilter({ states = []}) {
     };
 
     const handleFilterButtonPress = () => {
-        if (stateFilters.length === 0) {
-            push(pathname);
-            return;
-        }
+        const filters = {
+            state: stateFilters.join(","),
+            label: nameFilter.trim(),
+        };
 
-        const url = `${pathname}?state=${stateFilters.join(",")}`;
-        push(url);
+        const params = new URLSearchParams(
+            Object.entries(filters).filter(([, value]) => value)
+        );
+
+        const query = params.toString();
+        push(query ? `${pathname}?${query}` : pathname);
     };
 
     const createCheckboxes = () => {
@@ -57,23 +58,37 @@ export default function MigrationFilter({ states = []}) {
             borderWidth={1}
             classes="ons-grid__col ons-u-pl-no"
             id="box-container"
-            title="Filter results"
+            title="Search and filter results"
         >
-            <Checkbox
-                id="state-filter"
-                dataTestId="state-filter"
-                items={{ itemsList: createCheckboxes() }}
-                legend="State"
-                borderless
-                classes="ons-u-mt-m ons-u-mb-m"
-            />
-            <Button
-            dataTestId="migration-filter-apply-button"
-            id="migration-filter-apply-button"
-            text="Apply"
-            variants={["small"]}
-            onClick={handleFilterButtonPress}
-        />
+            <form id="migration-list-filter-form" data-testid="migration-list-filter-form">
+                <div className="ons-u-mt-s">
+                    <TextInput id="migration-list-search-by-name" 
+                        dataTestId="migration-list-search-by-name" 
+                        label={{text: "Search by name", description: "E.g \"Labour market\""}}
+                        value={nameFilter}
+                        onChange={(e) => setNameFilter(e.target.value)}
+                        classes="ons-input--w-20"
+                    />
+                </div>
+                {states  && states.length > 0 ? 
+                    (<Checkbox
+                        id="state-filter"
+                        dataTestId="state-filter"
+                        items={{ itemsList: createCheckboxes() }}
+                        legend="State"
+                        borderless
+                        classes="ons-u-mt-m ons-u-mb-m"
+                    />) : null
+                }
+                <Button
+                    dataTestId="migration-filter-apply-button"
+                    classes={!states.length ? "ons-u-mt-m" : ""}
+                    id="migration-filter-apply-button"
+                    text="Apply"
+                    variants={["small"]}
+                    onClick={handleFilterButtonPress}
+                />
+            </form>
         </BoxContainer>
     );
 }
