@@ -1,0 +1,21 @@
+# Node modules
+node_modules
+tests/fakeapi/node_modules
+
+# Build
+.next
+build
+
+# Test outputs
+coverage
+playwright-report
+test-results
+
+# Local development files
+.git
+.DS_Store
+.idea
+.vscode
+*.log
+*.log.*
+.env~
