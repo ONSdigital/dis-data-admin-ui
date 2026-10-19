@@ -25,7 +25,12 @@ export const editions = {
                     download_url: "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     byte_size: 265000
                 }
-            ]
+            ],
+            links: {
+                dataset: {
+                    id: "mock-quarterly" 
+                }
+            }
         },
         {
             edition: "test-edition",
@@ -47,7 +52,12 @@ export const editions = {
                     download_url: "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     byte_size: 265000
                 }
-            ]
+            ],
+            links: {
+                dataset: {
+                    id: "mock-quarterly" 
+                }
+            }
         },
         {
             edition: "time-series-unpublished",
@@ -69,7 +79,12 @@ export const editions = {
                     download_url: "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     byte_size: 265000
                 }
-            ]
+            ],
+            links: {
+                dataset: {
+                    id: "mock-quarterly" 
+                }
+            }
         },
         {
             edition: "test-id",
@@ -91,7 +106,12 @@ export const editions = {
                     download_url: "http://localhost:23600/downloads/files/uuid-2/full-dataset.xls",
                     byte_size: 265000
                 }
-            ]
+            ],
+            links: {
+                dataset: {
+                    id: "mock-quarterly" 
+                }
+            }
         },
         {
             edition: "migrationed-edition",
