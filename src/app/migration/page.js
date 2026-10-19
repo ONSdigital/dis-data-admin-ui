@@ -45,14 +45,12 @@ export default async function MigrationList({ searchParams }) {
 
     const renderSubHeading = () => {
         if (noSearchResults) {
-            return (
-                <p data-testid="migration-list-no-results">No results found for "{query.label}"</p>
-            );
+            return (<p data-testid="migration-list-no-results">{`No results found for "${query.label}"`}</p>);
         }
         return (
             <p>Showing {migrationsResp.response?.offset + 1 } to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs</p>
         );
-    }
+    };
 
     const renderBody = () => {
         if (noSearchResults) {

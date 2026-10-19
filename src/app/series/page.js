@@ -46,12 +46,12 @@ export default async function Series({ searchParams }) {
 
     const renderSubHeading = () => {
         if (noSearchResults) {
-            return ( <p data-testid="series-list-no-results">No results found for "{query.id}"</p> );
+            return ( <p data-testid="series-list-no-results">{`No results found for "${query.id}"`}</p> );
         }
         return (
             <p>Showing {dataList.response?.offset + 1} to {dataList.response?.offset + dataList.response?.count} of {totalCount} series</p>
         );
-    }
+    };
 
     const renderBody = () => {
         if (noSearchResults) {
@@ -90,7 +90,7 @@ export default async function Series({ searchParams }) {
                 />
             </>
         );
-    }
+    };
 
     const renderListArea = () => {
         return (
