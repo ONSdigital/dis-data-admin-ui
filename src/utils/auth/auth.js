@@ -22,6 +22,7 @@ const MILLISECONDS_MULTIPLIER = 1000;
  */
 const logout = () => {
     logInfo("user clicked logout", null, null, null);
+    /* eslint-disable-next-line @next/next/no-location-assign-relative-destination */
     return window.location.href = LOGOUT_URL;
 };
 

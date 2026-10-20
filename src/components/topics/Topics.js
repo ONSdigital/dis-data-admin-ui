@@ -51,7 +51,6 @@ export default function Topics({ listOfAllTopics, preSelectedTopics, topicsError
 
         previousPreSelectedTopicsKey.current = preSelectedTopicsKey;
         const topicsFromProps = preSelectedTopics || [];
-        /* eslint-disable-next-line react-hooks/set-state-in-effect */
         setSelectedTopics(topicsFromProps);
         setMainTopic(getTopicID(topicsFromProps[0]));
     }, [preSelectedTopics, preSelectedTopicsKey]);

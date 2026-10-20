@@ -151,7 +151,7 @@ const request = async ({ url, accessToken, method, body, timeoutMs = DEFAULT_TIM
     }
 
     if (!response.ok) {
-        let errorMessage = null;
+        let errorMessage;
         try {
             errorMessage = await response.text();
         } catch (error) {
