@@ -9,32 +9,8 @@
             "reason": "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
         },
         {
-            "id": "CVE-2026-67213",
-            "reason": "nanoid is an indirect import via postcss/next. Overridden to 3.3.17 which backports the fix; Sonatype CVE ranges incorrectly flag all versions before 5.x. Cannot upgrade to 5.x as postcss requires CommonJS nanoid 3.x."
-        },
-        {
-            "id": "CVE-2026-73088",
-            "reason": "browserslist vulnerability affects the latest version"
-        },
-        {
-            "id": "CVE-2026-93687",
-            "reason": "braces is an indirect import via @next/eslint-plugin-next."
-        },
-        {
             "id": "CVE-2026-93753",
             "reason": "deepmerge is an indirect import via author-design-system-react and jest."
-        },
-        {
-            "id": "CVE-2026-93749",
-            "reason": "source-map-js is an indirect import via next."
-        },
-        {
-            "id": "CVE-2026-97058",
-            "reason": "vulnerability affects latest version of sprintf-js"
-        },
-        {
-            "id": "CVE-2023-54404",
-            "reason": "vulnerability affects latest version of zod"
         },
         {
             "id": "CVE-2026-112366",
