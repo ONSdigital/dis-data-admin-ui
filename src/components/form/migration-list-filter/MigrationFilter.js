@@ -6,7 +6,7 @@ import { BoxContainer, Checkbox, Button, TextInput } from "@/components/design-s
 
 export default function MigrationFilter({ states = [], selectedStates = [], label = "" }) {
     const [stateFilters, setStateFilters] = useState(selectedStates);
-    const [nameFilter, setNameFilter] = useState(label);
+    const [seriesNameFilter, setSeriesNameFilter] = useState(label);
 
     const { push } = useRouter();
     const pathname = usePathname();
@@ -20,7 +20,7 @@ export default function MigrationFilter({ states = [], selectedStates = [], labe
     const handleFilterButtonPress = () => {
         const filters = {
             state: stateFilters.join(","),
-            label: nameFilter.trim(),
+            label: seriesNameFilter.trim(),
         };
 
         const params = new URLSearchParams(
@@ -65,8 +65,8 @@ export default function MigrationFilter({ states = [], selectedStates = [], labe
                     <TextInput id="migration-list-search-by-name" 
                         dataTestId="migration-list-search-by-name" 
                         label={{text: "Search by name", description: "E.g \"Labour market\""}}
-                        value={nameFilter}
-                        onChange={(e) => setNameFilter(e.target.value)}
+                        value={seriesNameFilter}
+                        onChange={(e) => setSeriesNameFilter(e.target.value)}
                         classes="ons-input--w-20"
                     />
                 </div>
