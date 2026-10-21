@@ -11,28 +11,66 @@ import Pagination from "@/components/pagination/Pagination";
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
 
 import { mapMigrationListTable } from "@/components/table/mapper";
+import NoResults from "@/components/no-results/NoResults";
 
 export default async function MigrationList({ searchParams }) {
     const pageParams = await searchParams;
-    pageParams.limit = pageParams.limit ? Number(pageParams.limit) : 10;
-    pageParams.offset = pageParams.offset ? Number(pageParams.offset) : 0;
+    const query = {
+        limit: Number(pageParams.limit) || 10,
+        offset: Number(pageParams.offset) || 0,
+        state: pageParams.state ? pageParams.state.split(",") : [],
+        label: pageParams.label || "",
+        sort: pageParams.sort,
+    };
 
-    const requestURL = createRequestURL(pageParams);
+    const requestURL = createRequestURL(query);
     const accessToken = await getAccessTokenFromCookie(cookies);
     const migrationsResp = await getMigrationsList(requestURL, accessToken);
 
-    if (migrationsResp.error) {
+    const [ migrationFetchError, noSearchResults ] = checkErrors(migrationsResp, query);
+
+    if (migrationFetchError) {
         return (
             <Panel title="Error" variant="error" dataTestId="migrations-list-response-error">
                 <p>There was an issue retrieving the data for this page. Try refreshing the page.</p>
             </Panel>
         );
     }
+
     const mappedTable = mapMigrationListTable(migrationsResp.response?.items);
 
-    const totalCount = migrationsResp.response?.total_count;
-    const totalNumberOfPages = Math.ceil(totalCount / pageParams.limit);
-    const currentPage = Math.floor(pageParams.offset ? (pageParams.offset / pageParams.limit) + 1 : 1);
+    const totalCount = migrationsResp.response?.total_count || 0;
+    const totalNumberOfPages = Math.ceil(totalCount / query.limit);
+    const currentPage = Math.floor(query.offset ? (query.offset / query.limit) + 1 : 1);
+
+    const renderSubHeading = () => {
+        if (noSearchResults) {
+            return (<p data-testid="migration-list-no-results">{`No results found for "${query.label}"`}</p>);
+        }
+        return (
+            <p>Showing {migrationsResp.response?.offset + 1 } to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs</p>
+        );
+    };
+
+    const renderBody = () => {
+        if (noSearchResults) {
+            return (
+                <NoResults searchQuery={query.label} createURL="migration/create" />
+            );
+        }
+
+        return (
+            <>
+                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={query.sort} />
+                <Pagination
+                    totalNumberOfPages={totalNumberOfPages}
+                    currentPage={currentPage}
+                    limit={query.limit}
+                    currentParams={pageParams}
+                />
+            </>
+        );
+    };
 
     const renderListArea = () => {
         return (
@@ -40,7 +78,7 @@ export default async function MigrationList({ searchParams }) {
                 <div className="ons-u-bb">
                     <div className="ons-grid ons-u-mb-m">
                         <div className="ons-grid__col ons-col-8@m ons-u-fs-m ons-u-mt-s">
-                            Showing {migrationsResp.response?.offset + 1} to {migrationsResp.response?.offset + migrationsResp.response?.count} of {migrationsResp.response?.total_count} jobs
+                            { renderSubHeading() }
                         </div>
                         <div className="ons-grid__col ons-col-4@m">
                             <LinkButton
@@ -52,12 +90,7 @@ export default async function MigrationList({ searchParams }) {
                         </div>
                     </div>
                 </div>
-                <Table contents={mappedTable} classes="ons-u-mt-m" dataTestId="migration-list-table" sortBy={pageParams.sort}/>                
-                <Pagination
-                    totalNumberOfPages={totalNumberOfPages}
-                    currentPage={currentPage}
-                    limit={pageParams.limit}
-                />
+                { renderBody() }
             </>
         );
     };
@@ -66,7 +99,12 @@ export default async function MigrationList({ searchParams }) {
             <SuccessPanel query={pageParams} contentType={pageParams.series} />
             <div className="ons-grid ons-u-mt-l ons-u-mb-l">
                 <div className="ons-grid__col ons-col-4@m ons-u-pr-m">
-                    <MigrationFilter states={migrationsResp.response?.states}></MigrationFilter>
+                    <MigrationFilter
+                        key={`${query.state.join(",")}-${query.label}`}
+                        states={migrationsResp.response?.states}
+                        selectedStates={query.state}
+                        label={query.label}
+                    />
                 </div>
                 <div className="ons-grid__col ons-col-8@m">
                     {renderListArea()}
@@ -76,16 +114,29 @@ export default async function MigrationList({ searchParams }) {
     );
 }
 
-const createRequestURL = (params) => {
-    let url = `limit=${params.limit}&sort=job_number:desc`;
-
-    if (params.state) {
-        url = `${url}&state=${params.state}`;
+// return errors based on request response
+const checkErrors = (migrationList, params) => {
+    if (!migrationList.error) {
+        // if we get 0 count, a 200 response and there's a migration  
+        // label param assume the search has returned zero results
+        if (migrationList.status === 200 && migrationList.response?.count === 0 && params.label) {
+            return [false, true];
+        }
+        return [false, false];
     }
+    return [true, false];
+};
 
-    if (params.offset) {
-        url = `${url}&offset=${params.offset}`;
-    }
-
-    return url;
+// build URL (with various params) to make request to migration service
+const createRequestURL = ({ limit, offset, state, label }) => {
+    const query = {
+        limit,
+        offset,
+        sort: "job_number:desc",
+        state: state.join(","),
+        label,
+    };
+    return new URLSearchParams(
+        Object.entries(query).filter(([, value]) => value)
+    ).toString();
 };

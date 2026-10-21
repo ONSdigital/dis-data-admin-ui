@@ -50,5 +50,23 @@ describe("SeriesListForm", () => {
             expect(useRouter().push.mock.calls).toHaveLength(1);
             expect(useRouter().push.mock.calls[0][0]).toBe("/series?id=foo-bar-dataset-01")
         });
+
+        it("is called without id param if input is only whitespace", () => {
+            render(<SeriesListForm />);
+
+            fireEvent.change(screen.getByTestId("series-list-search-by-id"), {target: {value: "   "}})
+            fireEvent.click(screen.getByTestId("icon-search"))
+            expect(useRouter().push.mock.calls).toHaveLength(1);
+            expect(useRouter().push.mock.calls[0][0]).toBe("/series")
+        });
+
+        it("is called with a trimmed and encoded id param", () => {
+            render(<SeriesListForm />);
+
+            fireEvent.change(screen.getByTestId("series-list-search-by-id"), {target: {value: " foo & bar "}})
+            fireEvent.click(screen.getByTestId("icon-search"))
+            expect(useRouter().push.mock.calls).toHaveLength(1);
+            expect(useRouter().push.mock.calls[0][0]).toBe("/series?id=foo+%26+bar")
+        });
     });
 });
