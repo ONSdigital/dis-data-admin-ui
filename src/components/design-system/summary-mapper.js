@@ -165,6 +165,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
     });
 
     mapRow("Series ID", data.id, null, isPublished || data.is_migration ? null : action, rows);
+    mapRow("URL", "/datasets/" + data.id, null, null, rows);
     mapRow("Type", data.type, null, null, rows);
     mapRow("Title", data.title, null, action, rows);
     mapRow("Description", data.description, null, action, rows);
@@ -205,6 +206,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
     const isPublished = edition?.state === "published";
 
     mapRow("Edition ID", edition.edition, null, isPublished || edition?.is_migration ? null : action, rows);
+    mapRow("URL", "/datasets/" + edition.links.dataset.id + "/editions/" + edition.edition, null, null, rows);
     mapRow("Edition title", edition.edition_title, null, action, rows);
     mapRow("Release date", formatDate(edition.release_date), null, null, rows);
     if (edition.related_content && edition.related_content.length > 0) {
@@ -230,6 +232,7 @@ const mapVersionSummary = (version, editBaseURL) => {
     };
 
     mapRow("Version ID", version.version, null, null, rows);
+    mapRow("URL", "/datasets/" + version.links.dataset.id + "/editions/" + version.links.edition.id + "/versions/" + version.version, null, null, rows);
     mapRow("Series", version.title, null, null, rows);
     mapRow("Edition", version.edition, null, null, rows);
     mapRow("Edition title", version.edition_title, null, null, rows);
