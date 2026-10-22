@@ -1,7 +1,7 @@
 import { cookies, headers } from "next/headers";
 
 import { getAccessTokenFromCookie, HEADER_USER_ROLES, userIsAdmin } from "@/utils/auth/auth";
-import { getDataset, getEditionsList } from "@/utils/request/api-clients/datasets";
+import { getDataset, getEditionsListUnpublishedAndPublished } from "@/utils/request/api-clients/datasets";
 import { generateBreadcrumb } from "@/utils/breadcrumb/breadcrumb";
 
 import List from "@/components/list/List";
@@ -20,7 +20,7 @@ export default async function Dataset({ params, searchParams }) {
 
     const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetResp = await getDataset(id, accessToken);
-    const editions = await getEditionsList(id, accessToken);
+    const { unpublished, published } = await getEditionsListUnpublishedAndPublished(id, accessToken);
 
     if (datasetResp.error) {
         return (
@@ -30,24 +30,43 @@ export default async function Dataset({ params, searchParams }) {
         );
     }
 
-    const listItems = [];
-    if (editions.response) {
-        listItems.push(...mapListItems(editions.response.items, id));
+    const unpublishedEditions = [];
+    if (unpublished.response) {
+        unpublishedEditions.push(...mapListItems(unpublished.response.items, id));
+    }
+    const publishedEditions = [];
+    if (published.response) {
+        publishedEditions.push(...mapListItems(published.response.items, id));
     }
 
+
     const renderEditionsList = () => {
-        // if no error, or 404 error because we assume 404 means no editions exist yet
-        if (!editions.error || (editions.error && editions.status === 404)) {
+        const hasUnpublished = unpublishedEditions.length > 0;
+        const hasPublished = publishedEditions.length > 0;
+        const failed = (result) => Boolean(result.error);
+        if (failed(unpublished) && failed(published)) {
+            return (
+                <Panel title="Error" variant="error">
+                    <p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p>
+                </Panel>
+            );
+        }
+        if (hasUnpublished && hasPublished) {
             return (
                 <>
-                    <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
-                    <List items={listItems} noResultsText="There are no available editions for this series"></List>
+                    <h2 className="ons-u-mt-m@xxs@m">Unpublished editions</h2>
+                    <List items={unpublishedEditions} noResultsText="There are no available editions for this series" />
+                    <h2 className="ons-u-mt-m@xxs@m">Published editions</h2>
+                    <List items={publishedEditions} noResultsText="There are no available editions for this series" />
                 </>
             );
         }
-
+        const items = hasUnpublished ? unpublishedEditions : publishedEditions;
         return (
-            <Panel title="Error" variant="error"><p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p></Panel>
+            <>
+                <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
+                <List items={items} noResultsText="There are no available editions for this series" />
+            </>
         );
     };
 
