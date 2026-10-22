@@ -74,14 +74,6 @@ export const metadataList = {
                 "self": {
                     "href": "http://dp-dataset-api:22000/datasets/mock-quarterly/editions/time-series/versions/1/metadata"
                 },
-                "dataset": {
-                    "href": "http://dp-dataset-api:22000/datasets/mock-quarterly",
-                    "id": "mock-quarterly"
-                },
-                "edition": {
-                    "href": "http://dp-dataset-api:22000/datasets/mock-quarterly/editions/time-series",
-                    "id": "time-series"
-                },
                 "version": {
                     "href": "http://dp-dataset-api:22000/datasets/mock-quarterly/editions/time-series/versions/1",
                     "id": "1"
@@ -119,14 +111,6 @@ export const metadataList = {
             "id": "mock-minimal",
             "title": "Minimal mock dataset",
             "version": "2",
-            "links": {
-                "dataset": {
-                    "id": "mock-minimal"
-                },
-                "edition": {
-                    "id": "time-series"
-                },
-            },
         }
     ]
 };

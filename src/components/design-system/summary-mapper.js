@@ -232,7 +232,7 @@ const mapVersionSummary = (version, editBaseURL) => {
     };
 
     mapRow("Version ID", version.version, null, null, rows);
-    mapRow("URL", "/datasets/" + version.links.dataset.id + "/editions/" + version.links.edition.id + "/versions/" + version.version, null, null, rows);
+    mapRow("URL", "/datasets/" + version.id + "/editions/" + version.edition + "/versions/" + version.version, null, null, rows);
     mapRow("Series", version.title, null, null, rows);
     mapRow("Edition", version.edition, null, null, rows);
     mapRow("Edition title", version.edition_title, null, null, rows);
