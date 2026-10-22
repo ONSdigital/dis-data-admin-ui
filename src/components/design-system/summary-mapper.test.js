@@ -268,6 +268,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
     const publishedVersion = {
         ...versions.items[0],
         title: "Mock Dataset",
+        "id": "mock-dataset",
         last_updated: "2025-02-26T16:12:31.377Z",
     };
 
@@ -281,7 +282,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series/versions/1"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-dataset/editions/time-series/versions/1"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Series" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Series");
@@ -356,7 +357,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series/versions/1"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-dataset/editions/time-series/versions/1"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Series" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Series");
