@@ -115,7 +115,7 @@ const updateDistributionsMetadata = async (accessToken, distributions = [], data
 const doSubmission = async (datasetVersionSubmission, doRequest) => {
     const accessToken = await getAccessTokenFromCookie(cookies);
 
-    let versionResponse = {};
+    let versionResponse;
     try {
         versionResponse = await doRequest(accessToken);
         if (versionResponse.error) {
