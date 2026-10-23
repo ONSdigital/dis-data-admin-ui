@@ -55,9 +55,9 @@ export default async function Dataset({ params, searchParams }) {
             return (
                 <>
                     <h2 className="ons-u-mt-m@xxs@m">Unpublished editions</h2>
-                    <List items={unpublishedEditions} noResultsText="There are no available editions for this series" />
+                    <List dataTestId="unpublished-editions-list" items={unpublishedEditions} noResultsText="There are no available editions for this series" />
                     <h2 className="ons-u-mt-m@xxs@m">Published editions</h2>
-                    <List items={publishedEditions} noResultsText="There are no available editions for this series" />
+                    <List dataTestId="published-editions-list" items={publishedEditions} noResultsText="There are no available editions for this series" />
                 </>
             );
         }
@@ -65,7 +65,7 @@ export default async function Dataset({ params, searchParams }) {
         return (
             <>
                 <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
-                <List items={items} noResultsText="There are no available editions for this series" />
+                <List dataTestId="available-editions-list" items={items} noResultsText="There are no available editions for this series" />
             </>
         );
     };

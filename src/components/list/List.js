@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function List({ items, type, noResultsText = "No results" }) {
+export default function List({ dataTestId, items, type, noResultsText = "No results" }) {
     if (!items || items.length === 0) {
         return (
             <p>{noResultsText}</p>
@@ -8,7 +8,7 @@ export default function List({ items, type, noResultsText = "No results" }) {
     }
     
     return (
-        <ul className="ons-document-list">
+        <ul data-testid={dataTestId} className="ons-document-list">
             {items.map((item, index) => (
                 <li key={item.id} className="ons-document-list__item ons-u-pb-no ons-u-mt-s ons-u-mb-s">
                     <div className="ons-document-list__item-content">
