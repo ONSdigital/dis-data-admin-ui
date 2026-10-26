@@ -43,7 +43,7 @@ const doSubmission = async (datasetEditionSubmission, doRequest) => {
     const accessToken = await getAccessTokenFromCookie(cookies);
     const datasetID = datasetEditionSubmission.dataset_id;
 
-    let editionResponse = {};
+    let editionResponse;
     try {
         editionResponse = await doRequest(accessToken);
         if (editionResponse.error) {
