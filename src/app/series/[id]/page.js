@@ -45,6 +45,7 @@ export default async function Dataset({ params, searchParams }) {
         const hasPublished = publishedEditions.length > 0;
         const didRequestError = (request) => Boolean(request.error && request.status !== 404);
         const noResultText = "There are no available editions for this series";
+        console.log(didRequestError(unpublished), didRequestError(published), hasUnpublished, hasPublished);
         if (didRequestError(unpublished) && didRequestError(published)) {
             return (
                 <Panel title="Error" variant="error">
