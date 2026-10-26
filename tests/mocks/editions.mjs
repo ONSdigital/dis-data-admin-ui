@@ -125,3 +125,30 @@ export const editions = {
     offset: 0,
     total_count: 5
 }
+
+export const editionsByDataset = {
+    "mock-quarterly": {
+        unpublished: editions.items.filter((item) => item.state !== "published"),
+        published: editions.items.filter((item) => item.state === "published"),
+    },
+    "only-unpublished": {
+        unpublished: editions.items.filter((item) => item.edition === "time-series-unpublished"),
+        published: [],
+    },
+    "only-published": {
+        unpublished: [],
+        published: editions.items.filter((item) => item.edition === "time-series"),
+    },
+    "no-editions": {
+        unpublished: [],
+        published: [],
+    },
+    "published-editions-fail": {
+        unpublished: editions.items.filter((item) => item.edition === "time-series-unpublished"),
+        published: null,
+    },
+    "editions-both-fail": {
+        unpublished: null,
+        published: null,
+    },
+}

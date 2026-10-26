@@ -15,7 +15,7 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-link")).toContainText("Back to dataset series list");
 
         // editions list
-        await expect(page.getByRole("link", { name: "Timeseries" })).toBeVisible();
+        await expect(page.getByTestId("published-editions-list").getByRole("link", { name: "Timeseries" })).toBeVisible();
 
         // body content
         await expect(page.locator("#series-id")).toContainText("mock-quarterly");
@@ -37,16 +37,97 @@ test.describe("Series overview page", () => {
         await expect(page.locator("#contacts")).toContainText("Second Contact");
     });
 
+    test("Shows separate unpublished and published edition lists", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly");
+
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Available editions" })).not.toBeVisible();
+
+        const unpublished = page.getByTestId("unpublished-editions-list");
+        const published = page.getByTestId("published-editions-list");
+
+        await expect(unpublished.getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(unpublished.getByRole("link", { name: "Timeseries" })).not.toBeVisible();
+        await expect(published.getByRole("link", { name: "Timeseries" })).toBeVisible();
+        await expect(published.getByRole("link", { name: "Time Series Unpublished" })).not.toBeVisible();
+        await expect(page.getByTestId("available-editions-list")).not.toBeVisible();
+    });
+
+    test("Routes to the edition overview from the published list", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/mock-quarterly");
+        await page.getByTestId("published-editions-list").getByRole("link", { name: "Timeseries" }).click();
+        await page.waitForURL("**/series/mock-quarterly/editions/time-series");
+        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
+    });
+
+    test("Shows one available editions list when only unpublished editions exist", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/only-unpublished");
+
+        const available = page.getByTestId("available-editions-list");
+        await expect(page.getByRole("heading", { name: "Available editions" })).toBeVisible();
+        await expect(available.getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
+    });
+
+    test("Shows one available editions list when only published editions exist", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/only-published");
+
+        await expect(page.getByTestId("available-editions-list").getByRole("link", { name: "Timeseries" })).toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
+    });
+
+    test("Shows an empty available editions list when both calls succeed with no items", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/no-editions");
+
+        await expect(page.getByRole("heading", { name: "Available editions" })).toBeVisible();
+        await expect(page.getByText("There are no available editions for this series")).toBeVisible();
+        await expect(page.getByTestId("available-editions-list")).not.toBeVisible();
+    });
+
+    test("Shows an editions error when both edition requests fail", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/editions-both-fail");
+
+        await expect(page.getByText("There was an issue retrieving the list of editions for this dataset. Try refreshing the page.")).toBeVisible();
+        await expect(page.getByTestId("available-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("page-heading-title")).toBeVisible();
+    });
+
+    test("Still shows available editions when only the published request fails", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/published-editions-fail");
+
+        await expect(page.getByTestId("available-editions-list").getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(page.getByText("There was an issue retrieving the list of editions for this dataset. Try refreshing the page.")).not.toBeVisible();
+    });
+
     test("Handles a dataset series response error", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/test-series-that-doesnt-exist");
         await expect(page.getByTestId("dataset-series-response-error")).toContainText("There was an issue retrieving the data for this page. Try refreshing the page.");
-    })
+    });
 
     test("Page heading create button routes to create new edition page", async ({ page, context }) => {
         setValidAuthCookies(context);
-        
+
         await page.goto("./series/mock-quarterly");
         await page.getByTestId("page-heading-create-button").click();
         await page.waitForURL("**/series/mock-quarterly/editions/create");
@@ -55,20 +136,11 @@ test.describe("Series overview page", () => {
 
     test("Page heading 'back to' link routes to series list page", async ({ page, context }) => {
         setValidAuthCookies(context);
-        
+
         await page.goto("./series/mock-quarterly");
         await page.getByTestId("page-heading-link").click();
         await page.waitForURL("**/series");
         await expect(page.url().toString()).toContain("series");
-    });
-
-    test("Routes to edition overview page when selecting edition from list", async ({ page, context }) => {
-        setValidAuthCookies(context);
-
-        await page.goto("./series/mock-quarterly");
-        await page.getByRole("link", { name: "Timeseries" }).click();
-        await page.waitForURL("**/series/mock-quarterly/editions/time-series");
-        await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
 
     test("Shows series delete button when dataset is unpublished", async ({ page, context }) => {
@@ -116,12 +188,10 @@ test.describe("Series overview page", () => {
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
 
-            test("When 500 is returned", async ({ page, context }) => {
+        test("When 500 is returned", async ({ page, context }) => {
             setValidAuthCookies(context);
             await page.goto("./series/500");
             await expect(page.getByText("There was an issue retrieving the data for this page. Try refreshing the page.")).toBeVisible();
         });
     });
 });
-
-
