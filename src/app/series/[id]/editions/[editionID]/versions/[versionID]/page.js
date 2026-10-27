@@ -10,11 +10,14 @@ import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapVersionSummary } from "@/components/design-system/summary-mapper";
+import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const accessToken = await getAccessTokenFromCookie(cookies);
     const metadata = await getMetadata(id, editionID, versionID, accessToken);
+    const topics = await convertTopicIDsToTopicTitles(metadata.response.topics, accessToken);
+    const parsedTopic = topics[0].toLowerCase().replace(/[\s,]/g, '');
 
     if (metadata.error) {
         return (
@@ -28,7 +31,7 @@ export default async function Version({ params, searchParams }) {
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, metadata.response?.title, metadata.response?.edition_title);
     const editURL = `/data-admin/series/${id}/editions/${editionID}/versions/${versionID}/edit`;
-    const versionSummary = mapVersionSummary(metadata.response, editURL);
+    const versionSummary = mapVersionSummary(metadata.response, parsedTopic, editURL);
 
     const deleteLink = `/series/${id}/editions/${editionID}/versions/${versionID}/delete?seriesTitle=${metadata.response?.title}&editionTitle=${metadata.response?.edition_title}`;
 

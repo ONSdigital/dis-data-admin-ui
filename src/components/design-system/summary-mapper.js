@@ -163,9 +163,10 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
     data?.contacts?.forEach(contact => {
         contacts.push(contact.name);
     });
+    const topic = topicTitles[0].toLowerCase().replace(/[\s,]/g, '');
 
     mapRow("Series ID", data.id, null, isPublished || data.is_migration ? null : action, rows);
-    mapRow("URL", "/datasets/" + data.id, null, null, rows);
+    mapRow("URL", topic + "/datasets/" + data.id, null, null, rows);
     mapRow("Type", data.type, null, null, rows);
     mapRow("Title", data.title, null, action, rows);
     mapRow("Description", data.description, null, action, rows);
@@ -194,7 +195,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
  * @param {string} editBaseURL - Base URL for edit actions
  * @returns {Array} Summary model for edition metadata
  */
-const mapEditionSummary = (edition, editBaseURL) => {
+const mapEditionSummary = (edition, topic, editBaseURL) => {
     const contentBody = getBaseSummaryModel("edition-metadata");
     const rows = contentBody[0].groups[0].rows;
     const action = {
@@ -206,7 +207,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
     const isPublished = edition?.state === "published";
 
     mapRow("Edition ID", edition.edition, null, isPublished || edition?.is_migration ? null : action, rows);
-    mapRow("URL", "/datasets/" + edition.links.dataset.id + "/editions/" + edition.edition, null, null, rows);
+    mapRow("URL", topic + "/datasets/" + edition.links.dataset.id + "/editions/" + edition.edition, null, null, rows);
     mapRow("Edition title", edition.edition_title, null, action, rows);
     mapRow("Release date", formatDate(edition.release_date), null, null, rows);
     if (edition.related_content && edition.related_content.length > 0) {
@@ -221,7 +222,7 @@ const mapEditionSummary = (edition, editBaseURL) => {
  * @param {string} editBaseURL - Base URL for edit actions
  * @returns {Array} Summary model for version metadata
  */
-const mapVersionSummary = (version, editBaseURL) => {
+const mapVersionSummary = (version, topic, editBaseURL) => {
     const contentBody = getBaseSummaryModel("version-metadata");
     const rows = contentBody[0].groups[0].rows;
     const action = {
@@ -232,7 +233,7 @@ const mapVersionSummary = (version, editBaseURL) => {
     };
 
     mapRow("Version ID", version.version, null, null, rows);
-    mapRow("URL", "/datasets/" + version.id + "/editions/" + version.edition + "/versions/" + version.version, null, null, rows);
+    mapRow("URL", topic + "/datasets/" + version.id + "/editions/" + version.edition + "/versions/" + version.version, null, null, rows);
     mapRow("Series", version.title, null, null, rows);
     mapRow("Edition", version.edition, null, null, rows);
     mapRow("Edition title", version.edition_title, null, null, rows);

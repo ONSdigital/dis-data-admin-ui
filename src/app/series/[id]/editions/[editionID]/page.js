@@ -12,6 +12,7 @@ import { mapEditionSummary } from "@/components/design-system/summary-mapper";
 import SuccessPanel from "@/components/success-panel/SuccessPanel";
 
 import { mapListItems } from "./mapper";
+import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
 
 export default async function Edition({ params, searchParams }) {
     const { id, editionID } = await params;
@@ -55,11 +56,13 @@ export default async function Edition({ params, searchParams }) {
     
     const dataset = datasetResp?.response?.current || datasetResp?.response?.next || datasetResp.response;
     const edition = editionResp?.response?.current || editionResp?.response?.next || editionResp.response;
+    const topics = await convertTopicIDsToTopicTitles(dataset.topics, accessToken);
+    const parsedTopic = topics[0].toLowerCase().replace(/[\s,]/g, '');
     const createURL = `${edition.edition}/versions/create?edition_title=${edition.edition_title}`;
     const editURL = `/data-admin/series/${id}/editions/${editionID}/edit`;
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, edition.edition_title);
-    const editionSummaryItems = mapEditionSummary(edition, editURL);
+    const editionSummaryItems = mapEditionSummary(edition, parsedTopic, editURL);
 
     return (
         <>
