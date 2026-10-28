@@ -4,7 +4,9 @@ import  { httpGet } from "@/utils/request/request";
 export async function GET() {
     const buildTime = process.env.BUILD_TIME;
     const gitCommit = process.env.GIT_COMMIT;
-    const version = process.env.VERSION;
+    const appVersion = process.env.VERSION;
+    const nodeVersion = process.versions?.node;
+    const v8Version = process.versions?.v8;
 
     const healthcheck = {
         "status": "",
@@ -12,8 +14,8 @@ export async function GET() {
             "build_time": buildTime ? buildTime : null,
             "git_commit": gitCommit ? gitCommit : null,
             "language": "JavaScript",
-            "language_version": "ECMAScript 2023",
-            "version": version ? version : null
+            "language_version": `ECMAScript 2023 | Node.js ${nodeVersion} | V8 ${v8Version}.`,
+            "version": appVersion ? appVersion : null
         },
         "uptime": (Date.now() - Date.parse(buildTime)),
         "start_time": buildTime ? buildTime : null,
@@ -65,7 +67,7 @@ export async function GET() {
    healthcheck.status = apiRouterHealthCheck.status;
    healthcheck.checks.push(apiRouterHealthCheck);
    
-   logInfo("health check requested", {healthcheck, version}, null);
+   logInfo("health check requested", {healthcheck, appVersion}, null);
    
    return Response.json(healthcheck);
 }
