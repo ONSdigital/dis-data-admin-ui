@@ -5,7 +5,7 @@
   "scripts": {
     "audit": "npx auditjs guide --allowlist ./audit-allowlist.json --quiet -u $OSSINDEX_USERNAME -p $OSSINDEX_TOKEN",
     "lint": "eslint .",
-    "dev": "next dev -p 29400",
+    "dev": "next dev ${WATCHPACK_POLLING:+--webpack} -p 29400",
     "build": "next build",
     "start": "next start -p 29400",
     "test": "jest",
