@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function List({ dataTestId, items, type, noResultsText = "No results" }) {
     if (!items || items.length === 0) {
         return (
-            <p>{noResultsText}</p>
+            <p className="ons-u-mb-xl">{noResultsText}</p>
         );
     }
     
