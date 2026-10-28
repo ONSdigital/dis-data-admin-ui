@@ -16,7 +16,7 @@ export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const accessToken = await getAccessTokenFromCookie(cookies);
     const metadata = await getMetadata(id, editionID, versionID, accessToken);
-    const parsedTopic = parseTopicsForURL(metadata.response?.topics, accessToken)
+    const parsedTopic = await parseTopicsForURL(metadata.response?.topics, accessToken)
 
     if (metadata.error) {
         return (
