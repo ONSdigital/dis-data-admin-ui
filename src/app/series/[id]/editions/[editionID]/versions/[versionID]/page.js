@@ -10,14 +10,13 @@ import LinkButton from "@/components/link-button/LinkButton";
 import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapVersionSummary } from "@/components/design-system/summary-mapper";
-import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
+import { parseTopicsForURL } from "@/utils/topics/topics";
 
 export default async function Version({ params, searchParams }) {
     const { id, editionID, versionID } = await params;
     const accessToken = await getAccessTokenFromCookie(cookies);
     const metadata = await getMetadata(id, editionID, versionID, accessToken);
-    const topicTitles = await convertTopicIDsToTopicTitles(metadata.response?.topics, accessToken);
-    const parsedTopic = topicTitles && topicTitles.length > 0  ? topicTitles[0].toLowerCase().replace(/[\s,]/g, '') : "topic-not-found"
+    const parsedTopic = parseTopicsForURL(metadata.response?.topics, accessToken)
 
     if (metadata.error) {
         return (

@@ -12,7 +12,7 @@ import PageHeading from "@/components/page-heading/PageHeading";
 
 import { mapListItems } from "./mapper";
 import { mapSeriesSummary } from "@/components/design-system/summary-mapper";
-import { convertTopicIDsToTopicTitles } from "@/utils/topics/topics";
+import { convertTopicIDsToTopicTitles, parseTopicsForURL } from "@/utils/topics/topics";
 
 export default async function Dataset({ params, searchParams }) {
     const { id } = await params;
@@ -57,8 +57,9 @@ export default async function Dataset({ params, searchParams }) {
     const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, accessToken);
+    const parsedTopic = await parseTopicsForURL(dataset.topics, accessToken)
     const isPublished = datasetResp?.response?.current?.state === "published";
-    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, isPublished);
+    const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, parsedTopic, isPublished);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
     const breadcrumbs = generateBreadcrumb(currentURLPath, dataset.title, null);
     const userRoles = (await headers()).get(HEADER_USER_ROLES);

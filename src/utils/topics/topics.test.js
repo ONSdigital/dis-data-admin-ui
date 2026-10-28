@@ -4,7 +4,7 @@ jest.mock("@/utils/request/api-clients/topics", () => ({
 }));
 jest.mock("../log/log");
 
-import { convertTopicIDsToTopicTitles, getTopicTitle } from "./topics";
+import { convertTopicIDsToTopicTitles, getTopicTitle, parseTopicsForURL } from "./topics";
 import { getTopic } from "@/utils/request/api-clients/topics";
 import { logError } from "../log/log";
 
@@ -122,5 +122,40 @@ describe("getTopicTitle", () => {
 
         expect(result).toEqual("topicID5 - unable to find topic title");
         expect(logError).toHaveBeenCalledWith("error fetching topic", "topicID5", null, expect.any(Error));
+    });
+});
+
+describe("parseTopicsForURL", () => {
+    const accessToken = null;
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should return formatted lowercase string with spaces and commas removed for the first topic", async () => {
+        getTopic.mockResolvedValueOnce({ response: { title: "Hello, World" } });
+        
+        const result = await parseTopicsForURL(["id1"], accessToken);
+        
+        expect(result).toEqual("helloworld");
+    });
+
+    it("should only parse the first topic title if multiple are returned", async () => {
+        getTopic.mockResolvedValueOnce({ response: { title: "First Topic" } });
+        getTopic.mockResolvedValueOnce({ response: { title: "Second Topic" } });
+
+        const result = await parseTopicsForURL(["id1", "id2"], accessToken);
+
+        expect(result).toEqual("firsttopic");
+    });
+
+    it("should return 'topic-not-found' if topicIDs is null", async () => {
+        const result = await parseTopicsForURL(null, accessToken);
+        expect(result).toEqual("topic-not-found");
+    });
+
+    it("should return 'topic-not-found' if topicIDs is an empty array", async () => {
+        const result = await parseTopicsForURL([], accessToken);
+        expect(result).toEqual("topic-not-found");
     });
 });

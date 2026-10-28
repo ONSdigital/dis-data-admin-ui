@@ -20,3 +20,8 @@ export async function getTopicTitle(topicID, accessToken) {
         return `${topicID} - unable to find topic title`;
     }
 }
+
+export async function parseTopicsForURL (topicIDs, accessToken) {
+    const topicTitles = await convertTopicIDsToTopicTitles(topicIDs, accessToken)
+    return topicTitles && topicTitles.length > 0 ? topicTitles[0].toLowerCase().replace(/[\s,]/g, '') : "topic-not-found"
+}
