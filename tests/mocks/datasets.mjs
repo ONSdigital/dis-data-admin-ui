@@ -190,6 +190,11 @@ export const datasetList = {
             "state": "associated",
             "is_migration": true
         },
+        { "id": "only-unpublished", "title": "Only unpublished", "topics": [] },
+        { "id": "only-published", "title": "Only published", "topics": [] },
+        { "id": "no-editions", "title": "No editions", "topics": [] },
+        { "id": "editions-both-fail", "title": "Editions both fail", "topics": [] },
+        { "id": "published-editions-fail", "title": "Published editions fail", "topics": [] },
     ],
     "count": 20,
     "total_count": 130

@@ -43,7 +43,8 @@ test.describe("Series list page", () => {
         await page.goto("./series")
         await page.getByRole("link", { name: "Mock Dataset", exact: true }).click();
         await expect(page.getByText("mock-quarterly")).toBeVisible();
-        await expect(page.getByText("Available editions")).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).toBeVisible();
         await page.waitForURL("**/series/mock-quarterly");
         await expect(page.url().toString()).toContain("series/mock-quarterly");
         await expect(page.locator("#series-id")).toContainText("mock-quarterly");

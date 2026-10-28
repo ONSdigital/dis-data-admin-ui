@@ -1,7 +1,7 @@
 import express from "express";
 
 import { datasetList } from "../mocks/datasets.mjs";
-import { editions } from "../mocks/editions.mjs";
+import { editions, editionsByDataset } from "../mocks/editions.mjs";
 import { versions } from "../mocks/versions.mjs";
 import { metadataList } from "../mocks/metadata.mjs";
 import { topicList } from "../mocks/topics.mjs";
@@ -193,9 +193,25 @@ app.delete("/datasets/:id", (req, res) => {
 
 app.get("/datasets/:id/editions", (req, res) => {
     log("Handling GET '/datasets/:id/editions'", req.url, null);
-    
+
+    const datasetEditions = editionsByDataset[req.params.id];
+    const isPublished = req.query.is_published;
+    if (!datasetEditions || (isPublished !== "true" && isPublished !== "false")) {
+        log("Returning success", req.url, 200);
+        res.send(editions);
+        return;
+    }
+
+    const listName = isPublished === "true" ? "published" : "unpublished";
+    const items = datasetEditions[listName];
+    if (items === null) {
+        log("Returning mocked error", req.url, 500);
+        res.status(500).send("Internal server error");
+        return;
+    }
+
     log("Returning success", req.url, 200);
-    res.send(editions);
+    res.send({ ...editions, items, count: items.length, total_count: items.length });
 });
 
 app.get("/datasets/:id/editions/:editionID", (req, res) => {

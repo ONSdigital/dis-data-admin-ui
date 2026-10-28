@@ -27,6 +27,20 @@ const getEditionsList = async (datasetID, accessToken) => {
     return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions`, accessToken);
 };
 
+const getEditionsListUnpublished = async (datasetID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions?is_published=false`, accessToken);
+};
+const getEditionsListPublished = async (datasetID, accessToken) => {
+    return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions?is_published=true`, accessToken);
+};
+const getEditionsListUnpublishedAndPublished = async (datasetID, accessToken) => {
+    const [unpublished, published] = await Promise.all([
+        getEditionsListUnpublished(datasetID, accessToken),
+        getEditionsListPublished(datasetID, accessToken),
+    ]);
+    return { unpublished, published };
+};
+
 const getEdition = async (datasetID, editionID, accessToken) => {
     return await httpGet(`${getApiRouterURL()}/datasets/${datasetID}/editions/${editionID}`, accessToken);
 };
@@ -70,6 +84,7 @@ export {
     updateDataset,
     deleteDataset,
     getEditionsList,
+    getEditionsListUnpublishedAndPublished,
     getEdition,
     createEdition,
     updateEdition,
