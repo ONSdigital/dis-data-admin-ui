@@ -17,7 +17,7 @@ export default async function Version({ params, searchParams }) {
     const accessToken = await getAccessTokenFromCookie(cookies);
     const metadata = await getMetadata(id, editionID, versionID, accessToken);
     const topics = await convertTopicIDsToTopicTitles(metadata.response.topics, accessToken);
-    const parsedTopic = topics[0].toLowerCase().replace(/[\s,]/g, '');
+    const parsedTopic = topics ? topicTitles[0].toLowerCase().replace(/[\s,]/g, '') : "topic-not-found"
 
     if (metadata.error) {
         return (

@@ -14,7 +14,7 @@ describe("mapSeriesSummary", () => {
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-quarterly"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Type" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Type");
@@ -123,16 +123,16 @@ describe("mapSeriesSummary", () => {
     test("returns expected object of mapped content items when no publisher is passed in", () => {
         const items = datasetList.items[2];
         items.publisher = null;
-        const mapped = mapSeriesSummary(items, "test/foo/edit", []);
+        const mapped = mapSeriesSummary(items, "test/foo/edit", ["Topic Foo", "Topic Bar"], []);
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(11);
+        expect(mappedItems).toHaveLength(12);
         mappedItems.forEach(item => {
             expect(item.rowTitle).not.toBe("Publisher");
         });
     })
 
     test("returns expected object of mapped content items when no topics are passed in", () => {
-        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", []);
+        const mapped = mapSeriesSummary(datasetList.items[2], "test/foo/edit", [], []);
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(11);
         mappedItems.forEach(item => {
@@ -153,7 +153,7 @@ describe("mapSeriesSummary", () => {
 
 describe("mapEditionSummary returns expected object of mapped content items", () => {
     it("when edition is published", () => {
-        const mapped = mapEditionSummary(versions.items[0], "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapEditionSummary(versions.items[0], "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(4);
         // expect "Edition ID" to have single value and not have "edit" action
@@ -162,7 +162,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy()
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-quarterly/editions/time-series"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Edition title" to have single value and have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Edition title");
@@ -181,7 +181,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
     it("when edition is not published", () => {
         const data = versions.items[0];
         data.state = "draft";
-        const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(4);
         // expect "Edition ID" to have single value and have "edit" action
@@ -194,7 +194,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         });
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-quarterly/editions/time-series"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-quarterly/editions/time-series"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Edition title" to have single value and have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Edition title");
@@ -212,7 +212,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
 
     it("when edition is marked as migration", () => {
         const data = { ...versions.items[0], state: "draft", is_migration: true };
-        const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
 
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
@@ -234,7 +234,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
                 }
             ]
         };
-        const mapped = mapEditionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
 
         expect(mappedItems).toHaveLength(5);
@@ -273,7 +273,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
     };
 
     it("when version is published", () => {
-        const mapped = mapVersionSummary(publishedVersion, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapVersionSummary(publishedVersion, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(12);
         // expect "Version ID" to have single value and not have "edit" action
@@ -282,7 +282,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-dataset/editions/time-series/versions/1"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-dataset/editions/time-series/versions/1"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Series" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Series");
@@ -348,7 +348,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
 
     it("when version is not published", () => {
         const data = { ...publishedVersion, state: "draft" };
-        const mapped = mapVersionSummary(data, "test/foo/edit", ["Topic Foo", "Topic Bar"]);
+        const mapped = mapVersionSummary(data, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
         expect(mappedItems).toHaveLength(11);
         // expect "Version ID" to have single value and not have "edit" action
@@ -357,7 +357,7 @@ describe("mapVersionSummary returns expected object of mapped content items", ()
         expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
         // expect "URL" to have single value and not have "edit" action
         expect(mappedItems[1].rowTitle).toBe("URL");
-        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "/datasets/mock-dataset/editions/time-series/versions/1"});
+        expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-dataset/editions/time-series/versions/1"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
         // expect "Series" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Series");

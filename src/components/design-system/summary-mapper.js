@@ -163,7 +163,7 @@ const mapSeriesSummary = (data, editBaseURL, topicTitles, isPublished) => {
     data?.contacts?.forEach(contact => {
         contacts.push(contact.name);
     });
-    const topic = topicTitles[0].toLowerCase().replace(/[\s,]/g, '');
+    const topic = topicTitles[0] ? topicTitles[0].toLowerCase().replace(/[\s,]/g, '') : "topic-not-found"
 
     mapRow("Series ID", data.id, null, isPublished || data.is_migration ? null : action, rows);
     mapRow("URL", topic + "/datasets/" + data.id, null, null, rows);
