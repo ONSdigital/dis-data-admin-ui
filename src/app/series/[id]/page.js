@@ -41,33 +41,41 @@ export default async function Dataset({ params, searchParams }) {
 
 
     const renderEditionsList = () => {
-        const hasUnpublished = unpublishedEditions.length > 0;
-        const hasPublished = publishedEditions.length > 0;
         const didRequestError = (request) => Boolean(request.error && request.status !== 404);
-        const noResultText = "There are no available editions for this series";
-        console.log(didRequestError(unpublished), didRequestError(published), hasUnpublished, hasPublished);
-        if (didRequestError(unpublished) && didRequestError(published)) {
+        const unpublishedError = didRequestError(unpublished);
+        const publishedError = didRequestError(published);
+
+        if (unpublishedError && publishedError) {
             return (
                 <Panel title="Error" variant="error">
                     <p>There was an issue retrieving the list of editions for this dataset. Try refreshing the page.</p>
                 </Panel>
             );
         }
-        if (hasUnpublished && hasPublished) {
-            return (
-                <>
-                    <h2 className="ons-u-mt-m@xxs@m">Unpublished editions</h2>
-                    <List dataTestId="unpublished-editions-list" items={unpublishedEditions} noResultsText={noResultText} />
-                    <h2 className="ons-u-mt-m@xxs@m">Published editions</h2>
-                    <List dataTestId="published-editions-list" items={publishedEditions} noResultsText={noResultText} />
-                </>
-            );
-        }
-        const items = hasUnpublished ? unpublishedEditions : publishedEditions;
+
         return (
             <>
-                <h2 className="ons-u-mt-m@xxs@m">Available editions</h2>
-                <List dataTestId="available-editions-list" items={items} noResultsText={noResultText} />
+                {unpublishedError ? (
+                    <Panel title="Error" variant="error">
+                        <p>There was an issue getting unpublished editions. Try refreshing the page.</p>
+                    </Panel>
+                ) : (
+                    <>
+                        <h2 className="ons-u-mt-m@xxs@m">Unpublished editions</h2>
+                        <List dataTestId="unpublished-editions-list" items={unpublishedEditions} noResultsText="There are no unpublished editions for this series" />
+                    </>
+                )}
+
+                {publishedError ? (
+                    <Panel title="Error" variant="error">
+                        <p>There was an issue getting published editions. Try refreshing the page.</p>
+                    </Panel>
+                ) : (
+                    <>
+                        <h2 className="ons-u-mt-m@xxs@m">Published editions</h2>
+                        <List dataTestId="published-editions-list" items={publishedEditions} noResultsText="There are no published editions for this series" />
+                    </>
+                )}
             </>
         );
     };
