@@ -65,36 +65,41 @@ test.describe("Series overview page", () => {
         await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
     });
 
-    test("Shows one available editions list when only unpublished editions exist", async ({ page, context }) => {
+    test("Shows the unpublished list and an empty published list when only unpublished editions exist", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/only-unpublished");
 
-        const available = page.getByTestId("available-editions-list");
-        await expect(page.getByRole("heading", { name: "Available editions" })).toBeVisible();
-        await expect(available.getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
-        await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list").getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(page.getByText("There are no published editions for this series")).toBeVisible();
         await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
     });
 
-    test("Shows one available editions list when only published editions exist", async ({ page, context }) => {
+    test("Shows the published list and an empty unpublished list when only published editions exist", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/only-published");
 
-        await expect(page.getByTestId("available-editions-list").getByRole("link", { name: "Timeseries" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).toBeVisible();
+        await expect(page.getByText("There are no unpublished editions for this series")).toBeVisible();
         await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
-        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list").getByRole("link", { name: "Timeseries" })).toBeVisible();
     });
 
-    test("Shows an empty available editions list when both calls succeed with no items", async ({ page, context }) => {
+    test("Shows empty unpublished and published lists when both calls succeed with no items", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/no-editions");
 
-        await expect(page.getByRole("heading", { name: "Available editions" })).toBeVisible();
-        await expect(page.getByText("There are no available editions for this series")).toBeVisible();
-        await expect(page.getByTestId("available-editions-list")).not.toBeVisible();
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).toBeVisible();
+        await expect(page.getByText("There are no unpublished editions for this series")).toBeVisible();
+        await expect(page.getByText("There are no published editions for this series")).toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list")).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
     });
 
     test("Shows an editions error when both edition requests fail", async ({ page, context }) => {
@@ -109,12 +114,16 @@ test.describe("Series overview page", () => {
         await expect(page.getByTestId("page-heading-title")).toBeVisible();
     });
 
-    test("Still shows available editions when only the published request fails", async ({ page, context }) => {
+    test("Shows the unpublished list and a published error when only the published request fails", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/published-editions-fail");
 
-        await expect(page.getByTestId("available-editions-list").getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Unpublished editions" })).toBeVisible();
+        await expect(page.getByTestId("unpublished-editions-list").getByRole("link", { name: "Time Series Unpublished" })).toBeVisible();
+        await expect(page.getByText("There was an issue getting published editions. Try refreshing the page.")).toBeVisible();
+        await expect(page.getByRole("heading", { name: "Published editions", exact: true })).not.toBeVisible();
+        await expect(page.getByTestId("published-editions-list")).not.toBeVisible();
         await expect(page.getByText("There was an issue retrieving the list of editions for this dataset. Try refreshing the page.")).not.toBeVisible();
     });
 
