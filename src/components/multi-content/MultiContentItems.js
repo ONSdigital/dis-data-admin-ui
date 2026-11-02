@@ -7,67 +7,84 @@ import MultiContentFieldsInput from "./MultiContentFieldsInput";
 import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
 import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
 
-export default function MultiContentItems(props) {
-    const [itemsNumber, setItemsNumber] = useState(props.contentItems?.length ? props.contentItems?.length : 1);
-    const [buttonVariants, setButtonVariants] = useState(["disabled", "secondary", "small"]);
+const blankItem = (fieldType) => {
+    switch (fieldType) {
+        case "input":
+            return { title: "", note: "" };
+        case "radios":
+            return { type: "", note: "" };
+        case "relatedContent":
+            return { title: "", href: "", description: "" };
+        default:
+            return {};
+    }
+};
 
-    const handleButtonStatus = (fieldsHaveContent) => {
-        if (!fieldsHaveContent) {
-            setButtonVariants([...buttonVariants, "disabled"]);
-            return;
-        }
-        
-        const updatedButtonVariants = buttonVariants.filter(buttonVariant => buttonVariant !== "disabled");
-        setButtonVariants(updatedButtonVariants);
+export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel}) {
+    const [items, setItems] = useState(contentItems?.length ? contentItems : [blankItem(fieldType)]);
+
+    const handleChange = (index, nextItem) => {
+        setItems((current) => current.map((item, i) => (i === index ? nextItem : item)));
+    };
+    const handleRemove = (index) => {
+        setItems((current) => current.filter((_, i) => i !== index));
+    };
+    const handleAddItem = () => {
+        setItems((current) => [...current, blankItem(fieldType)]);
     };
 
     const renderItemFields = () => {
-        const items =[];
-        for (let i = 0; i < itemsNumber; i++) {
-            switch (props.fieldType) {
+        const renderedItems = [];
+        for (let i = 0; i < items.length; i++) {
+            switch (fieldType) {
                 case "input":
-                    items.push(<MultiContentFieldsInput key={i}
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
-                        index={i} 
-                        field={props.contentItems?.length ? props.contentItems[i] : null} 
+                    renderedItems.push(<MultiContentFieldsInput
+                        key={i}
+                        id={id}
+                        index={i}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        handleOnRemove={() => handleRemove(i)}
                     />);
                     break;
                 case "radios":
-                    items.push(<MultiContentFieldsRadios key={i} 
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
+                    renderedItems.push(<MultiContentFieldsRadios 
+                        key={i}
+                        id={id}
                         index={i}
-                        field={props.contentItems?.length ? props.contentItems[i] : null}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        handleOnRemove={() => handleRemove(i)}
                     />);
                     break;
                 case "relatedContent":
-                    items.push(<MultiContentFieldsRelatedContent key={i} 
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
+                    renderedItems.push(<MultiContentFieldsRelatedContent 
+                        key={i}
+                        id={id}
                         index={i}
-                        field={props.contentItems?.length ? props.contentItems[i] : null}
-                        errors={props?.errors}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
                 default:
                     console.warn(`No "fieldType" prop given`);
             }
         }
-        return <>{items}</>;
+        return <>{renderedItems}</>;
     };
 
     return (
         <>
             {renderItemFields()}
             <Button
-                dataTestId={`${props.id}-add-button`}
-                id={`${props.id}-add-button`}
-                text={props.buttonLabel}
-                variants={buttonVariants}
+                dataTestId={`${id}-add-button`}
+                id={`${id}-add-button`}
+                text={buttonLabel}
+                variants={["secondary", "small"]}
                 onClick={() => {
-                    setItemsNumber(itemsNumber + 1);
-                    setButtonVariants([...buttonVariants, "disabled"]);
+                    setItems([...items, blankItem(fieldType)]);
                 }}
                 />
         </>

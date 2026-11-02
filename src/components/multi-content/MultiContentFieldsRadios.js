@@ -1,38 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-
 import { Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRadios({ id, index, field, onFieldsHaveContent }) {
-    // set to "alert" as default option when showTypeOptions is false because we assume we are in 
-    // create mode and only alerts (not corrections) can be set when creating
-    const [contentType, setContentType] = useState(field?.type || "");
-    const [contentBody, setContentBody] = useState(field?.note || field?.description || "");
-
+export default function MultiContentFieldsRadios({ id, index, item, handleOnChange, handleOnRemove }) {
     const radiosID = id + "-radios-" + index;
     const textareaID = id + "-textarea-" + index;
 
-    const fieldsHaveContent = contentType.length > 0 && contentBody.length > 0;
-
-    // Store latest onFieldsHaveContent in a ref so we can call it from effects without
-    // adding it to the dependency array (which could trigger an update loop)
-    const onFieldsHaveContentRef = useRef(onFieldsHaveContent);
-    useEffect(() => {
-        onFieldsHaveContentRef.current = onFieldsHaveContent;
-    }, [onFieldsHaveContent]);
-
-    useEffect(() => {
-        onFieldsHaveContentRef.current(fieldsHaveContent);
-    }, [fieldsHaveContent]);
-
-    const handleInputChange = (setState, value) => {
-        setState(value);
-    };
-
     const isChecked = (fieldValue) => {
-        if (fieldValue === contentType) { return true; }
+        if (fieldValue === item.type) { return true; }
         return false;
     };
 
@@ -51,7 +27,7 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
                                 text: "Correction"
                             },
                             value: "correction",
-                            onChange: e => setContentType(e.target.value),
+                            onChange: e => handleOnChange({ ...item, type: e.target.value }),
                             checked: isChecked("correction")
                         },
                         {
@@ -60,7 +36,7 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
                                 text: "Notice"
                             },
                             value: "alert",
-                            onChange: e => setContentType(e.target.value),
+                            onChange: e => handleOnChange({ ...item, type: e.target.value }),
                             checked: isChecked("alert")
                         }
                     ]
@@ -71,18 +47,26 @@ export default function MultiContentFieldsRadios({ id, index, field, onFieldsHav
 
     return (
         <div className="ons-u-mb-m">
-            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: contentType, description: contentBody })} />
+            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: item.type, description: item.note })} />
             { renderRadioOptions() }
             <TextArea
                 id={textareaID}
                 dataTestId={textareaID}
                 name={textareaID}
                 label={{ text: "Description" }}
-                value={contentBody}
+                value={item.note}
                 key={textareaID}
                 fieldClasses={"ons-u-dib"}
-                onChange={e => handleInputChange(setContentBody, e.target.value)}
+                onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
             />
+            <div>
+                <a
+                    href="#"
+                    onClick={(event) => {event.preventDefault(); handleOnRemove();}}
+                >
+                    Remove usage note
+                </a>
+            </div>
         </div>
     );
 };
