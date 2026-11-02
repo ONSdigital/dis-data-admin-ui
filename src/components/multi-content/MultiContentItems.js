@@ -44,6 +44,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         index={i}
                         item={items[i]}
                         handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}  
                         handleOnRemove={() => handleRemove(i)}
                     />);
                     break;
@@ -54,6 +55,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         index={i}
                         item={items[i]}
                         handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}
                         handleOnRemove={() => handleRemove(i)}
                     />);
                     break;
@@ -64,6 +66,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         index={i}
                         item={items[i]}
                         handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}
                         handleOnRemove={() => handleRemove(i)}
                         errors={errors}
                     />);
@@ -84,7 +87,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                 text={buttonLabel}
                 variants={["secondary", "small"]}
                 onClick={() => {
-                    setItems([...items, blankItem(fieldType)]);
+                    handleAddItem();
                 }}
                 />
         </>

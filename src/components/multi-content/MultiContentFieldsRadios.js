@@ -3,7 +3,7 @@
 import { Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRadios({ id, index, item, handleOnChange, handleOnRemove }) {
+export default function MultiContentFieldsRadios({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton }) {
     const radiosID = id + "-radios-" + index;
     const textareaID = id + "-textarea-" + index;
 
@@ -59,14 +59,16 @@ export default function MultiContentFieldsRadios({ id, index, item, handleOnChan
                 fieldClasses={"ons-u-dib"}
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
             />
-            <div>
-                <a
-                    href="#"
-                    onClick={(event) => {event.preventDefault(); handleOnRemove();}}
-                >
-                    Remove usage note
-                </a>
-            </div>
+            {showRemoveButton && (
+                <div>
+                    <a
+                        href="#"
+                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
+                    >
+                        Remove usage note
+                    </a>
+                </div>
+            )}
         </div>
     );
 };

@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRelatedContent({ id, index, item, handleOnChange, handleOnRemove, errors }) {
+export default function MultiContentFieldsRelatedContent({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
     const titleInputID = id + "-title-" + index;
     const urlInputID = id + "-url-" + index;
     const textareaID = id + "-description-" + index;
@@ -49,6 +49,16 @@ export default function MultiContentFieldsRelatedContent({ id, index, item, hand
                 fieldClasses={"ons-u-dib"}
                 onChange={e => handleOnChange({ ...item, description: e.target.value })}
             />
+            {showRemoveButton && (
+                <div>
+                    <a
+                        href="#"
+                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
+                    >
+                        Remove usage note
+                    </a>
+                </div>
+            )}
         </div>
     );
 };

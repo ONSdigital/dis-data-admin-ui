@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsInput({ id, index, item, handleOnChange, handleOnRemove }) {
+export default function MultiContentFieldsInput({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton }) {
     const inputID = `${id}-input-${index}`;
     const textareaID = `${id}-textarea-${index}`;
 
@@ -30,14 +30,16 @@ export default function MultiContentFieldsInput({ id, index, item, handleOnChang
                 fieldClasses="ons-u-dib"
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
             />
-            <div>
-                <a
-                    href="#"
-                    onClick={(event) => {event.preventDefault(); handleOnRemove();}}
-                >
-                    Remove usage note
-                </a>
-            </div>
+            {showRemoveButton && (
+                <div>
+                    <a
+                        href="#"
+                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
+                    >
+                        Remove usage note
+                    </a>
+                </div>
+            )}
         </div>
     );
 }
