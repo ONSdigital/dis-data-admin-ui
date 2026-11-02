@@ -10,7 +10,7 @@ export default function MultiContentFieldsInput({ id, index, item, handleOnChang
     const textareaID = `${id}-textarea-${index}`;
 
     return (
-        <div className="ons-u-mb-m">
+        <div className="ons-u-mb-s ons-u-bb">
             <input id={id} name={id} type="hidden" value={JSON.stringify(item)} />
             <TextInput
                 id={inputID}
@@ -27,11 +27,11 @@ export default function MultiContentFieldsInput({ id, index, item, handleOnChang
                 name={textareaID}
                 label={{ text: "Description" }}
                 value={item.note}
-                fieldClasses="ons-u-dib"
+                fieldClasses="ons-u-dib ons-u-mb-s"
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
             />
             {showRemoveButton && (
-                <div>
+                <div className="ons-u-mb-s">
                     <a
                         href="#"
                         onClick={(event) => {event.preventDefault(); handleOnRemove();}}

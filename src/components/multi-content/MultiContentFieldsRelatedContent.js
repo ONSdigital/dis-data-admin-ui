@@ -11,7 +11,7 @@ export default function MultiContentFieldsRelatedContent({ id, index, item, hand
     const textareaID = id + "-description-" + index;
 
     return (
-        <div className="ons-u-mb-m">
+        <div className="ons-u-mb-s ons-u-bb">
             <input id={id} name={id} type="hidden" value={JSON.stringify({title: item.title, href: item.href, description: item.description})} />
             <TextInput
                 id={titleInputID}
@@ -46,11 +46,11 @@ export default function MultiContentFieldsRelatedContent({ id, index, item, hand
                 label={{text: "Description (optional)"}} 
                 value={item.description} 
                 key={textareaID} 
-                fieldClasses={"ons-u-dib"}
+                fieldClasses="ons-u-dib ons-u-mb-s"
                 onChange={e => handleOnChange({ ...item, description: e.target.value })}
             />
             {showRemoveButton && (
-                <div>
+                <div className="ons-u-mb-s">
                     <a
                         href="#"
                         onClick={(event) => {event.preventDefault(); handleOnRemove();}}

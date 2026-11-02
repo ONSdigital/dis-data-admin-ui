@@ -46,7 +46,7 @@ export default function MultiContentFieldsRadios({ id, index, item, handleOnChan
     };
 
     return (
-        <div className="ons-u-mb-m">
+        <div className="ons-u-mb-s ons-u-bb">
             <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: item.type, description: item.note })} />
             { renderRadioOptions() }
             <TextArea
@@ -56,11 +56,11 @@ export default function MultiContentFieldsRadios({ id, index, item, handleOnChan
                 label={{ text: "Description" }}
                 value={item.note}
                 key={textareaID}
-                fieldClasses={"ons-u-dib"}
+                fieldClasses="ons-u-dib ons-u-mb-s"
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
             />
             {showRemoveButton && (
-                <div>
+                <div className="ons-u-mb-s">
                     <a
                         href="#"
                         onClick={(event) => {event.preventDefault(); handleOnRemove();}}
