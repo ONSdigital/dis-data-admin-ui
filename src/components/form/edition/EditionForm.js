@@ -50,7 +50,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
     };
 
     return (
-        <>    
+        <div className="ons-col-8@m">    
             { renderFailure() }      
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
@@ -106,6 +106,6 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
             </form>
-        </>
+        </div>
     );
 }

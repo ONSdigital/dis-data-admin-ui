@@ -59,7 +59,7 @@ export default function VersionForm({ datasetID, editionID, version, isNewVersio
     };
 
     return (
-        <>    
+        <div className="ons-col-8@m">  
             { renderSuccessOrFailure() }      
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
@@ -85,6 +85,6 @@ export default function VersionForm({ datasetID, editionID, version, isNewVersio
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
             </form>
-        </>
+        </div>
     );
 }
