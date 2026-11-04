@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsInput({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton }) {
+export default function MultiContentFieldsInput({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
     const inputID = `${id}-input-${index}`;
     const textareaID = `${id}-textarea-${index}`;
 
@@ -20,6 +20,7 @@ export default function MultiContentFieldsInput({ id, index, item, handleOnChang
                 label={{ text: "Note title" }}
                 value={item.title}
                 onChange={(event) => handleOnChange({ ...item, title: event.target.value })}
+                error={errors?.[inputID] ? { id: `${inputID}-error`, text: errors[inputID] } : null}
             />
             <TextArea
                 id={textareaID}
@@ -29,6 +30,7 @@ export default function MultiContentFieldsInput({ id, index, item, handleOnChang
                 value={item.note}
                 fieldClasses="ons-u-dib ons-u-mb-s"
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
+                error={errors?.[textareaID] ? { id: `${textareaID}-error`, text: errors[textareaID] } : null}
             />
             {showRemoveButton && (
                 <div className="ons-u-mb-s">

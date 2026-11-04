@@ -46,6 +46,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         handleOnChange={(nextItem) => handleChange(i, nextItem)}
                         showRemoveButton={items.length > 1}  
                         handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
                 case "radios":
@@ -57,6 +58,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         handleOnChange={(nextItem) => handleChange(i, nextItem)}
                         showRemoveButton={items.length > 1}
                         handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
                 case "relatedContent":
