@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsInput({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
+export default function MultiContentFieldsUsageNotes({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
     const inputID = `${id}-input-${index}`;
     const textareaID = `${id}-textarea-${index}`;
 

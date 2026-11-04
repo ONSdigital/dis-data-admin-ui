@@ -3,7 +3,7 @@
 import { Radios } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRadios({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
+export default function MultiContentFieldsAlerts({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
     const radiosID = id + "-radios-" + index;
     const textareaID = id + "-textarea-" + index;
 

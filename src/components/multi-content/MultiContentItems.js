@@ -3,17 +3,17 @@
 import { useState } from "react";
 
 import { Button } from "author-design-system-react";
-import MultiContentFieldsInput from "./MultiContentFieldsInput";
-import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
+import MultiContentFieldsUsageNotes from "./MultiContentFieldsUsageNotes";
+import MultiContentFieldsAlerts from "./MultiContentFieldsAlerts";
 import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
 
 const blankItem = (fieldType) => {
     switch (fieldType) {
-        case "input":
+        case "usage-notes":
             return { title: "", note: "" };
-        case "radios":
+        case "alerts":
             return { type: "", note: "" };
-        case "relatedContent":
+        case "related-content":
             return { title: "", href: "", description: "" };
         default:
             return {};
@@ -37,8 +37,8 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
         const renderedItems = [];
         for (let i = 0; i < items.length; i++) {
             switch (fieldType) {
-                case "input":
-                    renderedItems.push(<MultiContentFieldsInput
+                case "usage-notes":
+                    renderedItems.push(<MultiContentFieldsUsageNotes
                         key={i}
                         id={id}
                         index={i}
@@ -49,8 +49,8 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         errors={errors}
                     />);
                     break;
-                case "radios":
-                    renderedItems.push(<MultiContentFieldsRadios 
+                case "alerts":
+                    renderedItems.push(<MultiContentFieldsAlerts 
                         key={i}
                         id={id}
                         index={i}
@@ -61,7 +61,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         errors={errors}
                     />);
                     break;
-                case "relatedContent":
+                case "related-content":
                     renderedItems.push(<MultiContentFieldsRelatedContent 
                         key={i}
                         id={id}

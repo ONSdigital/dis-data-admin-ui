@@ -82,7 +82,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                 <div className="ons-u-mb-l">
                     <h3 id="dataset-edition-related-content" className="ons-u-mt-xl">Related content (optional)</h3>
                     <MultiContentItems
-                        fieldType="relatedContent"
+                        fieldType="related-content"
                         id="related-content"
                         contentItems={edition?.related_content || []}
                         buttonLabel="Add related content"

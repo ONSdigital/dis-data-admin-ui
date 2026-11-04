@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
-import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
+import MultiContentFieldsRadios from "./MultiContentFieldsAlerts";
 
 let onFieldsHaveContentHandler;
 beforeEach(() => {
