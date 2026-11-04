@@ -1,46 +1,81 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
-import MultiContentFieldsRadios from "./MultiContentFieldsAlerts";
+import MultiContentFieldsAlerts from "./MultiContentFieldsAlerts";
 
-let onFieldsHaveContentHandler;
-beforeEach(() => {
-    onFieldsHaveContentHandler = jest.fn();
-});
+const item = { type: "correction", note: "Saved correction" };
 
-describe("MultiContentItemsSelect", () => {
-    describe("renders correctly", () => {
-        it("when show showTypeOptions is false", () => {
-            render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={false}/>);
+const renderAlert = (props = {}) => {
+    const handleOnChange = props.handleOnChange || jest.fn();
+    const handleOnRemove = props.handleOnRemove || jest.fn();
+    const view = render(
+        <MultiContentFieldsAlerts
+            id="alerts"
+            index={0}
+            item={item}
+            handleOnChange={handleOnChange}
+            handleOnRemove={handleOnRemove}
+            showRemoveButton={false}
+            {...props}
+        />
+    );
+    return { ...view, handleOnChange, handleOnRemove };
+};
 
-            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).toBeInTheDocument();
-            expect(screen.queryByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).toBeInTheDocument();
-            expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
+describe("MultiContentFieldsAlerts", () => {
+    describe("renders", () => {
+        it("with the saved alert type and description", () => {
+            renderAlert();
+
+            expect(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-correction-input")).toBeChecked();
+            expect(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input")).not.toBeChecked();
+            expect(screen.getByTestId("alerts-textarea-0")).toHaveValue("Saved correction");
+            expect(screen.getByTestId("alerts")).toHaveValue(JSON.stringify({ type: "correction", description: "Saved correction" }));
+            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+            expect(screen.queryByText("Alert type is required")).not.toBeInTheDocument();
         });
-        it("when show showTypeOptions is true", () => {
-            render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={true}/>);
 
-            expect(screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input")).toBeInTheDocument();
-            expect(screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-notice-input")).toBeInTheDocument();
-            expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
+        it("with validation errors on the type and description", () => {
+            renderAlert({
+                errors: {
+                    "alerts-radios-0": ["Alert type is required"],
+                    "alerts-textarea-0": ["Alert note is required"],
+                },
+            });
+
+            expect(screen.getByText("Alert type is required")).toBeInTheDocument();
+            expect(screen.getByText("Alert note is required")).toBeInTheDocument();
+            expect(document.getElementById("alerts-textarea-0-error")).toBeInTheDocument();
         });
     });
 
-    it("onFieldsHaveContent handler returns the correct value", () => {
-        render(<MultiContentFieldsRadios id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} showTypeOptions={true}/>);
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+    it("calls handleOnChange with the updated alert", () => {
+        const { handleOnChange, rerender } = renderAlert();
 
-        const radio = screen.getByTestId("multi-content-test-radios-1-item-multi-content-test-radios-1-correction-input");
-        fireEvent.click(radio);
-        expect(radio.value).toBe("correction");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        console.log(onFieldsHaveContentHandler.mock.calls[0])
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+        fireEvent.click(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input"));
+        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", note: "Saved correction" });
 
-        const textarea = screen.getByTestId("multi-content-test-textarea-1");
-        fireEvent.change(textarea, {target: {value: "test value"}});
-        expect(textarea.value).toBe("test value");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(2);
-        expect(onFieldsHaveContentHandler.mock.calls[1][0]).toBeTruthy();
+        const updatedItem = { type: "alert", note: "Saved correction" };
+        rerender(
+            <MultiContentFieldsAlerts
+                id="alerts"
+                index={0}
+                item={updatedItem}
+                handleOnChange={handleOnChange}
+                handleOnRemove={jest.fn()}
+            />
+        );
+        expect(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input")).toBeChecked();
+        expect(screen.getByTestId("alerts")).toHaveValue(JSON.stringify({ type: "alert", description: "Saved correction" }));
+
+        fireEvent.change(screen.getByTestId("alerts-textarea-0"), { target: { value: "Updated description" } });
+        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", note: "Updated description" });
+    });
+
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnRemove = jest.fn();
+        renderAlert({ showRemoveButton: true, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Remove usage note"));
+        expect(handleOnRemove).toHaveBeenCalledTimes(1);
     });
 });

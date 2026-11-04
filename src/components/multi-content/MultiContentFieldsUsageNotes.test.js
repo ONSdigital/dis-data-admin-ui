@@ -1,37 +1,82 @@
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
-import MultiContentFieldsInput from "./MultiContentFieldsUsageNotes";
+import MultiContentFieldsUsageNotes from "./MultiContentFieldsUsageNotes";
 
-let onFieldsHaveContentHandler;
-beforeEach(() => {
-    onFieldsHaveContentHandler = jest.fn();
-});
+const item = { title: "Usage note title", note: "A note about this dataset" };
 
-describe("MultiContentItemsInput", () => {
-    it("renders correctly", () => {
-        render(<MultiContentFieldsInput id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler}/>);
-        
-        expect(screen.getByTestId("multi-content-test-input-1")).toBeInTheDocument();
-        expect(screen.getByTestId("multi-content-test-textarea-1")).toBeInTheDocument();
+const renderUsageNote = (props = {}) => {
+    const handleOnChange = props.handleOnChange || jest.fn();
+    const handleOnRemove = props.handleOnRemove || jest.fn();
+    const view = render(
+        <MultiContentFieldsUsageNotes
+            id="usage-notes"
+            index={0}
+            item={item}
+            handleOnChange={handleOnChange}
+            handleOnRemove={handleOnRemove}
+            showRemoveButton={false}
+            {...props}
+        />
+    );
+    return { ...view, handleOnChange, handleOnRemove };
+};
+
+describe("MultiContentFieldsUsageNotes", () => {
+    describe("renders", () => {
+        it("with the usage note values", () => {
+            renderUsageNote();
+
+            expect(screen.getByTestId("usage-notes-input-0")).toHaveValue("Usage note title");
+            expect(screen.getByTestId("usage-notes-textarea-0")).toHaveValue("A note about this dataset");
+            expect(document.getElementById("usage-notes")).toHaveValue(JSON.stringify(item));
+            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+            expect(screen.queryByText("Usage note title is required")).not.toBeInTheDocument();
+        });
+
+        it("with validation errors on the title and description", () => {
+            renderUsageNote({
+                errors: {
+                    "usage-notes-input-0": ["Usage note title is required"],
+                    "usage-notes-textarea-0": ["Usage note is required"],
+                },
+            });
+
+            expect(screen.getByText("Usage note title is required")).toBeInTheDocument();
+            expect(document.getElementById("usage-notes-input-0-error")).toBeInTheDocument();
+            expect(screen.getByText("Usage note is required")).toBeInTheDocument();
+            expect(document.getElementById("usage-notes-textarea-0-error")).toBeInTheDocument();
+        });
     });
 
-    it("onFieldsHaveContent handler returns the correct value", () => {
-        render(<MultiContentFieldsInput id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler}/>);
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+    it("calls handleOnChange with the updated usage note", () => {
+        const { handleOnChange, rerender } = renderUsageNote();
 
-        const input = screen.getByTestId("multi-content-test-input-1");
-        fireEvent.change(input, {target: {value: "test value"}});
-        expect(input.value).toBe("test value");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        console.log(onFieldsHaveContentHandler.mock.calls[0])
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+        fireEvent.change(screen.getByTestId("usage-notes-input-0"), { target: { value: "New title" } });
+        expect(screen.getByTestId("usage-notes-input-0")).toHaveValue("Usage note title");
+        expect(handleOnChange).toHaveBeenCalledWith({ title: "New title", note: "A note about this dataset" });
 
-        const textarea = screen.getByTestId("multi-content-test-textarea-1");
-        fireEvent.change(textarea, {target: {value: "test value"}});
-        expect(textarea.value).toBe("test value");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(2);
-        expect(onFieldsHaveContentHandler.mock.calls[1][0]).toBeTruthy();
+        const updatedItem = { title: "New title", note: "A note about this dataset" };
+        rerender(
+            <MultiContentFieldsUsageNotes
+                id="usage-notes"
+                index={0}
+                item={updatedItem}
+                handleOnChange={handleOnChange}
+                handleOnRemove={jest.fn()}
+            />
+        );
+        expect(screen.getByTestId("usage-notes-input-0")).toHaveValue("New title");
+        expect(document.getElementById("usage-notes")).toHaveValue(JSON.stringify(updatedItem));
+
+        fireEvent.change(screen.getByTestId("usage-notes-textarea-0"), { target: { value: "New note" } });
+        expect(handleOnChange).toHaveBeenCalledWith({ title: "New title", note: "New note" });
     });
 
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnRemove = jest.fn();
+        renderUsageNote({ showRemoveButton: true, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Remove usage note"));
+        expect(handleOnRemove).toHaveBeenCalledTimes(1);
+    });
 });
