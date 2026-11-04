@@ -12,7 +12,45 @@ import { logError, logInfo } from "@/utils/log/log";
 import { getDistributionPath } from "@/utils/url/url";
 
 import { z } from "zod";
- 
+
+const usageNotesSchema = z.array(z.object({
+    title: z.string().min(1, { message: "Usage note title is required" }),
+    note: z.string().min(1, { message: "Usage note is required" }),
+})).optional();
+
+const alertsSchema = z.array(z.object({
+    type: z.string().min(1, { message: "Alert type is required" }),
+    description: z.string().min(1, { message: "Alert note is required" }),
+})).optional();
+
+// check and parse "MultiContent" (e.g. alerts and usage notes) fields,
+// keeping the index each item was rendered at so errors can be mapped back to the right inputs
+const parseMultiContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    return multiItem.map((item, index) => ({ index, content: JSON.parse(item) }))
+        .filter(({ content }) => Object.values(content).some(Boolean));
+};
+
+// maps Zod issues such as { path: ["usage_notes", 1, "note"] } to input IDs,
+// e.g. { "usage-notes-textarea-2": ["Usage note is required"] }
+// and { path: ["alerts", 0, "type"] } to { "alerts-radios-0": ["Alert type is required"] }
+const getMultiContentErrors = (issues, usageNoteIndexes = [], alertIndexes = []) => {
+    const errors = {};
+    issues.forEach(issue => {
+        const [field, itemIndex, key] = issue.path;
+        if (field === "usage_notes") {
+            const inputName = key === "note" ? "textarea" : "input";
+            errors[`usage-notes-${inputName}-${usageNoteIndexes[itemIndex]}`] = [issue.message];
+        }
+        if (field === "alerts") {
+            const inputName = key === "description" ? "textarea" : "radios";
+            errors[`alerts-${inputName}-${alertIndexes[itemIndex]}`] = [issue.message];
+        }
+    });
+    return errors;
+};
+
 const versionSchema = z.object({
     quality_designation: z.string().min(1, { message: "Quality designation is required" }),
     release_day: z.string().min(1, { message: "Day is required" }),
@@ -21,6 +59,8 @@ const versionSchema = z.object({
     release_hour: z.string().min(1, { message: "Hour is required" }),
     release_minutes: z.string().min(1, { message: "Minutes are required" }),
     release_date: z.string().min(1, { message: "A release time and date is required" }),
+    usage_notes: usageNotesSchema,
+    alerts: alertsSchema,
     distributions: z.array(z.object({
         download_url: z.string().min(1, { message: "A file upload is required" }),
     })).min(1, { message: "A file upload is required" })
@@ -36,20 +76,6 @@ const addUploadFileErrorMessage = async (errors) => {
         errors.distributions = ["File upload is required"];
     }
     return errors;
-};
-
-// check and parse "MultiContent" (e.g. alerts and usuage notes) fields 
-const parseMultiContentField = async (multiItem) => {
-    if (!multiItem || !multiItem.length) return [];
-
-    const parsedItems = [];
-    multiItem.forEach(item => {
-        const parsed = JSON.parse(item);
-        if (parsed.type && parsed.description || parsed.title) {
-            parsedItems.push(parsed);
-        }
-    });
-    return parsedItems;
 };
 
 // check and parse related content fields 
@@ -158,10 +184,8 @@ const doSubmission = async (datasetVersionSubmission, doRequest) => {
 };
 
 const getFormData = async (formData) => {
-    const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = await parseMultiContentField(usageNotes);
-    const alerts = formData.getAll("alerts");
-    const parsedAlerts = await parseMultiContentField(alerts);
+    const usageNotes = parseMultiContentField(formData.getAll("usage-notes"));
+    const alerts = parseMultiContentField(formData.getAll("alerts"));
     const relatedContent = formData.getAll("related-content-version");
     const parsedRelatedContent = parseRelatedContent(relatedContent);
     const datasetVersion = {
@@ -176,31 +200,38 @@ const getFormData = async (formData) => {
         release_hour: formData.get("release-date-hour"),
         release_minutes: formData.get("release-date-minutes"),
         release_date: formData.get("release-date-value"),
-        usage_notes: parsedUsageNotes,
-        alerts: parsedAlerts,
+        usage_notes: usageNotes.map(item => item.content),
+        alerts: alerts.map(item => item.content),
         distributions: JSON.parse(formData.get("dataset-upload-value")),
         related_content: parsedRelatedContent,
         type: "static",
     };
-    return datasetVersion;
+    return {
+        submission: datasetVersion,
+        usageNoteIndexes: usageNotes.map(item => item.index),
+        alertIndexes: alerts.map(item => item.index),
+    };
 };
 
-const handleFailedValidation = async (validation, datasetVersionSubmission) => {
+const handleFailedValidation = async (validation, datasetVersionSubmission, usageNoteIndexes, alertIndexes) => {
+    const { usage_notes: _usageNotes, alerts: _alerts, ...fieldErrors } = validation.error.flatten().fieldErrors;
     const actionResponse = {};
     actionResponse.success = validation.success;
-    actionResponse.errors = validation.error.flatten().fieldErrors;
-    actionResponse.errors = await addUploadFileErrorMessage(actionResponse.errors);
+    actionResponse.errors = {
+        ...await addUploadFileErrorMessage(fieldErrors),
+        ...getMultiContentErrors(validation.error.issues, usageNoteIndexes, alertIndexes),
+    };
     actionResponse.submission = datasetVersionSubmission;
     logInfo("failed dataset version validation", null, null);
     return actionResponse;
 };
 
 const createDatasetVersion = async (currentstate, formData) => {
-    const datasetVersionSubmission = await getFormData(formData);
+    const { submission: datasetVersionSubmission, usageNoteIndexes, alertIndexes } = await getFormData(formData);
     const validation = versionSchema.safeParse(datasetVersionSubmission);
 
     if (!validation.success) {
-        return await handleFailedValidation(validation, datasetVersionSubmission);
+        return await handleFailedValidation(validation, datasetVersionSubmission, usageNoteIndexes, alertIndexes);
     }
     const { dataset_id: datasetID, edition: editionID } = datasetVersionSubmission;
     return doSubmission(
@@ -210,11 +241,11 @@ const createDatasetVersion = async (currentstate, formData) => {
 };
 
 const updateDatasetVersion = async (currentstate, formData) => {
-    const datasetVersionSubmission = await getFormData(formData);
+    const { submission: datasetVersionSubmission, usageNoteIndexes, alertIndexes } = await getFormData(formData);
     const validation = versionSchema.safeParse(datasetVersionSubmission);
 
     if (!validation.success) {
-        return await handleFailedValidation(validation, datasetVersionSubmission);
+        return await handleFailedValidation(validation, datasetVersionSubmission, usageNoteIndexes, alertIndexes);
     }
     const { dataset_id: datasetID, edition: editionID, version_id: versionID } = datasetVersionSubmission;
     return doSubmission(
@@ -223,4 +254,4 @@ const updateDatasetVersion = async (currentstate, formData) => {
     );
 };
 
-export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata, parseMultiContentField, addUploadFileErrorMessage };
+export { createDatasetVersion, updateDatasetVersion, getFormData, handleFailedValidation, updateDistributionsMetadata, addUploadFileErrorMessage };

@@ -6,9 +6,47 @@ import { redirect } from "next/navigation";
 import { createVersion, updateVersion } from "@/utils/request/api-clients/datasets";
 import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { logError, logInfo } from "@/utils/log/log";
-import { updateDistributionsMetadata, parseMultiContentField } from "./datasetVersion";
+import { updateDistributionsMetadata } from "./datasetVersion";
 
 import { z } from "zod";
+
+const usageNotesSchema = z.array(z.object({
+    title: z.string().min(1, { message: "Usage note title is required" }),
+    note: z.string().min(1, { message: "Usage note is required" }),
+})).optional();
+
+const alertsSchema = z.array(z.object({
+    type: z.string().min(1, { message: "Alert type is required" }),
+    description: z.string().min(1, { message: "Alert note is required" }),
+})).optional();
+
+// check and parse "MultiContent" (e.g. alerts and usage notes) fields,
+// keeping the index each item was rendered at so errors can be mapped back to the right inputs
+const parseMultiContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    return multiItem.map((item, index) => ({ index, content: JSON.parse(item) }))
+        .filter(({ content }) => Object.values(content).some(Boolean));
+};
+
+// maps Zod issues such as { path: ["usage_notes", 1, "note"] } to input IDs,
+// e.g. { "usage-notes-textarea-2": ["Usage note is required"] }
+// and { path: ["alerts", 0, "type"] } to { "alerts-radios-0": ["Alert type is required"] }
+const getMultiContentErrors = (issues, usageNoteIndexes = [], alertIndexes = []) => {
+    const errors = {};
+    issues.forEach(issue => {
+        const [field, itemIndex, key] = issue.path;
+        if (field === "usage_notes") {
+            const inputName = key === "note" ? "textarea" : "input";
+            errors[`usage-notes-${inputName}-${usageNoteIndexes[itemIndex]}`] = [issue.message];
+        }
+        if (field === "alerts") {
+            const inputName = key === "description" ? "textarea" : "radios";
+            errors[`alerts-${inputName}-${alertIndexes[itemIndex]}`] = [issue.message];
+        }
+    });
+    return errors;
+};
  
 const editionSchema = z.object({
     edition: z.string()
@@ -34,6 +72,8 @@ const editionWithVersionSchema = z.object({
     release_hour: z.string().min(1, { message: "Hour is required" }),
     release_minutes: z.string().min(1, { message: "Minutes are required" }),
     release_date: z.string().min(1, { message: "A release time and date is required" }),
+    usage_notes: usageNotesSchema,
+    alerts: alertsSchema,
     distributions: z.array(z.object({
         download_url: z.string(),
     })).min(1, { message: "A file upload is required" })
@@ -115,12 +155,9 @@ const getUpdateEditionFormData = (formData) => {
 };
 
 const getCreateEditionFormData = async (formData) => {
-    const usageNotes = formData.getAll("usage-notes");
-    const parsedUsageNotes = await parseMultiContentField(usageNotes);
-    const alerts = formData.getAll("alerts");
-    const parsedAlerts = await parseMultiContentField(alerts);
-    const relatedContent = formData.getAll("related-content");
-    const parsedRelatedContent = parseRelatedContent(relatedContent);
+    const usageNotes = parseMultiContentField(formData.getAll("usage-notes"));
+    const alerts = parseMultiContentField(formData.getAll("alerts"));
+    const parsedRelatedContent = parseRelatedContent(formData.getAll("related-content"));
     return {
         submission: {
             dataset_id: formData.get("dataset-id"),
@@ -135,12 +172,14 @@ const getCreateEditionFormData = async (formData) => {
             release_hour: formData.get("release-date-hour"),
             release_minutes: formData.get("release-date-minutes"),
             release_date: formData.get("release-date-value"),
-            usage_notes: parsedUsageNotes,
-            alerts: parsedAlerts,
+            usage_notes: usageNotes.map(item => item.content),
+            alerts: alerts.map(item => item.content),
             distributions: JSON.parse(formData.get("dataset-upload-value")),
             type: "static",
         },
         relatedContentIndexes: parsedRelatedContent.map(item => item.index),
+        usageNoteIndexes: usageNotes.map(item => item.index),
+        alertIndexes: alerts.map(item => item.index),
     };
 };
 
@@ -157,13 +196,19 @@ const getRelatedContentErrors = (issues, relatedContentIndexes) => {
     return errors;
 };
 
-const handleFailedValidation = (validation, datasetEditionSubmission, relatedContentIndexes) => {
-    const { related_content: _relatedContent, ...fieldErrors } = validation.error.flatten().fieldErrors;
+const handleFailedValidation = (validation, datasetEditionSubmission, relatedContentIndexes, usageNoteIndexes = [], alertIndexes = []) => {
+    const {
+        related_content: _relatedContent,
+        usage_notes: _usageNotes,
+        alerts: _alerts,
+        ...fieldErrors
+    } = validation.error.flatten().fieldErrors;
     const actionResponse = {};
     actionResponse.success = validation.success;
     actionResponse.errors = {
         ...fieldErrors,
         ...getRelatedContentErrors(validation.error.issues, relatedContentIndexes),
+        ...getMultiContentErrors(validation.error.issues, usageNoteIndexes, alertIndexes),
     };
     actionResponse.submission = datasetEditionSubmission;
     logInfo("failed dataset edition validation", null, null);
@@ -171,11 +216,11 @@ const handleFailedValidation = (validation, datasetEditionSubmission, relatedCon
 };
 
 const createDatasetEdition = async (currentstate, formData) => {
-    const { submission: datasetEditionSubmission, relatedContentIndexes } = await getCreateEditionFormData(formData);
+    const { submission: datasetEditionSubmission, relatedContentIndexes, usageNoteIndexes, alertIndexes } = await getCreateEditionFormData(formData);
     const validation = editionWithVersionSchema.safeParse(datasetEditionSubmission);
 
     if (!validation.success) {
-        return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes);
+        return handleFailedValidation(validation, datasetEditionSubmission, relatedContentIndexes, usageNoteIndexes, alertIndexes);
     }
 
     const datasetID = datasetEditionSubmission.dataset_id;
