@@ -83,10 +83,10 @@ export default function VersionFields(props) {
                 }}
             />
             <h3 id="dataset-version-usage-notes" className="ons-u-mt-xl">Usage notes (optional)</h3>
-            <MultiContentItems id="usage-notes" fieldType="usage-notes" buttonLabel="Add additional usage note" contentItems={props.fieldValues?.usage_notes || []} errors={props.errors}></MultiContentItems>
+            <MultiContentItems id="usage-notes" fieldType="usage-notes" buttonLabel="Add another usage note" contentItems={props.fieldValues?.usage_notes || []} errors={props.errors}></MultiContentItems>
 
             <h3 id="dataset-version-alerts" className="ons-u-mt-xl">Alerts (optional)</h3>
-            <MultiContentItems id="alerts" fieldType="alerts" buttonLabel="Add additional alert" contentItems={props.fieldValues?.alerts || []} errors={props.errors}></MultiContentItems>
+            <MultiContentItems id="alerts" fieldType="alerts" buttonLabel="Add another alert" contentItems={props.fieldValues?.alerts || []} errors={props.errors}></MultiContentItems>
 
             <h2 id="dataset-version-downloads" className="ons-u-mt-xl">Dataset file</h2>
             <ResumableFileUpload id="dataset-upload"

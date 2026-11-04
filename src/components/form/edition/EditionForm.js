@@ -85,7 +85,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                         fieldType="related-content"
                         id="related-content"
                         contentItems={edition?.related_content || []}
-                        buttonLabel="Add related content"
+                        buttonLabel="Add another related content"
                         errors={formState.errors}
                     />
                 </div>
