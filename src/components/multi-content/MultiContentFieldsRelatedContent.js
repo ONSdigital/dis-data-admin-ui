@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
