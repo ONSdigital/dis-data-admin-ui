@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { getAccessTokenFromCookie } from "@/utils/auth/auth";
 import { getEdition } from "@/utils/request/api-clients/datasets";
@@ -23,6 +24,10 @@ export default async function EditEdition({ params }) {
     }
 
     const edition = editionResp?.response?.current || editionResp?.response?.next || editionResp.response;
+    if (edition.state === "published") {
+        redirect(`/series/${id}/editions/${editionID}`);
+    }
+
     const showEditionIDField = edition?.state !== "published" && !edition?.is_migration;
     return (
         <>

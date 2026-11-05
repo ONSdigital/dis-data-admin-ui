@@ -87,49 +87,11 @@ test.describe("Edit edition page", () => {
     });
 
     test.describe("When editing a published edition", () => {
-        test("Renders as expected", async ({ page, context }) => {
+        test("Redirects to the edition overview", async ({ page, context }) => {
             setValidAuthCookies(context);
 
             await page.goto("./series/mock-quarterly/editions/time-series/edit");
-            await expect(page.getByTestId("page-heading-title")).toContainText("Edit edition: Timeseries");
-
-            await expect(page.getByTestId("edition-id")).not.toBeVisible();
-            await expect(page.getByTestId("edition-title")).toBeVisible();
-            await expect(page.getByTestId("edition-save-button")).toBeVisible();
-            await expect(page.getByTestId("related-content-title-0")).toHaveValue("Related article");
-            await expect(page.getByTestId("related-content-url-0")).toHaveValue("https://example.com/article");
-            await expect(page.getByTestId("related-content-description-0")).toHaveValue("About the article");
-            await expect(page.getByTestId("related-content-title-1")).toHaveValue("Another article");
-            await expect(page.getByTestId("related-content-url-1")).toHaveValue("https://example.com/another");
-            await expect(page.getByTestId("related-content-title-2")).not.toBeVisible();
-        });
-
-        test("Submits form successfully", async ({ page, context }) => {
-            setValidAuthCookies(context);
-
-            await page.goto("./series/mock-quarterly/editions/time-series/edit");
-            await page.getByTestId("edition-title").fill("Test title");
-
-
-            await page.getByRole("button", { name: /Save edition/i }).click();
-
-            await page.waitForURL("**/series/mock-quarterly/editions/time-series**");
-            await expect(page.url().toString()).toContain("series/mock-quarterly/editions/time-series");
-
-            await expect(page.getByText("Dataset edition saved")).toBeVisible();
-        });
-
-        test("Show errors on mandatory fields", async ({ page, context }) => {
-            setValidAuthCookies(context);
-
-            await page.goto("./series/mock-quarterly/editions/time-series/edit");
-
-            await page.getByTestId("edition-title").fill("");
-
-            await page.getByRole("button", { name: /Save edition/i }).click();
-
-            await expect(page.getByText("There was a problem creating this dataset edition")).toBeVisible();
-            await expect(page.getByLabel("There was a problem").getByText("Edition title is required")).toBeVisible();
+            await expect(page).toHaveURL(/\/series\/mock-quarterly\/editions\/time-series$/);
         });
     });
 
