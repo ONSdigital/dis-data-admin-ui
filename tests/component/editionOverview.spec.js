@@ -15,10 +15,14 @@ test.describe("Edition overview page", () => {
 
         // version list
         await expect(page.getByRole("link", { name: "Version: 1" })).toBeVisible();
+
         // page content
         await expect(page.locator("#edition-id")).toContainText("time-series");
         await expect(page.locator("#edition-title")).toContainText("Timeseries");
-        await expect(page.getByTestId("action-link-edition-title")).toBeVisible();
+        // edit links should not be visible as version is published
+        await expect(page.getByTestId("action-link-edition-id")).not.toBeVisible();
+        await expect(page.getByTestId("action-link-edition-title")).not.toBeVisible();
+        await expect(page.getByTestId("action-link-related-content")).not.toBeVisible();
         await expect(page.locator("#release-date")).toContainText("26 January 2025"); 
         await expect(page.getByTestId("related-content-0-title-0")).toContainText("Related article");
         await expect(page.getByTestId("related-content-0-description-0")).toContainText("About the article");

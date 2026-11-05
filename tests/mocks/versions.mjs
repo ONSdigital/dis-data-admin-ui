@@ -25,6 +25,18 @@ export const versions = {
             },
             "release_date": "2025-01-26T07:00:00.000Z",
             "state": "published",
+            "related_content": [
+                {
+                    "title": "Methodology",
+                    "href": "https://example.com/methodology",
+                    "description": "Read the methodology for this edition"
+                },
+                {
+                    "title": "Quality information",
+                    "href": "https://example.com/quality-information",
+                    "description": "Review the quality information"
+                }
+            ],
             "usage_notes": [
                 {
                     "title": "Usage Note 1",
