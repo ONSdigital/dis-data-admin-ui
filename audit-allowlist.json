@@ -5,7 +5,15 @@
             "reason": "Glob is an indirect import used in Jest and author-design-system-react. Overridng this package causes breakages"
         },
         {
+            "id": "CVE-2026-118773",
+            "reason": "Glob is an indirect import used in Jest and author-design-system-react. Overridng this package causes breakages"
+        },
+        {
             "id": "CVE-2026-27904",
+            "reason": "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
+        },
+        {
+            "id": "CVE-2026-118764",
             "reason": "Minimatch is an indirect import used in ESLint, Jest, etc. Waiting for those packages to update dependencies."
         },
         {
