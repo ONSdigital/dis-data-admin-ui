@@ -86,7 +86,7 @@ export default async function Dataset({ params, searchParams }) {
     const dataset = datasetResp?.response?.next || datasetResp?.response?.current || datasetResp?.response;
 
     const topicTitles = await convertTopicIDsToTopicTitles(dataset.topics, accessToken);
-    const parsedTopic = await parseTopicsForURL(dataset.topics, accessToken)
+    const parsedTopic = await parseTopicsForURL(dataset.topics, accessToken);
     const isPublished = datasetResp?.response?.current?.state === "published";
     const seriesSummaryItems = mapSeriesSummary(dataset, editURL, topicTitles, parsedTopic, isPublished);
     const currentURLPath = (await headers()).get("x-request-pathname") || "";
