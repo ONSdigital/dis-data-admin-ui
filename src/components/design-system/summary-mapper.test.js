@@ -155,7 +155,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
     it("when edition is published", () => {
         const mapped = mapEditionSummary(versions.items[0], "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(4);
+        expect(mappedItems).toHaveLength(5);
         // expect "Edition ID" to have single value and not have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
@@ -164,26 +164,44 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[1].rowTitle).toBe("URL");
         expect(mappedItems[1].rowItems[0].valueList[0]).toMatchObject({text: "topicfoo/datasets/mock-quarterly/editions/time-series"});
         expect(mappedItems[1].rowItems[0].actions).toBeFalsy();
-        // expect "Edition title" to have single value and have "edit" action
+        // expect "Edition title" to have single value and not have "edit" action
         expect(mappedItems[2].rowTitle).toBe("Edition title");
         expect(mappedItems[2].rowItems[0].valueList[0]).toMatchObject({text: "This is an edition title for version 1"});
-        expect(mappedItems[2].rowItems[0].actions[0]).toMatchObject({
-            id: "action-link-edition-title",
-            visuallyHiddenText: "Edit Edition title",
-            url: "test/foo/edit#edition-title"
-        });
+        expect(mappedItems[2].rowItems[0].actions).toBeFalsy();
         // expect "Release date" to have single value and not have "edit" action
         expect(mappedItems[3].rowTitle).toBe("Release date");
         expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
+        // expect "Related content" to have two items and not have an "edit" action
+        expect(mappedItems[4].rowTitle).toBe("Related content");
+        expect(mappedItems[4].rowItems[0].valueList).toHaveLength(2);
+        expect(mappedItems[4].rowItems[0].valueList[0].text.props.children[0].props).toMatchObject({
+            "data-testid": "related-content-0-title-0",
+            children: "Methodology"
+        });
+        expect(mappedItems[4].rowItems[0].valueList[0].text.props.children[1].props).toMatchObject({
+            "data-testid": "related-content-0-description-0",
+            children: "Read the methodology for this edition"
+        });
+        expect(mappedItems[4].rowItems[0].valueList[1].text.props.children[0].props).toMatchObject({
+            "data-testid": "related-content-1-title-1",
+            children: "Quality information"
+        });
+        expect(mappedItems[4].rowItems[0].valueList[1].text.props.children[1].props).toMatchObject({
+            "data-testid": "related-content-1-description-1",
+            children: "Review the quality information"
+        });
+        expect(mappedItems[4].rowItems[0].actions).toBeFalsy();
     });
 
     it("when edition is not published", () => {
-        const data = versions.items[0];
-        data.state = "draft";
+        const data = {
+            ...versions.items[0],
+            state: "draft"
+        };
         const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
         const mappedItems = mapped[0].groups[0].rows;
-        expect(mappedItems).toHaveLength(4);
+        expect(mappedItems).toHaveLength(5);
         // expect "Edition ID" to have single value and have "edit" action
         expect(mappedItems[0].rowTitle).toBe("Edition ID");
         expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
@@ -208,36 +226,7 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
         expect(mappedItems[3].rowTitle).toBe("Release date");
         expect(mappedItems[3].rowItems[0].valueList[0]).toMatchObject({text: "26 January 2025"});
         expect(mappedItems[3].rowItems[0].actions).toBeFalsy();
-    });
-
-    it("when edition is marked as migration", () => {
-        const data = { ...versions.items[0], state: "draft", is_migration: true };
-        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
-        const mappedItems = mapped[0].groups[0].rows;
-
-        expect(mappedItems[0].rowTitle).toBe("Edition ID");
-        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
-        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
-    });
-
-    it("when edition has related content", () => {
-        const data = {
-            ...versions.items[0],
-            related_content: [
-                {
-                    title: "Methodology",
-                    description: "Read the methodology for this edition"
-                },
-                {
-                    title: "Quality information",
-                    description: "Review the quality information"
-                }
-            ]
-        };
-        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
-        const mappedItems = mapped[0].groups[0].rows;
-
-        expect(mappedItems).toHaveLength(5);
+        // expect "Related content" to have two items and have an "edit" action
         expect(mappedItems[4].rowTitle).toBe("Related content");
         expect(mappedItems[4].rowItems[0].valueList).toHaveLength(2);
         expect(mappedItems[4].rowItems[0].valueList[0].text.props.children[0].props).toMatchObject({
@@ -261,6 +250,16 @@ describe("mapEditionSummary returns expected object of mapped content items", ()
             visuallyHiddenText: "Edit Related content",
             url: "test/foo/edit#related-content"
         });
+    });
+
+    it("when edition is marked as migration", () => {
+        const data = { ...versions.items[0], state: "draft", is_migration: true };
+        const mapped = mapEditionSummary(data, "topicfoo", "test/foo/edit");
+        const mappedItems = mapped[0].groups[0].rows;
+
+        expect(mappedItems[0].rowTitle).toBe("Edition ID");
+        expect(mappedItems[0].rowItems[0].valueList[0]).toMatchObject({text: "time-series"});
+        expect(mappedItems[0].rowItems[0].actions).toBeFalsy();
     });
 });
 
