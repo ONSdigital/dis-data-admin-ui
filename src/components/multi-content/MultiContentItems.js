@@ -3,71 +3,93 @@
 import { useState } from "react";
 
 import { Button } from "author-design-system-react";
-import MultiContentFieldsInput from "./MultiContentFieldsInput";
-import MultiContentFieldsRadios from "./MultiContentFieldsRadios";
+import MultiContentFieldsUsageNotes from "./MultiContentFieldsUsageNotes";
+import MultiContentFieldsAlerts from "./MultiContentFieldsAlerts";
 import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
 
-export default function MultiContentItems(props) {
-    const [itemsNumber, setItemsNumber] = useState(props.contentItems?.length ? props.contentItems?.length : 1);
-    const [buttonVariants, setButtonVariants] = useState(["disabled", "secondary", "small"]);
+const blankItem = (fieldType) => {
+    switch (fieldType) {
+        case "usage-notes":
+            return { title: "", note: "" };
+        case "alerts":
+            return { type: "", note: "" };
+        case "related-content":
+            return { title: "", href: "", description: "" };
+        default:
+            return {};
+    }
+};
 
-    const handleButtonStatus = (fieldsHaveContent) => {
-        if (!fieldsHaveContent) {
-            setButtonVariants([...buttonVariants, "disabled"]);
-            return;
-        }
-        
-        const updatedButtonVariants = buttonVariants.filter(buttonVariant => buttonVariant !== "disabled");
-        setButtonVariants(updatedButtonVariants);
+export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel}) {
+    const [items, setItems] = useState(contentItems?.length ? contentItems : [blankItem(fieldType)]);
+
+    const handleChange = (index, nextItem) => {
+        setItems((current) => current.map((item, i) => (i === index ? nextItem : item)));
+    };
+    const handleRemove = (index) => {
+        setItems((current) => current.filter((_, i) => i !== index));
+    };
+    const handleAddItem = () => {
+        setItems((current) => [...current, blankItem(fieldType)]);
     };
 
     const renderItemFields = () => {
-        const items =[];
-        for (let i = 0; i < itemsNumber; i++) {
-            switch (props.fieldType) {
-                case "input":
-                    items.push(<MultiContentFieldsInput key={i}
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
-                        index={i} 
-                        field={props.contentItems?.length ? props.contentItems[i] : null} 
+        const renderedItems = [];
+        for (let i = 0; i < items.length; i++) {
+            switch (fieldType) {
+                case "usage-notes":
+                    renderedItems.push(<MultiContentFieldsUsageNotes
+                        key={i}
+                        id={id}
+                        index={i}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}  
+                        handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
-                case "radios":
-                    items.push(<MultiContentFieldsRadios key={i} 
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
+                case "alerts":
+                    renderedItems.push(<MultiContentFieldsAlerts 
+                        key={i}
+                        id={id}
                         index={i}
-                        field={props.contentItems?.length ? props.contentItems[i] : null}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}
+                        handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
-                case "relatedContent":
-                    items.push(<MultiContentFieldsRelatedContent key={i} 
-                        onFieldsHaveContent={handleButtonStatus}
-                        id={props.id} 
+                case "related-content":
+                    renderedItems.push(<MultiContentFieldsRelatedContent 
+                        key={i}
+                        id={id}
                         index={i}
-                        field={props.contentItems?.length ? props.contentItems[i] : null}
-                        errors={props?.errors}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}
+                        handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
                     />);
                     break;
                 default:
                     console.warn(`No "fieldType" prop given`);
             }
         }
-        return <>{items}</>;
+        return <>{renderedItems}</>;
     };
 
     return (
         <>
             {renderItemFields()}
             <Button
-                dataTestId={`${props.id}-add-button`}
-                id={`${props.id}-add-button`}
-                text={props.buttonLabel}
-                variants={buttonVariants}
+                dataTestId={`${id}-add-button`}
+                id={`${id}-add-button`}
+                text={buttonLabel}
+                variants={["secondary", "small"]}
                 onClick={() => {
-                    setItemsNumber(itemsNumber + 1);
-                    setButtonVariants([...buttonVariants, "disabled"]);
+                    handleAddItem();
                 }}
                 />
         </>
