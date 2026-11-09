@@ -48,17 +48,17 @@ export default function MultiContentFieldsAlerts({ id, index, item, handleOnChan
 
     return (
         <div className="ons-u-mb-s ons-u-bb">
-            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: item.type, description: item.note })} />
+            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: item.type, description: item.description })} />
             { renderRadioOptions() }
             <TextArea
                 id={textareaID}
                 dataTestId={textareaID}
                 name={textareaID}
                 label={{ text: "Description" }}
-                value={item.note}
+                value={item.description}
                 key={textareaID}
                 fieldClasses="ons-u-dib ons-u-mb-s"
-                onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
+                onChange={(event) => handleOnChange({ ...item, description: event.target.value })}
                 error={errors?.[textareaID] ? { id: `${textareaID}-error`, text: errors[textareaID] } : null}
             />
             {showRemoveButton && (

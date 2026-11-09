@@ -33,7 +33,7 @@ describe("MultiContentItems", () => {
         });
 
         it("and does contain data e.g. 'edit' mode", () => {
-            render(<MultiContentItems id="multi-content-test" fieldType="alerts" buttonLabel="Add new test item" contentItems={[{type: "alert", note: "test"}]}/>);
+            render(<MultiContentItems id="multi-content-test" fieldType="alerts" buttonLabel="Add new test item" contentItems={[{type: "alert", description: "test"}]}/>);
             expect(screen.getByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-correction-input")).not.toBeChecked();
             expect(screen.getByTestId("multi-content-test-radios-0-item-multi-content-test-radios-0-notice-input")).toBeChecked();
 

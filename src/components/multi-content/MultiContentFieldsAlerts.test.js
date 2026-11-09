@@ -2,7 +2,7 @@ import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import MultiContentFieldsAlerts from "./MultiContentFieldsAlerts";
 
-const item = { type: "correction", note: "Saved correction" };
+const item = { type: "correction", description: "Saved correction" };
 
 const renderAlert = (props = {}) => {
     const handleOnChange = props.handleOnChange || jest.fn();
@@ -30,7 +30,7 @@ describe("MultiContentFieldsAlerts", () => {
             expect(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input")).not.toBeChecked();
             expect(screen.getByTestId("alerts-textarea-0")).toHaveValue("Saved correction");
             expect(screen.getByTestId("alerts")).toHaveValue(JSON.stringify({ type: "correction", description: "Saved correction" }));
-            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+            expect(screen.queryByText("Remove alert")).not.toBeInTheDocument();
             expect(screen.queryByText("Alert type is required")).not.toBeInTheDocument();
         });
 
@@ -52,9 +52,9 @@ describe("MultiContentFieldsAlerts", () => {
         const { handleOnChange, rerender } = renderAlert();
 
         fireEvent.click(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input"));
-        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", note: "Saved correction" });
+        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", description: "Saved correction" });
 
-        const updatedItem = { type: "alert", note: "Saved correction" };
+        const updatedItem = { type: "alert", description: "Saved correction" };
         rerender(
             <MultiContentFieldsAlerts
                 id="alerts"
@@ -68,7 +68,7 @@ describe("MultiContentFieldsAlerts", () => {
         expect(screen.getByTestId("alerts")).toHaveValue(JSON.stringify({ type: "alert", description: "Saved correction" }));
 
         fireEvent.change(screen.getByTestId("alerts-textarea-0"), { target: { value: "Updated description" } });
-        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", note: "Updated description" });
+        expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", description: "Updated description" });
     });
 
     it("calls handleOnRemove when the remove link is clicked", () => {
