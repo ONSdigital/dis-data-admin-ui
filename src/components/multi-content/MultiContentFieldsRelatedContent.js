@@ -47,16 +47,17 @@ export default function MultiContentFieldsRelatedContent({ id, index, item, hand
                 fieldClasses="ons-u-dib ons-u-mb-s"
                 onChange={e => handleOnChange({ ...item, description: e.target.value })}
             />
-            {showRemoveButton && (
-                <div className="ons-u-mb-s">
-                    <a
-                        href="#"
-                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
-                    >
-                        Remove related content
-                    </a>
-                </div>
-            )}
+            <div className="ons-u-mb-s">
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault(); 
+                        showRemoveButton ? handleOnRemove() : handleOnChange({ index, title: "", href: "", description: "" });
+                    }}
+                >
+                    { showRemoveButton ? "Remove" : "Clear"} related content
+                </a>
+            </div>
         </div>
     );
 };

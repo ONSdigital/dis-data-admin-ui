@@ -30,6 +30,7 @@ describe("MultiContentFieldsAlerts", () => {
             expect(screen.getByTestId("alerts-radios-0-item-alerts-radios-0-notice-input")).not.toBeChecked();
             expect(screen.getByTestId("alerts-textarea-0")).toHaveValue("Saved correction");
             expect(screen.getByTestId("alerts")).toHaveValue(JSON.stringify({ type: "correction", description: "Saved correction" }));
+            expect(screen.getByText("Clear alert")).toBeInTheDocument();
             expect(screen.queryByText("Remove alert")).not.toBeInTheDocument();
             expect(screen.queryByText("Alert type is required")).not.toBeInTheDocument();
         });
@@ -71,11 +72,23 @@ describe("MultiContentFieldsAlerts", () => {
         expect(handleOnChange).toHaveBeenCalledWith({ type: "alert", description: "Updated description" });
     });
 
-    it("calls handleOnRemove when the remove link is clicked", () => {
+    it("calls handleOnChange when the clear link is clicked", () => {
+        const handleOnChange = jest.fn();
         const handleOnRemove = jest.fn();
-        renderAlert({ showRemoveButton: true, handleOnRemove });
+        renderAlert({ handleOnChange, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Clear alert"));
+        expect(handleOnChange).toHaveBeenCalledWith({ index: 0, type: "", description: "" });
+        expect(handleOnRemove).not.toHaveBeenCalled();
+    });
+
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnChange = jest.fn();
+        const handleOnRemove = jest.fn();
+        renderAlert({ showRemoveButton: true, handleOnChange, handleOnRemove });
 
         fireEvent.click(screen.getByText("Remove alert"));
         expect(handleOnRemove).toHaveBeenCalledTimes(1);
+        expect(handleOnChange).not.toHaveBeenCalled();
     });
 });

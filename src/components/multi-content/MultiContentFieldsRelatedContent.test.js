@@ -38,6 +38,7 @@ describe("MultiContentFieldsRelatedContent", () => {
                 href: item.href,
                 description: item.description,
             }));
+            expect(screen.getByText("Clear related content")).toBeInTheDocument();
             expect(screen.queryByText("Remove related content")).not.toBeInTheDocument();
             expect(screen.queryByText("Related content title is required")).not.toBeInTheDocument();
         });
@@ -88,11 +89,23 @@ describe("MultiContentFieldsRelatedContent", () => {
         expect(handleOnChange).toHaveBeenCalledWith({ ...updatedItem, description: "Information about quality" });
     });
 
-    it("calls handleOnRemove when the remove link is clicked", () => {
+    it("calls handleOnChange when the clear link is clicked", () => {
+        const handleOnChange = jest.fn();
         const handleOnRemove = jest.fn();
-        renderRelatedContent({ showRemoveButton: true, handleOnRemove });
+        renderRelatedContent({ handleOnChange, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Clear related content"));
+        expect(handleOnChange).toHaveBeenCalledWith({ index: 0, title: "", href: "", description: "" });
+        expect(handleOnRemove).not.toHaveBeenCalled();
+    });
+
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnChange = jest.fn();
+        const handleOnRemove = jest.fn();
+        renderRelatedContent({ showRemoveButton: true, handleOnChange, handleOnRemove });
 
         fireEvent.click(screen.getByText("Remove related content"));
         expect(handleOnRemove).toHaveBeenCalledTimes(1);
+        expect(handleOnChange).not.toHaveBeenCalled();
     });
 });

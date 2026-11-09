@@ -29,6 +29,7 @@ describe("MultiContentFieldsUsageNotes", () => {
             expect(screen.getByTestId("usage-notes-input-0")).toHaveValue("Usage note title");
             expect(screen.getByTestId("usage-notes-textarea-0")).toHaveValue("A note about this dataset");
             expect(document.getElementById("usage-notes")).toHaveValue(JSON.stringify(item));
+            expect(screen.getByText("Clear usage note")).toBeInTheDocument();
             expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
             expect(screen.queryByText("Usage note title is required")).not.toBeInTheDocument();
         });
@@ -72,11 +73,23 @@ describe("MultiContentFieldsUsageNotes", () => {
         expect(handleOnChange).toHaveBeenCalledWith({ title: "New title", note: "New note" });
     });
 
-    it("calls handleOnRemove when the remove link is clicked", () => {
+    it("calls handleOnChange when the clear link is clicked", () => {
+        const handleOnChange = jest.fn();
         const handleOnRemove = jest.fn();
-        renderUsageNote({ showRemoveButton: true, handleOnRemove });
+        renderUsageNote({ handleOnChange, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Clear usage note"));
+        expect(handleOnChange).toHaveBeenCalledWith({ index: 0, title: "", note: "" });
+        expect(handleOnRemove).not.toHaveBeenCalled();
+    });
+
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnChange = jest.fn();
+        const handleOnRemove = jest.fn();
+        renderUsageNote({ showRemoveButton: true, handleOnChange, handleOnRemove });
 
         fireEvent.click(screen.getByText("Remove usage note"));
         expect(handleOnRemove).toHaveBeenCalledTimes(1);
+        expect(handleOnChange).not.toHaveBeenCalled();
     });
 });

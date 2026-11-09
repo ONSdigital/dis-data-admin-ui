@@ -30,16 +30,17 @@ export default function MultiContentFieldsUsageNotes({ id, index, item, handleOn
                 onChange={(event) => handleOnChange({ ...item, note: event.target.value })}
                 error={errors?.[textareaID] ? { id: `${textareaID}-error`, text: errors[textareaID] } : null}
             />
-            {showRemoveButton && (
-                <div className="ons-u-mb-s">
-                    <a
-                        href="#"
-                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
-                    >
-                        Remove usage note
-                    </a>
-                </div>
-            )}
+            <div className="ons-u-mb-s">
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault(); 
+                        showRemoveButton ? handleOnRemove() : handleOnChange({ index, title: "", note: "" });
+                    }}
+                >
+                    { showRemoveButton ? "Remove" : "Clear"} usage note
+                </a>
+            </div>
         </div>
     );
 }

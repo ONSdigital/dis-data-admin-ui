@@ -102,21 +102,37 @@ describe("MultiContentItems", () => {
         expect(screen.getByTestId("multi-content-test-textarea-1")).toHaveValue("");
     });
 
-    it("removes the row that was clicked", () => {
-        render(<MultiContentItems id="multi-content-test" fieldType="usage-notes" buttonLabel="Add new test item"/>);
-        expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+    describe("clear and remove", () => {
+        it("clears the only usage note without removing the row", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="usage-notes" buttonLabel="Add new test item"/>);
+            fireEvent.change(screen.getByTestId("multi-content-test-input-0"), { target: { value: "First title" } });
+            fireEvent.change(screen.getByTestId("multi-content-test-textarea-0"), { target: { value: "First note" } });
 
-        fireEvent.change(screen.getByTestId("multi-content-test-input-0"), { target: { value: "First title" } });
-        fireEvent.click(screen.getByTestId("multi-content-test-add-button"));
-        fireEvent.change(screen.getByTestId("multi-content-test-input-1"), { target: { value: "Second title" } });
+            fireEvent.click(screen.getByText("Clear usage note"));
 
-        const removeLinks = screen.getAllByText("Remove usage note");
-        expect(removeLinks).toHaveLength(2);
-        fireEvent.click(removeLinks[0]);
+            expect(screen.getByTestId("multi-content-test-input-0")).toHaveValue("");
+            expect(screen.getByTestId("multi-content-test-textarea-0")).toHaveValue("");
+            expect(screen.queryByTestId("multi-content-test-input-1")).not.toBeInTheDocument();
+        });
 
-        expect(screen.getByTestId("multi-content-test-input-0")).toHaveValue("Second title");
-        expect(screen.queryByTestId("multi-content-test-input-1")).not.toBeInTheDocument();
-        expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+        it("removes the row that was clicked", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="usage-notes" buttonLabel="Add new test item"/>);
+            expect(screen.getByText("Clear usage note")).toBeInTheDocument();
+            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+
+            fireEvent.change(screen.getByTestId("multi-content-test-input-0"), { target: { value: "First title" } });
+            fireEvent.click(screen.getByTestId("multi-content-test-add-button"));
+            fireEvent.change(screen.getByTestId("multi-content-test-input-1"), { target: { value: "Second title" } });
+
+            const removeLinks = screen.getAllByText("Remove usage note");
+            expect(removeLinks).toHaveLength(2);
+            fireEvent.click(removeLinks[0]);
+
+            expect(screen.getByTestId("multi-content-test-input-0")).toHaveValue("Second title");
+            expect(screen.queryByTestId("multi-content-test-input-1")).not.toBeInTheDocument();
+            expect(screen.getByText("Clear usage note")).toBeInTheDocument();
+            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+        });
     });
 
     describe("passes errors to the matching row", () => {

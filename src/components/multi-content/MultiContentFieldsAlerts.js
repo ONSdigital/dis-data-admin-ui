@@ -61,16 +61,17 @@ export default function MultiContentFieldsAlerts({ id, index, item, handleOnChan
                 onChange={(event) => handleOnChange({ ...item, description: event.target.value })}
                 error={errors?.[textareaID] ? { id: `${textareaID}-error`, text: errors[textareaID] } : null}
             />
-            {showRemoveButton && (
-                <div className="ons-u-mb-s">
-                    <a
-                        href="#"
-                        onClick={(event) => {event.preventDefault(); handleOnRemove();}}
-                    >
-                        Remove alert
-                    </a>
-                </div>
-            )}
+            <div className="ons-u-mb-s">
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault(); 
+                        showRemoveButton ? handleOnRemove() : handleOnChange({ index, type: "", description: "" });
+                    }}
+                >
+                    { showRemoveButton ? "Remove" : "Clear"} alert
+                </a>
+            </div>
         </div>
     );
 };
