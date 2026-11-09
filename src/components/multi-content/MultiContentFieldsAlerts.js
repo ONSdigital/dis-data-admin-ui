@@ -67,7 +67,7 @@ export default function MultiContentFieldsAlerts({ id, index, item, handleOnChan
                         href="#"
                         onClick={(event) => {event.preventDefault(); handleOnRemove();}}
                     >
-                        Remove usage note
+                        Remove alert
                     </a>
                 </div>
             )}

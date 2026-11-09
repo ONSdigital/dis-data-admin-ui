@@ -75,7 +75,7 @@ describe("MultiContentFieldsAlerts", () => {
         const handleOnRemove = jest.fn();
         renderAlert({ showRemoveButton: true, handleOnRemove });
 
-        fireEvent.click(screen.getByText("Remove usage note"));
+        fireEvent.click(screen.getByText("Remove alert"));
         expect(handleOnRemove).toHaveBeenCalledTimes(1);
     });
 });

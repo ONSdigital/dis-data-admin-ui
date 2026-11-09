@@ -38,7 +38,7 @@ describe("MultiContentFieldsRelatedContent", () => {
                 href: item.href,
                 description: item.description,
             }));
-            expect(screen.queryByText("Remove usage note")).not.toBeInTheDocument();
+            expect(screen.queryByText("Remove related content")).not.toBeInTheDocument();
             expect(screen.queryByText("Related content title is required")).not.toBeInTheDocument();
         });
 
@@ -92,7 +92,7 @@ describe("MultiContentFieldsRelatedContent", () => {
         const handleOnRemove = jest.fn();
         renderRelatedContent({ showRemoveButton: true, handleOnRemove });
 
-        fireEvent.click(screen.getByText("Remove usage note"));
+        fireEvent.click(screen.getByText("Remove related content"));
         expect(handleOnRemove).toHaveBeenCalledTimes(1);
     });
 });

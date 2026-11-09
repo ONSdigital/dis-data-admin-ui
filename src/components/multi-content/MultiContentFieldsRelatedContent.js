@@ -53,7 +53,7 @@ export default function MultiContentFieldsRelatedContent({ id, index, item, hand
                         href="#"
                         onClick={(event) => {event.preventDefault(); handleOnRemove();}}
                     >
-                        Remove usage note
+                        Remove related content
                     </a>
                 </div>
             )}
