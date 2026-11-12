@@ -20,9 +20,9 @@ test.describe("Create series page", () => {
         await expect(page.getByTestId("dataset-series-next-release")).toBeVisible();
         await expect(page.getByTestId("dataset-series-qmi")).toBeVisible();
         await expect(page.getByTestId("dataset-series-keywords")).toBeVisible();
-        await expect(page.getByTestId("dataset-series-contact-name")).toBeVisible();
-        await expect(page.getByTestId("dataset-series-contact-email")).toBeVisible();
-        await expect(page.getByTestId("dataset-series-contact-telephone")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-contacts-name-0")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-contacts-email-0")).toBeVisible();
+        await expect(page.getByTestId("dataset-series-contacts-telephone-0")).toBeVisible();
     });
 
     test("Submit form successfully", async ({ page, context }) => {
@@ -38,10 +38,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByTestId("dataset-series-contact-name").fill("test name");
-        await page.getByTestId("dataset-series-contact-email").fill("test-email@test.com");
-        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
-        await page.getByRole("button", { name: /Add contact/i }).click();
+        await page.getByTestId("dataset-series-contacts-name-0").fill("test name");
+        await page.getByTestId("dataset-series-contacts-email-0").fill("test-email@test.com");
+        await page.getByTestId("dataset-series-contacts-telephone-0").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Create dataset series/i }).click();
         
         await page.waitForURL("**/series/mock-quarterly**");
@@ -80,16 +79,27 @@ test.describe("Create series page", () => {
         await expect(page.getByTestId("field-dataset-series-contacts-error").getByText("Contact is required")).toBeVisible();
     });
 
-    test("Show error on invalid email", async ({ page, context }) => {
+    test("Shows error if missing contact name", async ({ page, context }) => {
         setValidAuthCookies(context);
 
         await page.goto("./series/create")
 
-        await page.getByTestId("dataset-series-contact-name").fill("test name");
-        await page.getByTestId("dataset-series-contact-email").fill("test-email");
-        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
-        await page.getByRole("button", { name: /Add contact/i }).click();
-        await expect(page.getByTestId("field-dataset-series-contact-email-error").getByText("Invalid email")).toBeVisible();
+        await page.getByTestId("dataset-series-contacts-email-0").fill("test-email@test.com");
+        await page.getByTestId("dataset-series-contacts-telephone-0").fill("+44 1234 567891");
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
+        await expect(page.getByTestId("field-dataset-series-contacts-name-0-error").getByText("Contact name is required")).toBeVisible();
+    });
+
+    test("Shows error on invalid/missing email", async ({ page, context }) => {
+        setValidAuthCookies(context);
+
+        await page.goto("./series/create")
+
+        await page.getByTestId("dataset-series-contacts-name-0").fill("test name");
+        await page.getByTestId("dataset-series-contacts-email-0").fill("test-email");
+        await page.getByTestId("dataset-series-contacts-telephone-0").fill("+44 1234 567891");
+        await page.getByRole("button", { name: /Create dataset series/i }).click();
+        await expect(page.getByTestId("field-dataset-series-contacts-email-0-error").getByText("Invalid email")).toBeVisible();
     });
 
     test("Show error when series ID contains invalid characters", async ({ page, context }) => {
@@ -117,10 +127,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByTestId("dataset-series-contact-name").fill("test name");
-        await page.getByTestId("dataset-series-contact-email").fill("tes-email@test.com");
-        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
-        await page.getByRole("button", { name: /Add contact/i }).click();
+        await page.getByTestId("dataset-series-contacts-name-0").fill("test name");
+        await page.getByTestId("dataset-series-contacts-email-0").fill("tes-email@test.com");
+        await page.getByTestId("dataset-series-contacts-telephone-0").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Create dataset series/i }).click();
 
         await expect(page.getByText("A dataset series with an ID of duplicate-id already exists")).toBeVisible();
@@ -138,9 +147,9 @@ test.describe("Create series page", () => {
         await page.getByTestId("dataset-series-next-release").fill("To be announced");
         await page.getByTestId("dataset-series-qmi").fill("test-url.com");
         await page.getByTestId("dataset-series-keywords").fill("test,keywords,foo,bar");
-        await page.getByTestId("dataset-series-contact-name").fill("test name");
-        await page.getByTestId("dataset-series-contact-email").fill("test@email.com");
-        await page.getByTestId("dataset-series-contact-telephone").fill("+44 1234 567891");
+        await page.getByTestId("dataset-series-contacts-name-0").fill("test name");
+        await page.getByTestId("dataset-series-contacts-email-0").fill("test@email.com");
+        await page.getByTestId("dataset-series-contacts-telephone-0").fill("+44 1234 567891");
         await page.getByRole("button", { name: /Add contact/i }).click();
         await page.getByRole("button", { name: /Create dataset series/i }).click();
 
