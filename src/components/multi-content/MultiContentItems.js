@@ -23,7 +23,7 @@ const blankItem = (fieldType) => {
     }
 };
 
-export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel}) {
+export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel }) {
     const [items, setItems] = useState(contentItems?.length ? contentItems : [blankItem(fieldType)]);
 
     const handleChange = (index, nextItem) => {
@@ -96,7 +96,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
     };
 
     return (
-        <>
+        <div>
             {renderItemFields()}
             <Button
                 dataTestId={`${id}-add-button`}
@@ -106,7 +106,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                 onClick={() => {
                     handleAddItem();
                 }}
-                />
-        </>
+            />
+        </div>
     );
 }
