@@ -18,12 +18,21 @@ const datasetSchema = z.object({
     topics: z.string().array().nonempty({ message: "Topic is required" }),
     next_release: z.string().min(1, { message: "Next release is required" }),
     contacts: z.array(z.object({
-        name: z.string(),
-        email: z.string()
-    })).min(1, { message: "Contact is required" })
+        name: z.string().min(1, { message: "Contact name is required" }),
+        email: z.email(),
+        telephone: z.string().optional(),
+    })).min(1, { message: "Contact is required" }),
 });
 
+const parseMultiContentField = (multiItem) => {
+    if (!multiItem || !multiItem.length) return [];
+
+    return multiItem.map((item, index) => ({ index, content: JSON.parse(item) }))
+        .filter(({ content }) => Object.values(content).some(Boolean));
+};
+
 const getFormData = (formData) => {
+    const parsedContacts = parseMultiContentField(formData.getAll("dataset-series-contacts"));
     const datasetSeriesSubmission = {
         type: formData.get("dataset-series-type"),
         license: formData.get("dataset-series-license"),
@@ -33,7 +42,7 @@ const getFormData = (formData) => {
         // in it's raw/original format
         originalTopics: JSON.parse(formData.get("dataset-series-topics-input")),
         description: formData.get("dataset-series-description"),
-        contacts: JSON.parse(formData.get("dataset-series-contacts")),
+        contacts: parsedContacts.map(item => item.content),
         next_release: formData.get("dataset-series-next-release"),
         qmi: { 
             href: formData.get("dataset-series-qmi") 
@@ -47,7 +56,27 @@ const getFormData = (formData) => {
     }
 
     datasetSeriesSubmission.topics = datasetSeriesSubmission.originalTopics.map(topic => topic.id ? topic.id : topic);
-    return datasetSeriesSubmission;
+    return {
+        submission: datasetSeriesSubmission,
+        contactIndexes: parsedContacts.map(item => item.index),
+    };
+};
+
+// maps Zod issues such as { path: ["contacts", 1, "email"] } to input IDs,
+// e.g. { "dataset-series-contacts-email-2": ["Invalid email address"] }
+// array-level issues such as { path: ["contacts"] } stay on "contacts"
+const getContactErrors = (issues, contactIndexes = []) => {
+    const errors = {};
+    issues.forEach(issue => {
+        const [field, itemIndex, key] = issue.path;
+        if (field !== "contacts") return;
+        if (key == null) {
+            errors.contacts = [...(errors.contacts || []), issue.message];
+            return;
+        }
+        errors[`dataset-series-contacts-${key}-${contactIndexes[itemIndex]}`] = [issue.message];
+    });
+    return errors;
 };
 
 const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
@@ -88,9 +117,26 @@ const createResponse = async (datasetSeriesSubmission, result, doRequest)  =>  {
     return response;
 };
 
+const handleFailedValidation = (validation, datasetSeriesSubmission, contactIndexes) => {
+    const { contacts: _contacts, ...fieldErrors } = validation.error.flatten().fieldErrors;
+    const actionResponse = {};
+    actionResponse.success = validation.success;
+    actionResponse.errors = {
+        ...fieldErrors,
+        ...getContactErrors(validation.error.issues, contactIndexes),
+    };
+    actionResponse.submission = datasetSeriesSubmission;
+    logInfo("failed dataset series validation", null, null);
+    return actionResponse;
+};
+
 export async function createDatasetSeries(currentstate, formData) {
-    const datasetSeriesSubmission = getFormData(formData);
+    const { submission: datasetSeriesSubmission, contactIndexes } = getFormData(formData);
     const validation = datasetSchema.safeParse(datasetSeriesSubmission);
+    
+    if (!validation.success) {
+        return handleFailedValidation(validation, datasetSeriesSubmission, contactIndexes);
+    }
 
     return createResponse(
         datasetSeriesSubmission,
@@ -100,8 +146,13 @@ export async function createDatasetSeries(currentstate, formData) {
 }
 
 export async function updateDatasetSeries(originalId, currentstate, formData) {
-    const datasetSeriesSubmission = getFormData(formData);
+    const { submission: datasetSeriesSubmission, contactIndexes } = getFormData(formData);
     const validation = datasetSchema.safeParse(datasetSeriesSubmission);
+
+    if (!validation.success) {
+        return handleFailedValidation(validation, datasetSeriesSubmission, contactIndexes);
+    }
+    
     // editing a series without explicity setting the state to 
     // "associated" will mean the state returns to "created" 
     datasetSeriesSubmission.state = "associated";
