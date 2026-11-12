@@ -7,7 +7,6 @@ export default function MultiContentFieldsContact({ id, index, item, handleOnCha
     const emailInputID = id + "-email-" + index;
     const telephoneInputID = id + "-telephone-" + index;
 
-    console.log("ERRORS ARE:", errors)
     return (
         <div className="ons-u-mb-s ons-u-bb">
             <Field dataTestId="field-dataset-series-contacts" error={errors?.contacts ? {id:"dataset-series-contacts-error", text: errors.contacts} : null} >
