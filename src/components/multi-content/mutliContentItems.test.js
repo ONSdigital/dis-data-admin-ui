@@ -71,6 +71,29 @@ describe("MultiContentItems", () => {
         });
     });
 
+    describe("renders correctly when type=contact", () => {
+        it("and doesn't contain data e.g. 'create' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="contact" buttonLabel="Add contact"/>);
+            expect(screen.getByTestId("multi-content-test-name-0")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-email-0")).toBeInTheDocument();
+            expect(screen.getByTestId("multi-content-test-telephone-0")).toBeInTheDocument();
+
+            const button = screen.getByTestId("multi-content-test-add-button");
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveTextContent("Add contact");
+        });
+
+        it("and does contain data e.g. 'edit' mode", () => {
+            render(<MultiContentItems id="multi-content-test" fieldType="contact" buttonLabel="Add contact" contentItems={[{ name: "Jane Smith", email: "jane.smith@example.com", telephone: "+44 1234 567891" }]}/>);
+            expect(screen.getByTestId("multi-content-test-name-0")).toHaveValue("Jane Smith");
+            expect(screen.getByTestId("multi-content-test-email-0")).toHaveValue("jane.smith@example.com");
+            expect(screen.getByTestId("multi-content-test-telephone-0")).toHaveValue("+44 1234 567891");
+
+            const button = screen.getByTestId("multi-content-test-add-button");
+            expect(button).toBeInTheDocument();
+        });
+    });
+
     it("renders one blank row when contentItems is empty", () => {
         render(<MultiContentItems id="multi-content-test" fieldType="usage-notes" buttonLabel="Add new test item" contentItems={[]}/>);
 
@@ -142,6 +165,10 @@ describe("MultiContentItems", () => {
             { title: "First", href: "https://example.com/first", description: "First description" },
             { title: "Second", href: "", description: "Second description" },
         ];
+        const twoContacts = [
+            { name: "Jane Smith", email: "jane.smith@example.com", telephone: "+44 1234 567891" },
+            { name: "Ada Lovelace", email: "", telephone: "" },
+        ];
 
         it("for a usage note description", () => {
             render(
@@ -188,6 +215,22 @@ describe("MultiContentItems", () => {
             expect(screen.getByText("Related content URL is required")).toBeInTheDocument();
             expect(document.getElementById("multi-content-test-url-1-error")).toBeInTheDocument();
             expect(document.getElementById("multi-content-test-url-0-error")).not.toBeInTheDocument();
+        });
+
+        it("for a contact email", () => {
+            render(
+                <MultiContentItems
+                    id="multi-content-test"
+                    fieldType="contact"
+                    buttonLabel="Add contact"
+                    contentItems={twoContacts}
+                    errors={{ "multi-content-test-email-1": ["Invalid email address"] }}
+                />
+            );
+
+            expect(screen.getByText("Invalid email address")).toBeInTheDocument();
+            expect(document.getElementById("multi-content-test-email-1-error")).toBeInTheDocument();
+            expect(document.getElementById("multi-content-test-email-0-error")).not.toBeInTheDocument();
         });
     });
 });
