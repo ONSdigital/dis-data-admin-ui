@@ -30,9 +30,9 @@ describe("Series Form", () => {
         expect(screen.getByTestId("dataset-series-next-release")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-qmi")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-keywords")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-contact-name")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-contact-email")).toBeInTheDocument();
-        expect(screen.getByTestId("dataset-series-contact-telephone")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-contacts-name-0")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-contacts-email-0")).toBeInTheDocument();
+        expect(screen.getByTestId("dataset-series-contacts-telephone-0")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-save")).toBeInTheDocument();
         expect(screen.getByTestId("dataset-series-cancel")).toBeInTheDocument();
     });
