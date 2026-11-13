@@ -6,8 +6,8 @@ import { TextInput, Panel, HyperLinksList } from "author-design-system-react";
 import LinkButton from "@/components/link-button/LinkButton";
 
 import Topics from "@/components/topics/Topics";
-import Contact from "@/components/contact/Contact";
 import TextArea from "@/components/textarea/Textarea";
+import MultiContentItems from "@/components/multi-content/MultiContentItems";
 
 export default function SeriesForm({ currentTitle = "", currentID = "", currentDescription = "", currentTopics = [], currentNextRelease = "", currentQMI = "", currentKeywords = "", currentContacts = [], listOfAllTopics, isPublished, showSeriesIDField, action }) {
     const [id, setID] = useState(currentID);
@@ -149,10 +149,10 @@ export default function SeriesForm({ currentTitle = "", currentID = "", currentD
                     value={keywords}
                     onChange={e => setKeywords(e.target.value)}
                 />
-                <Contact
-                    contactsList={currentContacts}
-                    contactsError={(formState.errors && formState.errors.contacts) ? formState.errors.contacts : null}
-                />
+
+                <h2 className="ons-u-mt-l">Add contacts</h2>
+                <MultiContentItems fieldType="contact" id="dataset-series-contacts" contentItems={currentContacts} errors={formState.errors} buttonLabel="Add contact" />
+
                 <button data-testid="dataset-series-save" type="submit" className={isPending == true ? "ons-btn ons-btn ons-u-mt-l ons-btn--disabled" : "ons-btn ons-u-mt-l"} disabled={isPending}>
                     <span className="ons-btn__inner">
                         <span className="ons-btn__text">

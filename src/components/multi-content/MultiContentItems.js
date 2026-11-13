@@ -6,6 +6,7 @@ import { Button } from "author-design-system-react";
 import MultiContentFieldsUsageNotes from "./MultiContentFieldsUsageNotes";
 import MultiContentFieldsAlerts from "./MultiContentFieldsAlerts";
 import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
+import MultiContentFieldsContact from "./MultiContentFieldsContact";
 
 const blankItem = (fieldType) => {
     switch (fieldType) {
@@ -15,12 +16,14 @@ const blankItem = (fieldType) => {
             return { type: "", note: "" };
         case "related-content":
             return { title: "", href: "", description: "" };
+        case "contact":
+            return { name: "", email: "", telephone: "" };
         default:
             return {};
     }
 };
 
-export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel}) {
+export default function MultiContentItems({ fieldType, id="multi-content", contentItems, errors, buttonLabel }) {
     const [items, setItems] = useState(contentItems?.length ? contentItems : [blankItem(fieldType)]);
 
     const handleChange = (index, nextItem) => {
@@ -73,6 +76,18 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                         errors={errors}
                     />);
                     break;
+                case "contact":
+                    renderedItems.push(<MultiContentFieldsContact 
+                        key={i}
+                        id={id}
+                        index={i}
+                        item={items[i]}
+                        handleOnChange={(nextItem) => handleChange(i, nextItem)}
+                        showRemoveButton={items.length > 1}
+                        handleOnRemove={() => handleRemove(i)}
+                        errors={errors}
+                    />);
+                    break;
                 default:
                     console.warn(`No "fieldType" prop given`);
             }
@@ -81,7 +96,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
     };
 
     return (
-        <>
+        <div>
             {renderItemFields()}
             <Button
                 dataTestId={`${id}-add-button`}
@@ -91,7 +106,7 @@ export default function MultiContentItems({ fieldType, id="multi-content", conte
                 onClick={() => {
                     handleAddItem();
                 }}
-                />
-        </>
+            />
+        </div>
     );
 }
