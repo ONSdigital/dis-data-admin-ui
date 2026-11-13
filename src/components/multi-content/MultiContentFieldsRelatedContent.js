@@ -1,39 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-
 import { TextInput } from "author-design-system-react";
 import TextArea from "../textarea/Textarea";
 
-export default function MultiContentFieldsRelatedContent({ id, index, field, onFieldsHaveContent, errors }) {
-    const [contentTitle, setContentTitle] = useState(field?.title || "");
-    const [contentURL, setContentURL] = useState(field?.href || "");
-    const [contentDescription, setContentDescription] = useState(field?.description || "");
-
+export default function MultiContentFieldsRelatedContent({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
     const titleInputID = id + "-title-" + index;
     const urlInputID = id + "-url-" + index;
     const textareaID = id + "-description-" + index;
 
-    const fieldsHaveContent = contentTitle.length > 0 && contentURL.length > 0;
-
-    // Store latest onFieldsHaveContent in a ref so we can call it from effects without
-    // adding it to the dependency array (which could trigger an update loop)
-    const onFieldsHaveContentRef = useRef(onFieldsHaveContent);
-    useEffect(() => {
-        onFieldsHaveContentRef.current = onFieldsHaveContent;
-    }, [onFieldsHaveContent]);
-
-    useEffect(() => {
-        onFieldsHaveContentRef.current(fieldsHaveContent);
-    }, [fieldsHaveContent]);
-
-    const handleInputChange = (setState, value) => {
-        setState(value);
-    };
-
     return (
-        <div className="ons-u-mb-m">
-            <input id={id} name={id} type="hidden" value={JSON.stringify({title: contentTitle, href: contentURL, description: contentDescription})} />
+        <div className="ons-u-mb-s ons-u-bb">
+            <input id={id} name={id} type="hidden" value={JSON.stringify({title: item.title, href: item.href, description: item.description})} />
             <TextInput
                 id={titleInputID}
                 dataTestId={titleInputID}
@@ -43,8 +20,8 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
                     text: "Title",
                 }}
                 error={errors?.[titleInputID] ? { id: `${titleInputID}-error`, text: errors[titleInputID] } : null}
-                value={contentTitle}
-                onChange={e => handleInputChange(setContentTitle, e.target.value)}
+                value={item.title}
+                onChange={e => handleOnChange({ ...item, title: e.target.value })}
                 key={titleInputID}
             />
             <TextInput
@@ -56,8 +33,8 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
                     text: "URL",
                 }}
                 error={errors?.[urlInputID] ? { id: `${urlInputID}-error`, text: errors[urlInputID] } : null}
-                value={contentURL}
-                onChange={e => handleInputChange(setContentURL, e.target.value)}
+                value={item.href}
+                onChange={e => handleOnChange({ ...item, href: e.target.value })}
                 key={urlInputID}
             />
             <TextArea 
@@ -65,11 +42,22 @@ export default function MultiContentFieldsRelatedContent({ id, index, field, onF
                 dataTestId={textareaID}
                 name={textareaID}
                 label={{text: "Description (optional)"}} 
-                value={contentDescription} 
+                value={item.description} 
                 key={textareaID} 
-                fieldClasses={"ons-u-dib"}
-                onChange={e => handleInputChange(setContentDescription, e.target.value)}
+                fieldClasses="ons-u-dib ons-u-mb-s"
+                onChange={e => handleOnChange({ ...item, description: e.target.value })}
             />
+            <div className="ons-u-mb-s">
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault(); 
+                        showRemoveButton ? handleOnRemove() : handleOnChange({ index, title: "", href: "", description: "" });
+                    }}
+                >
+                    { showRemoveButton ? "Remove" : "Clear"} related content
+                </a>
+            </div>
         </div>
     );
 };

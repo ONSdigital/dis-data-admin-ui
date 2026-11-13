@@ -16,7 +16,6 @@ test.describe("Edit edition page", () => {
             await expect(page.getByTestId("related-content-title-0")).toHaveValue("");
             await expect(page.getByTestId("related-content-url-0")).toHaveValue("");
             await expect(page.getByTestId("related-content-description-0")).toHaveValue("");
-            await expect(page.getByTestId("related-content-add-button")).toHaveClass(/ons-btn--disabled/);
         });
 
         test("Submits form successfully", async ({ page, context }) => {
@@ -96,20 +95,6 @@ test.describe("Edit edition page", () => {
     });
 
     test.describe("Related content", () => {
-        test("Add button only enables once title and URL are filled", async ({ page, context }) => {
-            setValidAuthCookies(context);
-            await page.goto("./series/mock-quarterly/editions/test-edition/edit");
-
-            await page.getByTestId("related-content-title-0").fill("Related article");
-            await expect(page.getByTestId("related-content-add-button")).toHaveClass(/ons-btn--disabled/);
-
-            await page.getByTestId("related-content-url-0").fill("https://example.com/article");
-            await expect(page.getByTestId("related-content-add-button")).not.toHaveClass(/ons-btn--disabled/);
-
-            await page.getByTestId("related-content-add-button").click();
-            await expect(page.getByTestId("related-content-title-1")).toBeVisible();
-        });
-
         test("Shows error only on URL when URL is missing", async ({ page, context }) => {
             setValidAuthCookies(context);
             await page.goto("./series/mock-quarterly/editions/test-edition/edit");

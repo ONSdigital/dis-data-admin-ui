@@ -50,7 +50,7 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
     };
 
     return (
-        <>    
+        <div className="ons-col-8@m">    
             { renderFailure() }      
             <form action={formAction}>
                 <input id="dataset-id" name="dataset-id" type="hidden" value={datasetID} />
@@ -82,10 +82,10 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                 <div className="ons-u-mb-l">
                     <h3 id="dataset-edition-related-content" className="ons-u-mt-xl">Related content (optional)</h3>
                     <MultiContentItems
-                        fieldType="relatedContent"
+                        fieldType="related-content"
                         id="related-content"
                         contentItems={edition?.related_content || []}
-                        buttonLabel="Add related content"
+                        buttonLabel="Add another related content"
                         errors={formState.errors}
                     />
                 </div>
@@ -106,6 +106,6 @@ export default function EditionForm({ datasetID, edition, isNewEdition, showEdit
                     classes="ons-u-mt-l ons-u-ml-l"
                 />
             </form>
-        </>
+        </div>
     );
 }

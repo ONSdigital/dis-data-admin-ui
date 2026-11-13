@@ -2,56 +2,110 @@ import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
 import MultiContentFieldsRelatedContent from "./MultiContentFieldsRelatedContent";
 
-let onFieldsHaveContentHandler;
-beforeEach(() => {
-    onFieldsHaveContentHandler = jest.fn();
-});
+const item = {
+    title: "Methodology",
+    href: "https://example.com/methodology",
+    description: "Read the methodology for this release",
+};
+
+const renderRelatedContent = (props = {}) => {
+    const handleOnChange = props.handleOnChange || jest.fn();
+    const handleOnRemove = props.handleOnRemove || jest.fn();
+    const view = render(
+        <MultiContentFieldsRelatedContent
+            id="related-content"
+            index={0}
+            item={item}
+            handleOnChange={handleOnChange}
+            handleOnRemove={handleOnRemove}
+            showRemoveButton={false}
+            {...props}
+        />
+    );
+    return { ...view, handleOnChange, handleOnRemove };
+};
 
 describe("MultiContentFieldsRelatedContent", () => {
-    describe("renders correctly", () => {
-        it("when field data is not provided", () => {
-            render(<MultiContentFieldsRelatedContent id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler}/>);
+    describe("renders", () => {
+        it("with the related content values", () => {
+            renderRelatedContent();
 
-            expect(screen.getByTestId("multi-content-test-title-1")).toBeInTheDocument();
-            expect(screen.getByTestId("multi-content-test-url-1")).toBeInTheDocument();
-            expect(screen.getByTestId("multi-content-test-description-1")).toBeInTheDocument();
+            expect(screen.getByTestId("related-content-title-0")).toHaveValue("Methodology");
+            expect(screen.getByTestId("related-content-url-0")).toHaveValue("https://example.com/methodology");
+            expect(screen.getByTestId("related-content-description-0")).toHaveValue("Read the methodology for this release");
+            expect(document.getElementById("related-content")).toHaveValue(JSON.stringify({
+                title: item.title,
+                href: item.href,
+                description: item.description,
+            }));
+            expect(screen.getByText("Clear related content")).toBeInTheDocument();
+            expect(screen.queryByText("Remove related content")).not.toBeInTheDocument();
+            expect(screen.queryByText("Related content title is required")).not.toBeInTheDocument();
         });
 
-        it("when field data is provided", () => {
-            const fieldData = {
-                title: "Methodology",
-                href: "https://example.com/methodology",
-                description: "Read the methodology for this release"
-            };
-            render(<MultiContentFieldsRelatedContent id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler} field={fieldData}/>);
+        it("with validation errors on the title and URL", () => {
+            renderRelatedContent({
+                errors: {
+                    "related-content-title-0": ["Related content title is required"],
+                    "related-content-url-0": ["Related content URL is required"],
+                },
+            });
 
-            expect(screen.getByDisplayValue("Methodology")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("https://example.com/methodology")).toBeInTheDocument();
-            expect(screen.getByDisplayValue("Read the methodology for this release")).toBeInTheDocument();
+            expect(screen.getByText("Related content title is required")).toBeInTheDocument();
+            expect(document.getElementById("related-content-title-0-error")).toBeInTheDocument();
+            expect(screen.getByText("Related content URL is required")).toBeInTheDocument();
+            expect(document.getElementById("related-content-url-0-error")).toBeInTheDocument();
         });
     });
 
-    it("onFieldsHaveContent handler returns the correct value", () => {
-        render(<MultiContentFieldsRelatedContent id="multi-content-test" index={1} onFieldsHaveContent={onFieldsHaveContentHandler}/>);
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+    it("calls handleOnChange with the updated related content", () => {
+        const { handleOnChange, rerender } = renderRelatedContent();
 
-        const titleInput = screen.getByTestId("multi-content-test-title-1");
-        fireEvent.change(titleInput, {target: {value: "Quality Information"}});
-        expect(titleInput.value).toBe("Quality Information");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(1);
-        expect(onFieldsHaveContentHandler.mock.calls[0][0]).toBeFalsy();
+        fireEvent.change(screen.getByTestId("related-content-title-0"), { target: { value: "Quality information" } });
+        expect(screen.getByTestId("related-content-title-0")).toHaveValue("Methodology");
+        expect(handleOnChange).toHaveBeenCalledWith({ ...item, title: "Quality information" });
 
-        const urlInput = screen.getByTestId("multi-content-test-url-1");
-        fireEvent.change(urlInput, {target: {value: "https://example.com/quality"}});
-        expect(urlInput.value).toBe("https://example.com/quality");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(2);
-        expect(onFieldsHaveContentHandler.mock.calls[1][0]).toBeTruthy();
+        const updatedItem = { ...item, title: "Quality information" };
+        rerender(
+            <MultiContentFieldsRelatedContent
+                id="related-content"
+                index={0}
+                item={updatedItem}
+                handleOnChange={handleOnChange}
+                handleOnRemove={jest.fn()}
+            />
+        );
+        expect(screen.getByTestId("related-content-title-0")).toHaveValue("Quality information");
+        expect(document.getElementById("related-content")).toHaveValue(JSON.stringify({
+            title: updatedItem.title,
+            href: updatedItem.href,
+            description: updatedItem.description,
+        }));
 
-        const descriptionTextarea = screen.getByTestId("multi-content-test-description-1");
-        fireEvent.change(descriptionTextarea, {target: {value: "Information about quality"}});
-        expect(descriptionTextarea.value).toBe("Information about quality");
-        expect(onFieldsHaveContentHandler.mock.calls).toHaveLength(2);
-        expect(onFieldsHaveContentHandler.mock.calls[1][0]).toBeTruthy();
+        fireEvent.change(screen.getByTestId("related-content-url-0"), { target: { value: "https://example.com/quality" } });
+        expect(handleOnChange).toHaveBeenCalledWith({ ...updatedItem, href: "https://example.com/quality" });
+
+        fireEvent.change(screen.getByTestId("related-content-description-0"), { target: { value: "Information about quality" } });
+        expect(handleOnChange).toHaveBeenCalledWith({ ...updatedItem, description: "Information about quality" });
+    });
+
+    it("calls handleOnChange when the clear link is clicked", () => {
+        const handleOnChange = jest.fn();
+        const handleOnRemove = jest.fn();
+        renderRelatedContent({ handleOnChange, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Clear related content"));
+        expect(handleOnChange).toHaveBeenCalledWith({ index: 0, title: "", href: "", description: "" });
+        expect(handleOnRemove).not.toHaveBeenCalled();
+    });
+
+    it("calls handleOnRemove when the remove link is clicked", () => {
+        const handleOnChange = jest.fn();
+        const handleOnRemove = jest.fn();
+        renderRelatedContent({ showRemoveButton: true, handleOnChange, handleOnRemove });
+
+        fireEvent.click(screen.getByText("Remove related content"));
+        expect(handleOnRemove).toHaveBeenCalledTimes(1);
+        expect(handleOnChange).not.toHaveBeenCalled();
     });
 });

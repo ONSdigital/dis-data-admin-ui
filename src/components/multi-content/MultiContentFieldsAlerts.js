@@ -1,0 +1,77 @@
+"use client";
+
+import { Radios } from "author-design-system-react";
+import TextArea from "../textarea/Textarea";
+
+export default function MultiContentFieldsAlerts({ id, index, item, handleOnChange, handleOnRemove, showRemoveButton, errors }) {
+    const radiosID = id + "-radios-" + index;
+    const textareaID = id + "-textarea-" + index;
+
+    const isChecked = (fieldValue) => {
+        if (fieldValue === item.type) { return true; }
+        return false;
+    };
+
+    const renderRadioOptions = () => {
+        return (
+            <Radios
+                dataTestId={radiosID}
+                legend="Alert type"
+                name={radiosID}
+                borderless={true}
+                radios={{
+                    radioList: [
+                        {
+                            id: `${radiosID}-correction`,
+                            label: {
+                                text: "Correction"
+                            },
+                            value: "correction",
+                            onChange: e => handleOnChange({ ...item, type: e.target.value }),
+                            checked: isChecked("correction")
+                        },
+                        {
+                            id: `${radiosID}-notice`,
+                            label: {
+                                text: "Notice"
+                            },
+                            value: "alert",
+                            onChange: e => handleOnChange({ ...item, type: e.target.value }),
+                            checked: isChecked("alert")
+                        }
+                    ]
+                }}
+                error={errors?.[radiosID] ? { id: `${radiosID}-error`, text: errors[radiosID] } : null}
+            />
+        );
+    };
+
+    return (
+        <div className="ons-u-mb-s ons-u-bb">
+            <input id={id} name={id} data-testid={id} type="hidden" value={JSON.stringify({ type: item.type, description: item.description })} />
+            { renderRadioOptions() }
+            <TextArea
+                id={textareaID}
+                dataTestId={textareaID}
+                name={textareaID}
+                label={{ text: "Description" }}
+                value={item.description}
+                key={textareaID}
+                fieldClasses="ons-u-dib ons-u-mb-s"
+                onChange={(event) => handleOnChange({ ...item, description: event.target.value })}
+                error={errors?.[textareaID] ? { id: `${textareaID}-error`, text: errors[textareaID] } : null}
+            />
+            <div className="ons-u-mb-s">
+                <a
+                    href="#"
+                    onClick={(event) => {
+                        event.preventDefault(); 
+                        showRemoveButton ? handleOnRemove() : handleOnChange({ index, type: "", description: "" });
+                    }}
+                >
+                    { showRemoveButton ? "Remove" : "Clear"} alert
+                </a>
+            </div>
+        </div>
+    );
+};
