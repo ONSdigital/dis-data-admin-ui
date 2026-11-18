@@ -49,7 +49,7 @@ export default function MultiContentFieldsContact({ id, index, item, handleOnCha
                         label={{
                             text: "Telephone (optional)",
                         }}
-                        value={item.telephone}
+                        value={item.telephone || ""}
                         onChange={e => handleOnChange({ ...item, telephone: e.target.value })}
                     />
                 </div>
