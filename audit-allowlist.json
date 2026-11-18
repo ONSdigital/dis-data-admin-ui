@@ -23,6 +23,10 @@
         {
             "id": "CVE-2026-112366",
             "reason": "no fix yet for vulnerability in Picomatch (affects multiple versions)"
+        },
+        {
+            "id": "CVE-2026-119351",
+            "reason": "vulnerability is in latest version of Next"
         }
     ]
 }
